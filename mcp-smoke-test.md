@@ -1,3 +1,3 @@
 # MCP production smoke test
 
-Created through the MCP server.
+Updated through the MCP server.

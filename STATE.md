@@ -1,5 +1,8 @@
 # Current state
 
-- 仓库目录已初始化。
-- 下一步：写入用户已确认的 AGENT.md 和 RESEARCH_PHILOSOPHY.md。
-- 当前尚未记录研究假设或研究结论。
+Current Question: Not yet selected by the human.
+Primary Hypothesis: None active.
+Current Evidence: Research philosophy and agent protocol are present; no technical result recorded.
+Main Uncertainty: Which research question to investigate first.
+Next Action: Ask the human to select one question, then define one falsifiable claim and minimal test.
+Status: HUMAN_REVIEW

@@ -8,13 +8,13 @@ ARCHIVED SPECIFIC BRANCH: GL generic BigSwitch; see `failures/gl-generic-bigswit
 Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO 2025, ePrint **2025/286**, especially §4.3 / Theorem 4.8 / Appendix E.2 (CRT digit lookup), §4.1–4.2 (CKKS rescale and ΠAC), and **§5 componentwise Brakedown polynomial commitments**.
 Research MCP mirror: 52pp PDF SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, mirrored 2026-04-28 after 2026-02-16 official revision; **latest official binary VERSION_UNVERIFIED**.
 
-LAST COMPLETED ITERATION: **90 (2026-10-12)**. PASS (qualified) published Medium-circuit no-wrap parameter check using source §6.3; exact c=5 packing needs reconciliation; see I90 finding.
+LAST COMPLETED ITERATION: **91 (2026-10-12)**. FAIL claim that 128/309 repeated masks necessarily need the same number of PCS openings; PASS conditional one-sumcheck/one-opening random batching. See I91 finding.
 
 ## CURRENT QUESTION
-Even where I88's strict T=m(beta−1)<pmin holds at source-reported Medium-circuit scale, do 128-bit random Boolean-mask aggregate checks destroy the original Πrange's succinct verification advantage due to repeated sumchecks and original-h PCS openings?
+Does the I91 rank-one batched-public-A candidate remain verifier-efficient and attain 128-bit aggregate/PCS soundness after accounting for actual Brakedown fieldwise evaluation communication, explicit mask MLE evaluation, exceptional-set challenge representation, and public A_i?
 
-## PRIMARY HYPOTHESIS — NEXT, NOT YET TESTED (I91)
-For same published (W,D,L,N,c)=(1,1,3,8192,5), full Bernoulli masks need at least 128 independent repetitions at the simple ≤1/2 per-round bound, rank-one masks 309 at ≤3/4, and each added virtual-sumcheck requires a terminal opening of original h (possibly amending source's 25D=25 base oracle queries). Cheap decisive test: derive the actual per-ring and per-component verifier/proof cost from source §4.3 p24, §5/Appendix F, and any reusable Brakedown testing phase. No guessed benchmarking or full implementation.
+## PRIMARY HYPOTHESIS — NEXT, NOT YET TESTED (I92)
+An independent set of 309 rank-one Bernoulli masks, announced bounded integer A_i (after masks), exceptional-set random linear combination coefficients sampled after A_i, and one degree-2 virtual-ring sumcheck against SAME precommitted h may avoid t distinct PCS evaluation phases; however O(t sqrt M) mask evaluation and one μ-component Brakedown opening might dominate verifier work at Medium-circuit scale. Falsify via concrete source Appendix F.2 cost and exceptional-set/security-budget check, not vague t-times-PCS extrapolation.
 
 ## CURRENT EVIDENCE
 - [FACT/SOURCE + DERIVED, I59–70] Audited revised-looking proof uses an invalid diagonal-digit ⇒ illegal CRT component inference. Fieldwise lookup supports rectangular `T_B^rect`, not the claimed global coefficient range; `B≥max p_i` makes `T_B^rect=R_q`. Explicit ring/PIOP counterexamples recorded.
@@ -43,18 +43,21 @@ For same published (W,D,L,N,c)=(1,1,3,8192,5), full Bernoulli masks need at leas
 
 - [PUBLISHED PARAMETER PASS, QUALIFIED, I90] Primary §6.3 p29 Medium circuit uses (W,D,L,N,c)=(1,1,3,8192,5), d4, 49-bit RNS primes and '20-bit lookup table'; Table 2 p27 gives Πrange maximum input size 286720=8192*5*7. With a **conservative mathematical** next-power-of-two envelope m=524288 and interpreting 20-bit lookup as digit-table β≤2^20, T=m(β−1)≤549755289600<2^48≤pmin, >512× margin. Thus I88–89 extra no-wrap condition is numerically viable for this published workload under that interpretation; not a full-protocol parameter validation. **EVIDENCE GAP:** §4.3 formal c=2^gamma yet §6.3 c=5; actual padding, per-oracle beta and h length not verified. No invented author implementation. `findings/vfhe-paper-medium-circuit-no-wrap-feasibility-iteration90.md`.
 
+- [NEGATIVE BOTTLENECK / POSITIVE CONDITIONAL BATCH, I91] Primary §5/Appendix F.2 p51 permits reusing Brakedown PCS *testing phase* for multiple evaluations but not arbitrarily the evaluation phase. Yet source §2.2 virtual Πsum and Definition2.1 exceptional-set UNIT differences permit standard **post-A random linear combination** of all t mask claims: sample ρ_i∈S only after h commitment, mask α_i and bounded public A_i fixed; set F(X)=Σρ_i α~_i(X), Y=Σρ_i A_i. ONE degree-2 ring Πsum of Σ_{Boolean}F(x)h~(x)=Y uses ONE additional ring PCS opening of SAME h, instead of t=128/309 individual openings, and adds algebraic mixing error ≤1/|S| even with zero divisors. Source baseline Πrange Table2 D1 q25 ring-level eval claims; naive t checks q25+t and t*19 sumcheck variable rounds, batched q26 and 19 rounds, before security losses. Exact R=Z1073, S={0,...,28}: E1=E2=407 has 29/841=1/29 mixing false passes, tight. At padded M=2^19, full masks explicitly cost 128M=67,108,864 bits and O(128M) public MLE eval, rank-one reshape 512x1024 costs 309*(512+1024)=474,624 bits/~474k native evaluation ops, PLUS public A_i and per-CRT PCS. Not end-to-end 128-bit secure: mask error + mixing + sumcheck + original PCS/lookup errors must be budgeted. `findings/vfhe-batched-public-A-sumcheck-single-opening-iteration91.md`.
+
 ## MAIN OBSTRUCTION
-[OPEN] Native same-h virtual sumcheck and bounded public-A consistency are conditional I88–89. Published Medium-circuit scale does NOT falsify strict no-wrap (I90), but the 128/309 repeated masks may multiply verifier/PCS costs relative to source's 25D range oracle queries and sublinear goal. Need quantify one concrete cost before serious proof design. Exact c=5 packing and per-oracle digit-base assignment, full Fiat–Shamir/PCS knowledge soundness, and public-A privacy with VO remain unverified. Original CRT rectangular lookup gap persists.
+[OPEN] I88–91 conditional public-A repair now has a source-compatible SAME-h virtual ring sumcheck and a post-A batching method reducing t checks to ONE additional ring PCS evaluation, so linear-in-t PCS proof count is NOT a proven obstruction. Dominant possible obstacles are O(t sqrt M) explicit rank-one mask evaluation/communication for t≈309, actual μ-field Brakedown evaluation phase, exceptional-set |S| and total 128-bit error budget, transcript order, public A privacy/VO, and precise source c=5 / digit packing. No complete repair or novelty established.
 
 ## OPEN UNCERTAINTY
 Latest official PDF SHA/version; full authors' optimized protocol/PCS/Fiat–Shamir implementation; deployed or secure-parameter effect; complete repair/soundness/privacy/cost proof; novelty relative to dual-PCS/CP-NIZK. **No authors contacted. User says DO NOT SEND EMAIL; no outreach/draft/public disclosure without explicit new permission.**
 
-## NEXT_ACTION — ONE DECISIVE TEST (I91)
-Read primary ePrint 2025/286 §4.3 p24 (Πrange 25 oracle queries), §5 pp25–26 and Appendix F.2 p51 (Brakedown testing-phase reuse), Table 2 p27, and I87–I90 archives. Using same Medium-circuit maximum M≤286720 and conservative padded 2^19, compute *additional* rounds, PCS evaluation claims/proofs, and verifier alpha-MLE work for 128 full Bernoulli vs 309 rank-one mask checks at claimed 128-bit sampling soundness. Distinguish ring-oracle calls from per-CRT PCS component costs; account for reusable testing phase when applicable. Determine whether a simple cost blowup kills the branch before further protocol/security work. Do not invent runtime numbers or contact authors.
+## NEXT_ACTION — ONE DECISIVE TEST (I92)
+Read original ePrint 2025/286 §3.1 exceptional-set construction, §5 pp25–26 and Appendix F.1–F.3 pp50–52 Brakedown evaluation/testing, I89–I91 finding. ONE explicit rank-one BATCED verifier cost/soundness check at Medium-circuit M≤286720 (padded 2^19): compute extra ONE ring evaluation's μ-field proof work and 309*(512+1024) public alpha evaluation with 309 A_i, assess the exceptional-set |S| needed for *overall* ≤2^-128 including mix and sumcheck (mask-only t309 is not enough after union bound). Identify smallest dominant cost or missing security assumption. Do not introduce new code families or full protocol, no author contact.
 
 ## RELEVANT FILES
 - Protocol/start: `RESEARCH_PHILOSOPHY.md`, `AGENT.md`, `START_RESEARCH_SESSION.md`.
-- Last I90: `findings/vfhe-paper-medium-circuit-no-wrap-feasibility-iteration90.md`.
+- Last I91: `findings/vfhe-batched-public-A-sumcheck-single-opening-iteration91.md`.
+- I90: `findings/vfhe-paper-medium-circuit-no-wrap-feasibility-iteration90.md`.
 - I89: `findings/vfhe-same-h-virtual-ring-sumcheck-iteration89.md`.
 - I88: `findings/vfhe-bounded-public-aggregate-iteration88.md`.
 - I87: `findings/vfhe-rankone-bernoulli-mask-constant-detection-iteration87.md`.
@@ -73,4 +76,4 @@ Read primary ePrint 2025/286 §4.3 p24 (Πrange 25 oracle queries), §5 pp25–2
 - UNSENT report/draft: `findings/vfhe-confidential-pi-review-package-iteration74.md`, `findings/vfhe-confidential-author-inquiry-draft-iteration75.md`.
 - PARKED RIG: `logs/rig-state-2026-10-12-pre-vfhe-handoff.md`.
 
-STATUS: **ACTIVE vFHE repair; I90 PASS (qualified) Medium-circuit no-wrap; I91 repeated-mask verifier-cost falsification NEXT**. c5 packing and exact beta unresolved; complete PCS/Fiat–Shamir/privacy and 128-bit performance OPEN. No repaired SNARK, compiled forgery, or novelty claim. No author contact/public disclosure authorized.
+STATUS: **ACTIVE vFHE repair; I91 FAIL t-separate-PCS necessity, PASS conditional one-batched-sumcheck interface; I92 CRT-field PCS and soundness cost NEXT**. Exact c5 packing, full security/privacy and verifier timing OPEN. No repaired SNARK, compiled forgery, or novelty claim. No author contact/public disclosure authorized.

@@ -1,0 +1,28 @@
+# RIG-HE parked-state snapshot — before vFHE session handoff
+
+Captured: 2026-10-12
+Original file: `STATE.md`
+Original git blob SHA: `4a464c049f2b6a5ba867b566f91ea15b317a8bd1`
+Purpose: preserve the prior RIG-HE state verbatim while switching active research to vFHE. This is an archive of **state**, not a new research result. RIG-HE is PARKED, not ARCHIVED.
+
+---
+
+# Current state
+
+Current Question: Does the RIG-HE correctness-bound/Fourier-security conflict persist in meaningful high-degree regimes (as opposed to toy N=32), and would extending it produce a genuine new contribution beyond classic PLWE/RLWE dual attacks?
+
+Primary Hypothesis: NOT YET SET FOR NEXT ITERATION. The latest single predeclared N=32 ordinary-prime test PASSED. Human review required before any high-dimensional cost-intensive test; do not launch parameter sweeps without a new falsifiable claim.
+
+Current Evidence:
+- [FACT / SOURCE] RIG manuscript (2026-09-10; user Library FHE_from_RIG (1).pdf), symmetric Enc_pi(m)=pi(NTT(t e+m)||uniform_padding); one-coordinate mixture of N genuine and n uniform coordinates with p=N/(N+n). Original correctness condition q>2*N^(2^L-1)*H0^(2^L), H0=floor(t/2)+tB is SUFFICIENT, not necessary.
+- [DERIVED] Single-challenge t=2 cosine attack, public vector v_k≡v0*r^k (mod q) with odd v0 and coefficient Gaussian noise std <=sigma, success >=1/2+[N/(N+n)]*beta*(1+cos(pi*v0/q))/4, beta>=1-2*pi^2*sigma^2*||v||^2/q^2. Attacker picks ONE random output coordinate, never recovers hidden permutation.
+- [PRIOR ART] Elias–Lauter–Ozman–Stange, ePrint 2015/106 and 2015/758 Sec. 4 Case(3), already demonstrate error evaluation nonuniformity at small numeric residue roots, including full-order roots; Fourier/differential Gaussian bias as an attack primitive is not new. Unknown-permutation + uniform-padding mixture only dilutes per-coordinate advantage by p, elementary probability. Novelty at most scheme-specific instantiation; not verified as a standalone cryptanalytic technique.
+- [FACT / PREVIOUS] Four rigorously certified q=a^N+1 examples, including N32,a30,158-bit,L4,CPA bound .7445108. One Proth-style non-a^N+1 example q=141*2^160+1, N=32,L=4 with verified LLL vector rho=.0534498344 and CPA lower .7359018. Permanent record findings/rig-ordinary-ntt-prime-lll.md.
+- [FACT / NEW PASS] ONE PREDECLARED conventional prime: first q>2^160 with q≡1(mod 64), q=1461501637330902918203684832716283019655932547329 (161 bits; screening step i=68). Fully recursive Pratt/Lucas certificate (136 checked nodes); not of the special family a^32+1, and no constructed small-base Proth structure. Exact order-64 root r=570268124029534407621996591794583635795426001824 (seed g=29). All primitive roots have centered |root|/q>=.110427. q/(2H_L)=77.295>1. Exact 32-dimensional LLL delta=3/4 produced public odd-v0 relation with rho=||v||/q=.0712767886753<1/(4pi). Independent integer-check 88^2 ||v||^2<49 q^2. Strict conservative beta>0.89963656 and single-challenge success >0.72486029. Seeded 20,000 simulated challenges: 14,485 correct (72.425%), consistent with theory. Permanent record findings/rig-unstructured-prime-lll-audit.md; reproducible local script /mnt/data/fhe_audits/rig_unstructured_prime_lll_audit.py; JSON exact certificate /mnt/data/fhe_audits/rig_unstructured_prime_lll_certificate.json.
+- [LIMITATIONS] Toy/insecure N=32 and extremely large 161-bit single q relative to degree. One fixed example shows existence NOT frequency of weak ordinary primes. No results for practical large dimension N, no claim of vulnerability of RNS 60-bit limbs, no proof of infinitely many suitable weak q, no refutation of manuscript's conditional source-hardness theorem. Manuscript's practical performance frontier remains unclear.
+
+Result: PASS (one honest, predeclared unstructured-NNT-prime finite instance); NECESSARY caveats above. Research novelty: LOW / UNVERIFIED. No new algorithm beyond a standard public lattice reduction and a one-coordinate test.
+
+Next Minimal Test (only if HUMAN chooses CONTINUE): Specify one meaningful higher-dimensional and level-depth parameter with *predeclared q sampling*, security-matched baseline, exact success threshold and runtime budget; first ask whether a deterministic analytic criterion or known dual-attack bound already subsumes the proposed extension. Do NOT rerun similar N=32 sample sweeps. Alternative: HUMAN chooses ARCHIVE as verified parameter warning.
+
+Status: PASS for the narrow single-prime technical hypothesis; NOVELTY NOT VERIFIED; HUMAN_REVIEW. RIG remains active/parked pending human decision, NOT ARCHIVED. GL and MRFHE candidate branches previously archived in failures/ remain unchanged.

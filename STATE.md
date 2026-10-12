@@ -36,10 +36,10 @@ I119's **unoptimized worst-case sufficient noise theorem** is much too loose to 
 1. `START_RESEARCH_SESSION.md`, `AGENT.md`, `RESEARCH_PHILOSOPHY.md`, **this `STATE.md`**.
 2. **I119** `findings/spru-theorem1-table2-sufficient-bound-gap-iteration119.md`.
 3. `findings/fefbs-fixed-simpson38-high-harmonic-aliasing-iteration117.md`
-3. `findings/fefbs-lutgelu-216-coefficient-provenance-gate-iteration118.md`
-4. `failures/fefbs-high-degree-quadrature-benchmark-impact-unverified-parked-iteration118.md`
-5. **Exact complete prior verbose STATE**: `logs/state-pre-session-handoff-2026-10-12-iteration118.md` (preserved blob SHA `935d61d8d7e1cf23c21771223ec67dbb7d70d492`).
-6. Historical state chain `logs/state-pre-iteration115-prca-handoff.md`, `logs/vfhe-state-2026-10-12-pre-paco-handoff.md`; retrieve specific findings/failures **only if** the PI selects those topics.
+4. `findings/fefbs-lutgelu-216-coefficient-provenance-gate-iteration118.md`
+5. `failures/fefbs-high-degree-quadrature-benchmark-impact-unverified-parked-iteration118.md`
+6. **Exact complete prior verbose STATE**: `logs/state-pre-session-handoff-2026-10-12-iteration118.md` (preserved blob SHA `935d61d8d7e1cf23c21771223ec67dbb7d70d492`).
+7. Historical state chain `logs/state-pre-iteration115-prca-handoff.md`, `logs/vfhe-state-2026-10-12-pre-paco-handoff.md`; retrieve specific findings/failures **only if** the PI selects those topics.
 
 ## BRANCH STATUS / DO NOT DELETE
 **PARKED pending PI:** SPRU Theorem-1/Table-2 proof-bound mismatch I119 (not a practical failure). **PARKED:** FEFBS I117–118; LFBS PRCA I114–116 (`failures/lfbs-prca-source-only-layout-low-novelty-parked-iteration116.md`); Paiva incomplete-NTT key portability I112–113; sparse-SAB local terminal sign I110–111; Carousel rounding I108–109; SIMD-ALU cutoff I103–107; Nested-RNS I99–102; PaCo precision I95–98; RIG. **ARCHIVED:** GL generic BigSwitch; specific vFHE bounded-public-A/direct Brakedown repair. **PRESERVED OPEN FINDING, not ACTIVE:** original vFHE CRT lookup ideal-IOP discrepancy ePrint2025/286. All historical results retained in archives and exact STATE snapshots.

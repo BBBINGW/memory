@@ -8,13 +8,13 @@ ARCHIVED SPECIFIC BRANCH: GL generic BigSwitch; see `failures/gl-generic-bigswit
 Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO 2025, ePrint **2025/286**, especially §4.3 / Theorem 4.8 / Appendix E.2 (CRT digit lookup), §4.1–4.2 (CKKS rescale and ΠAC), and **§5 componentwise Brakedown polynomial commitments**.
 Research MCP mirror: 52pp PDF SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, mirrored 2026-04-28 after 2026-02-16 official revision; **latest official binary VERSION_UNVERIFIED**.
 
-LAST COMPLETED ITERATION: **84 (2026-10-12)**. Honest rescale remainder server-computable, but relaxed witness not input-unique; see I84 finding.
+LAST COMPLETED ITERATION: **85 (2026-10-12)**. Corrected CRT projector; fixed c',c'' imply bounded remainder uniqueness under equal-bit active-prime hypotheses; see I85 finding.
 
 ## CURRENT QUESTION
-With an original vFHE CKKS rescale layer's *public pre-rescale ciphertext c'* AND *fixed claimed output c''*, do the complete §4.1 Eq(12)–(15) ring arithmetic, ideal embeddings and coefficient bounds force one unique w_rmd? If not, a publicly exposed aggregate A may encode extra witness choice even with fixed ciphertext input/output.
+Does a succinct verifier in source §4.2 / Appendix D.3 actually have enough publicly accessible data to reconstruct the canonical/relaxed rescale remainder h and an exact public integer aggregate A, even though the remainder is **unique conditional on BOTH c' and c'' being fixed**? If not, what is the smallest missing input or verification cost?
 
-## PRIMARY HYPOTHESIS — NEXT, NOT YET TESTED
-Two distinct permitted rescale remainders may fit the same (c',c'') at the original embedded-ring level because of zero divisors/CRT projection. Before investing in new public-A protocols, try to prove uniqueness or find a single fully valid two-opening witness satisfying all source equations, not just scalar divisibility. Source equation PDF extraction may require visual confirmation.
+## PRIMARY HYPOTHESIS — NEXT, NOT YET TESTED (I86)
+Although the rescale remainder is uniquely determined by a fixed complete intermediate ciphertext pair (c',c'') in the paper's same-bit setting, a succinct verifier need not possess full c': §4.2 carries intermediate states as prover oracle witnesses and Appendix D.3 only authenticates sampled evaluations. Hence directly reconstructing h/A may require the work the verifiable outsourcing was intended to avoid. Test one concrete interface and its inputs/cost, not a new proof design.
 
 ## CURRENT EVIDENCE
 - [FACT/SOURCE + DERIVED, I59–70] Audited revised-looking proof uses an invalid diagonal-digit ⇒ illegal CRT component inference. Fieldwise lookup supports rectangular `T_B^rect`, not the claimed global coefficient range; `B≥max p_i` makes `T_B^rect=R_q`. Explicit ring/PIOP counterexamples recorded.
@@ -31,18 +31,21 @@ Two distinct permitted rescale remainders may fit the same (c',c'') at the origi
 
 - [PASS NARROW + NEGATIVE STRONG / SOURCE + TOY, I84] ePrint 2025/286 §3.3 Eq(4)–(6), §3.4 p12, §4.1 Eq(12)–(15) pp14–15: *honest canonical* CKKS rescale remainder `[c']_p` is computed by server from ciphertext arithmetic, evk and public moduli with no client sk. However optimized range oracle permits `w_rmd=[c']_p+k p`, `k∈{0,±1}`, if within bound `2^u`; input-only unique bit aggregation FAILS even in scalar arithmetic (p13, B16, c'=15, r=2 vs15, different output quotient and aggregate A=0 vs1 under α=(1,0,0,0)). This **does NOT** prove both witnesses accepted for a *fixed claimed output*, or for the complete original Rq relation. Client IND-CPA/verification-oracle privacy of a new public-A repair still UNPROVEN; original cross-CRT soundness bridge still missing. See `findings/vfhe-rescale-remainder-public-computability-nonuniqueness-iteration84.md`.
 
+- [SOURCE-CORRECTION / DERIVED CONDITIONAL PASS, I85] §3.2 projector z_l includes the currently dropped p_l component; Eq(6) multiplier is [p_l^(-1)]_Q*z_l, **NOT** the projection z_(l-1) that would zero p_l. An initial supposed fixed-output ambiguity r=0 versus r=73 for N8,d2,p0=73,p1=89,B128 was wrong: with actual t=32, r=73 yields output4161 mod6497, not fixed output0. Formal conditional uniqueness lemma: for distinct equal-u-bit active CRT primes, range-legal remainders in [0,2^u) producing same fixed (c',c'') are coefficientwise unique; if ≥2 primes retained, retained modulus product already exceeds range; for last pair, inverse multiplier is nonzero at dropped prime by same-bit odd-prime argument. Thus I84's **input-only** nonuniqueness remains, but conjectured **fixed-(c',c'')** nonuniqueness FAILS. Source text extraction of Eq(6) still merits visual confirmation. See `findings/vfhe-fixed-input-output-rescale-remainder-uniqueness-iteration85.md`.
+
 ## MAIN OBSTRUCTION
-[OPEN] No verified efficient cross-characteristic, knowledge-sound interface binding an **externally certified exact integer aggregate** A to original field PCS evaluations. Mandatory proof ZK was not an original property. A canonical honest rescale witness is server-computable without sk, but relaxed remainder witness/aggregate may vary even for same pre-rescale c', and privacy of exposing A to other parties remains conditional. Need determine uniqueness when c'' fixed before source-faithful public-A optimization. Direct DualPCS / masked-only Brakedown reuse fails.
+[OPEN] No verified efficient cross-characteristic, knowledge-sound interface binding a certified **exact integer aggregate A** to original field PCS evaluations. Mandatory proof-ZK is not in source. For fixed full c' AND c'', equal-bit residue r is conditionally unique (I85), but full intermediate ciphertext c' is often a prover oracle witness rather than public verifier data; uniqueness does NOT imply affordable/verifier-visible reconstruction. I84's relaxed choice may still vary when only c' fixed and c'' allowed to change. Public-A client privacy with VO remains unproved.
 
 ## OPEN UNCERTAINTY
 Latest official PDF SHA/version; full authors' optimized protocol/PCS/Fiat–Shamir implementation; deployed or secure-parameter effect; complete repair/soundness/privacy/cost proof; novelty relative to dual-PCS/CP-NIZK. **No authors contacted. User says DO NOT SEND EMAIL; no outreach/draft/public disclosure without explicit new permission.**
 
-## NEXT_ACTION — ONE DECISIVE TEST (I85)
-Precisely read vFHE ePrint 2025/286 Eq(6), Eq(12)–(15), §3.2 ideal embedding plus Appendix B if needed. Fix *both* c' and claimed c'' as the public ciphertext trace, include all ring/level constraints and bounds. Determine whether there can exist two distinct allowed w_rmd (hence distinct bit aggregate A) for the same fixed pair. Seek ONE full-ring exact witness or prove uniqueness; don't infer full-ring acceptance from I84's scalar quotient toy. Only after this decide if verifier can efficiently reconstruct A or whether prover-only information must be certified. Do not start PCS/encoder variants or author outreach.
+## NEXT_ACTION — ONE DECISIVE TEST (I86)
+Read source §4.1–4.2 pp13–17 and Appendix D.3 pp43–44 to identify the *exact full data* visible to a succinct verifier at ONE rescaling gate (public x,y vs committed intermediate c',w_quot) and whether reconstructing r=[c']_p or an exact masked A requires processing Θ(N) coefficients / entire prover witness. Distinguish lack of explicit full c' from proof-of-unavoidability; one counterexample of identical verifier-visible data for distinct internal states or one sharply stated missing interface suffices. Do not invent new PCS/encoding variants or contact authors.
 
 ## RELEVANT FILES
 - Protocol/start: `RESEARCH_PHILOSOPHY.md`, `AGENT.md`, `START_RESEARCH_SESSION.md`.
-- Last I84: `findings/vfhe-rescale-remainder-public-computability-nonuniqueness-iteration84.md`.
+- Last I85: `findings/vfhe-fixed-input-output-rescale-remainder-uniqueness-iteration85.md`.
+- I84: `findings/vfhe-rescale-remainder-public-computability-nonuniqueness-iteration84.md`.
 - I83: `findings/vfhe-original-privacy-not-proof-zk-iteration83.md`.
 - I82: `failures/vfhe-masked-brakedown-evaluation-unlinked-hidden-residue-iteration82.md`.
 - I81: `failures/vfhe-native-field-pedersen-ipa-49bit-group-security-iteration81.md`.
@@ -55,4 +58,4 @@ Precisely read vFHE ePrint 2025/286 Eq(6), Eq(12)–(15), §3.2 ideal embedding 
 - UNSENT report/draft: `findings/vfhe-confidential-pi-review-package-iteration74.md`, `findings/vfhe-confidential-author-inquiry-draft-iteration75.md`.
 - PARKED RIG: `logs/rig-state-2026-10-12-pre-vfhe-handoff.md`.
 
-STATUS: **ACTIVE vFHE repair; I84 PASS narrow canonical witness provenance, FAIL input-only uniqueness; I85 fixed-output ring-level uniqueness check NEXT**. Exact cross-CRT bridge and full public-A privacy remain OPEN. No complete ZK repair, full SNARK forgery, or general impossibility result. No author contact/public disclosure authorized.
+STATUS: **ACTIVE vFHE repair; I85 FAIL projected-kernel counterexample, PASS conditional fixed-output remainder uniqueness; I86 verifier-visible interface audit NEXT**. Exact cross-CRT bridge and public-A privacy remain OPEN. No full SNARK forgery, no novel impossibility claim. No author contact/public disclosure authorized.

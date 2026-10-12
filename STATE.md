@@ -8,13 +8,13 @@ ARCHIVED SPECIFIC BRANCH: GL generic BigSwitch; see `failures/gl-generic-bigswit
 Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO 2025, ePrint **2025/286**, especially §4.3 / Theorem 4.8 / Appendix E.2 (CRT digit lookup), §4.1–4.2 (CKKS rescale and ΠAC), and **§5 componentwise Brakedown polynomial commitments**.
 Research MCP mirror: 52pp PDF SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, mirrored 2026-04-28 after 2026-02-16 official revision; **latest official binary VERSION_UNVERIFIED**.
 
-LAST COMPLETED ITERATION: **92 (2026-10-12)**. FAIL simplification that 309 masks + one ring opening are cheap/128-bit secure; conditional per-field Brakedown & exceptional-set budget measured. See I92 finding.
+LAST COMPLETED ITERATION: **93 (2026-10-12)**. FAIL one-run common base-scalar exceptional-set shortcut with tight |S|<=pmin and explicit false sumcheck success 1/|S|; PI HUMAN_REVIEW next.
 
-## CURRENT QUESTION
-Does choosing sumcheck/mixing challenges from a shared *diagonal base-field* subset of Rq retain 128-bit exceptional-set security while allowing public rank-one mask MLE evaluations to be reused across CRT components? If not, can the resulting μ-fold verifier cost justify strategic stop/review?
+## CURRENT QUESTION — HUMAN_REVIEW
+I93 shows diagonal scalar exceptional sets have at most pmin≈49-bit cardinality; explicit false claims pass one scalar-only virtual sumcheck with probability 1/pmin. Should PI authorize a narrow four-run scalar-amplification cost test (I94) or archive the current public-A repair and pivot?
 
-## PRIMARY HYPOTHESIS — NEXT, NOT YET TESTED (I93)
-If all challenge coordinates are embedded from common integers (rather than extension-field tuples), the public α~(r) evaluation may be reused across CRT factors, but any such scalar exceptional set has |S|≤p_min≈2^49, so Theorem2.6 bound 2ell/|S| cannot guarantee 128 bits. Falsify this shortcut in ONE maximal-cardinality argument and an explicit toy CRT example; preserve distinction between base-scalar shared evaluation and expensive extension-field challenges.
+## PRIMARY HYPOTHESIS — NOT YET TESTED
+Four independent restricted scalar sumcheck repetitions against the same h PCS could amplify soundness at the cost of four ring PCS evaluation phases; this is ONE optional next test requiring PI direction, not an ongoing auto-run.
 
 ## CURRENT EVIDENCE
 - [FACT/SOURCE + DERIVED, I59–70] Audited revised-looking proof uses an invalid diagonal-digit ⇒ illegal CRT component inference. Fieldwise lookup supports rectangular `T_B^rect`, not the claimed global coefficient range; `B≥max p_i` makes `T_B^rect=R_q`. Explicit ring/PIOP counterexamples recorded.
@@ -47,18 +47,21 @@ If all challenge coordinates are embedded from common integers (rather than exte
 
 - [SOURCE COST + SECURITY OBSTRUCTION, I92] Paper §3.1 p10 defines q0 product i=0..L (μ=(L+1)N/d=8192 for Medium L3,N8192,d4), while §6.2 p29 writes LN/d (μ6144); unresolved source convention, use both. Appendix F.1–F.2 pp50–51 says ONE ring PCS evaluation includes EVERY μ finite-field proof; each source F.2 evaluation sends v'=q1 U_h length m_B per field PLUS encoded-column openings and Merkle paths. For a conservative I90 digit envelope 2^19, hypothetical even-var pad to 2^20 gives m_B1024; v' alone is 144–192MiB if optimistically 24 bytes per F_(p^4) symbol, or ≥150–200MiB with fixed 25-byte representation (NO author-realized single-h size, no universal lower bound). One element's 40960 digit expansion pads to 2^16 giving source-style m_B256 and 36–48MiB optimistic v' at μ6144–8192. Max |S|=min p_i^4≥2^192; degree-2 ring sumcheck error ≤38/|S|≈2^-186.75, mixing ≤1/|S|, but scalar-only S≈2^49 is inadequate for a 128-bit sumcheck guarantee. With 309 rank-one masks, mask error bound is 2^-128.2466 and leaves almost no other error margin; t328 gives mask≤2^-136, and union bound over μ≤8192 would require each new field-PCS error≤2^-149 for a 2^-136 PCS sub-budget. Public rank-one α~(r) computation for extension-field challenge r requires CRT fieldwise evaluations: 309*(512+1024)=474624 ring-operation units, ~2.9–3.9 billion naive component-operation units. This is a cost model, not benchmark or security proof. `findings/vfhe-rankone-batched-brakedown-field-cost-and-security-budget-iteration92.md`.
 
+- [TIGHT NEGATIVE / REAL SUBPROTOCOL CHEAT, I93] Source Definition2.1/Theorem2.6 pp7–9 and CRT §3.1 pp10–11: any shared base-scalar exceptional set injects into F_pmin, so |S|<=pmin, tight with integers 0..pmin−1. For 49-bit pmin, 19-var degree-2 single ring sumcheck Theorem2.6 grants only 42.75–43.75 soundness bits. In toy R=Z_(29*37)[X]/(X^8+1), h=0, claimed A=1, cheating first-round polynomial g1(X)=X and later zero on r1=0 accepts exactly 1/29 over maximal scalar S. This is an explicit false *new aggregate check*, NOT a compiled attack on original vFHE. Repeat scalar challenges or high-entropy common degree<d extension basis remain possible and require separate cost. Archive: `failures/vfhe-diagonal-scalar-exceptional-set-49bit-no-go-iteration93.md`.
+
 ## MAIN OBSTRUCTION
-[OPEN] I88–91 provides conditional same-h bounded-public-A ring PIOP plus one-sumcheck batching, but I92 shows the source Appendix F.2 *one ring opening* expands to thousands of field proofs with huge raw vectors and sampled encoded columns under ordinary uncompressed representation. High-entropy extension-field exceptional challenges may force μ-specific mask evaluation; scalar challenges cheaply share evaluations but appear capped near 49-bit soundness. Mask-only t309 is NOT an overall 128-bit budget. Still need actual per-h packing (c=5 discrepancy), alternative challenge representation, PCS column sampling, end-to-end source security/privacy cost, and version verification; no complete repair or novelty.
+[HUMAN_REVIEW] I88–91 gave conditional bounded-public-A same-h batching; I92 found thousands of source native CRT-field Brakedown evaluation costs; I93 rules out ONE shared-scalar-only high-security sumcheck. Remaining choices are amplification with more ring PCS openings or higher-entropy extension challenge evaluations; real cost, FS security, privacy, c=5 packing and novelty remain unproved. No complete repair.
 
 ## OPEN UNCERTAINTY
 Latest official PDF SHA/version; full authors' optimized protocol/PCS/Fiat–Shamir implementation; deployed or secure-parameter effect; complete repair/soundness/privacy/cost proof; novelty relative to dual-PCS/CP-NIZK. **No authors contacted. User says DO NOT SEND EMAIL; no outreach/draft/public disclosure without explicit new permission.**
 
-## NEXT_ACTION — ONE DECISIVE TEST (I93)
-Read ePrint 2025/286 §2.1 Definition2.1 / §2.2 Theorem2.6 pp7–9 and §3.1 p10–11. ONE cheap scalar-exceptional-set no-go test: characterize the largest challenge set embedded diagonally from common base integers or common base-field scalars across all CRT p_i, prove whether |S| can exceed p_min, and calculate the resulting 2ell/|S| bound at Medium ℓ≤19 against 2^-128. Check one toy CRT example to avoid confusing cross-prime embedding with same-field scalar. If direct scalar shortcut FAILS, present HUMAN_REVIEW on expensive μ-component verification vs pivot; do not build new masks or perform author outreach.
+## NEXT_ACTION — HUMAN_REVIEW DECISION
+PI choice A: authorize ONE I94 minimal test of FOUR independently challenged scalar sumchecks on the same h with source Brakedown cost and full soundness budget. PI choice B: archive this public-A repair route as currently costly/unproven and pivot to another FHE research hole. Do not auto-continue or contact authors.
 
 ## RELEVANT FILES
 - Protocol/start: `RESEARCH_PHILOSOPHY.md`, `AGENT.md`, `START_RESEARCH_SESSION.md`.
-- Last I92: `findings/vfhe-rankone-batched-brakedown-field-cost-and-security-budget-iteration92.md`.
+- Last I93: `failures/vfhe-diagonal-scalar-exceptional-set-49bit-no-go-iteration93.md`.
+- I92: `findings/vfhe-rankone-batched-brakedown-field-cost-and-security-budget-iteration92.md`.
 - I91: `findings/vfhe-batched-public-A-sumcheck-single-opening-iteration91.md`.
 - I90: `findings/vfhe-paper-medium-circuit-no-wrap-feasibility-iteration90.md`.
 - I89: `findings/vfhe-same-h-virtual-ring-sumcheck-iteration89.md`.
@@ -79,4 +82,4 @@ Read ePrint 2025/286 §2.1 Definition2.1 / §2.2 Theorem2.6 pp7–9 and §3.1 p1
 - UNSENT report/draft: `findings/vfhe-confidential-pi-review-package-iteration74.md`, `findings/vfhe-confidential-author-inquiry-draft-iteration75.md`.
 - PARKED RIG: `logs/rig-state-2026-10-12-pre-vfhe-handoff.md`.
 
-STATUS: **ACTIVE vFHE repair; I92 FAIL cheap/128-bit-naive aggregate assumptions, PASS concrete conditional per-field cost/security accounting; I93 shared-base-challenge shortcut NEXT**. Actual single-h packing/optimized PCS/total soundness/privacy/novelty remain OPEN. No full repaired SNARK, compiled forgery or public disclosure. No author contact/public disclosure authorized.
+STATUS: **HUMAN_REVIEW** after I93 FAIL direct common-scalar single-run shortcut; vFHE repair remains active but no new hypothesis is launched without PI decision. No complete repaired SNARK, compiled original forgery or novelty. No author contact/public disclosure authorized.

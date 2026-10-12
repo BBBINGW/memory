@@ -1,19 +1,21 @@
-# FHE Research State — After Iteration 123
-Checkpoint: **2026-10-12, after Iteration 123**.
+# FHE Research State — After Iteration 124
+Checkpoint: **2026-10-12, after Iteration 124**.
 
 ## CURRENT TARGET
-**None ACTIVE after I123 closure.** Most recent target: Zhang et al., *LEAF: A Low-Latency Evaluation Architecture for Feedforward Block in Privacy-Preserving Transformer Inference*, ePrint **2025/956**. I123 identified a **cross-key KDM/circular-security proof obligation** in the public packing + return ring-switch keys, but no attack, no verified insecurity and no novel remedy. Status HUMAN_REVIEW; do not equate a proof-obligation gap with an actual cryptographic break. Full 43-physical-page mirror PDF acquired, SHA256 `937fbae4dcd32f421c91f7df4ad83c3a003861b168f4bfd7798be1476a736267`, VERSION_UNVERIFIED. FAB I120–122, SPRU I119 and FEFBS I117–118 remain PARKED.
+**None ACTIVE.** Latest paper: Zhang et al., *LEAF: A Low-Latency Evaluation Architecture for Feedforward Block in Privacy-Preserving Transformer Inference*, ePrint **2025/956**; **I123–124 PARKED** after audit. I123 showed the public `Enc_{s_H}(Rep(s_L))` and `Enc_{ι(s_L)}(s_H)` form a real key-dependent encryption cycle and ordinary IND-CPA reasoning alone is not a self-contained proof. I124 checked a prominent existing **multi-user KDM** theorem (Brakerski–Vaikuntanathan, CRYPTO 2011, Theorem 5) and found it **not directly applicable** to LEAF's actual BFV encryption, ring-degree embedding, and key-generation distributions. **Not a demonstrated attack, false security claim or publishable new repair.** Preserve both negative records. Previous FAB I120–122, SPRU I119, FEFBS I117–118 branches remain PARKED.
 
 ## LAST COMPLETED ITERATION
-**123**. I124 NOT started.
+**124**. I125 NOT started.
 
 ## CURRENT QUESTION
-**HUMAN_REVIEW / NO_ACTIVE_HYPOTHESIS:** Is LEAF's explicit linear/affine *two-key cycle* already covered by a precise existing KDM/2-circular theorem for the relevant BFV/RLWE parameter and embedding? PI decides whether to authorize one source-specific theorem applicability check in I124 or pivot to a different structural FHE target. Do not call the cycle a security exploit.
+**HUMAN_REVIEW / NO_ACTIVE_HYPOTHESIS:** PI should authorize a **new higher-upside FHE paper and technical hypothesis** or explicitly delegate target selection. No active proof/attack candidate for LEAF. Only reopen I123–124 if a specifically applicable new KDM theorem/assumption or nontrivial provable workaround is identified. No rechecking the same multi-user KDM basics.
 
 ## PRIMARY HYPOTHESIS
-**NONE ACTIVE.** Last I123 [HYPOTHESIS] that ordinary semantic security alone trivially supplies the joint security proof for LEAF's actual public packing+ring-switch keys is **not justified as stated**. [DERIVED] Graph inspection gives two secret-dependent encryptions; standard independent-message IND-CPA hybrid cannot simply remove either in the presence of the other. [OPEN] Actual KDM security, adequate alternate proof, any concrete attack, or meaningful novel repair.
+**NONE ACTIVE.** Last I124 [HYPOTHESIS]: BV11 Theorem 5 multi-key polynomial KDM theorem certifies LEAF's exact cross-ring BFV auxiliary keys **as-is**, with no further security assumptions/proof. [NEGATIVE] FALSE: BV11 proves KDM for its **own** PLWE/KDM scheme and distribution, not automatically LEAF's BFV and dependent embedded secret keys; multi-user KDM exists, but actual LEAF-security theorem not shown.
 
 ## CURRENT EVIDENCE
+- [FACT] I124 checked Brakerski–Vaikuntanathan CRYPTO 2011, *Fully Homomorphic Encryption from Ring-LWE and Security for Key Dependent Messages*, author PDF https://www.wisdom.weizmann.ac.il/~zvikab/localpapers/IdealHom.pdf, actual §4 pp15–17 visually inspected. **Theorem 4 p17** gives `KDM^(1)_{P_d}`; **Theorem 5 p17** gives `KDM^(ν)_{P_d}` for any polynomial ν under their `PLWE_{Φ_m,q,χ*}` assumption and specific §4 KDM.Enc/secret distribution. This is *genuine multi-user KDM prior art*, not merely single-key.
+- [DERIVED/NEGATIVE] I124 ONE theorem-scope falsifier: BV11's specific same-ring PLWE/KDM scheme with Gaussian sampled keys/large-q parameters **≠** LEAF §3.2/§3.5 paired `BFV.Enc_{s_H}(Rep(s_L))` and `BFV.Enc_{ι(s_L)}(s_H)` at `n=1024,N=32768` with deterministic embedded s_L. Direct theorem application FAILS. Does not imply actual BFV insecurity or absence of other results. Record: `failures/leaf-bv11-multikey-kdm-theorem-not-directly-applicable-iteration124.md`. NOVELTY NOT VERIFIED.
 - [FACT] I123 LEAF ePrint **2025/956**, §3.2 Algorithm 1 physical pp14–15 uses `K_pack=Enc_{s_H}(Rep(s_L))`; §3.5 p20 defines `K_switch=Enc_{ι(s_L)}(s_H)`, where degree-N `ι(s_L)(X)=s_L(X^{N/n})`; §3.6 p23 claims combination security follows easily from constituent semantic security, without separately explaining the disclosed key-dependent cycle in that paragraph. Full 43-page mirror PDF SHA256 `937fbae4dcd32f421c91f7df4ad83c3a003861b168f4bfd7798be1476a736267`. Note: `findings/leaf-cross-key-kdm-cycle-security-obligation-iteration123.md`.
 - [DERIVED] I123 ONE decisive public-key-dependency test: `s_L → s_H → ι(s_L)`, an effective 2-key KDM/circular-encryption cycle. Because the auxiliary ciphertext of `s_H` is available when replacing encryption under `s_H`, a bare independent-message IND-CPA hybrid is insufficient. This is a **concrete proof obligation**, NOT a known exploit, IND-CPA counterexample against actual BFV, or publishable new technique. NOVELTY NOT VERIFIED.
 - [FACT] I122 formal primary source: Brakerski–Döttling TCC2020 ePrint **2020/1185**, full **25 physical pages** through Research MCP mirror, SHA256 `8ee650d5d05d2e7fe33657e35ff5bb9c79be6d16d8a0d8604d8278eb87aa7e46`, official latest VERSION_UNVERIFIED. Theorem **6.9** physical p22 requires `νσ(S)≥n log(γ√n log n)+ω(log λ)` under DSPR+RLWE; RLWE-only variant requires `νσ(S)≥(1/2+α)n log q+O(n log n)`. The source explicitly says binary ring secrets are not covered by these entropic results (§1.1 p4); the conclusion is initially *mild search hardness*, not automatic compiled FHE IND-CPA.
@@ -31,33 +33,34 @@ Checkpoint: **2026-10-12, after Iteration 123**.
 - [NEGATIVE] No public pinned dedicated **discrete LUTGeLU n216** example or coefficients found in this author's changed-file inventory. Thus **NO demonstrated effect on published Table 3 LUTGeLU n216**, no verified published precision error, no actual encrypted benchmark run, and no proof of cryptographic novelty.
 
 ## MAIN OBSTRUCTION
-I123's key-dependency loop has real proof relevance to LEAF's cross-ring conversion and public evaluation keys. **Circular/KDM requirements are established prior art in FHE**, however; without a theorem-level incompatibility or novel cost/security preserving repair, the observation is not itself a contribution. Avoid wasting iterations on repetition. Previously FAB I120–122 was PARKED for low-novelty block-secret repair and stringent formal hardness problems.
+LEAF I123–124 establishes an explicit key-dependency proof obligation, but KDM/circular security (including multi-user theorem) is **substantial established prior art**. BV11 direct mapping fails for differing algorithms, keys, and ring dimensions; no new construction, new reduction, exploit, or measurable FHE frontier was established. **PARK LEAF** rather than continuing source-only generic KDM microaudits. Existing FAB/SPRU/FEFBS branches retain previous parked reasons.
 
 ## OPEN UNCERTAINTY
-[OPEN] Whether existing *specific* affine-KDM/2-circular security proofs cover LEAF's paired BFV auxiliary-key encryptions when `ι(s_L)` is a deterministic ring-degree embedding. The existence of some KDM theorem alone is not enough; verify exact message class, scheme, ring, modulus, and assumptions. No attack/reduction proved here.
-[OPEN, PARKED] FAB I120–122 security/efficiency frontier, SPRU I119 noise bound, FEFBS I117–118 published LUTGeLU provenance; original vFHE CRT lookup ideal-IOP finding remains archived/preserved (not compiled forgery).
+[OPEN, PARKED] Whether a different specific affine-KDM/2-circular theorem or suitable assumption justifies LEAF's actual BFV/RLWE key distribution; no exhaustive literature exclusion, no attack and no novel non-circular workaround established.
+[OPEN, PARKED] FAB I120–122 structured-key security, SPRU I119 noise proof, FEFBS I117–118 coefficient provenance; historical original vFHE CRT lookup ideal-IOP discrepancy remains preserved but not a compiled forgery.
 
 ## NEXT_ACTION — UNIQUE GATE FOR NEXT ITERATION
-**PI decision before I124**: (A) authorize a single theorem-applicability hypothesis for one carefully sourced existing *affine/linear KDM or 2-circular* result, against LEAF's exact paired key material; cheapest test is comparing its security game, secret distribution and embedding to Algorithm 1/§3.5. If already settled, PARK LEAF and do not rehash KDM basics. OR (B) delegate selection of a different high-value FHE structural target. No research without authorization, author contact or public disclosure.
+**Do not launch I125 absent PI authorization.** PI selects one concrete new FHE structural paper + falsifiable claim OR explicitly delegates selecting one different high-upside target. Then test ONE decisive falsifier. **I123–124 LEAF is PARKED**, as are FAB and historical failed branches. Do not automatically revisit KDM, prior-art basics or archived failures. No outreach/disclosure.
 
 ## RELEVANT FILES — READ IN NEW CHAT
 1. `START_RESEARCH_SESSION.md`, `AGENT.md`, `RESEARCH_PHILOSOPHY.md`, **this `STATE.md`**.
-2. **I123** `findings/leaf-cross-key-kdm-cycle-security-obligation-iteration123.md`.
-3. **I122** `failures/fab-exact-block-entropic-rlwe-theorem-not-applicable-iteration122.md`.
-4. **I121** `findings/fab-block-one-per-block-prior-art-security-gate-iteration121.md`.
-5. **I120** `findings/fab-bounded-gap-uniform-sparse-rejection-asymptotic-iteration120.md`.
-6. **I119** `findings/spru-theorem1-table2-sufficient-bound-gap-iteration119.md`.
-7. `findings/fefbs-fixed-simpson38-high-harmonic-aliasing-iteration117.md`
-8. `findings/fefbs-lutgelu-216-coefficient-provenance-gate-iteration118.md`
-9. `failures/fefbs-high-degree-quadrature-benchmark-impact-unverified-parked-iteration118.md`
-10. **Exact complete prior verbose STATE**: `logs/state-pre-session-handoff-2026-10-12-iteration118.md` (preserved blob SHA `935d61d8d7e1cf23c21771223ec67dbb7d70d492`).
-11. Historical state chain `logs/state-pre-iteration115-prca-handoff.md`, `logs/vfhe-state-2026-10-12-pre-paco-handoff.md`; retrieve specific findings/failures **only if** the PI selects those topics.
+2. **I124** `failures/leaf-bv11-multikey-kdm-theorem-not-directly-applicable-iteration124.md`.
+3. **I123** `findings/leaf-cross-key-kdm-cycle-security-obligation-iteration123.md`.
+4. **I122** `failures/fab-exact-block-entropic-rlwe-theorem-not-applicable-iteration122.md`.
+5. **I121** `findings/fab-block-one-per-block-prior-art-security-gate-iteration121.md`.
+6. **I120** `findings/fab-bounded-gap-uniform-sparse-rejection-asymptotic-iteration120.md`.
+7. **I119** `findings/spru-theorem1-table2-sufficient-bound-gap-iteration119.md`.
+8. `findings/fefbs-fixed-simpson38-high-harmonic-aliasing-iteration117.md`
+9. `findings/fefbs-lutgelu-216-coefficient-provenance-gate-iteration118.md`
+10. `failures/fefbs-high-degree-quadrature-benchmark-impact-unverified-parked-iteration118.md`
+11. **Exact complete prior verbose STATE**: `logs/state-pre-session-handoff-2026-10-12-iteration118.md` (preserved blob SHA `935d61d8d7e1cf23c21771223ec67dbb7d70d492`).
+12. Historical state chain `logs/state-pre-iteration115-prca-handoff.md`, `logs/vfhe-state-2026-10-12-pre-paco-handoff.md`; retrieve specific findings/failures **only if** the PI selects those topics.
 
 ## BRANCH STATUS / DO NOT DELETE
-**HUMAN_REVIEW:** LEAF cross-key KDM proof obligation I123 (no attack; novelty unverified). **PARKED:** FAB bounded-gap sparse-secret I120–122 (I120 rejection barrier retained, I121 trivial block-key repair known, I122 entropic RLWE theorem inapplicable). **PARKED:** SPRU Theorem-1/Table-2 proof-bound mismatch I119 (not a practical failure). **PARKED:** FEFBS I117–118; LFBS PRCA I114–116 (`failures/lfbs-prca-source-only-layout-low-novelty-parked-iteration116.md`); Paiva incomplete-NTT key portability I112–113; sparse-SAB local terminal sign I110–111; Carousel rounding I108–109; SIMD-ALU cutoff I103–107; Nested-RNS I99–102; PaCo precision I95–98; RIG. **ARCHIVED:** GL generic BigSwitch; specific vFHE bounded-public-A/direct Brakedown repair. **PRESERVED OPEN FINDING, not ACTIVE:** original vFHE CRT lookup ideal-IOP discrepancy ePrint2025/286. All historical results retained in archives and exact STATE snapshots.
+**PARKED:** LEAF cross-key KDM audit I123–124 (I123 real two-key dependency, I124 BV11 multi-user theorem not directly applicable; no attack/novel repair). **PARKED:** FAB bounded-gap sparse-secret I120–122 (I120 rejection barrier retained, I121 trivial block-key repair known, I122 entropic RLWE theorem inapplicable). **PARKED:** SPRU Theorem-1/Table-2 proof-bound mismatch I119 (not a practical failure). **PARKED:** FEFBS I117–118; LFBS PRCA I114–116 (`failures/lfbs-prca-source-only-layout-low-novelty-parked-iteration116.md`); Paiva incomplete-NTT key portability I112–113; sparse-SAB local terminal sign I110–111; Carousel rounding I108–109; SIMD-ALU cutoff I103–107; Nested-RNS I99–102; PaCo precision I95–98; RIG. **ARCHIVED:** GL generic BigSwitch; specific vFHE bounded-public-A/direct Brakedown repair. **PRESERVED OPEN FINDING, not ACTIVE:** original vFHE CRT lookup ideal-IOP discrepancy ePrint2025/286. All historical results retained in archives and exact STATE snapshots.
 
 ## STATUS
-**I123_CLOSED / HUMAN_REVIEW / NO_ACTIVE_HYPOTHESIS.** Last completed iteration 123. I124 not started. I123 finding and STATE read-back verified. No author contact, GitHub issues, PRs or external disclosure.
+**I124_CLOSED / HUMAN_REVIEW / NO_ACTIVE_HYPOTHESIS.** Last completed iteration 124. I125 not started. No author contact, external disclosure, issues or PRs. State updated and read-back verified.
 
 ## RESEARCH PROTOCOL
 Read before write. One smallest falsifiable hypothesis plus one cheapest decisive test per iteration. Mark [FACT]/[DERIVED]/[HYPOTHESIS]/[NEGATIVE]/[OPEN]; distinguish noiseless algebra, numeric approximation, CKKS feasibility and actual compiled tests. Preserve evidence provenance, hashes and negative results. Do not modify `AGENT.md`, `RESEARCH_PHILOSOPHY.md`, or `START_RESEARCH_SESSION.md` as part of handoff.

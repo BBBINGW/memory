@@ -1,0 +1,37 @@
+# Iteration 118 — Pin FEFBS high-degree LUTGeLU coefficient provenance before alleging published benchmark impact
+
+Date: 2026-10-12. Principal investigator=user; agent one hypothesis/one decisive test. Previous state I117 and AGENT/PHILOSOPHY read before writes. This is a SOURCE PROVENANCE AUDIT, not another numerical aliasing experiment.
+
+## Primary source and pinned code
+[FACT] Bian, Fu, Shen, Pan, Wang, Guan, *High-Precision Functional Bootstrapping for CKKS from Fourier Extension*, EUROCRYPT 2026, IACR ePrint **2026/367**, Research MCP full **43 physical pp**, GitHub ePrint mirror PDF SHA256 `ee2384e0a8148a0678b3fdb0e0d14eb5f988f19750a94081a378e8fb82966e7a`, source revision `6ac42a531dd18744cd7b5097dd93f07dd3b05c74`, latest official VERSION_UNVERIFIED. Primary Table 3 physical **p28** distinguishes CONTINUOUS GeLU `κE=11,n=44`, Sigmoid `κE=8,n=34`, exp `κE=18,n=29`, and DISCRETE LUTGeLU `κE=0,n=216`, LUTfloor n140, LUTSbox n256. Paper p25 describes OpenFHE setup, p26–28 performance. The two are NOT interchangeable.
+[FACT] Pinned author OpenFHE fork `FYHSSGSS/FEFBS`, exact GitHub commit `3ed0e4c8f2ae80bc0ca66d87704a71b233b34272` dated 2026-08-19; fork base commit `aa8a86e1143f1e47d4354bdd757080e903ba5875`. GitHub connector `compare_commits(base,head)` returns exactly **39 modified/added paths across 7 commits**. The FEFBS-specific examples listed in this pinned author-development diff are ONLY:
+  - `src/pke/examples/FEFBS/bootstrapping_test/boot_test.cpp`, blob `fbcae716f6d9aa0d7a8952b6644469c0def481a2` (n25, speed18)
+  - `src/pke/examples/FEFBS/functional_bootstrapping_test/gelu_test.cpp`, blob `e568345ba106a849a16fab0e43b2216257c9738b` (n44, speed12, continuous target approximated with tanh)
+  - `src/pke/examples/FEFBS/functional_bootstrapping_test/sigmoid_test.cpp` (n34)
+  - `src/pke/examples/FEFBS/functional_bootstrapping_test/exp_test.cpp`, blob `12dfbc9f3b94af3605e5c6fa00757f4abdb9731a` (n29, speed18).
+The only added coefficient files are `coeffs/bootcoeff.txt` (header25), `coeffs/gelucoeff.txt` (header44, blob `e644434987b05bd6c5d04f26a44067592dffe419`), `coeffs/sigmoidcoeff.txt` (header34) and `coeffs/expcoeff.txt` (header29). No `LUTGeLU` n216 dedicated source, coefficient file or benchmark entry was found **in the 39-path pinned author-diff**. Do not overclaim that absolutely no other unpublished code/outputs could exist or that the published result is fraudulent.
+[FACT] `src/pke/examples/FEFBS/fbs_utils.h` blob `1e9ba2a911807cfdd265836d65165f3e25bf1940` lines70–79 has two alternative paths:
+  - If `filename != ""`, `LoadCoeffs(filename)` with no online coefficient generation.
+  - Otherwise, constructs `FourierCalculator` and calls `calculate(func, lower_bound, upper_bound, N, speed)`.
+[FACT] `src/core/lib/math/fourier.cpp` blob `4261630a198b2b6c643634fcdf53b02d45ec8758` lines15–23 imports Python `fourier_calculator`, selects `calculate_fourier_coefficients`; lines43–47 passes `(func_str,a,b,degree,speed)` directly. Thus the **online continuous benchmark code path really is linked to the fixed-300-panel generator** from I117: `fourier_calculator.py` blob `9ddf9dbe0a9ae055423fcff398356991de624178`.
+[FACT] `src/pke/examples/FEFBS/functional_bootstrapping_test/gelu_test.cpp` lines16–28 uses no filename by default and so DOES call the Python generator (degree44,speed12); specifying `-f` loads the shipped coeff file (header44). The author's README also documents online and offline modes. Published GeLU κ11 is consistent with source speed12 measuring boundary constraints for derivative orders0–11; do not mislabel speed12 as κ12. Source tanh GeLU approximation differs in formula from the paper's Table2 erf form; not the hypothesis in this iteration, avoid unrelated rabbit hole.
+
+## ONE hypothesis + cheapest decisive provenance test
+[HYPOTHESIS] The actual *published* DISCRETE `LUTGeLU,n=216` benchmark uses the same fixed-300-panel online `fourier_calculator.py` path as I117's f=x,n216,κ1 toy, so the I117 aliasing might refute the measured LUTGeLU experimental precision.
+[FALSIFIER / TEST] Trace pinned repository modified file inventory and one genuine advertised GeLU example's `main → fbs_utils → C++ FourierCalculator → Python fixed-Simpson`, plus check all shipped coefficient files against the published Table3 discrete n216 setting. No new CKKS calculations or arbitrary coefficient sweeps.
+[RESULT / SOURCE SCOPE] The genuine shipped continuous GeLU example calls online Python at **n44, speed12** by default or loads **header44** precomputed coefficients. There is no publicly verifiable dedicated discrete n216 LUTGeLU coefficient provenance in the pinned author-development diff. Consequently **the hypothesis that the published LUTGeLU n216 coefficient vector is known to pass through the fixed-300 quadrature is UNVERIFIED**, and the earlier I117 exact mathematical alias under f=x,n216,speed2 CANNOT be extrapolated to the paper's Table3 LUTGeLU, or to the published continuous n44 GeLU. This is a **FAIL to establish published benchmark impact** and **UNCLEAR private/unshipped benchmark coefficient provenance**, not positive proof of no impact.
+
+## Retained I117 finding and value
+I117 `findings/fefbs-fixed-simpson38-high-harmonic-aliasing-iteration117.md` remains **PASS**: source-supported high-degree low-smoothness invocation of the fixed-grid Python generator produces substantial oscillatory quadrature aliasing; independent exact piecewise polynomial integration and increasing panel count distinguish it from FHE noise. It is a PUBLIC optional coefficient preprocessing robustness issue with known numerical remedies, NOT an error in the authors' Fourier-convergence theorem. The evidence does not demonstrate an actual end-to-end n216 CKKS failure, security issue, or impairment of published benchmarks.
+The code default continuous degree44 *could* have numerical quadrature errors of another kind, but I118 did not calculate them and no claim is made. Original ePrint latest version still VERSION_UNVERIFIED.
+
+## Scientific decision / novelty
+Status: **PASS source-level path tracing / FAIL evidence that paper's n216 LUTGeLU was generated by the problematic path / UNCLEAR published experiment provenance**. Since identifying fixed-grid oscillatory quadrature alias is a well-understood numerical analysis issue and no published affected workload verified, recommend **PARK narrow I117–I118 numerical preprocessing branch** as non-publishable cryptography at this stage. Do not contact authors or publicly allege benchmark inaccuracy.
+Reopen only if an actual shipped n≥200 example invokes `fourier_calculator.py` without adequate resolution or the paper's LUTGeLU coefficient provenance becomes available; at that point test one exact coefficient at published κ0/target and a real encrypted or at least exact plaintext output.
+No author email, outreach, issues, PR or public disclosure.
+
+## End of iteration
+STATUS: PASS provenance inspection / UNKNOWN n216 publication code / LOW NOVELTY; PARK narrow numerical audit.
+RESULT: exposed public online `GeLU n44` coefficient flow, and no supported evidence tying `LUTGeLU n216` published figure to I117's high-frequency alias.
+NEXT_ACTION (I119): select **one different, fully sourced FHE structural problem with demonstrated real cost/security relevance**; do not recycle known numerical quadrature repairs or petty paper errata. PI retains scientific strategy.
+STATE_UPDATE: YES.

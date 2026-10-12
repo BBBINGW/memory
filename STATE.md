@@ -8,13 +8,13 @@ ARCHIVED SPECIFIC BRANCH: GL generic BigSwitch; see `failures/gl-generic-bigswit
 Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO 2025, ePrint **2025/286**, especially §4.3 / Theorem 4.8 / Appendix E.2 (CRT digit lookup), §4.1–4.2 (CKKS rescale and ΠAC), and **§5 componentwise Brakedown polynomial commitments**.
 Research MCP mirror: 52pp PDF SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, mirrored 2026-04-28 after 2026-02-16 official revision; **latest official binary VERSION_UNVERIFIED**.
 
-LAST COMPLETED ITERATION: **87 (2026-10-12)**. Rank-one binary outer-product masks give tight ≥1/4 fixed-discrepancy detection and O(√m) mask-MLE evaluation but do not certify exact A; see I87 finding.
+LAST COMPLETED ITERATION: **88 (2026-10-12)**. Conditional bounded public integer A glues native committed CRT digit sums with no extra vector commitment if T=m(beta−1)<pmin; see I88 finding.
 
 ## CURRENT QUESTION
-Can a PUBLIC *bounded canonical integer* aggregate A∈[0,T] with T=m(β−1)<p_min, coupled to native PIOP/PCS proofs of the SAME precommitted digit witness h's masked sums across all CRT fields, block I78's postchallenge CRT-patching even WITHOUT a separate externally committed integer digit vector b?
+Can ONE additional ring sumcheck authenticate a PUBLIC bounded integer A as the masked sum of the SAME originally committed h digit oracle across all CRT components, with h committed before the mask challenge, and be compiled succinctly using original PIOP and PCS interfaces?
 
-## PRIMARY HYPOTHESIS — NEXT, NOT YET TESTED (I88)
-If all fieldwise digit entries h_k,j are separately bound before mask and satisfy h_k,j∈{0,...,β−1} embedded as a scalar in each characteristic, then their masked sums are literal integers in [0,T]. For T<p_min, a single announced/locally range-checked A∈[0,T], with authenticated native equalities Σα_j h_k,j=A in EVERY field, should exclude choosing an arbitrary CRT-patched ring A_fake after challenge. Cross-component disagreement might then be detected by random masks (≥1/2 full Bernoulli or ≥1/4 rank-one) without an external commitment C_b. Critical falsifiers: matching native sums but inconsistent fixed vectors, absence of source-native sumcheck compatibility, or failure of no-wrap/commit ordering. Need one *toy CRT counterexample attempt/proof* first; NOT a settled repair.
+## PRIMARY HYPOTHESIS — NEXT, NOT YET TESTED (I89)
+In the strict no-wrap regime T=m(beta−1)<pmin, the existing Rq sumcheck plus original h evaluation PCS may authenticate sum alpha_j h_j=A*1_Rq without separately committing a cross-characteristic integer vector. Need verify challenge order, same-oracle binding, and exact verifier work from primary source before claiming protocol compatibility or efficiency.
 
 ## CURRENT EVIDENCE
 - [FACT/SOURCE + DERIVED, I59–70] Audited revised-looking proof uses an invalid diagonal-digit ⇒ illegal CRT component inference. Fieldwise lookup supports rectangular `T_B^rect`, not the claimed global coefficient range; `B≥max p_i` makes `T_B^rect=R_q`. Explicit ring/PIOP counterexamples recorded.
@@ -37,18 +37,21 @@ If all fieldwise digit entries h_k,j are separately bound before mask and satisf
 
 - [CONDITIONAL POSITIVE + EXACT ENUMERATION, I87] Prior I64–68 and I78 checked before test: rank-one Bernoulli mask α_ij=u_i v_j on digit matrix (m=ab balanced) detects any FIXED nonzero native-field discrepancy Δ with Pr[u^TΔv ≠0]≥1/4 (tight one-entry Δ) via two pivot arguments. Its public MLE α~(X,Y)=u~(X)v~(Y) costs O(a+b)=O(√m) to evaluate, but is NOT a single point-opening weight for arbitrary h and does not certify exact integer A. F7 exhaustive all 2400 nonzero 2×2 Δ across16 masks min4 detections. To get ≤2^-128 from (3/4)^t needs t=309 independent rounds; illustrative m32768 costs 384 mask bits/round, not including sumcheck/PCS, versus native Πrange O(log m). **NEW UNTESTED I88 HYPOTHESIS:** if a public scalar integer A is explicitly bounded to [0,T], T=m(β−1)<p_min, native fieldwise digit sums do not wrap, so a common A with same precommitted h PCS could evade I78's CRT-patched A_fake *without* separate external C_b. Soundness/source/privacy/cost unproved. Archive: `findings/vfhe-rankone-bernoulli-mask-constant-detection-iteration87.md`.
 
+- [CONDITIONAL PASS + BOUNDARY, I88] Ideal prechallenge native digit commitments with each h_k,j∈{0,...,beta−1}, postcommit Bernoulli alpha, and PUBLIC integer A∈[0,T], T=m(beta−1)<pmin, plus authenticated SAME-h native sums Σalpha h_k=A imply literal integer sums S_k=A in all CRT components. An extra precommitted external integer vector is not algebraically necessary; inconsistent fixed components are detected with probability ≥1/2 per full Bernoulli mask. Exact p29,p41,m3,beta2 enumeration 56 ordered distinct vector pairs×8 masks verifies max 1/2 acceptance and excludes I78 A_fake493 via range bound T3. Stronger T<pmin is essential and not implied by Theorem4.8 beta<pmin and m<pmin: p29,p37,m16,beta4,T48 permits distinct native sums29/0 both matching A0 under all-ones mask. No native sumcheck protocol constructed; verifier cost/privacy unresolved. See `findings/vfhe-bounded-public-aggregate-iteration88.md`.
+
 ## MAIN OBSTRUCTION
-[OPEN] Need source-compatible, succinct aggregate-sumcheck connection against the SAME prechallenge-bound h PCS and EXACT canonical integer lift. I87 rank-one masks have good *native* detection but O(√m) mask-description/evaluation and ≥309 rounds at λ128 worst case; they do NOT independently certify canonical A. An I88 bounded **public scalar A∈[0,T], T<p_min** hypothesis may remove the costly external vector C_b assumed in I78, but has not passed source-proof, soundness, privacy or performance checks. Fixed full intermediate c',c'' imply conditional residue uniqueness (I85), not cheap verifier access. Original CRT rectangular lookup gap remains.
+[OPEN] I88 proves only a CONDITIONAL integer-lift link: public A needs T=m(beta−1)<pmin, valid scalar digits, and authenticated native masked sums from the SAME prechallenge h commitments. Still missing a source-level PIOP/sumcheck transcript and knowledge-sound PCS linkage, challenge ordering, efficiency and client-input IND-CPA with verification-oracle argument. I87 rank-one masks use O(√m) public evaluation cost and 309 repetitions for λ128. Original CRT rectangular lookup gap remains.
 
 ## OPEN UNCERTAINTY
 Latest official PDF SHA/version; full authors' optimized protocol/PCS/Fiat–Shamir implementation; deployed or secure-parameter effect; complete repair/soundness/privacy/cost proof; novelty relative to dual-PCS/CP-NIZK. **No authors contacted. User says DO NOT SEND EMAIL; no outreach/draft/public disclosure without explicit new permission.**
 
-## NEXT_ACTION — ONE DECISIVE TEST (I88)
-Re-read I78 failure archive and vFHE primary §4.3 Eq(21)–(23), Theorem 4.8, and PIOP/PCS compiler (Appendix D.3). Fix fieldwise precommitted native digit vectors with entries in scalar table {0,...,β−1}, a postcommit random Bernoulli mask and T=m(β−1)<min_i p_i. Attempt ONE explicit contradiction or prove (under ideal sound native sumcheck and fixed commitments) that ANY publicly announced integer A∈[0,T] with field equalities Σα_j h_k,j=A for ALL k implies actual integer sums agree and blocks I78's CRT-patched postchallenge A_fake, even WITHOUT external precommitted b. If narrow proof survives, state exact native MLE + PCS binding requirements and privacy/cost limitations but do not design full protocol or claim novelty. Include β/m regime check separately only if required by this one falsification. No author outreach.
+## NEXT_ACTION — ONE DECISIVE TEST (I89)
+Read source §2.2 sumcheck protocol, §4.3 pp20–24 shared digit oracle h, Appendix D.3 pp43–44 compiler. Attempt ONE explicit transcript for an appended claim Σ_{j in Boolean grid} alpha_j h(j)=A (in Rq) using existing Pi_sum, with original h commitment BEFORE postcommit mask alpha and bound A∈[0,T], T<pmin. Check whether terminal sumcheck uses an evaluation opening of the SAME h, and challenge generation / native field soundness. Falsify source-compatible low-overhead integration by a missing oracle binding, ordering inconsistency, or verifier evaluation cost; do NOT claim full SNARK/privacy/novelty or implement protocol yet.
 
 ## RELEVANT FILES
 - Protocol/start: `RESEARCH_PHILOSOPHY.md`, `AGENT.md`, `START_RESEARCH_SESSION.md`.
-- Last I87: `findings/vfhe-rankone-bernoulli-mask-constant-detection-iteration87.md`.
+- Last I88: `findings/vfhe-bounded-public-aggregate-iteration88.md`.
+- I87: `findings/vfhe-rankone-bernoulli-mask-constant-detection-iteration87.md`.
 - I86: `findings/vfhe-public-aggregate-vs-mle-evaluation-rank-obstruction-iteration86.md`.
 - I85: `findings/vfhe-fixed-input-output-rescale-remainder-uniqueness-iteration85.md`.
 - I84: `findings/vfhe-rescale-remainder-public-computability-nonuniqueness-iteration84.md`.
@@ -64,4 +67,4 @@ Re-read I78 failure archive and vFHE primary §4.3 Eq(21)–(23), Theorem 4.8, a
 - UNSENT report/draft: `findings/vfhe-confidential-pi-review-package-iteration74.md`, `findings/vfhe-confidential-author-inquiry-draft-iteration75.md`.
 - PARKED RIG: `logs/rig-state-2026-10-12-pre-vfhe-handoff.md`.
 
-STATUS: **ACTIVE vFHE repair; I87 PASS conditional rank-one mask anti-concentration/cost, I88 bounded public A without external b NEXT**. No-wrap T<p_min, authenticated native sumcheck & prechallenge witness binding remain to test; public-A privacy and performance unresolved. No end-to-end repair, compiled SNARK forgery or novelty claim. No author contact/public disclosure authorized.
+STATUS: **ACTIVE vFHE repair; I88 PASS conditional bounded-public-A integer consistency; I89 same-h native sumcheck interface NEXT**. Strict T<pmin, binding/Fiat–Shamir, privacy and cost remain OPEN. No complete repair, compiled SNARK forgery, or novelty claim. No author contact/public disclosure authorized.

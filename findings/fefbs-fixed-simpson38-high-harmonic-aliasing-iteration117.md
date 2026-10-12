@@ -1,0 +1,44 @@
+# Iteration 117 — Fixed 300-panel Simpson 3/8 coefficient quadrature produces major aliasing at high Fourier harmonics in author's FEFBS preprocessing
+
+Date 2026-10-12. Research PI/human sets scientific direction. ONE hypothesis plus ONE source-anchored cheapest decisive test. The conclusion concerns **coefficient generation**, not correctness or security of CKKS/FHE primitive.
+
+## Source acquisition / read-before-write
+Read current GitHub Notes `AGENT.md`, `RESEARCH_PHILOSOPHY.md`, `STATE.md` ending I116 and I116 LFBS archive. Earlier LFBS PRCA ordering issue remains PARKED; do not reopen.
+Primary original PDF from Research MCP ePrint **2026/367**: Bian, Fu, Shen, Pan, Wang, Guan, *High-Precision Functional Bootstrapping for CKKS from Fourier Extension*, EUROCRYPT 2026, **43 physical pages**, author paper https://eprint.iacr.org/2026/367, mirror source https://github.com/arturo-kong/IACR-eprint-mirror/blob/master/2026/367.pdf, PDF SHA256 `ee2384e0a8148a0678b3fdb0e0d14eb5f988f19750a94081a378e8fb82966e7a`, source revision `6ac42a531dd18744cd7b5097dd93f07dd3b05c74`, official latest VERSION_UNVERIFIED.
+Source paper §3 physical p13 defines Hermite bridge matching boundary derivatives; §3 pp14–20 Theorems1–3 study Fourier truncation and optimum smoothness κE (authors ALREADY discuss over-smoothing tradeoff, so do NOT claim discovery that larger κ always helps). §4 pp19–24 preprocessing builds Fourier coefficients and CKKS EvalSeries, and §5.1 p25 explicitly says 128bit-secure N65536 sparse-secret examples use n≈29–44 for continuous functions; Table3 p28 uses n=140/216/256 for DISCRETE LUTs. **Do not claim the public continuous-function coefficient generator produced those published discrete LUT benchmark coefficients unless actual code path is confirmed**.
+Public pinned author GitHub `FYHSSGSS/FEFBS`, commit `3ed0e4c8f2ae80bc0ca66d87704a71b233b34272` (2026-08-19):
+- `fourier_calculator.py` blob SHA `9ddf9dbe0a9ae055423fcff398356991de624178`. Direct Python coefficient generator called by README online coefficient C++ examples, lines around 45–93 use `T=1/16`, left `-T/4`, `mid=left+T/2`, `right=left+T`, target f mapped to x interval, Hermite bridge order `speed-1`; fixed `N_SEG=300; N_SEG2=300`; separate composite Simpson 3/8 oscillatory integrals for each harmonic `ni=1,...,N` and `ω=2π/T`. NO adaptive resolution as ni grows.
+- `fourier_extension.py` blob SHA `19e9e1ca5223af0cc51f3490a0f7d2da1e41085e` also uses N_SEG=300, N_SEG2=300 and tests source-generated coefficients when choosing smoothness parameter.
+- `README.md` blob SHA `94159d20030473e23c5ec7fa35c8aea920e17574` explicitly supports online coefficients via `fourier_calculator.py` and a custom `--degree` plaintext prototype. Repo has compiled CKKS examples but this iteration did NOT compile or execute an encrypted benchmark.
+
+## ONE falsifiable hypothesis
+[HYPOTHESIS] With the author's `N_SEG=N_SEG2=300` **fixed** for all harmonics, the coefficient generator remains numerically accurate for a high but supported Fourier degree n=216, even for a perfectly smooth target f_T(x)=x and a legitimate low-order Hermite bridge.
+[FALSIFIER] On a single source-defined f=x, symmetric bounds[-1,1], bridge speed=2 and n216, find a harmonic for which source-exact composite Simpson 3/8 coefficient deviates substantially from an independently derived analytic coefficient and does not converge until N_SEG is increased. Then test the output impact with SAME degree and polynomial in ideal arithmetic.
+
+## Source-faithful mathematical test
+Under the author's symmetric bounds and scale, with T=1/16, x lives on [−1/64,1/64], normalized f(x)=32x (source uses z=(x−delta)*2*(upper-lower)/T, f←0.5 f; delta0). Bridge lives [1/64,3/64]. For `speed=2` (Hermite value and first derivative both ends) its UNIQUE symbolic interpolant is:
+`f_B(x)=131072 x^3 − 12288 x^2 + 320 x − 2`.
+[TEST] Reproduce source's composite Simpson 3/8 quadrature on each half using exact same 300 panel weights `1,3,3,2,...,3,3,1`. Independently compute **analytical integrals** of polynomial × sin(2πk x/T) using the closed-form complex-antiderivative finite sum with 90-digit mpmath. Increase quadrature panels to 600, 1200, 2400, 4800 as confirmation. ONE target coefficient k216:
+- exact `b216 = +7.680692356633776e−8`.
+- source-equivalent 300 panels `b216 = −2.35434732414482e−5`, absolute error `2.3620280165014537e−5`, 307.528× true magnitude.
+- source-equivalent 600 panels `+9.177088822111962e−8`; 1200 `+7.71892156633397e−8`; 2400 `+7.682654540579897e−8`; 4800 `+7.680809253614133e−8`. Convergence to independent analytic coefficient establishes this is quadrature aliasing/under-resolution, not an FHE noise issue or sign-index bug.
+Additional within SAME Fourier n216 reconstruction: the largest coefficient difference occurs at **k201**. Analytic `b201≈3.018961098895163e−10` while 300-panel Simpson returns `−0.061595893247719774` (!); the neighboring k199 has +0.061595893234281815 vs exact −3.142168286e−10. At 1200 panels these disappear. Fixed sampling frequency interacts with oscillatory modes near ~200 cycles/per full period.
+Sum all k1..216 source-equivalent sine coefficients and exact coefficients plus zero-frequency a0, evaluate against f=32x over **2049 deterministic points** in target segment. Exact coefficients: maximum absolute error `3.1106097134747657e−6`, mean abs error `8.856458109579297e−8`; source fixed-panel coefficients: max abs error `0.12499752127854741`, mean abs error `0.03983143561291204`. Max-error amplification ≈40,184×. This is **a sampled grid** and an ideal plaintext Fourier series, not a uniform interval norm or a compiled homomorphic run.
+
+## Scientific scope, critical caveats
+- **PASS** real numeric fidelity issue in PUBLIC preprocessing code for legitimate `n216,κE=1,f=x` invocation. It does not invalidate the paper's mathematical Fourier truncation error theorem, which presumes correct coefficients.
+- No claim this test configuration matches the published reported **GeLU κ11,n44**, **Sigmoid κ8,n34**, or **exp κ18,n29**; these low degrees may avoid the near-200 alias. Authors' high-degree LUTGeLU n216 and LUTSbox n256 are DISCRETE scenarios and may generate coefficients using another path. Do not assert their benchmark precision incorrect without pinning their coefficient provenance and checking actual example pipeline.
+- The very large >0.06 spurious harmonic is source-compatible with a 300-point fixed Simpson-3/8 rule; one can repair implementation with frequency-aware or certified adaptive quadrature / exact piecewise-polynomial integrations. The remedy is known numerical analysis, not a novel FHE primitive by itself.
+- Reproduces source mathematics, not an actual invocation of `fourier_calculator.py` via Python interpreter (the script was fetched through GitHub connected read; independent calculator implements the same formula/weights and Hermite derivative constraints). No CKKS compilation, encryption security, failure-probability or runtime claims. The official ePrint latest version unverified versus GitHub mirror.
+- Practical value: high-degree Fourier expansions with low or moderate bridge smoothness could silently break preprocessing. First determine whether ACTUAL shipped end-to-end examples invoke `fourier_calculator.py` at n≥200 and whether `coeffs/` contains generated coefficient aliases; do not imply impact before verifying.
+
+## Reproducibility
+Executed code `/mnt/data/iteration117_fefbs_fixed_quadrature_reproducer.py`, SHA256 `416e2ebd051d169f64aa03edc766e8ccea0b2c3511faa2f2e0d428193bd1d0f2`.
+Results `/mnt/data/iteration117_fefbs_fixed_quadrature_results.json`, SHA256 `c58dfa5aebea4becf3786f8159c6cdae3b42ca4fb90ca96fc8748ded46ab76a0`.
+One hypothesis/decisive test, independent exact integration and mesh-convergence sanity check.
+
+## End
+STATUS: **PASS public coefficient preprocessing alias counterexample; UNCLEAR published benchmark impact, originality or broader CKKS precision consequences**.
+RESULT: at a supported n216 high harmonic, 300-panel integral can miscompute Fourier coefficients by 1e−2..1e−5, leading to O(1e−1) sampled function error instead of O(1e−6) for exactly same Fourier degree.
+NEXT_ACTION (I118): ONE author-example **coefficient-provenance gate**: inspect pinned C++ FEFBS example path and `coeffs/` for a high-degree benchmark (prefer LUTGeLU n216), determine if that path uses fixed-300-panel `fourier_calculator.py` or an alternative coefficient source/compensating smoothness. If it uses the bad quadrature, test one actual benchmark coefficient or output; if not, bound finding to optional preprocessing and consider parking numerical bug as a utility fix. Do NOT expand into noise/security/security parameter claims or contact authors.
+STATE_UPDATE: YES, no author outreach/public disclosure.

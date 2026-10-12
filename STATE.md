@@ -8,13 +8,13 @@ ARCHIVED SPECIFIC BRANCH: GL generic BigSwitch; see `failures/gl-generic-bigswit
 Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO 2025, ePrint **2025/286**, especially §4.3 / Theorem 4.8 / Appendix E.2 (CRT digit lookup), §4.1–4.2 (CKKS rescale and ΠAC), and **§5 componentwise Brakedown polynomial commitments**.
 Research MCP mirror: 52pp PDF SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, mirrored 2026-04-28 after 2026-02-16 official revision; **latest official binary VERSION_UNVERIFIED**.
 
-LAST COMPLETED ITERATION: **89 (2026-10-12)**. PASS scoped same-h virtual ring sumcheck interface under I88 no-wrap, not complete protocol; see I89 finding.
+LAST COMPLETED ITERATION: **90 (2026-10-12)**. PASS (qualified) published Medium-circuit no-wrap parameter check using source §6.3; exact c=5 packing needs reconciliation; see I90 finding.
 
 ## CURRENT QUESTION
-Does the paper's actual §6 RNS/lookup configuration satisfy the strict extra no-wrap parameter T=m(beta−1)<pmin necessary for the new public bounded-A integer-coherence check, at the total batched h-oracle size m, without a prohibitive increase in verifier costs?
+Even where I88's strict T=m(beta−1)<pmin holds at source-reported Medium-circuit scale, do 128-bit random Boolean-mask aggregate checks destroy the original Πrange's succinct verification advantage due to repeated sumchecks and original-h PCS openings?
 
-## PRIMARY HYPOTHESIS — NEXT, NOT YET TESTED (I90)
-At least one original §6 CKKS/lookup instance satisfies T=2^ell*N*c*(beta−1)<pmin, with beta=B^(1/c) and same committed h oracle, so the I88–89 public-A branch is not purely artificial. Cheapest falsifier: calculate T exactly from one explicitly grounded published configuration and show T≥pmin or that m is wrong for the batched workload. No security or performance claim yet.
+## PRIMARY HYPOTHESIS — NEXT, NOT YET TESTED (I91)
+For same published (W,D,L,N,c)=(1,1,3,8192,5), full Bernoulli masks need at least 128 independent repetitions at the simple ≤1/2 per-round bound, rank-one masks 309 at ≤3/4, and each added virtual-sumcheck requires a terminal opening of original h (possibly amending source's 25D=25 base oracle queries). Cheap decisive test: derive the actual per-ring and per-component verifier/proof cost from source §4.3 p24, §5/Appendix F, and any reusable Brakedown testing phase. No guessed benchmarking or full implementation.
 
 ## CURRENT EVIDENCE
 - [FACT/SOURCE + DERIVED, I59–70] Audited revised-looking proof uses an invalid diagonal-digit ⇒ illegal CRT component inference. Fieldwise lookup supports rectangular `T_B^rect`, not the claimed global coefficient range; `B≥max p_i` makes `T_B^rect=R_q`. Explicit ring/PIOP counterexamples recorded.
@@ -41,18 +41,21 @@ At least one original §6 CKKS/lookup instance satisfies T=2^ell*N*c*(beta−1)<
 
 - [POSITIVE SOURCE INTERFACE / CONDITIONAL, I89] Primary §2.2 pp8–9 explicitly permits **virtual oracles**, Πsum over ring Rq (Theorem2.6) for per-variable degree≤2, and terminal evaluation via component oracles. §4.3 p21 already shares original h across Πdecomp and Πβrange; Appendix D.3 pp43–44 compiles oracle queries into PCS evaluations. Appending ONE Πsum on virtual g(X)=alpha~(X)h~(X) with prechallenge committed h, public Bernoulli alpha, postchallenge bounded integer A, and final **same h PCS opening** is PIOP-interface compatible: Σ_{Boolean}g=A·1_Rq; degree2; error≤2d/|S| before composition losses. Exact p29/p37,m4,beta2,T4 toy has honest g1(X)=1−X, g2(Y)=Y−1 at r=(2,3) and same-oracle terminal product2; CRT-mixed h sum407 cannot equal A∈[0,4]. No compiled PCS/FS security, privacy, or efficiency proof. See `findings/vfhe-same-h-virtual-ring-sumcheck-iteration89.md`.
 
+- [PUBLISHED PARAMETER PASS, QUALIFIED, I90] Primary §6.3 p29 Medium circuit uses (W,D,L,N,c)=(1,1,3,8192,5), d4, 49-bit RNS primes and '20-bit lookup table'; Table 2 p27 gives Πrange maximum input size 286720=8192*5*7. With a **conservative mathematical** next-power-of-two envelope m=524288 and interpreting 20-bit lookup as digit-table β≤2^20, T=m(β−1)≤549755289600<2^48≤pmin, >512× margin. Thus I88–89 extra no-wrap condition is numerically viable for this published workload under that interpretation; not a full-protocol parameter validation. **EVIDENCE GAP:** §4.3 formal c=2^gamma yet §6.3 c=5; actual padding, per-oracle beta and h length not verified. No invented author implementation. `findings/vfhe-paper-medium-circuit-no-wrap-feasibility-iteration90.md`.
+
 ## MAIN OBSTRUCTION
-[OPEN] Algebraic CRT integer coherence and original-PCS **PIOP interface** are now conditionally grounded (I88/I89): one postcommit bounded public A, one virtual degree-2 ring sumcheck per mask, original committed h oracle. Remaining blockers are (i) paper §6 parameter T=m(beta−1)<pmin feasibility; (ii) 128-bit repeated mask/PCS cost vs original O(log m) PIOP verifier; (iii) sound Fiat–Shamir order and full PIOP/PCS extraction; and (iv) public A model/client privacy including verification oracle. Original CRT rectangular lookup gap remains; no full repair or novelty.
+[OPEN] Native same-h virtual sumcheck and bounded public-A consistency are conditional I88–89. Published Medium-circuit scale does NOT falsify strict no-wrap (I90), but the 128/309 repeated masks may multiply verifier/PCS costs relative to source's 25D range oracle queries and sublinear goal. Need quantify one concrete cost before serious proof design. Exact c=5 packing and per-oracle digit-base assignment, full Fiat–Shamir/PCS knowledge soundness, and public-A privacy with VO remain unverified. Original CRT rectangular lookup gap persists.
 
 ## OPEN UNCERTAINTY
 Latest official PDF SHA/version; full authors' optimized protocol/PCS/Fiat–Shamir implementation; deployed or secure-parameter effect; complete repair/soundness/privacy/cost proof; novelty relative to dual-PCS/CP-NIZK. **No authors contacted. User says DO NOT SEND EMAIL; no outreach/draft/public disclosure without explicit new permission.**
 
-## NEXT_ACTION — ONE DECISIVE TEST (I90)
-Inspect primary ePrint 2025/286 §6 pp26–29, Table 2 and original §4.1/§4.3 batching to extract ONE concrete published parameter choice of N, RNS prime bit length/pmin, B=2^b, c, beta=2^(b/c), and exact global digit oracle length m=2^ell*N*c. Calculate T=m(beta−1) and test T<pmin for the FULL batch (not a manually tiny subset). If crucial parameters are unspecified, mark EVIDENCE MISSING rather than inventing them, then select the cheapest symbolic threshold. Do not expand to complete proof or new protocol; no outreach.
+## NEXT_ACTION — ONE DECISIVE TEST (I91)
+Read primary ePrint 2025/286 §4.3 p24 (Πrange 25 oracle queries), §5 pp25–26 and Appendix F.2 p51 (Brakedown testing-phase reuse), Table 2 p27, and I87–I90 archives. Using same Medium-circuit maximum M≤286720 and conservative padded 2^19, compute *additional* rounds, PCS evaluation claims/proofs, and verifier alpha-MLE work for 128 full Bernoulli vs 309 rank-one mask checks at claimed 128-bit sampling soundness. Distinguish ring-oracle calls from per-CRT PCS component costs; account for reusable testing phase when applicable. Determine whether a simple cost blowup kills the branch before further protocol/security work. Do not invent runtime numbers or contact authors.
 
 ## RELEVANT FILES
 - Protocol/start: `RESEARCH_PHILOSOPHY.md`, `AGENT.md`, `START_RESEARCH_SESSION.md`.
-- Last I89: `findings/vfhe-same-h-virtual-ring-sumcheck-iteration89.md`.
+- Last I90: `findings/vfhe-paper-medium-circuit-no-wrap-feasibility-iteration90.md`.
+- I89: `findings/vfhe-same-h-virtual-ring-sumcheck-iteration89.md`.
 - I88: `findings/vfhe-bounded-public-aggregate-iteration88.md`.
 - I87: `findings/vfhe-rankone-bernoulli-mask-constant-detection-iteration87.md`.
 - I86: `findings/vfhe-public-aggregate-vs-mle-evaluation-rank-obstruction-iteration86.md`.
@@ -70,4 +73,4 @@ Inspect primary ePrint 2025/286 §6 pp26–29, Table 2 and original §4.1/§4.3 
 - UNSENT report/draft: `findings/vfhe-confidential-pi-review-package-iteration74.md`, `findings/vfhe-confidential-author-inquiry-draft-iteration75.md`.
 - PARKED RIG: `logs/rig-state-2026-10-12-pre-vfhe-handoff.md`.
 
-STATUS: **ACTIVE vFHE repair; I89 PASS conditional same-h virtual sumcheck PIOP interface; I90 published-parameter no-wrap test NEXT**. Fiat–Shamir/PCS soundness, public-A privacy and cost OPEN. No complete repaired SNARK, compiled forgery or novelty. No author contact/public disclosure authorized.
+STATUS: **ACTIVE vFHE repair; I90 PASS (qualified) Medium-circuit no-wrap; I91 repeated-mask verifier-cost falsification NEXT**. c5 packing and exact beta unresolved; complete PCS/Fiat–Shamir/privacy and 128-bit performance OPEN. No repaired SNARK, compiled forgery, or novelty claim. No author contact/public disclosure authorized.

@@ -8,13 +8,13 @@ ARCHIVED SPECIFIC BRANCH: GL generic BigSwitch; see `failures/gl-generic-bigswit
 Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO 2025, ePrint **2025/286**, especially §4.3 / Theorem 4.8 / Appendix E.2 (CRT digit lookup), §4.1–4.2 (CKKS rescale and ΠAC), and **§5 componentwise Brakedown polynomial commitments**.
 Research MCP mirror: 52pp PDF SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, mirrored 2026-04-28 after 2026-02-16 official revision; **latest official binary VERSION_UNVERIFIED**.
 
-LAST COMPLETED ITERATION: **85 (2026-10-12)**. Corrected CRT projector; fixed c',c'' imply bounded remainder uniqueness under equal-bit active-prime hypotheses; see I85 finding.
+LAST COMPLETED ITERATION: **86 (2026-10-12)**. Single native h-MLE evaluation cannot certify arbitrary exact Boolean-masked digit aggregate A (tensor-rank obstruction); see I86 finding.
 
 ## CURRENT QUESTION
-Does a succinct verifier in source §4.2 / Appendix D.3 actually have enough publicly accessible data to reconstruct the canonical/relaxed rescale remainder h and an exact public integer aggregate A, even though the remainder is **unique conditional on BOTH c' and c'' being fixed**? If not, what is the smallest missing input or verification cost?
+Can ONE efficiently described Boolean mask family permit native-PIOP proof of a shared **exact integer** CRT-digit aggregate at sublinear verifier cost, *without* the false shortcut of treating an arbitrary mask as one h-ML evaluation and without repeating archived position checks or prior failed coding variants?
 
-## PRIMARY HYPOTHESIS — NEXT, NOT YET TESTED (I86)
-Although the rescale remainder is uniquely determined by a fixed complete intermediate ciphertext pair (c',c'') in the paper's same-bit setting, a succinct verifier need not possess full c': §4.2 carries intermediate states as prover oracle witnesses and Appendix D.3 only authenticates sampled evaluations. Hence directly reconstructing h/A may require the work the verifiable outsourcing was intended to avoid. Test one concrete interface and its inputs/cost, not a new proof design.
+## PRIMARY HYPOTHESIS — NEXT, NOT YET TESTED (I87)
+A rank-one Boolean row×column mask (two independently sampled Bernoulli 0/1 vectors, outer product) might provide constant one-round detection probability for a fixed nonzero CRT digit-discrepancy matrix, while its MLE is evaluator-friendly enough for native Πsum/Πdecomp at cost O(√n) rather than O(n). Must read archived I64–68 and I78 first, and falsify quickly (soundness or exact-integer/global binding costs) BEFORE proposing construction or novelty. One primary test.
 
 ## CURRENT EVIDENCE
 - [FACT/SOURCE + DERIVED, I59–70] Audited revised-looking proof uses an invalid diagonal-digit ⇒ illegal CRT component inference. Fieldwise lookup supports rectangular `T_B^rect`, not the claimed global coefficient range; `B≥max p_i` makes `T_B^rect=R_q`. Explicit ring/PIOP counterexamples recorded.
@@ -33,18 +33,21 @@ Although the rescale remainder is uniquely determined by a fixed complete interm
 
 - [SOURCE-CORRECTION / DERIVED CONDITIONAL PASS, I85] §3.2 projector z_l includes the currently dropped p_l component; Eq(6) multiplier is [p_l^(-1)]_Q*z_l, **NOT** the projection z_(l-1) that would zero p_l. An initial supposed fixed-output ambiguity r=0 versus r=73 for N8,d2,p0=73,p1=89,B128 was wrong: with actual t=32, r=73 yields output4161 mod6497, not fixed output0. Formal conditional uniqueness lemma: for distinct equal-u-bit active CRT primes, range-legal remainders in [0,2^u) producing same fixed (c',c'') are coefficientwise unique; if ≥2 primes retained, retained modulus product already exceeds range; for last pair, inverse multiplier is nonzero at dropped prime by same-bit odd-prime argument. Thus I84's **input-only** nonuniqueness remains, but conjectured **fixed-(c',c'')** nonuniqueness FAILS. Source text extraction of Eq(6) still merits visual confirmation. See `findings/vfhe-fixed-input-output-rescale-remainder-uniqueness-iteration85.md`.
 
+- [NEGATIVE SHORTCUT + SOURCE/RANK, I86] Source §4.2 pp16–17 has pre-rescale c' as a GKR internal wire and §4.3 pp20–21 digit h as a committed MLE oracle, not full public coefficient vector. Appendix D.3 pp43–44 and §5/Appendix F turn oracle queries into point evaluations, not arbitrary integer inner products. Any ONE h~(r,s) point opening has coefficient-weight matrix rank≤1, whereas Boolean mask α=diag(1,1) has rank2; F73 toy has h0=(1,0,0,0), h1=(0,1,0,0), same evaluation 55 at r=s=1/2 but different A=1 vs0. Commitments/transcripts DIFFER; this is NOT an original-protocol attack. A direct linear combination of k point evaluations has tensor-flattening rank≤k, NOT a universal complexity lower bound for arbitrary interactive protocols or new sumcheck. Arbitrary α still needs an actual authenticated aggregate-claim interface and exact integer/CRT linking. See `findings/vfhe-public-aggregate-vs-mle-evaluation-rank-obstruction-iteration86.md`.
+
 ## MAIN OBSTRUCTION
-[OPEN] No verified efficient cross-characteristic, knowledge-sound interface binding a certified **exact integer aggregate A** to original field PCS evaluations. Mandatory proof-ZK is not in source. For fixed full c' AND c'', equal-bit residue r is conditionally unique (I85), but full intermediate ciphertext c' is often a prover oracle witness rather than public verifier data; uniqueness does NOT imply affordable/verifier-visible reconstruction. I84's relaxed choice may still vary when only c' fixed and c'' allowed to change. Public-A client privacy with VO remains unproved.
+[OPEN] No verified efficient interface certifies one **pre-challenge-bound exact integer aggregate A** against *the same native digit h oracle across all CRT fields* while preserving succinct verification and VC privacy. The native h point openings carry decomposable MLE weights, unlike arbitrary Boolean-mask integers (I86). Fixed full c' AND c'' conditionally determine r (I85), but intermediate c' is not a full public verifier input, so uniqueness does not give cheap reconstruction. Mandatory proof-ZK is not a source property; exact-integer no-wrap, commitment binding and verification-oracle IND-CPA still need proof.
 
 ## OPEN UNCERTAINTY
 Latest official PDF SHA/version; full authors' optimized protocol/PCS/Fiat–Shamir implementation; deployed or secure-parameter effect; complete repair/soundness/privacy/cost proof; novelty relative to dual-PCS/CP-NIZK. **No authors contacted. User says DO NOT SEND EMAIL; no outreach/draft/public disclosure without explicit new permission.**
 
-## NEXT_ACTION — ONE DECISIVE TEST (I86)
-Read source §4.1–4.2 pp13–17 and Appendix D.3 pp43–44 to identify the *exact full data* visible to a succinct verifier at ONE rescaling gate (public x,y vs committed intermediate c',w_quot) and whether reconstructing r=[c']_p or an exact masked A requires processing Θ(N) coefficients / entire prover witness. Distinguish lack of explicit full c' from proof-of-unavoidability; one counterexample of identical verifier-visible data for distinct internal states or one sharply stated missing interface suffices. Do not invent new PCS/encoding variants or contact authors.
+## NEXT_ACTION — ONE DECISIVE TEST (I87)
+FIRST read the older I64–68 (especially position/low-rank/structured checks) and I78 failure archive to avoid recycling. THEN test ONE precise hypothesis for the same CRT digit witness: choose public postcommit mask α_(i,j)=u_i v_j with independently sampled binary u,v (matrix outer product), check analytically whether Pr[∑α_ij Δ_ij ≠0 mod p] is bounded below by a non-negligible constant for *every fixed nonzero* CRT discrepancy Δ, while evaluating MLE(α) at one verifier challenge costs at most O(√n). If the structure passes, isolate the next unresolved *exact integer A and prechallenge PCS binding* interface; if fails, archive. Do not assert source compatibility, end-to-end repair, or novelty on this test alone. No unsolicited outreach.
 
 ## RELEVANT FILES
 - Protocol/start: `RESEARCH_PHILOSOPHY.md`, `AGENT.md`, `START_RESEARCH_SESSION.md`.
-- Last I85: `findings/vfhe-fixed-input-output-rescale-remainder-uniqueness-iteration85.md`.
+- Last I86: `findings/vfhe-public-aggregate-vs-mle-evaluation-rank-obstruction-iteration86.md`.
+- I85: `findings/vfhe-fixed-input-output-rescale-remainder-uniqueness-iteration85.md`.
 - I84: `findings/vfhe-rescale-remainder-public-computability-nonuniqueness-iteration84.md`.
 - I83: `findings/vfhe-original-privacy-not-proof-zk-iteration83.md`.
 - I82: `failures/vfhe-masked-brakedown-evaluation-unlinked-hidden-residue-iteration82.md`.
@@ -58,4 +61,4 @@ Read source §4.1–4.2 pp13–17 and Appendix D.3 pp43–44 to identify the *ex
 - UNSENT report/draft: `findings/vfhe-confidential-pi-review-package-iteration74.md`, `findings/vfhe-confidential-author-inquiry-draft-iteration75.md`.
 - PARKED RIG: `logs/rig-state-2026-10-12-pre-vfhe-handoff.md`.
 
-STATUS: **ACTIVE vFHE repair; I85 FAIL projected-kernel counterexample, PASS conditional fixed-output remainder uniqueness; I86 verifier-visible interface audit NEXT**. Exact cross-CRT bridge and public-A privacy remain OPEN. No full SNARK forgery, no novel impossibility claim. No author contact/public disclosure authorized.
+STATUS: **ACTIVE vFHE repair; I86 FAIL generic Boolean-mask A as one MLE opening; I87 low-description binary mask test NEXT**. Exact integral aggregate↔native PCS binding and public-A privacy remain OPEN. No complete repair, full SNARK forgery, or universal lower bound established. No author contact/public disclosure authorized.

@@ -8,13 +8,13 @@ ARCHIVED SPECIFIC BRANCH: GL generic BigSwitch; see `failures/gl-generic-bigswit
 Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO 2025, ePrint **2025/286**, especially §4.3 / Theorem 4.8 / Appendix E.2 (CRT digit lookup), §4.1–4.2 (CKKS rescale and ΠAC), and **§5 componentwise Brakedown polynomial commitments**.
 Research MCP mirror: 52pp PDF SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, mirrored 2026-04-28 after 2026-02-16 official revision; **latest official binary VERSION_UNVERIFIED**.
 
-LAST COMPLETED ITERATION: **81 (2026-10-12)**. Native prime-order Pedersen/IPA replacement FAIL at 49-bit characteristic; see I81 archive.
+LAST COMPLETED ITERATION: **82 (2026-10-12)**. Evaluation-only masked Brakedown opening FAIL hidden cross-domain link; see I82 archive.
 
 ## CURRENT QUESTION
-After PI authorized exploring the necessary PCS redesign, can a minimal ZK change to the hash/code-based native Brakedown opening authenticate masked native aggregates *and bind the hidden unmasked canonical residue* without fully non-native verifier emulation?
+Does the original vFHE security model actually require zero-knowledge/hiding of each native Brakedown evaluation and CRT aggregate, or is that a stricter constraint introduced in our proposed repair? Clarify before investing in extensive ZK PCS redesign.
 
 ## PRIMARY HYPOTHESIS — NEXT, NOT YET TESTED
-A separately committed native-field codeword mask `z` and a blinded evaluation response `w=v'+z` might preserve a Brakedown evaluation check without publishing native aggregate `y`; need test whether any authenticated equation also relates its unmasked value to external hidden `u_k`. Falsifier: mask can be independently chosen so verification accepts while the alleged external residue is arbitrary. Do NOT assume ZK or binding merely from blinding.
+Source §2.2 / §5 may define only commitment binding / knowledge soundness and public polynomial evaluations rather than zero knowledge. If the *intended application privacy* still requires keeping witness-dependent CRT digit aggregates hidden, merely dropping ZK is not a valid workaround. The next iteration is one source-backed security-goal audit, NOT a new repair proposal.
 
 ## CURRENT EVIDENCE
 - [FACT/SOURCE + DERIVED, I59–70] Audited revised-looking proof uses an invalid diagonal-digit ⇒ illegal CRT component inference. Fieldwise lookup supports rectangular `T_B^rect`, not the claimed global coefficient range; `B≥max p_i` makes `T_B^rect=R_q`. Explicit ring/PIOP counterexamples recorded.
@@ -25,18 +25,21 @@ A separately committed native-field codeword mask `z` and a blinded evaluation r
 
 - [NEGATIVE / DERIVED + EXACT TEST, I81] Standard prime-order Pedersen/IPA native-additive map `F_(p_k^d)→G` is trivial unless group order equals p_k; with paper's ~49-bit primes, p_k-order discrete logarithm costs O(√p_k)≈2^24.5, far below ~128-bit binding. Toy BSGS recovered a subgroup generator relation and produced two openings to one commitment. Excludes this conventional shortcut, not hash-based PCS or non-native ZK. See `failures/vfhe-native-field-pedersen-ipa-49bit-group-security-iteration81.md`.
 
+- [NEGATIVE / SOURCE + EXACT TEST, I82] Appendix F.2 native Brakedown checks can authenticate hypothetical masked w=q1(U_f+U_z) when a separate mask matrix is bound, but those equations never link the hidden original <q1U_f,q2> to an independent external canonical C_u. Toy F101/F211 satisfies both independent checks while native y=0 and external u=1. Also the original testing phase exposes v=rU_f, so evaluation-only masking cannot yield general ZK. This merely reestablishes I77–78 independent-commitment obstruction for a concrete masked interface; not an original-protocol forgery. See `failures/vfhe-masked-brakedown-evaluation-unlinked-hidden-residue-iteration82.md`.
+
 ## MAIN OBSTRUCTION
-[OPEN] No verified efficient *hiding, knowledge-sound* interface `C_{u_k} ↔ field PCS(Σα_i h_{k,i})` across different characteristics. Direct DualPCS reuse fails due to PCS/type/characteristic mismatch and public Brakedown openings; wrapping its verifier non-natively may negate efficiency.
+[OPEN] No verified efficient cross-characteristic, knowledge-sound interface `C_{u_k} ↔ field PCS(Σα_i h_{k,i})`. Direct DualPCS and masked-only Brakedown reuse both fail to create the link; current proposed additional hiding/ZK requirement must first be checked against source/application security model. Non-native full verifier emulation may negate efficiency.
 
 ## OPEN UNCERTAINTY
 Latest official PDF SHA/version; full authors' optimized protocol/PCS/Fiat–Shamir implementation; deployed or secure-parameter effect; complete repair/soundness/privacy/cost proof; novelty relative to dual-PCS/CP-NIZK. **No authors contacted. User says DO NOT SEND EMAIL; no outreach/draft/public disclosure without explicit new permission.**
 
-## NEXT_ACTION — ONE DECISIVE TEST (I82)
-Read ePrint 2025/286 Appendix F.2 pp50–51. Starting from Brakedown evaluation response `v'=q1 U_f`, introduce ONE candidate mask `z` and blinded response `w=v'+z` with a separately authenticated codeword commitment. Write the exact modified verifier equations, and test whether a hidden unmasked aggregate can be soundly bound to external `C_{u_k}` without checking a full native PCS verifier non-natively. Falsify first using independent mask equivocation or missing residue link. Do not implement or branch into new encoder variants before that test.
+## NEXT_ACTION — ONE DECISIVE TEST (I83)
+Read ePrint 2025/286 §2.2 and §5 / Appendix F source requirements. Identify whether published vFHE promises ZK/hiding of native evaluation and what data is public; compare with application-level ciphertext privacy. Decide whether hiding A/u is genuinely necessary for a faithful soundness repair or an optional stronger requirement. Do not assume that absence of formal ZK implies safe disclosure of plaintext-dependent witness data. Report precise source passages and threat-model boundary before any more PCS constructions.
 
 ## RELEVANT FILES
 - Protocol/start: `RESEARCH_PHILOSOPHY.md`, `AGENT.md`, `START_RESEARCH_SESSION.md`.
-- Last I81: `failures/vfhe-native-field-pedersen-ipa-49bit-group-security-iteration81.md`.
+- Last I82: `failures/vfhe-masked-brakedown-evaluation-unlinked-hidden-residue-iteration82.md`.
+- I81: `failures/vfhe-native-field-pedersen-ipa-49bit-group-security-iteration81.md`.
 - I80: `failures/vfhe-brakedown-dualpcs-cross-characteristic-interface-iteration80.md`.
 - I79: `failures/vfhe-hidden-aggregate-carry-wrap-even-when-P-above-T-iteration79.md`.
 - I78 and I77: `failures/vfhe-batched-crt-aggregate-without-shared-integer-opening.md`, `findings/vfhe-external-commitment-crt-full-opening-link-iteration77.md`.
@@ -46,4 +49,4 @@ Read ePrint 2025/286 Appendix F.2 pp50–51. Starting from Brakedown evaluation 
 - UNSENT report/draft: `findings/vfhe-confidential-pi-review-package-iteration74.md`, `findings/vfhe-confidential-author-inquiry-draft-iteration75.md`.
 - PARKED RIG: `logs/rig-state-2026-10-12-pre-vfhe-handoff.md`.
 
-STATUS: **ACTIVE vFHE repair; I81 FAIL native 49-bit prime-order Pedersen/IPA shortcut; I82 masking-interface test NEXT**. PI authorized technical exploration of altered PCS; no author contact/public disclosure authorized. No complete ZK repair, full SNARK forgery, or general impossibility result.
+STATUS: **ACTIVE vFHE repair; I82 FAIL evaluation-only masked Brakedown link; I83 source privacy/security-goal audit NEXT**. No complete ZK repair, full SNARK forgery, or general impossibility result. No author contact/public disclosure authorized.

@@ -8,13 +8,13 @@ ARCHIVED SPECIFIC BRANCH: GL generic BigSwitch; see `failures/gl-generic-bigswit
 Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO 2025, ePrint **2025/286**, especially §4.3 / Theorem 4.8 / Appendix E.2 (CRT digit lookup), §4.1–4.2 (CKKS rescale and ΠAC), and **§5 componentwise Brakedown polynomial commitments**.
 Research MCP mirror: 52pp PDF SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, mirrored 2026-04-28 after 2026-02-16 official revision; **latest official binary VERSION_UNVERIFIED**.
 
-LAST COMPLETED ITERATION: **93 (2026-10-12)**. FAIL one-run common base-scalar exceptional-set shortcut with tight |S|<=pmin and explicit false sumcheck success 1/|S|; PI HUMAN_REVIEW next.
+LAST COMPLETED ITERATION: **94 (2026-10-12)**. PASS four independent scalar mixing+sumcheck soundness amplification, FAIL cheap native Brakedown F.2 evaluation cost; return to PI HUMAN_REVIEW. See I94 archive.
 
 ## CURRENT QUESTION — HUMAN_REVIEW
-I93 shows diagonal scalar exceptional sets have at most pmin≈49-bit cardinality; explicit false claims pass one scalar-only virtual sumcheck with probability 1/pmin. Should PI authorize a narrow four-run scalar-amplification cost test (I94) or archive the current public-A repair and pivot?
+I94 (PI-authorized one-shot) proves that fourfold scalar challenges restore a strong **ideal PIOP** masked-aggregate checking error bound only when BOTH each batch-mixing vector rho^(j) AND each sumcheck challenge r^(j) are independent and h/A_i are pre-bound. Source Appendix F.2 then incurs FOUR independent h evaluation phases across thousands of CRT fields, with huge uncompressed per-phase messages under representative digit packing. Is further PCS engineering worth pursuing, or archive the public-A repair and pivot?
 
-## PRIMARY HYPOTHESIS — NOT YET TESTED
-Four independent restricted scalar sumcheck repetitions against the same h PCS could amplify soundness at the cost of four ring PCS evaluation phases; this is ONE optional next test requiring PI direction, not an ongoing auto-run.
+## PRIMARY HYPOTHESIS — NOT LAUNCHED
+Only if PI explicitly selects: isolate one measurable >10x-cost compression/optimized PCS idea for the batched same-h aggregate, or stop this branch. Do not automatically iterate over nearby scalar/extension challenge variants.
 
 ## CURRENT EVIDENCE
 - [FACT/SOURCE + DERIVED, I59–70] Audited revised-looking proof uses an invalid diagonal-digit ⇒ illegal CRT component inference. Fieldwise lookup supports rectangular `T_B^rect`, not the claimed global coefficient range; `B≥max p_i` makes `T_B^rect=R_q`. Explicit ring/PIOP counterexamples recorded.
@@ -49,18 +49,21 @@ Four independent restricted scalar sumcheck repetitions against the same h PCS c
 
 - [TIGHT NEGATIVE / REAL SUBPROTOCOL CHEAT, I93] Source Definition2.1/Theorem2.6 pp7–9 and CRT §3.1 pp10–11: any shared base-scalar exceptional set injects into F_pmin, so |S|<=pmin, tight with integers 0..pmin−1. For 49-bit pmin, 19-var degree-2 single ring sumcheck Theorem2.6 grants only 42.75–43.75 soundness bits. In toy R=Z_(29*37)[X]/(X^8+1), h=0, claimed A=1, cheating first-round polynomial g1(X)=X and later zero on r1=0 accepts exactly 1/29 over maximal scalar S. This is an explicit false *new aggregate check*, NOT a compiled attack on original vFHE. Repeat scalar challenges or high-entropy common degree<d extension basis remain possible and require separate cost. Archive: `failures/vfhe-diagonal-scalar-exceptional-set-49bit-no-go-iteration93.md`.
 
+- [CONDITIONAL SOUNDNESS PASS / PRACTICAL SOURCE COST NEGATIVE, I94] PI authorized one narrow scalar amplification test after I93 review. A single restricted-scalar batched aggregate check has error ≤(1+2ell)/|S|, and with p_min≥2^48, ell19, **FOUR independently resampled** rho mixing vectors and sumcheck coordinates yield ≤(39/2^48)^4 < 2^-170.85 conditional ideal IOP error. THREE only guarantee about 128.14 bits, no meaningful other-error budget. Reusing SAME rho across all four lets a false vector cancel and makes later Πsum statements true; explicit toy R=Z_(29·37) h=0,A1, first-round g1=ρ X gives shared-rho 4fold success ~0.034484 while independent rho/r gives (57/841)^4≈2.1e-5. No SNARK forgery. Fourfold source F.2 means 4 ring evaluations or 4μ CRT-field evaluation phases, testing reused; uncompressed raw v' alone is 150–200MiB (if m_B256) or 600–800MiB (if m_B1024), before encoded columns/Merkle. Conditional packing, not benchmark or universal lower bound. t_mask328 gives ≤2^-136 screening only; t_PCS per component still unverified. See `findings/vfhe-fourfold-scalar-sumcheck-amplification-cost-iteration94.md`.
+
 ## MAIN OBSTRUCTION
-[HUMAN_REVIEW] I88–91 gave conditional bounded-public-A same-h batching; I92 found thousands of source native CRT-field Brakedown evaluation costs; I93 rules out ONE shared-scalar-only high-security sumcheck. Remaining choices are amplification with more ring PCS openings or higher-entropy extension challenge evaluations; real cost, FS security, privacy, c=5 packing and novelty remain unproved. No complete repair.
+[HUMAN_REVIEW] I88–91 conditional public-A repair is algebraically coherent and single batched ring Πsum/PCS opening exists using high-entropy native challenges; I92 shows source Brakedown is μ-fold with very large evaluation data; I93 scalar one-shot fails 128-bit; I94 independently repeated scalar approach passes ideal PIOP error but requires four expensive ring openings and large conditional source F.2 vector payloads. No demonstrated practical verifier gain. Crucial unproved c=5 digit packing, actual PCS proof times, public A privacy/VO, source correctness/FS and full security/novelty persist.
 
 ## OPEN UNCERTAINTY
 Latest official PDF SHA/version; full authors' optimized protocol/PCS/Fiat–Shamir implementation; deployed or secure-parameter effect; complete repair/soundness/privacy/cost proof; novelty relative to dual-PCS/CP-NIZK. **No authors contacted. User says DO NOT SEND EMAIL; no outreach/draft/public disclosure without explicit new permission.**
 
 ## NEXT_ACTION — HUMAN_REVIEW DECISION
-PI choice A: authorize ONE I94 minimal test of FOUR independently challenged scalar sumchecks on the same h with source Brakedown cost and full soundness budget. PI choice B: archive this public-A repair route as currently costly/unproven and pivot to another FHE research hole. Do not auto-continue or contact authors.
+Recommend PI archive **this specific bounded-public-A direct-Brakedown repair branch** as cost-unsuitable/unproven and redirect research to another FHE hole; preserve the original vFHE CRT lookup failure audit. If PI prefers continuation, require ONE tightly scoped quantitative optimized-PCS hypothesis with convincing ≥10× gain and concrete validation conditions, not indefinite adjacent iterations. Do not pivot/archive broader FHE direction or contact authors without PI decision.
 
 ## RELEVANT FILES
 - Protocol/start: `RESEARCH_PHILOSOPHY.md`, `AGENT.md`, `START_RESEARCH_SESSION.md`.
-- Last I93: `failures/vfhe-diagonal-scalar-exceptional-set-49bit-no-go-iteration93.md`.
+- Last I94: `findings/vfhe-fourfold-scalar-sumcheck-amplification-cost-iteration94.md`.
+- I93: `failures/vfhe-diagonal-scalar-exceptional-set-49bit-no-go-iteration93.md`.
 - I92: `findings/vfhe-rankone-batched-brakedown-field-cost-and-security-budget-iteration92.md`.
 - I91: `findings/vfhe-batched-public-A-sumcheck-single-opening-iteration91.md`.
 - I90: `findings/vfhe-paper-medium-circuit-no-wrap-feasibility-iteration90.md`.
@@ -82,4 +85,4 @@ PI choice A: authorize ONE I94 minimal test of FOUR independently challenged sca
 - UNSENT report/draft: `findings/vfhe-confidential-pi-review-package-iteration74.md`, `findings/vfhe-confidential-author-inquiry-draft-iteration75.md`.
 - PARKED RIG: `logs/rig-state-2026-10-12-pre-vfhe-handoff.md`.
 
-STATUS: **HUMAN_REVIEW** after I93 FAIL direct common-scalar single-run shortcut; vFHE repair remains active but no new hypothesis is launched without PI decision. No complete repaired SNARK, compiled original forgery or novelty. No author contact/public disclosure authorized.
+STATUS: **HUMAN_REVIEW** after I94 PASS conditional soundness amplification but FAIL direct F.2 cost competitiveness. PI chooses archive/pivot or narrowly budgeted improved PCS hypothesis. No complete repaired SNARK, original compiled forgery or novelty. No author contact/public disclosure authorized.

@@ -8,13 +8,13 @@ ARCHIVED SPECIFIC BRANCH: GL generic BigSwitch; see `failures/gl-generic-bigswit
 Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO 2025, ePrint **2025/286**, especially §4.3 / Theorem 4.8 / Appendix E.2 (CRT digit lookup), §4.1–4.2 (CKKS rescale and ΠAC), and **§5 componentwise Brakedown polynomial commitments**.
 Research MCP mirror: 52pp PDF SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, mirrored 2026-04-28 after 2026-02-16 official revision; **latest official binary VERSION_UNVERIFIED**.
 
-LAST COMPLETED ITERATION: **82 (2026-10-12)**. Evaluation-only masked Brakedown opening FAIL hidden cross-domain link; see I82 archive.
+LAST COMPLETED ITERATION: **83 (2026-10-12)**. Source privacy/ZK requirements clarified; see I83 finding.
 
 ## CURRENT QUESTION
-Does the original vFHE security model actually require zero-knowledge/hiding of each native Brakedown evaluation and CRT aggregate, or is that a stricter constraint introduced in our proposed repair? Clarify before investing in extensive ZK PCS redesign.
+For one concrete §3–§4.1 CKKS ciphertext-maintenance range-check witness, is the proposed canonical integer aggregate A efficiently derivable from the public ciphertext/computation trace and independent of client-secret state, so that publicly authenticating it remains consistent with the source's VC client-input IND-CPA model (including verification-oracle security)?
 
 ## PRIMARY HYPOTHESIS — NEXT, NOT YET TESTED
-Source §2.2 / §5 may define only commitment binding / knowledge soundness and public polynomial evaluations rather than zero knowledge. If the *intended application privacy* still requires keeping witness-dependent CRT digit aggregates hidden, merely dropping ZK is not a valid workaround. The next iteration is one source-backed security-goal audit, NOT a new repair proposal.
+At least one native CKKS rescale/rounding range-check witness h is computed solely from public HE ciphertexts and server-public computation operations, so a publicly opened exact integer aggregate of h may not demand full ZK. FALSIFIER: actual witness requires client-private plaintext/randomness or secret-key-dependent verification behavior, OR a public aggregate leaks information not simulatable from ciphertext/public transcript. This is a concrete source-level provenance check, not authorization to claim privacy or soundness without proof.
 
 ## CURRENT EVIDENCE
 - [FACT/SOURCE + DERIVED, I59–70] Audited revised-looking proof uses an invalid diagonal-digit ⇒ illegal CRT component inference. Fieldwise lookup supports rectangular `T_B^rect`, not the claimed global coefficient range; `B≥max p_i` makes `T_B^rect=R_q`. Explicit ring/PIOP counterexamples recorded.
@@ -27,18 +27,21 @@ Source §2.2 / §5 may define only commitment binding / knowledge soundness and 
 
 - [NEGATIVE / SOURCE + EXACT TEST, I82] Appendix F.2 native Brakedown checks can authenticate hypothetical masked w=q1(U_f+U_z) when a separate mask matrix is bound, but those equations never link the hidden original <q1U_f,q2> to an independent external canonical C_u. Toy F101/F211 satisfies both independent checks while native y=0 and external u=1. Also the original testing phase exposes v=rU_f, so evaluation-only masking cannot yield general ZK. This merely reestablishes I77–78 independent-commitment obstruction for a concrete masked interface; not an original-protocol forgery. See `failures/vfhe-masked-brakedown-evaluation-unlinked-hidden-residue-iteration82.md`.
 
+- [POSITIVE SOURCE SCOPE / CONDITIONAL PRIVACY, I83] ePrint 2025/286 §2.2 Definition 2.4, Appendix D.1–D.2 definitions specify soundness, knowledge soundness, PCS binding, succinctness but not proof zero-knowledge. Appendix C Definition C.4 specifies IND-CPA privacy of client plaintext against server *with verification oracle access*, not arbitrary witness/model secrecy. §2.2 p9/Appendix F.2 p51 explicitly transmit polynomial evaluations and v=rU_f, v'=q1U_f. Therefore universal hiding of A/u was a stricter assumption imposed in I77–82, not a formal original requirement. Public A might be admissible if efficiently simulatable from already visible ciphertexts, with VO behavior secured separately; witness provenance unverified. This does NOT repair CRT soundness or authorize leaking server-private model u. See `findings/vfhe-original-privacy-not-proof-zk-iteration83.md`.
+
 ## MAIN OBSTRUCTION
-[OPEN] No verified efficient cross-characteristic, knowledge-sound interface `C_{u_k} ↔ field PCS(Σα_i h_{k,i})`. Direct DualPCS and masked-only Brakedown reuse both fail to create the link; current proposed additional hiding/ZK requirement must first be checked against source/application security model. Non-native full verifier emulation may negate efficiency.
+[OPEN] No verified efficient cross-characteristic, knowledge-sound interface binding an **externally certified exact integer aggregate** A to original field PCS evaluations. Source did NOT require a ZK proof transcript or hidden A universally; conditional public-A design may remove one self-imposed cost, but still needs proof of exact pre-committed integer sum and its native field evaluations. Before building, verify provenance/public visibility of the relevant CKKS witness and preservation of VC IND-CPA under verification oracle. Direct DualPCS / masked-only Brakedown reuse fails for separate binding reasons.
 
 ## OPEN UNCERTAINTY
 Latest official PDF SHA/version; full authors' optimized protocol/PCS/Fiat–Shamir implementation; deployed or secure-parameter effect; complete repair/soundness/privacy/cost proof; novelty relative to dual-PCS/CP-NIZK. **No authors contacted. User says DO NOT SEND EMAIL; no outreach/draft/public disclosure without explicit new permission.**
 
-## NEXT_ACTION — ONE DECISIVE TEST (I83)
-Read ePrint 2025/286 §2.2 and §5 / Appendix F source requirements. Identify whether published vFHE promises ZK/hiding of native evaluation and what data is public; compare with application-level ciphertext privacy. Decide whether hiding A/u is genuinely necessary for a faithful soundness repair or an optional stronger requirement. Do not assume that absence of formal ZK implies safe disclosure of plaintext-dependent witness data. Report precise source passages and threat-model boundary before any more PCS constructions.
+## NEXT_ACTION — ONE DECISIVE TEST (I84)
+Read original ePrint 2025/286 §3 / §4.1 relevant CKKS rescaling and range-check source passages. Trace ONE concrete rounding/remainder witness h: what actual inputs determine it, which actors have access to the necessary ciphertext/moduli/keys, whether h and A are efficiently generated from the ciphertext/computation public to adversarial server, and whether publication changes verifier-oracle or client-private information beyond the current IND-CPA game. Falsify disclosure safety if it needs unknown client private state, decryption, or yields a new secret-key-dependent oracle. Do not implement new ZK/PCS/link protocols or pick multiple witnesses this iteration.
 
 ## RELEVANT FILES
 - Protocol/start: `RESEARCH_PHILOSOPHY.md`, `AGENT.md`, `START_RESEARCH_SESSION.md`.
-- Last I82: `failures/vfhe-masked-brakedown-evaluation-unlinked-hidden-residue-iteration82.md`.
+- Last I83: `findings/vfhe-original-privacy-not-proof-zk-iteration83.md`.
+- I82: `failures/vfhe-masked-brakedown-evaluation-unlinked-hidden-residue-iteration82.md`.
 - I81: `failures/vfhe-native-field-pedersen-ipa-49bit-group-security-iteration81.md`.
 - I80: `failures/vfhe-brakedown-dualpcs-cross-characteristic-interface-iteration80.md`.
 - I79: `failures/vfhe-hidden-aggregate-carry-wrap-even-when-P-above-T-iteration79.md`.
@@ -49,4 +52,4 @@ Read ePrint 2025/286 §2.2 and §5 / Appendix F source requirements. Identify wh
 - UNSENT report/draft: `findings/vfhe-confidential-pi-review-package-iteration74.md`, `findings/vfhe-confidential-author-inquiry-draft-iteration75.md`.
 - PARKED RIG: `logs/rig-state-2026-10-12-pre-vfhe-handoff.md`.
 
-STATUS: **ACTIVE vFHE repair; I82 FAIL evaluation-only masked Brakedown link; I83 source privacy/security-goal audit NEXT**. No complete ZK repair, full SNARK forgery, or general impossibility result. No author contact/public disclosure authorized.
+STATUS: **ACTIVE vFHE repair; I83 PASS source scope (VC IND-CPA+VO, not proof-ZK); I84 one-witness provenance audit NEXT**. Exact cross-CRT soundness repair and safe public-A design remain OPEN. No complete ZK repair, full SNARK forgery, or general impossibility result. No author contact/public disclosure authorized.

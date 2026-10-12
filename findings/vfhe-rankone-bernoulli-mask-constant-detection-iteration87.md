@@ -1,0 +1,52 @@
+# Iteration 87 — Rank-one Bernoulli masks: tight 1/4 discrepancy detection, O(sqrt m) mask evaluation, missing exact-integer linkage
+
+Date: 2026-10-12
+Target unchanged: Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO 2025, IACR ePrint 2025/286 §4.3 Theorem 4.8 / Eq(21)–(23), §5 PCS. The candidate mask and its conclusions are OUR algebraic test, not a feature or theorem of the source.
+**STATUS: PASS** for scoped anti-concentration (≥1/4 per postcommit sample for any fixed nonzero field discrepancy) and rank-one-mask MLE evaluation O(sqrt m). **FAIL AS A COMPLETE REPAIR**: exact integer/public-A certification and same-precommitted-h cross-CRT PCS linkage not supplied; actual total cost not established. No novelty claim, no real vFHE SNARK proof/forgery. NO AUTHOR CONTACT.
+
+## Read before test
+- Read repository `STATE.md` (I86 last; I87 NEXT), `AGENT.md`, I86 `findings/vfhe-public-aggregate-vs-mle-evaluation-rank-obstruction-iteration86.md`.
+- BEFORE selecting the hypothesis, reviewed all I64–68 archive branches:
+  - I64 `failures/vfhe-shared-integer-raw-spotcheck-not-succinct.md`: checking t raw indices detects 1 bad digit only with probability t/m.
+  - I65 `failures/vfhe-cross-characteristic-rs-encoding-noncommutation.md`: external finite-field RS codeword followed by reduction to p_k fails exact honest compatibility.
+  - I66 `findings/vfhe-bounded-integer-code-crt-compatible-distance.md`: dense common integer code yields restricted constant relative Hamming distance, naive quadratic encoding and missing native commitment bridge.
+  - I67 `failures/vfhe-character-modulated-hadamard-low-distance.md` and I68 `findings/vfhe-random-sign-wht-affine-ramsey-distance-obstruction.md`: fixed stacks of WHT masks have too-low restricted uniform coding distance.
+  - I78 `failures/vfhe-batched-crt-aggregate-without-shared-integer-opening.md`: arbitrary postchallenge CRT-composed A_fake always matches unrelated native modular aggregates; **conditional** fully-certified external exact integer A with full independent random Boolean mask catches fixed discrepancies with probability ≥1/2, but proving the link is the hard part. This I87 rank-one test trades detection rate for cheaper mask description, not novelty.
+- Original paper source already grounded: §4.3 p20–24 gives `h~` digit oracle, §5 pp25–26 and Appendix F pp50–51 fieldwise Brakedown PCS, Appendix D.3 pp43–44 compile oracles to point openings. Primary 52pp mirrored full PDF SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`; latest official binary **VERSION_UNVERIFIED**. Mathematical I87 lemma independent of unresolved official version.
+
+## ONE primary hypothesis and test
+[HYPOTHESIS, PASS NARROW] Let digit positions be reshaped to a×b matrix (m=ab), with a,b as balanced powers of two. Sample u∈{0,1}^a, v∈{0,1}^b independently and uniformly AFTER all pertinent digit commitments, define rank-one mask alpha_(i,j)=u_i v_j. For any fixed nonzero discrepancy Δ∈F^{a×b}, the masked native sum u^T Δ v≠0 with probability ≥1/4, while the MLE of alpha at a verifier point evaluates in O(a+b)=O(sqrt m) native operations (balanced layout), compared with O(m) for arbitrary explicitly materialized masks.
+[FALSIFIER] Any nonzero Δ with detection probability <1/4, or failure of alpha MLE factorization; or that coefficient arithmetic fundamentally requires O(m) merely to *evaluate alpha*.
+[ONE DECISIVE TEST] Elementary two-stage pivot conditioning proof and exhaustive F_7, 2×2 nonzero Δ check (plus MLE factorization sanity). Do NOT conflate with a full public-A proof, new coding scheme, universal cost result or same-commitment transcript attack.
+
+## Tight anti-concentration proof over arbitrary field (including extension fields)
+Take nonzero Δ∈F^{a×b}. Pick one nonzero row w of Δ. For v uniform independent Bernoulli bits, fix all v entries except a pivot j where w_j≠0. The two possible values w·v=C and C+w_j differ, so at most one is 0. Thus Pr[Δ v≠0]≥Pr[w·v≠0]≥1/2. For each nonzero z=Δv, fix all bits u except pivot i with z_i≠0; then Pr[u·z≠0|v]≥1/2. Hence
+  `Pr_{u,v}[u^TΔv≠0]≥(1/2)*(1/2)=1/4.`
+Bound is TIGHT for a one-entry Δ (must sample both corresponding Bernoulli bits as 1).
+If adversarial Δ is not bound before u,v, the bound DOES NOT APPLY. It detects disagreement against a PRECOMMITTED reference or between precommitted field-specific vectors, not a CRT relation by itself.
+Under independent repetitions t, conditional on all witness vectors fixed before ALL masks, `Pr[all miss]≤(3/4)^t`. It needs `ceil(128/log2(4/3))=309` repetitions for this upper bound ≤2^-128, far more than I78's bound of 128 for unrestricted full random Boolean masks. Security-error amplification of a complete protocol may have separate losses.
+
+## Efficient mask-MLE evaluation (NOT masked aggregate evaluation itself)
+Let m=2^d, split d=d1+d2 with a=2^d1, b=2^d2 close to √m (for d odd a/b differ by factor2). Define Boolean-index MLE `alpha~(X,Y)=Σ_(i,j)u_i v_j χ_i(X)χ_j(Y) = u~(X)*v~(Y)`. Given explicit public u,v, the verifier computes `u~(r_X)` with O(a) operations, `v~(r_Y)` with O(b), and multiplies: O(a+b)=O(√m). Mask generation/communication is a+b random bits, NOT O(log m). This is valid in each native field because 0/1 embed as elements. It does NOT imply `Σalpha h` equals a SINGLE point opening of `h~`, a shortcut ruled out I86; a separate sumcheck for Boolean-grid inner product may be needed. Native sumchecks establish relations MODULO each field only; exact cross-prime integer lifting/PCS binding remains independent.
+For illustrative m=32768, split a=128,b=256, one mask uses 384 bits, 309 rounds use 118,656 bits (14,832 bytes), before any native sumcheck / PCS opening / privacy costs. Original Pi_range (§4.3 p24) verifier complexity O(log m+log β) with 25 PIOP queries for the original range proof, so an O(√m) mask-cost is SUBLINEAR but a significant asymptotic regression. NOT a comparable end-to-end benchmark.
+
+## Exact exhaustive sanity
+Executed `/mnt/data/iteration87_vfhe_rankone_mask_anticoncentration.py`, SHA256 `7ddd0e6623b1baace60fe63aed3e17fbb2faf7899e2e15a76648d19cf492d7c0`.
+Result `/mnt/data/iteration87_vfhe_rankone_mask_results.json`, SHA256 `c99d6165a612937cf547ec6dd623e31ffd9914d5d2c12995dca15a86a731ce53`.
+Field F7; exhaustively all 7^4−1=2400 nonzero 2×2 discrepancy matrices and all 4×4=16 ordered pairs (u,v). Minimum number of detecting masks exactly 4 (1/4), tight; histogram detections 4:54, 6:216, 7:540, 8:1080, 9:510. Independent toy check `alpha~(x,y)=u~(x)v~(y)` at x3,y4 in F7 gives 6 on both sides.
+This is NOT a cryptographic security experiment; extension-field theorem follows algebraically from pivot proof, not F7 enumerations.
+
+## Obstruction, conditional opening, and ONE new hypothesis for next iteration
+[NEGATIVE] Existing PCS doesn't turn a direct native point opening into this masked aggregate for free (I86). A sumcheck over `h~*alpha~` could in principle authenticate native `S_k=Σu_i v_j h_k(i,j)` using h evaluations; that is NOT yet a cross-characteristic proof of canonical integer A.
+[OPEN, HIGH INFORMATION FOLLOW-UP] I78's A_fake CRT patch assumes the prover may announce an arbitrary CRT/ring A after challenge. What if the verifier instead insists on a **PUBLIC CANONICAL SCALAR INTEGER A∈[0,T]**, T=m(β−1), with **T<p_min** and checks each native CRT-field aggregate equals embedded A through authenticated native sumchecks? Given native componentwise lookup soundness so that each h_k(i,j) lies literally in {0,...,β−1}⊂F_{p_k}, each true masked integer sum S_k lies in [0,T] without wrap. Thus every field aggregate has a unique integer lift there; one bounded A matching all components would imply their actual integer sums coincide, regardless of A being chosen AFTER the mask. Because reference h_1 and all other h_k are PRECOMMITTED, a fixed nonzero discrepancy would be detected by the rank-one test ≥1/4 in a round (or full random Boolean mask ≥1/2 as in I78). This may avoid the SEPARATE external hidden b commitment assumed in I78! It remains HYPOTHESIS: source-level ring sumcheck, bounded literal scalar A certification, mask challenge ordering, and full lookup relation must be checked before any repair claim.
+   * Crucial condition `T<p_min` — no automatic guarantee from β<p_min alone. The actual m=2^ell*N*c could be huge. Other β/m regimes require a different no-wrap treatment.
+   * If mask derived/announced before h commitments, malicious h could adapt; if sumcheck and PCS are not to the SAME h oracle or only post-hoc CRT value produced, cheating possible.
+   * Public integer A may leak the prover/server's auxiliary witness to verifier, though vFHE's declared privacy game protects CLIENT INPUT against SERVER (I83), not full proof ZK. Privacy under VO remains unproved.
+   * The conditional strategy is NOT prior-art vetted beyond existing I64–68/I78 and source, NOT proof of soundness, NOT a complete PIOP and NOT claimed novel.
+[PRIOR ART] Binary random inner-product tests, elementary anti-concentration and tensor-product MLE are well-known; no standalone research contribution.
+
+## End of Iteration 87
+STATUS: **PASS** tight ≥1/4 native discrepancy detection and O(√m) mask MLE evaluation; **UNCLEAR** integer aggregate proof/complete privacy/succinctness.
+RESULT: Rank-one Bernoulli mask avoids I86's arbitrary-tensor mask-evaluation cost at the expense of a worse single-round probability. For 128-bit worst-case aggregate screening this requires 309 independent masks and O(309√m) explicit mask operations, potentially worse than original O(log m) verifier. Existing I64–68 coding and I78 unbound CRT-patching no-gos remain intact.
+NEXT_ACTION: I88 ONE decisive test of the bounded PUBLIC INTEGER A candidate: under T=m(β−1)<p_min and precommitted per-component scalar-digit h, prove or falsify that a verifier-announced/checked A∈[0,T] plus native per-component sumcheck claims of Σalpha h=A blocks I78 postchallenge CRT patching WITHOUT any separately committed external b. Inspect I78 and primary source §4.3/D.3 for challenge/commit ordering. Try minimal CRT counterexample first; no full implementation or novelty claim. Compare regular full Bernoulli vs rank-one masking costs only after this logic check.
+STATE_UPDATE: YES — material new conditional avenue is removal of an external integer-vector commitment via bounded PUBLIC A; THIS avenue is not yet verified; the actual I87 results are merely anti-concentration and cost.

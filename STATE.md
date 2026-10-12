@@ -8,13 +8,13 @@ ARCHIVED SPECIFIC BRANCH: GL generic BigSwitch; see `failures/gl-generic-bigswit
 Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO 2025, ePrint **2025/286**, especially §4.3 / Theorem 4.8 / Appendix E.2 (CRT digit lookup), §4.1–4.2 (CKKS rescale and ΠAC), and **§5 componentwise Brakedown polynomial commitments**.
 Research MCP mirror: 52pp PDF SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, mirrored 2026-04-28 after 2026-02-16 official revision; **latest official binary VERSION_UNVERIFIED**.
 
-LAST COMPLETED ITERATION: **88 (2026-10-12)**. Conditional bounded public integer A glues native committed CRT digit sums with no extra vector commitment if T=m(beta−1)<pmin; see I88 finding.
+LAST COMPLETED ITERATION: **89 (2026-10-12)**. PASS scoped same-h virtual ring sumcheck interface under I88 no-wrap, not complete protocol; see I89 finding.
 
 ## CURRENT QUESTION
-Can ONE additional ring sumcheck authenticate a PUBLIC bounded integer A as the masked sum of the SAME originally committed h digit oracle across all CRT components, with h committed before the mask challenge, and be compiled succinctly using original PIOP and PCS interfaces?
+Does the paper's actual §6 RNS/lookup configuration satisfy the strict extra no-wrap parameter T=m(beta−1)<pmin necessary for the new public bounded-A integer-coherence check, at the total batched h-oracle size m, without a prohibitive increase in verifier costs?
 
-## PRIMARY HYPOTHESIS — NEXT, NOT YET TESTED (I89)
-In the strict no-wrap regime T=m(beta−1)<pmin, the existing Rq sumcheck plus original h evaluation PCS may authenticate sum alpha_j h_j=A*1_Rq without separately committing a cross-characteristic integer vector. Need verify challenge order, same-oracle binding, and exact verifier work from primary source before claiming protocol compatibility or efficiency.
+## PRIMARY HYPOTHESIS — NEXT, NOT YET TESTED (I90)
+At least one original §6 CKKS/lookup instance satisfies T=2^ell*N*c*(beta−1)<pmin, with beta=B^(1/c) and same committed h oracle, so the I88–89 public-A branch is not purely artificial. Cheapest falsifier: calculate T exactly from one explicitly grounded published configuration and show T≥pmin or that m is wrong for the batched workload. No security or performance claim yet.
 
 ## CURRENT EVIDENCE
 - [FACT/SOURCE + DERIVED, I59–70] Audited revised-looking proof uses an invalid diagonal-digit ⇒ illegal CRT component inference. Fieldwise lookup supports rectangular `T_B^rect`, not the claimed global coefficient range; `B≥max p_i` makes `T_B^rect=R_q`. Explicit ring/PIOP counterexamples recorded.
@@ -39,18 +39,21 @@ In the strict no-wrap regime T=m(beta−1)<pmin, the existing Rq sumcheck plus o
 
 - [CONDITIONAL PASS + BOUNDARY, I88] Ideal prechallenge native digit commitments with each h_k,j∈{0,...,beta−1}, postcommit Bernoulli alpha, and PUBLIC integer A∈[0,T], T=m(beta−1)<pmin, plus authenticated SAME-h native sums Σalpha h_k=A imply literal integer sums S_k=A in all CRT components. An extra precommitted external integer vector is not algebraically necessary; inconsistent fixed components are detected with probability ≥1/2 per full Bernoulli mask. Exact p29,p41,m3,beta2 enumeration 56 ordered distinct vector pairs×8 masks verifies max 1/2 acceptance and excludes I78 A_fake493 via range bound T3. Stronger T<pmin is essential and not implied by Theorem4.8 beta<pmin and m<pmin: p29,p37,m16,beta4,T48 permits distinct native sums29/0 both matching A0 under all-ones mask. No native sumcheck protocol constructed; verifier cost/privacy unresolved. See `findings/vfhe-bounded-public-aggregate-iteration88.md`.
 
+- [POSITIVE SOURCE INTERFACE / CONDITIONAL, I89] Primary §2.2 pp8–9 explicitly permits **virtual oracles**, Πsum over ring Rq (Theorem2.6) for per-variable degree≤2, and terminal evaluation via component oracles. §4.3 p21 already shares original h across Πdecomp and Πβrange; Appendix D.3 pp43–44 compiles oracle queries into PCS evaluations. Appending ONE Πsum on virtual g(X)=alpha~(X)h~(X) with prechallenge committed h, public Bernoulli alpha, postchallenge bounded integer A, and final **same h PCS opening** is PIOP-interface compatible: Σ_{Boolean}g=A·1_Rq; degree2; error≤2d/|S| before composition losses. Exact p29/p37,m4,beta2,T4 toy has honest g1(X)=1−X, g2(Y)=Y−1 at r=(2,3) and same-oracle terminal product2; CRT-mixed h sum407 cannot equal A∈[0,4]. No compiled PCS/FS security, privacy, or efficiency proof. See `findings/vfhe-same-h-virtual-ring-sumcheck-iteration89.md`.
+
 ## MAIN OBSTRUCTION
-[OPEN] I88 proves only a CONDITIONAL integer-lift link: public A needs T=m(beta−1)<pmin, valid scalar digits, and authenticated native masked sums from the SAME prechallenge h commitments. Still missing a source-level PIOP/sumcheck transcript and knowledge-sound PCS linkage, challenge ordering, efficiency and client-input IND-CPA with verification-oracle argument. I87 rank-one masks use O(√m) public evaluation cost and 309 repetitions for λ128. Original CRT rectangular lookup gap remains.
+[OPEN] Algebraic CRT integer coherence and original-PCS **PIOP interface** are now conditionally grounded (I88/I89): one postcommit bounded public A, one virtual degree-2 ring sumcheck per mask, original committed h oracle. Remaining blockers are (i) paper §6 parameter T=m(beta−1)<pmin feasibility; (ii) 128-bit repeated mask/PCS cost vs original O(log m) PIOP verifier; (iii) sound Fiat–Shamir order and full PIOP/PCS extraction; and (iv) public A model/client privacy including verification oracle. Original CRT rectangular lookup gap remains; no full repair or novelty.
 
 ## OPEN UNCERTAINTY
 Latest official PDF SHA/version; full authors' optimized protocol/PCS/Fiat–Shamir implementation; deployed or secure-parameter effect; complete repair/soundness/privacy/cost proof; novelty relative to dual-PCS/CP-NIZK. **No authors contacted. User says DO NOT SEND EMAIL; no outreach/draft/public disclosure without explicit new permission.**
 
-## NEXT_ACTION — ONE DECISIVE TEST (I89)
-Read source §2.2 sumcheck protocol, §4.3 pp20–24 shared digit oracle h, Appendix D.3 pp43–44 compiler. Attempt ONE explicit transcript for an appended claim Σ_{j in Boolean grid} alpha_j h(j)=A (in Rq) using existing Pi_sum, with original h commitment BEFORE postcommit mask alpha and bound A∈[0,T], T<pmin. Check whether terminal sumcheck uses an evaluation opening of the SAME h, and challenge generation / native field soundness. Falsify source-compatible low-overhead integration by a missing oracle binding, ordering inconsistency, or verifier evaluation cost; do NOT claim full SNARK/privacy/novelty or implement protocol yet.
+## NEXT_ACTION — ONE DECISIVE TEST (I90)
+Inspect primary ePrint 2025/286 §6 pp26–29, Table 2 and original §4.1/§4.3 batching to extract ONE concrete published parameter choice of N, RNS prime bit length/pmin, B=2^b, c, beta=2^(b/c), and exact global digit oracle length m=2^ell*N*c. Calculate T=m(beta−1) and test T<pmin for the FULL batch (not a manually tiny subset). If crucial parameters are unspecified, mark EVIDENCE MISSING rather than inventing them, then select the cheapest symbolic threshold. Do not expand to complete proof or new protocol; no outreach.
 
 ## RELEVANT FILES
 - Protocol/start: `RESEARCH_PHILOSOPHY.md`, `AGENT.md`, `START_RESEARCH_SESSION.md`.
-- Last I88: `findings/vfhe-bounded-public-aggregate-iteration88.md`.
+- Last I89: `findings/vfhe-same-h-virtual-ring-sumcheck-iteration89.md`.
+- I88: `findings/vfhe-bounded-public-aggregate-iteration88.md`.
 - I87: `findings/vfhe-rankone-bernoulli-mask-constant-detection-iteration87.md`.
 - I86: `findings/vfhe-public-aggregate-vs-mle-evaluation-rank-obstruction-iteration86.md`.
 - I85: `findings/vfhe-fixed-input-output-rescale-remainder-uniqueness-iteration85.md`.
@@ -67,4 +70,4 @@ Read source §2.2 sumcheck protocol, §4.3 pp20–24 shared digit oracle h, Appe
 - UNSENT report/draft: `findings/vfhe-confidential-pi-review-package-iteration74.md`, `findings/vfhe-confidential-author-inquiry-draft-iteration75.md`.
 - PARKED RIG: `logs/rig-state-2026-10-12-pre-vfhe-handoff.md`.
 
-STATUS: **ACTIVE vFHE repair; I88 PASS conditional bounded-public-A integer consistency; I89 same-h native sumcheck interface NEXT**. Strict T<pmin, binding/Fiat–Shamir, privacy and cost remain OPEN. No complete repair, compiled SNARK forgery, or novelty claim. No author contact/public disclosure authorized.
+STATUS: **ACTIVE vFHE repair; I89 PASS conditional same-h virtual sumcheck PIOP interface; I90 published-parameter no-wrap test NEXT**. Fiat–Shamir/PCS soundness, public-A privacy and cost OPEN. No complete repaired SNARK, compiled forgery or novelty. No author contact/public disclosure authorized.

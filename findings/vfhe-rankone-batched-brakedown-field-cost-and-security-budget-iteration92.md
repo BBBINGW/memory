@@ -32,9 +32,9 @@ Tight I87 mask miss ≤(3/4)^t. At t=309 it is 2^-128.2466, leaving very little 
 To give ALL μ≤8192 components together ≤2^-136 PCS error by naive union bound, each must have error ≤2^-149 (assuming one additional proof per factor and no extra testing/lookup errors). Whether original Brakedown can use a suitable column-sample count is an independent analysis; the paper's 1020-column illustrative number targets **different** N,ell and should NOT be transplanted. Original soundness and privacy losses must be budgeted separately; **328 masks alone still do not certify complete 128-bit security**.
 
 ## Reproducible exact test and provenance
-Script /mnt/data/iteration92_vfhe_batched_rankone_cost_security.py, SHA256 7ed82ba2a8d12c65d9e365eab4ced7965b3a65a31752b3c8526936957b1005a0.
-JSON /mnt/data/iteration92_vfhe_batched_rankone_cost_security_results.json, SHA256 b8b8e27fd5dca2d8706e79f05bbacf6f4c36a1fe5a3ecbe1b9cfdeaf4c4b6aae.
-Exact int/float assertions PASS; **not a Brakedown implementation, proof-size benchmark, or a secure PIOP/SNARK demonstration**. Note the script uses 24 bytes as an optimistic lower floor per native field symbol rather than fixed-length serialization. All estimations are conditional on a source-style uncompressed F.2 PCS and the stated maximum-capacity envelope.
+Script /mnt/data/iteration92_vfhe_batched_rankone_cost_security.py, SHA256 3b3ca03039221988e70df0d45a072e0ee601248d26a925a434c20ddb4d703ca9.
+JSON /mnt/data/iteration92_vfhe_batched_rankone_cost_security_results.json, SHA256 8f2f92dd1c2a1060e18431963c7951226edc7ca3e385a81452ab9b13959b654e.
+Exact int/float assertions PASS; **not a Brakedown implementation, proof-size benchmark, or a secure PIOP/SNARK demonstration**. Note the script records both an optimistic 24-byte information floor and the correct 25-byte minimum for independently fixed-length serialized field elements. All estimations are conditional on a source-style uncompressed F.2 PCS and the stated maximum-capacity envelope.
 
 ## End of iteration 92
 STATUS: **FAIL** cost/security simplification '309 masks and one ring opening is cheap and 128-bit secure'; **PASS** conditional CRT-F.2 decomposition and corrected budget arithmetic; **UNCLEAR** real implementation size/overall security and practical viability. No generic impossibility result.

@@ -1,20 +1,21 @@
-# FHE Research State — After Iteration 120
-Checkpoint: **2026-10-12, after Iteration 120**.
+# FHE Research State — After Iteration 121
+Checkpoint: **2026-10-12, after Iteration 121**.
 
 ## CURRENT TARGET
-**None ACTIVE.** Most recent target: Guimarães–Pereira, *Fast Amortized Bootstrapping with Small Keys and Polynomial Noise Overhead*, CCS 2025, ePrint **2025/686**, I120. A precise **asymptotic uniform-sparse-key rejection-sampling obstruction** has been established, but is **HUMAN_REVIEW**, not a concrete benchmark/correctness failure or verified novel solution. Primary source: full 34-page ePrint mirror PDF, SHA256 `84b694a59fe50dc0062ff9f24bd26f1a9cdc335b5ef9becae36aad83362cd335`, latest `VERSION_UNVERIFIED`.
-Previous SPRU proof-bound I119 and FEFBS numerical-provenance I117–118 branches remain PARKED.
+**None ACTIVE.** Most recent target: Guimarães–Pereira, *Fast Amortized Bootstrapping with Small Keys and Polynomial Noise Overhead*, ePrint 2025/686, I120–121 bounded-gap sparse-secret/KeyGen audit. I120's exponential uniform rejection-sampling counterfamily is preserved; I121 **KILLED the naive exact-one-per-block repair as nonnovel/same-assumption-inapplicable**, and PARKED the direct block-key adaptation. No FAB benchmark failure shown. FEFBS I117–118 and SPRU proof-bound I119 remain PARKED.
 
 ## LAST COMPLETED ITERATION
-**120**. I121 has NOT started.
+**121**. I122 has NOT started.
 
 ## CURRENT QUESTION
-**HUMAN_REVIEW:** PI decides whether a NEW hypothesis about a security-preserving bounded-gap key distribution/alternative spacing budget is worth testing, or whether to PARK this new audit and select a different structural FHE target. No ACTIVE hypothesis. Do not automatically pursue variants.
+**HUMAN_REVIEW / NO_ACTIVE_HYPOTHESIS:** Decide whether to authorize ONE narrowly specified I122 test about existing **polynomial-hardness reductions for the exact one-per-block RLWE secret** in FAB's setting (not an implementation or correctness test), or PARK this entire bounded-gap direction and select a different structural FHE question.
 
 ## PRIMARY HYPOTHESIS
-**NONE ACTIVE / PI_DECISION_PENDING.** I120 closed [HYPOTHESIS]: uniformly random fixed-Hamming-weight sparse secret keys can be rejection-sampled with polynomial expected work subject to all interior spacings < B = Θ(n/h) throughout n=Θ(λ), h=Θ(λ). **FALSE in general** by rigorous counterfamily. I119's theorem-bound hypothesis remains closed/parked.
+**NONE ACTIVE / PI_DECISION_PENDING.** I121 [NEGATIVE]: exactly-one-per-block keys solve FAB's interior maximum-gap condition but are already public prior art (SPRU §4.3); the original uniform fixed-weight distribution does NOT transfer automatically under a negligible-probability conditioning event. I120 rejection-sampling obstruction remains a valid earlier result, not a new attack.
 
 ## CURRENT EVIDENCE
+- [FACT] I121 original primary sources: block binary at-most-one including empty blocks [LMSS23, ePrint **2023/958**, §3 physical p6, mirror SHA256 `0ab8c83d5aebbbf0185e200c7c3aab10150aa4e3bad0470a839246d33954e6de`]; exactly-one-per-block already used [SPRU, ePrint **2025/651**, §4.3 p15 and security analysis §4.5 p18]. Published block-key analyses are distribution-specific and not automatically a polynomial-hardness theorem for FAB RLWE. I121 detailed note `findings/fab-block-one-per-block-prior-art-security-gate-iteration121.md`.
+- [DERIVED/NEGATIVE] I121 one structural/prior-art falsifier: n=hL, exactly one selector per block gives adjacent interior gap `j_{b+1}-j_b∈[1,2L−1]` so `B=2n/h`, O(h) direct KeyGen; however under uniform fixed-h secrets this structure occurs with probability `L^h/binom(Lh,h)=2^{−Ω(h)}` for fixed L>1 (exponent at L=16: ~1.39664h bits). Thus naive conditioning loses exponential factor and does not preserve the original distribution or establish security. NOVELTY NOT VERIFIED for any new proof.
 - [FACT] I120 original ePrint **2025/686**, §6.1–6.2 pp21–22, Appendix C pp33–34: paper uses rejection sampling to enforce bounded interior sparse-key spacing, and reports finite concrete acceptance/security loss δ. It derives amortized SAB work `O(h log B)`, and discusses setting `B=O(n/h)` to reach `O(h log(n/h))` and `O(h)` in a specified linear-h regime.
 - [DERIVED/NEGATIVE] I120 one mathematical test: `n=128t, h=8t=n/16, B=32=2n/h`, uniform size-h support. Conditional-Bernoulli counting yields
   `Pr[all consecutive interior gaps < B] ≤ (n+1)[(1-(15/16)^32)^(n/64)+2(15/16)^(n/4)] = poly(n)·exp(-Ω(n))`. Hence naive uniform rejection sampling needs exponential expected trials; **not** a refutation of the paper's finite measurements or FHE algebra. Detailed proof: `findings/fab-bounded-gap-uniform-sparse-rejection-asymptotic-iteration120.md`.
@@ -26,30 +27,31 @@ Previous SPRU proof-bound I119 and FEFBS numerical-provenance I117–118 branche
 - [NEGATIVE] No public pinned dedicated **discrete LUTGeLU n216** example or coefficients found in this author's changed-file inventory. Thus **NO demonstrated effect on published Table 3 LUTGeLU n216**, no verified published precision error, no actual encrypted benchmark run, and no proof of cryptographic novelty.
 
 ## MAIN OBSTRUCTION
-I120 identifies a **key distribution vs cost/security-reduction tension**: asymptotically constant-factor mean-gap filtering of *uniform* sparse secrets has exponentially small acceptance in a valid linear-h family. A directly sampled bounded-gap distribution or increased B may avoid keygen cost, but preserving standard sparse-RLWE security assumptions and a novel FHE frontier is NOT established. Do not confuse an asymptotic sampling observation with a practical cryptographic break. I119/I117–118 parked for earlier reasons.
+The bounded-gap keygen barrier is real for uniformly random fixed-weight supports (I120), but the obvious efficient structured sampler is **known prior art**, and the changed key distribution needs independently justified (R)LWE hardness/noise parameters. Without a nontrivial applicable reduction and measurable FAB gain, this is not a publishable FHE contribution. Earlier FEFBS/SPRU audits remain parked.
 
 ## OPEN UNCERTAINTY
-[OPEN] Can bounded-gap sparse keys be sampled efficiently with a defensible, suitably tight RLWE security reduction and meaningful overall SAB gains over known block-secret/key-switch techniques? Prior art and security model must be audited before claiming novelty. Finite Table 4 security/latency results of ePrint 2025/686 are not disputed.
-[OPEN, PARKED] Optimized SPRU circuit tight noise bound (I119); FEFBS published discrete LUTGeLU n216 coefficient provenance (I117–118); older original vFHE CRT lookup ideal-IOP discrepancy remains independently preserved, not a proven compiled forgery.
+[OPEN] Is there a rigorous reduction with **polynomial approximation factor** that establishes suitable RLWE security for exact-one-per-block secrets under FAB's sparse-polynomial ring and parameters (as opposed to concrete estimator-only 128-bit assessments)? Even if yes, is it genuinely new and improves FAB beyond existing block-key literature? HUMAN_REVIEW.
+[OPEN/PARKED] I119 tight optimized SPRU noise bound; I117–118 FEFBS LUTGeLU coefficient provenance; older original vFHE CRT lookup ideal-IOP discrepancy retained, no compiled forgery.
 
 ## NEXT_ACTION — UNIQUE GATE FOR NEXT ITERATION
-**Do not start I121 without PI decision.** One decision: (A) authorize a new falsifiable hypothesis about a security-preserving, efficiently samplable bounded-gap secret distribution (initial falsifier: stronger existing prior art or unacceptably different hardness/security), OR (B) PARK I120 and select a different FHE paper/structural claim. One hypothesis/one decisive test only. No automated research or outreach.
+**Do not initiate I122 without PI decision.** PI must either (A) authorize one primary literature/security hypothesis: does a **known formal low-approximation-factor RLWE reduction** already cover exact-one-per-block keys suitable for SAB's setting, and what assumption changes are required? First cheapest test is theorem-assumption alignment in primary sources; OR (B) PARK bounded-gap distribution and select a different FHE structural paper/claim. Do not restart sparse-SAB terminal sign I110–111 or naive block-key adaptation.
 
 ## RELEVANT FILES — READ IN NEW CHAT
 1. `START_RESEARCH_SESSION.md`, `AGENT.md`, `RESEARCH_PHILOSOPHY.md`, **this `STATE.md`**.
-2. **I120** `findings/fab-bounded-gap-uniform-sparse-rejection-asymptotic-iteration120.md`.
-3. **I119** `findings/spru-theorem1-table2-sufficient-bound-gap-iteration119.md`.
-4. `findings/fefbs-fixed-simpson38-high-harmonic-aliasing-iteration117.md`
-5. `findings/fefbs-lutgelu-216-coefficient-provenance-gate-iteration118.md`
-6. `failures/fefbs-high-degree-quadrature-benchmark-impact-unverified-parked-iteration118.md`
-7. **Exact complete prior verbose STATE**: `logs/state-pre-session-handoff-2026-10-12-iteration118.md` (preserved blob SHA `935d61d8d7e1cf23c21771223ec67dbb7d70d492`).
-8. Historical state chain `logs/state-pre-iteration115-prca-handoff.md`, `logs/vfhe-state-2026-10-12-pre-paco-handoff.md`; retrieve specific findings/failures **only if** the PI selects those topics.
+2. **I121** `findings/fab-block-one-per-block-prior-art-security-gate-iteration121.md`.
+3. **I120** `findings/fab-bounded-gap-uniform-sparse-rejection-asymptotic-iteration120.md`.
+4. **I119** `findings/spru-theorem1-table2-sufficient-bound-gap-iteration119.md`.
+5. `findings/fefbs-fixed-simpson38-high-harmonic-aliasing-iteration117.md`
+6. `findings/fefbs-lutgelu-216-coefficient-provenance-gate-iteration118.md`
+7. `failures/fefbs-high-degree-quadrature-benchmark-impact-unverified-parked-iteration118.md`
+8. **Exact complete prior verbose STATE**: `logs/state-pre-session-handoff-2026-10-12-iteration118.md` (preserved blob SHA `935d61d8d7e1cf23c21771223ec67dbb7d70d492`).
+9. Historical state chain `logs/state-pre-iteration115-prca-handoff.md`, `logs/vfhe-state-2026-10-12-pre-paco-handoff.md`; retrieve specific findings/failures **only if** the PI selects those topics.
 
 ## BRANCH STATUS / DO NOT DELETE
-**HUMAN_REVIEW pending PI:** FAB bounded-gap rejection-sampling I120 (new asymptotic barrier, no direct attack). **PARKED:** SPRU Theorem-1/Table-2 proof-bound mismatch I119 (not a practical failure). **PARKED:** FEFBS I117–118; LFBS PRCA I114–116 (`failures/lfbs-prca-source-only-layout-low-novelty-parked-iteration116.md`); Paiva incomplete-NTT key portability I112–113; sparse-SAB local terminal sign I110–111; Carousel rounding I108–109; SIMD-ALU cutoff I103–107; Nested-RNS I99–102; PaCo precision I95–98; RIG. **ARCHIVED:** GL generic BigSwitch; specific vFHE bounded-public-A/direct Brakedown repair. **PRESERVED OPEN FINDING, not ACTIVE:** original vFHE CRT lookup ideal-IOP discrepancy ePrint2025/286. All historical results retained in archives and exact STATE snapshots.
+**HUMAN_REVIEW/PARKED:** FAB bounded-gap I120–121 (I120 exponential rejection barrier retained; I121 naive exact-one-block fix already known and not same-assumption). **PARKED:** SPRU Theorem-1/Table-2 proof-bound mismatch I119 (not a practical failure). **PARKED:** FEFBS I117–118; LFBS PRCA I114–116 (`failures/lfbs-prca-source-only-layout-low-novelty-parked-iteration116.md`); Paiva incomplete-NTT key portability I112–113; sparse-SAB local terminal sign I110–111; Carousel rounding I108–109; SIMD-ALU cutoff I103–107; Nested-RNS I99–102; PaCo precision I95–98; RIG. **ARCHIVED:** GL generic BigSwitch; specific vFHE bounded-public-A/direct Brakedown repair. **PRESERVED OPEN FINDING, not ACTIVE:** original vFHE CRT lookup ideal-IOP discrepancy ePrint2025/286. All historical results retained in archives and exact STATE snapshots.
 
 ## STATUS
-**I120_CLOSED / HUMAN_REVIEW / NO_ACTIVE_HYPOTHESIS.** Last Iteration 120 completed; no I121 work begun. No author contact, GitHub issues, PRs, or public disclosure. PI chooses next research direction.
+**I121_CLOSED / HUMAN_REVIEW / NO_ACTIVE_HYPOTHESIS.** Last iteration 121 completed. I122 not begun. No author contact, issues, PRs, or disclosure.
 
 ## RESEARCH PROTOCOL
 Read before write. One smallest falsifiable hypothesis plus one cheapest decisive test per iteration. Mark [FACT]/[DERIVED]/[HYPOTHESIS]/[NEGATIVE]/[OPEN]; distinguish noiseless algebra, numeric approximation, CKKS feasibility and actual compiled tests. Preserve evidence provenance, hashes and negative results. Do not modify `AGENT.md`, `RESEARCH_PHILOSOPHY.md`, or `START_RESEARCH_SESSION.md` as part of handoff.

@@ -8,13 +8,13 @@ ARCHIVED SPECIFIC BRANCH: GL generic BigSwitch; see `failures/gl-generic-bigswit
 Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO 2025, ePrint **2025/286**, especially §4.3 / Theorem 4.8 / Appendix E.2 (CRT digit lookup), §4.1–4.2 (CKKS rescale and ΠAC), and **§5 componentwise Brakedown polynomial commitments**.
 Research MCP mirror: 52pp PDF SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, mirrored 2026-04-28 after 2026-02-16 official revision; **latest official binary VERSION_UNVERIFIED**.
 
-LAST COMPLETED ITERATION: **83 (2026-10-12)**. Source privacy/ZK requirements clarified; see I83 finding.
+LAST COMPLETED ITERATION: **84 (2026-10-12)**. Honest rescale remainder server-computable, but relaxed witness not input-unique; see I84 finding.
 
 ## CURRENT QUESTION
-For one concrete §3–§4.1 CKKS ciphertext-maintenance range-check witness, is the proposed canonical integer aggregate A efficiently derivable from the public ciphertext/computation trace and independent of client-secret state, so that publicly authenticating it remains consistent with the source's VC client-input IND-CPA model (including verification-oracle security)?
+With an original vFHE CKKS rescale layer's *public pre-rescale ciphertext c'* AND *fixed claimed output c''*, do the complete §4.1 Eq(12)–(15) ring arithmetic, ideal embeddings and coefficient bounds force one unique w_rmd? If not, a publicly exposed aggregate A may encode extra witness choice even with fixed ciphertext input/output.
 
 ## PRIMARY HYPOTHESIS — NEXT, NOT YET TESTED
-At least one native CKKS rescale/rounding range-check witness h is computed solely from public HE ciphertexts and server-public computation operations, so a publicly opened exact integer aggregate of h may not demand full ZK. FALSIFIER: actual witness requires client-private plaintext/randomness or secret-key-dependent verification behavior, OR a public aggregate leaks information not simulatable from ciphertext/public transcript. This is a concrete source-level provenance check, not authorization to claim privacy or soundness without proof.
+Two distinct permitted rescale remainders may fit the same (c',c'') at the original embedded-ring level because of zero divisors/CRT projection. Before investing in new public-A protocols, try to prove uniqueness or find a single fully valid two-opening witness satisfying all source equations, not just scalar divisibility. Source equation PDF extraction may require visual confirmation.
 
 ## CURRENT EVIDENCE
 - [FACT/SOURCE + DERIVED, I59–70] Audited revised-looking proof uses an invalid diagonal-digit ⇒ illegal CRT component inference. Fieldwise lookup supports rectangular `T_B^rect`, not the claimed global coefficient range; `B≥max p_i` makes `T_B^rect=R_q`. Explicit ring/PIOP counterexamples recorded.
@@ -29,18 +29,21 @@ At least one native CKKS rescale/rounding range-check witness h is computed sole
 
 - [POSITIVE SOURCE SCOPE / CONDITIONAL PRIVACY, I83] ePrint 2025/286 §2.2 Definition 2.4, Appendix D.1–D.2 definitions specify soundness, knowledge soundness, PCS binding, succinctness but not proof zero-knowledge. Appendix C Definition C.4 specifies IND-CPA privacy of client plaintext against server *with verification oracle access*, not arbitrary witness/model secrecy. §2.2 p9/Appendix F.2 p51 explicitly transmit polynomial evaluations and v=rU_f, v'=q1U_f. Therefore universal hiding of A/u was a stricter assumption imposed in I77–82, not a formal original requirement. Public A might be admissible if efficiently simulatable from already visible ciphertexts, with VO behavior secured separately; witness provenance unverified. This does NOT repair CRT soundness or authorize leaking server-private model u. See `findings/vfhe-original-privacy-not-proof-zk-iteration83.md`.
 
+- [PASS NARROW + NEGATIVE STRONG / SOURCE + TOY, I84] ePrint 2025/286 §3.3 Eq(4)–(6), §3.4 p12, §4.1 Eq(12)–(15) pp14–15: *honest canonical* CKKS rescale remainder `[c']_p` is computed by server from ciphertext arithmetic, evk and public moduli with no client sk. However optimized range oracle permits `w_rmd=[c']_p+k p`, `k∈{0,±1}`, if within bound `2^u`; input-only unique bit aggregation FAILS even in scalar arithmetic (p13, B16, c'=15, r=2 vs15, different output quotient and aggregate A=0 vs1 under α=(1,0,0,0)). This **does NOT** prove both witnesses accepted for a *fixed claimed output*, or for the complete original Rq relation. Client IND-CPA/verification-oracle privacy of a new public-A repair still UNPROVEN; original cross-CRT soundness bridge still missing. See `findings/vfhe-rescale-remainder-public-computability-nonuniqueness-iteration84.md`.
+
 ## MAIN OBSTRUCTION
-[OPEN] No verified efficient cross-characteristic, knowledge-sound interface binding an **externally certified exact integer aggregate** A to original field PCS evaluations. Source did NOT require a ZK proof transcript or hidden A universally; conditional public-A design may remove one self-imposed cost, but still needs proof of exact pre-committed integer sum and its native field evaluations. Before building, verify provenance/public visibility of the relevant CKKS witness and preservation of VC IND-CPA under verification oracle. Direct DualPCS / masked-only Brakedown reuse fails for separate binding reasons.
+[OPEN] No verified efficient cross-characteristic, knowledge-sound interface binding an **externally certified exact integer aggregate** A to original field PCS evaluations. Mandatory proof ZK was not an original property. A canonical honest rescale witness is server-computable without sk, but relaxed remainder witness/aggregate may vary even for same pre-rescale c', and privacy of exposing A to other parties remains conditional. Need determine uniqueness when c'' fixed before source-faithful public-A optimization. Direct DualPCS / masked-only Brakedown reuse fails.
 
 ## OPEN UNCERTAINTY
 Latest official PDF SHA/version; full authors' optimized protocol/PCS/Fiat–Shamir implementation; deployed or secure-parameter effect; complete repair/soundness/privacy/cost proof; novelty relative to dual-PCS/CP-NIZK. **No authors contacted. User says DO NOT SEND EMAIL; no outreach/draft/public disclosure without explicit new permission.**
 
-## NEXT_ACTION — ONE DECISIVE TEST (I84)
-Read original ePrint 2025/286 §3 / §4.1 relevant CKKS rescaling and range-check source passages. Trace ONE concrete rounding/remainder witness h: what actual inputs determine it, which actors have access to the necessary ciphertext/moduli/keys, whether h and A are efficiently generated from the ciphertext/computation public to adversarial server, and whether publication changes verifier-oracle or client-private information beyond the current IND-CPA game. Falsify disclosure safety if it needs unknown client private state, decryption, or yields a new secret-key-dependent oracle. Do not implement new ZK/PCS/link protocols or pick multiple witnesses this iteration.
+## NEXT_ACTION — ONE DECISIVE TEST (I85)
+Precisely read vFHE ePrint 2025/286 Eq(6), Eq(12)–(15), §3.2 ideal embedding plus Appendix B if needed. Fix *both* c' and claimed c'' as the public ciphertext trace, include all ring/level constraints and bounds. Determine whether there can exist two distinct allowed w_rmd (hence distinct bit aggregate A) for the same fixed pair. Seek ONE full-ring exact witness or prove uniqueness; don't infer full-ring acceptance from I84's scalar quotient toy. Only after this decide if verifier can efficiently reconstruct A or whether prover-only information must be certified. Do not start PCS/encoder variants or author outreach.
 
 ## RELEVANT FILES
 - Protocol/start: `RESEARCH_PHILOSOPHY.md`, `AGENT.md`, `START_RESEARCH_SESSION.md`.
-- Last I83: `findings/vfhe-original-privacy-not-proof-zk-iteration83.md`.
+- Last I84: `findings/vfhe-rescale-remainder-public-computability-nonuniqueness-iteration84.md`.
+- I83: `findings/vfhe-original-privacy-not-proof-zk-iteration83.md`.
 - I82: `failures/vfhe-masked-brakedown-evaluation-unlinked-hidden-residue-iteration82.md`.
 - I81: `failures/vfhe-native-field-pedersen-ipa-49bit-group-security-iteration81.md`.
 - I80: `failures/vfhe-brakedown-dualpcs-cross-characteristic-interface-iteration80.md`.
@@ -52,4 +55,4 @@ Read original ePrint 2025/286 §3 / §4.1 relevant CKKS rescaling and range-chec
 - UNSENT report/draft: `findings/vfhe-confidential-pi-review-package-iteration74.md`, `findings/vfhe-confidential-author-inquiry-draft-iteration75.md`.
 - PARKED RIG: `logs/rig-state-2026-10-12-pre-vfhe-handoff.md`.
 
-STATUS: **ACTIVE vFHE repair; I83 PASS source scope (VC IND-CPA+VO, not proof-ZK); I84 one-witness provenance audit NEXT**. Exact cross-CRT soundness repair and safe public-A design remain OPEN. No complete ZK repair, full SNARK forgery, or general impossibility result. No author contact/public disclosure authorized.
+STATUS: **ACTIVE vFHE repair; I84 PASS narrow canonical witness provenance, FAIL input-only uniqueness; I85 fixed-output ring-level uniqueness check NEXT**. Exact cross-CRT bridge and full public-A privacy remain OPEN. No complete ZK repair, full SNARK forgery, or general impossibility result. No author contact/public disclosure authorized.

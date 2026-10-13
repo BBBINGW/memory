@@ -1,6 +1,6 @@
 # FHE Research Opportunity Backlog
 
-**Reviewed:** 2026-10-13, after I167; I168 not yet begun.  
+**Reviewed:** 2026-10-13, after I171; I172 not yet begun.  
 **Location:** `findings/OPEN_RESEARCH_BRANCHES.md` (the Research MCP presently disallows creating new root-file names).  
 **Authority:** `STATE.md` remains the only authoritative *current iteration / NEXT_ACTION* entry point; this file is a **long-term opportunity index**, never an instruction to launch multiple research hypotheses. PI decides research direction, reopening, contribution and disclosure.
 
@@ -89,6 +89,20 @@
 **Paper:** Ramapragada–Banerjee, *Fast Plaintext-Ciphertext Matrix Multiplication from Additively Homomorphic Encryption*, ePrint **2025/711**, full 33pp ALTERNATE_SOURCE SHA256 `347e7ffd1aefeb1c75c7561fda545becf33845b32d43aeed0a926c33570d2c81`; authors’ public code `sinesyslab/fast_pcmm_ahe_cic25`, main commit `191acd3b3c35db1d2a23b5984e46af8ee019e5b1`.
 
 **[I167 negative]** Algorithm3 line8's original-coefficient expression denotes the **value of already reconstructed products** in line6; the actual pinned C code calls `ECP_NIST256_pinmul` over compressed input `A_post_compression` only, reconstructs with EC additions, and accumulates `result_outer_product`. NO duplicated uncompressed multiplications in the proposed implementation and NO author algorithm/complexity gap. Source is *unpacked additive ECC HE*, not CKKS/BFV/TFHE. Do not claim direct packed-FHE novelty. Evidence `findings/fast-pcmm-ahe-algorithm3-reconstruction-use-source-gate-iteration167.md`. No reopen without a completely distinct, quantified FHE-only constraint/cost mechanism.
+
+## P9 — SHIP CKKS masked-selector bootstrapping key memory (OPEN/HUMAN_REVIEW)
+
+**Paper:** Cheon–Hanrot–Kim–Stehlé, *SHIP: A Shallow and Highly Parallelizable CKKS Bootstrapping Algorithm*, ePrint **2025/784**, complete 33pp GitHub mirror SHA256 `3e8deccd8bd5f3845a82baa56c90fbe03fbbe8a7e96844092d4d0f57cba80742`, official PDF parity VERSION_UNVERIFIED.
+
+**[I171 PASS conditional key-memory sizing]** Source §3.3 uses four encrypted plaintext mask families; §4.4 Algorithm4 has one encrypted selector per column candidate, per `k=1..4`, per sparse-secret support. It **explicitly says implementation reverses the written mixed-method split**: true column size is Table2 θ, not `ℓ0/θ`. With source h31, literal uncompressed high-PQ RLWE selector objects `4hθ`: LL13 θ6,N8192,logPQ218,9 RNS primes =>744 ciphertexts, 0.3094 GiB bitpacked or 0.8174 GiB RNS64; LL14 θ9,N16384,logPQ437,10 primes =>1116, 1.8604/2.7246 GiB; HT15 θ17,N32768,logPQ881,20 primes =>2108, **14.1689/20.5859 GiB**. Paper's source precision LL14 16.9bits and HT15 18.1bits, measured latency333ms and1.63s on32 cores (NOT reproduced). These sizes are **conditional raw full-PQ storage envelopes** for independent dense selector ciphertexts, NOT author-code RAM, universal lower bounds or proof of a performance bottleneck. Authors §3.3 explicitly note sum-of-four-mask storage opportunity; variable key levels, seeded/RNS compression, actual HEaaN allocations **not verified**.
+
+**Next falsifier:** inspect pinned real SHIP key layout / counted stored mask ciphertexts and moduli, ideally original HEaaN artifact or clearly identified third-party Poulpy SHIP source; decide if true storage remains material after known compression. If not, PARK; if yes, quantify actual no-latency/noise compression opportunity. Evidence `findings/ship-ckks-column-selector-key-material-envelope-iteration171.md`.
+
+## P10 — BGV Hom-NTT completely flattened sparse-free level collapse (PARKED / KNOWN TRADEOFF)
+
+**Paper:** Ma–Huang–Wang–Wang, *Faster BGV Bootstrapping for Power-of-Two Cyclotomics through Homomorphic NTT*, ePrint **2024/164**, full 42pp mirror SHA256 `89099f7efc7ab93d1e8b15d2e13c345d0493028f364ac8d9cf3cce289a43abd4`, official parity VERSION_UNVERIFIED.
+
+**[I170 FAIL zero-cost merge]** Exact admissible `M512,p97,ord512(97)=16,L16,D8` coefficient-block CRT over F97 has direct V_{jk}=α_j^k, with primitive32 root ζ19 and α_j=ζ^(2j+1); all 256 entries, all16 cyclic diagonals, and verified inverse fully dense. Thus flattening all source sparse NTT layers into one direct linear map does NOT preserve three-diagonal structure. The original source **already examines collapsing levels vs diagonal/time in §4.1** and absorbs bit reversal in §4.3, so no error or novelty. PARK unless entirely new resource-saving factorization with concrete source comparison. Evidence `findings/bgv-hom-ntt-full-layer-collapse-diagonal-fillin-iteration170.md`.
 
 ## Watchlist (not currently executable priority)
 

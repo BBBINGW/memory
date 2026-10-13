@@ -67,3 +67,19 @@ Human Action: obtain today's official ePrint `2025/286.pdf` using a normal brows
 Repository Path: **PENDING** — propose `papers/supplied/eprint-2025-286-official-2026-revision.pdf` only after receiving actual raw file; no path is asserted to exist.
 Readability Verification: **PENDING** for actual official PDF; available MCP mirror physical pp23–24 and 47–49 legible for the critical logical implication despite extraction warnings, but not official version-verified.
 Evidence: `findings/vfhe-current-official-revision-identity-gate-iteration155.md`.
+
+
+## Min–Lee–Song ePrint 2025/429 — Table 4 (r=5, degrees 53/25) original polynomial coefficients and Lattigo artifact
+
+Status: **MISSING_AUTHOR_ARTIFACT** (the complete 19-page paper text is available; missing the specific published implementation/coefficient generation, not the paper PDF)
+Authors: Seonhong Min; Joon-Woo Lee; Yongsoo Song
+Venue / Year: ACM ASIACCS 2025, ePrint 2025/429
+Identifier: https://eprint.iacr.org/2025/429 ; DOI https://doi.org/10.1145/3708821.3710824
+Needed For: I163 source-realism gate following I160–I162 discovery of a derivative-weighted degree43 *ideal-outer* approximation improvement. Need equal degrees (53,25), exact author's p2 and p1 code/coefficients to quantify real source-grade p2∘p1 effect and its precision/level cost.
+Missing Evidence: coefficient vectors for polynomial p1 degree53, p2 degree25; the exact multi-interval Remez fitting routine and scaling/interval conventions; original author Lattigo fork/commit and Table4 Set I r5 benchmark scripts, parameter files and seeds. Also current official PDF binary parity with the GitHub mirror is VERSION_UNVERIFIED, although the PDF text of critical sections is legible.
+Why Public Retrieval Failed: Full Research MCP 19-page mirror PDF SHA256 `150b337c0b11bc284b1f5d129c7ef1455451de0fe7cbbfd19ba8cb21e7e8dd4d` has all §3 and §5 text, Table4 Set I r5=(53,25), precision27.12bits, time24.9s but no polynomial coefficient arrays or paper-specific repo/commit. `search_eprint_text` finds no GitHub/source-code/supplement link. Inspected official landing (last ePrint revision 2025-09-11), first author's homepage and SNU Crypto & Privacy Lab publications (no explicit paper-specific code), public web and GitHub title/author/repository/code searches, including minshinfo and SNUCP repository names. No verified author-matched artifact found. The search is NOT an exhaustive proof that private/unindexed code does not exist; one user-name scoping query returned API 422.
+Impact: **No original-code reproduction or actual Table4 CKKS precision/latency claim can be made.** I162 2.14188× improvement is a source-domain, degree43, exact ideal f2 toy; the authors' real r5 uses p1-degree53 and approximate p2-degree25 and substantial ciphertext noise. Conceptual/math exploration can continue independently ONLY if explicitly separated from author-code replication.
+Human Action: Supply author's exact Table4 Set I r5 fitting script and polynomial coefficients (plus reproducible environment/ref), **or** explicitly authorize a clean-room independent reimplementation from the public paper/Lattigo code with all deviations documented. No author contact without PI approval.
+Repository Path: **PENDING/NONE** (missing original code/artifact, not a PDF to fabricate under papers/supplied/). Once provided, record actual verified repo or uploaded archive path, hash, library commit and reproduction command; do not predeclare a file path.
+Readability Verification: **PENDING for source and coefficient artifact**. Original 19-page PDF is already legible via Research MCP pp6–10, 15–17; author's code and exact coefficient vectors NOT accessed/verified.
+Evidence: `findings/ckks-generalized-composite-source-artifact-gate-iteration163.md`.

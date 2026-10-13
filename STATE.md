@@ -1,6 +1,6 @@
-# FHE Research State — After Iteration 152
+# FHE Research State — After Iteration 153
 
-**Checkpoint:** 2026-10-13 · `main` · I152 completed, I153 **NOT STARTED**.
+**Checkpoint:** 2026-10-13 · `main` · I153 completed, I154 **NOT STARTED**.
 **Authority:** This file is a compact recovery entry point, not a history log. The former full 84,552-character `STATE.md` is preserved verbatim at `logs/state-pre-session-handoff-2026-10-13-iteration151.md` (blob SHA `7641c5eb985497ae77e9284ed9e94a5713f3222d`). Long-term directions and archives are indexed in `findings/OPEN_RESEARCH_BRANCHES.md`. Human PI makes direction, continuation, novelty and disclosure decisions.
 
 ## CURRENT TARGET
@@ -9,49 +9,50 @@
 
 ## LAST COMPLETED ITERATION
 
-**152 (2026-10-13)**. **I153 NOT STARTED.** I152 was explicitly requested after handoff; toy distance/no-wrap PASS, but the same single-flip Hadamard family has vanishing relative distance and is rejected as a scalable Brakedown replacement.
+**153 (2026-10-13)**. **I154 NOT STARTED.** I153 was narrowly authorized by the PI's “好的，请继续” following I152; a distinct many-flip tensor/quadratic-sign Hadamard encoder failed source-comparable distance. See latest failure file below.
 
 ## CURRENT QUESTION
 
-Can some *different* field-independent, bounded-integer, fast linear encoder make already-authenticated Brakedown **testing-phase Merkle columns** verify cross-CRT scalar-digit coherence without costly additional native MLE evaluation openings, *while retaining source-comparable code distance and soundness*? The concrete I152 single-coordinate-sign-flip Walsh–Hadamard encoder has been falsified as a scalable high-distance candidate. Parent P1 vFHE issue remains OPEN/HUMAN_REVIEW; **no new candidate has been authorized or selected**.
+Can a genuinely **nonseparable/non-tensor** fast field-independent bounded-integer linear encoder make already-authenticated Brakedown F.2 **testing-phase Merkle columns** certify common CRT scalar digits without new costly native MLE evaluation-phase openings **while retaining F.3 source-comparable minimum distance**? I152 one-flip and I153 multi-flip tensor-Hadamard candidates are both closed by low-weight codewords. Parent P1 remains OPEN/HUMAN_REVIEW; **no new candidate is authorized/selected**.
 
 ## PRIMARY HYPOTHESIS
 
-**NONE ACTIVE.** I152 [NEGATIVE/FAIL candidate at scale, TOY PASS]: for `Enc_Z(x)=(H_m x,H_m D x)` with only the final input sign flipped, the prescribed `m=4,p=29,37` rank test gives `[8,4,d_min=4]` and beta2 honest no-wrap `4<29`. However for **every power-of-two m>=4** over odd-characteristic fields, `d_min=4` exactly and relative distance `2/m` tends to zero. See `failures/vfhe-single-flip-hadamard-crt-integer-encoder-distance-iteration152.md`. No ACTIVE I153 experiment. PI must decide whether to propose/authorize a *different* candidate or park this branch.
+**NONE ACTIVE.** I153 [NEGATIVE/FAIL candidate at source-compatible size]: for `Enc(x)=(H_m x,H_m D_m x)`, `m=4^t`, `D_m=diag(1,1,1,-1)^{⊗t}`, a tensor-eigenvector has codeword weight `2√m`; at `m=N=256,d=4,p=(641,1153),beta=2`, exact weight **32**, versus original F.3 `[512,256]` piecewise-RS minimum distance **65**. Relative distance upper bound `1/√m→0`. Honest beta2 centered integer no-wrap PASS, but no source-equivalent code distance. Distinct from I152's single-coordinate flip. Full details: `failures/vfhe-quadratic-tensor-hadamard-crt-encoder-distance-iteration153.md` SHA `b36878bc9937591a59daa467092e769ddee51138`.
 
 ## CURRENT EVIDENCE
 
-- **[DERIVED/EXACT I152; NEGATIVE scalable encoder]** Rank tests over F29/F37: maximum four zero output coordinates, dmin4; beta2 integer coefficient sum ≤4<29. Algebraically for all m=2^k≥4, `T=H_m D H_m^{-1}=I-(2/m)uu^T`; choosing 2-sparse y with `u^Ty=0` makes codeword `(y,y)` weight4, and the involution gives lower bound4. Thus relative distance exactly 2/m, not a source-comparable high-distance family. Archived and reread at `failures/vfhe-single-flip-hadamard-crt-integer-encoder-distance-iteration152.md` (blob SHA `1191c8313e0b540f4f70722b3c78575749e93b6b`). This is not an attack on original vFHE or a complete PCS repair.
-- **[FACT]** Original Appendix F.2 commits row-encoded matrices as Merkle column leaves; testing phase opens columns, whereas evaluation phase sends separate vectors. F.3 uses native-field Reed–Solomon `[N/2,N/4]` encodings evaluated at **per-prime roots of unity**. Author `vfhe/proof-friendly-CKKS/lib/main_benchmark.cpp` SHA `f92e054ae758ddf3c35e22d1a0294374ef2d6b3e` implements RS encoding as zero-padded coefficient NTT.
-- **[DERIVED, I151 PASS exact counterexample]** Source-form toy `N=8,d=4,p0=29,p1=37` with fourth roots `12` and `6`: common **honest** scalar message `x=(0,1)` corresponds to `f(Z)=Z`, but the two codewords are `(1,12,28,17)` and `(1,6,36,31)`. Same code-column index 1 gives **12 vs 6**. Hence naïve cross-prime small-integer comparison of existing F.3 RS-coded leaves **fails honest completeness**. Details/reproduction and boundaries in `failures/vfhe-original-rs-merkle-column-crt-integer-comparison-iteration151.md`, SHA `52d8d71bc8e4c2a4548fa2919c33b1c8213596a0`.
-- **[DERIVED, older I59–60; HUMAN_REVIEW]** Componentwise CRT-field membership does not by itself certify **one common diagonal scalar digit**. There is an **ideal PIOP-level** counterexample and composition audit in `findings/vfhe-crt-lookup-cross-component-soundness.md` and `findings/vfhe-crt-full-range-piop-and-commitment-audit.md`. **Not a compiled end-to-end SNARK attack or verified defect of a latest official revision.**
-- **[NEGATIVE/PARKED]** I95 bounded-public-integer/direct Brakedown fix was too expensive; I136–138 native PCS 4→1 shortcuts failed; I148 bounded-alphabet rank-one masks gave only local arithmetic gains; I149 small-single-prime MLE lift failed honest completeness; I150 full-`Q` **single-point** integer lift did not provide negligible detection. See Backlog and files below.
-- **[SOURCE CAUTION]** Author's benchmark contains primes slightly **greater** than `2^49`; old I149–150 statements using strict `p<2^49` are *conditional size approximations*, not a literal guarantee for every implementation parameter.
+- **[DERIVED/EXACT I153; NEGATIVE scalable encoder]** In a source-compatible `N=m=256,d=4`, odd-a primes 641/1153, original F.3 direct-sum RS `4×[128,64,65]` has `[512,256]` minimum distance 65. Candidate quadratic/tensor sign `D=(1,1,1,-1)^{⊗4}` (120 negative diagonal signs) has an **explicit valid field codeword of weight 32**, although centered honest `beta=2` integer outputs are bounded by 256 < 641/2. For `m=4^t`, tensor-fixed vectors give `dmin≤2√m`, relative `≤1/√m`. This is a field-code distance falsifier, not an actual digit-bound cheating transcript or proof-system attack. See `failures/vfhe-quadratic-tensor-hadamard-crt-encoder-distance-iteration153.md`.
+- **[DERIVED/EXACT I152; NEGATIVE scalable encoder]** Single-coordinate-flip `D` has exact `dmin=4` over all `m=2^k≥4` odd-characteristic fields (toy `m=4,p=29,37` distance/no-wrap PASS); relative `2/m→0`. See `failures/vfhe-single-flip-hadamard-crt-integer-encoder-distance-iteration152.md`.
+- **[FACT]** Source F.2 commits row-encoded matrices as Merkle column leaves; testing opens columns and evaluation sends separate vectors. F.3 uses per-prime native-field Reed–Solomon NTT encoding. Author `vfhe/proof-friendly-CKKS/lib/main_benchmark.cpp` SHA `f92e054ae758ddf3c35e22d1a0294374ef2d6b3e` realizes coefficient-to-root RS encoding.
+- **[DERIVED I151 FAIL existing native RS comparison]** Common honest scalar x=(0,1) yields source-root RS symbols 12 vs 6 at the same j1 for F29/F37; unchanged Merkle code columns cannot be compared as one small integer. See `failures/vfhe-original-rs-merkle-column-crt-integer-comparison-iteration151.md`.
+- **[DERIVED I59–60; HUMAN_REVIEW]** Ideal PIOP-level CRT scalar-index coherence soundness counterexample and full abstract composition audit, NOT a verified full compiled SNARK exploit/latest official revision defect. See `findings/vfhe-crt-lookup-cross-component-soundness.md`; `findings/vfhe-crt-full-range-piop-and-commitment-audit.md`.
+- **[PARKED]** I95 direct Brakedown expensive; I136–138 native PCS fold shortcuts fail; I148 mask-only small gains; I149/150 existing MLE opening integer lift fails completeness or single-point soundness. See `findings/OPEN_RESEARCH_BRANCHES.md`.
+- **[SOURCE CAUTION]** Original 52pp ePrint 2025/286 GitHub-mirror PDF SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19` remains **VERSION_UNVERIFIED** versus latest official revision. Author IFMA sample primes can exceed `2^49`; old literal strict small-prime inequalities are conditional approximations.
 
 ## MAIN OBSTRUCTION
 
-Existing native RS encoding is field-dependent, obstructing honest cross-prime integer comparison of source testing columns (I151). A new shared integer encoder must simultaneously guarantee (i) sufficient Hamming distance in every original F_(p_i^d), (ii) exact common small integers/no-wrap, (iii) fast encoding and (iv) valid original F.2 testing/commitment binding and soundness. **I152 shows a single-coordinate-flip Hadamard pair cannot meet the scalable distance condition**: rate 1/2 but minimum relative distance 2/m. No viable alternative or full security/cost result is established.
+Old F.3 native RS is **field dependent**, making direct honest cross-CRT integer comparison false (I151). Two distinct fast signed-integer Hadamard pairs have **vanishing relative code distance**: single-flip I152 `2/m`, quadratic/tensor many-flip I153 `≤1/√m`, despite toy honest no-wrap. Need a genuinely different **nonseparable** bounded-integer, source-comparable high-distance encoder before proposing PCS reuse; F.2 testing/commitment soundness, proof binding, Fiat–Shamir privacy, 128-bit query parameters and concrete cost are all unproven. **No repair exists yet.**
 
 ## OPEN UNCERTAINTY
 
-**[OPEN]** Existence of a different fast, bounded, field-independent encoder with source-comparable minimum distance, safe integer outputs at *actual* digit bounds, and efficient secure global CRT consistency proof. Also original Fiat–Shamir/PCS privacy and full 128-bit cost/security consequences, latest official PDF version, and end-to-end impact of I59–60 remain unverified. I152's single-flip family is **closed**, not awaiting additional parameter sweeps.
+**[OPEN]** Existence and novelty of a non-tensor near-linear bounded-integer high-distance code valid over all native CRT fields; honest digit no-wrap at actual parameters; proof that authenticated shared testing Merkle columns enforce global diagonal scalar-digit indices without unacceptable overhead. Latest official PDF equality and actual compiled SNARK effect of I59–60 still unverified. All previous failure archives remain parked unless new premises emerge.
 
 ## NEXT_ACTION — UNIQUE GATE FOR NEXT ITERATION
 
-**HUMAN PI DECISION REQUIRED; I153 NOT STARTED.** Choose **one** of: (a) keep P1 vFHE active for another minimal falsifiable test **only after supplying or explicitly authorizing a genuinely different concrete field-independent bounded-integer fast encoder candidate**, with *distance* as the first gate; or (b) park this repair path. Do not retry I152's single-flip Walsh–Hadamard family, revive other archived failures, or choose a different target on the agent's own initiative. If (a), first predeclare exact candidate, source-comparable distance target, field/ring regime and cheapest rank/structural test.
+**HUMAN PI DECISION REQUIRED; I154 NOT STARTED.** Choose **one**: (a) PARK the two-attempt Hadamard/integer-encoder repair line and retain the parent P1 vFHE issue for later; or (b) explicitly authorize **ONE genuinely different nonseparable / non-tensor field-independent integer-code candidate**, predeclaring `d_min≥65` at `N=m=256,d=4,p=(641,1153)` (or equally precise source-comparable target) and checking **one decisive code-distance witness/rank gate only**. Do **not** retry sign-diagonal/tensor Hadamard variations or start a different topic autonomously. If no decision, stop.
 
 ## RELEVANT FILES — NEW CHAT READ ORDER
 
 1. `START_RESEARCH_SESSION.md` → `RESEARCH_PHILOSOPHY.md` → `AGENT.md` → this `STATE.md`.
-2. `findings/OPEN_RESEARCH_BRANCHES.md` — durable branch index and status.
-3. `failures/vfhe-single-flip-hadamard-crt-integer-encoder-distance-iteration152.md` — latest encoder test, exact ranks, no-wrap, universal distance obstruction and limits.
-4. `failures/vfhe-original-rs-merkle-column-crt-integer-comparison-iteration151.md` — native F.3 RS column failure.
-5. `findings/vfhe-crt-lookup-cross-component-soundness.md`; `findings/vfhe-crt-full-range-piop-and-commitment-audit.md` — I59–60 parent issue.
-6. Consult `failures/vfhe-full-crt-q-short-lift-small-integer-challenge-soundness-iteration150.md`; `failures/vfhe-small-integer-mle-point-opening-crt-lift-iteration149.md`; `failures/vfhe-bounded-public-A-direct-brakedown-repair-archived-iteration95.md` **only as needed**.
-7. `logs/state-pre-session-handoff-2026-10-13-iteration151.md` — prior long historical state snapshot, only if older details absent from current archives.
+2. `findings/OPEN_RESEARCH_BRANCHES.md` — long-term index.
+3. `failures/vfhe-quadratic-tensor-hadamard-crt-encoder-distance-iteration153.md` — I153 exact witness and scope.
+4. `failures/vfhe-single-flip-hadamard-crt-integer-encoder-distance-iteration152.md` — I152 single-flip obstruction.
+5. `failures/vfhe-original-rs-merkle-column-crt-integer-comparison-iteration151.md` — original RS prime-root mismatch.
+6. `findings/vfhe-crt-lookup-cross-component-soundness.md`; `findings/vfhe-crt-full-range-piop-and-commitment-audit.md` — I59–60 parent issue.
+7. Other earlier failures only when needed; `logs/state-pre-session-handoff-2026-10-13-iteration151.md` stores pre-handoff history.
 
 ## STATUS
 
-**I152 CLOSED: FAIL single-flip Hadamard scalable code-distance candidate / PASS prescribed [8,4] rank and beta2 no-wrap toy gate / P1 vFHE CRT scalar consistency OPEN-HUMAN_REVIEW / NO ACTIVE ITERATION / I153 NOT STARTED / HUMAN PI DECISION REQUIRED.**
+**I153 CLOSED: FAIL quadratic/tensor-sign Hadamard source-comparable code distance / PASS beta2 toy signed no-wrap and exact low-weight witness / P1 vFHE CRT scalar consistency OPEN-HUMAN_REVIEW / NO ACTIVE ITERATION / I154 NOT STARTED / HUMAN PI DECISION REQUIRED.**
 
-No outreach or public vulnerability disclosure; no official-source exploit or published contribution claim. Read-before-write, one smallest hypothesis and one cheapest decisive test per PI-authorized iteration.
+No outreach or public vulnerability disclosure; no verified latest-official-source exploit or published contribution. Read-before-write, one primary hypothesis plus one minimal decisive test per PI-authorized iteration.

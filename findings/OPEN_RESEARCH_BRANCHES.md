@@ -1,6 +1,6 @@
 # FHE Research Opportunity Backlog
 
-**Reviewed:** 2026-10-13, after I134; I135 not yet begun.  
+**Reviewed:** 2026-10-13, after I135; I136 not yet begun.  
 **Location:** `findings/OPEN_RESEARCH_BRANCHES.md` (the Research MCP presently disallows creating new root-file names).  
 **Authority:** `STATE.md` remains the only authoritative *current iteration / NEXT_ACTION* entry point; this file is a **long-term opportunity index**, never an instruction to launch multiple research hypotheses. PI decides research direction, reopening, contribution and disclosure.
 
@@ -34,13 +34,13 @@
 
 **Evidence:** `findings/mrfhe-aux-ring-cross-batch-coefficient-packing.md`; `findings/mrfhe-joint-packing-lifted-ks-noise.md`; `failures/mrfhe-joint-packing-second-switch-sparsity.md`; `failures/mrfhe-joint-packing-noise-isolation.md`.
 
-## P3 — Rectangular encrypted matrix multiplication and output-block costs (OPEN SOURCE GATE)
+## P3 — Rectangular encrypted matrix multiplication and output-block costs (PARKED / SOURCE BLOCKED)
 
 **Paper:** Aikata & Roy, *Secure and Efficient Outsourced Matrix Multiplication with Homomorphic Encryption*, INDOCRYPT 2024, ePrint **2024/1730**, §4.2 pp18–19. Original author-associated artifact address printed in §5: `https://anonymous.4open.science/r/MatMul-0568`.
 
 **[DERIVED] Constraint (I134):** source packing formula `S=k p²`, k=max(l,d,t), p=min(l,d,t), can be smaller than the number of explicit output entries `l t`. In standard separately linear-preprocessed, componentwise Ct×Ct and linearly-postprocessed SIMD matmul, `#CtCt≥ceil(l t/S)`. Example (8×2) by (2×8): S=32, 64 linearly independent bilinear coordinates, ≥2 product calls. This **does not show** source implementation incorrectly omitted output blocks; row representation and “no increase” baseline are ambiguous. Related conventional output factor already audited in CKL I38.
 
-**[OPEN] Need:** first resolve source code/layout and multiple-output cost; only then contemplate genuinely faster repaired layout. Rank counting alone is classical, not a new contribution.
+**[OPEN] Need:** first resolve **MISSING_CRITICAL_SOURCE**: paper's exact anonymous artifact `https://anonymous.4open.science/r/MatMul-0568` returned inaccessible. I135 verified that author's separately released FHERMA challenge explanation and an independent `MatrixMult_AR24` reproduction cover **square** inputs/outputs only; neither verifies paper §4.2's rectangular routines. No published source-code bug was found. See `MISSING_SOURCES.md` for source recovery. Only then contemplate a genuinely new repaired layout; rank counting alone is classical, not a contribution.
 
 **Next gate (I135):** inspect actual published artifact's rectangular branch and output interface, or source algorithm if unavailable. If ≥2 output products already accounted for, PARK this issue promptly.
 

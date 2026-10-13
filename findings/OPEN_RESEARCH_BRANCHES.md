@@ -1,6 +1,6 @@
 # FHE Research Opportunity Backlog
 
-**Reviewed:** 2026-10-13, after I135; I136 not yet begun.  
+**Reviewed:** 2026-10-13, after I136; I137 not yet begun.  
 **Location:** `findings/OPEN_RESEARCH_BRANCHES.md` (the Research MCP presently disallows creating new root-file names).  
 **Authority:** `STATE.md` remains the only authoritative *current iteration / NEXT_ACTION* entry point; this file is a **long-term opportunity index**, never an instruction to launch multiple research hypotheses. PI decides research direction, reopening, contribution and disclosure.
 
@@ -12,13 +12,13 @@
 
 **[DERIVED/TESTED] Hole:** independent CRT field digit membership does not force a **common scalar/diagonal table index** in the product ring. I59 constructs an ideal lookup false-statement accepted transcript; I60 checks composed `Π_range` and fieldwise PCS and finds no automatic cross-component scalar-coherence enforcement. **Not a compiled end-to-end SNARK forgery, deployed compromise or confirmed latest-edition defect**.
 
-**[NEGATIVE] Already tested:** direct native Brakedown, bounded-public-A aggregates, same-h masked sumchecks, scalar repeated challenges. Conditional ideal soundness can be strengthened, but original source PCS opens thousands of constituent field evaluations and costs are not demonstrated practical. I95 archives **only** the bounded-public-A/direct-Brakedown repair, **not the underlying CRT finding**.
+**[NEGATIVE] Already tested:** direct native Brakedown, bounded-public-A aggregates, same-h masked sumchecks, scalar repeated challenges. Conditional ideal soundness can be strengthened, but original source PCS opens thousands of constituent field evaluations and costs are not demonstrated practical. I95 archives **only** the bounded-public-A/direct-Brakedown repair, **not the underlying CRT finding**. **I136 NEGATIVE (new distinct PCS batching shortcut):** enforcing a common Brakedown `q2` suffix to combine four terminal openings forces shared Sumcheck suffix challenge(s), destroying the fourth-power independent-soundness argument; explicit 4-variable false-sum Sumcheck prover over scalar S=F29 succeeds for all four repetitions on shared last challenge 1 with probability **1/29**, not **1/29^4**, even when each mixing ρ and other r-coordinates are sampled independently. This does NOT rule out a newly designed multi-point PCS preserving independent query coordinates.
 
 **[OPEN] Need:** a new low-cost *same-index across components* proof/lookup/PCS relation with soundness, Fiat–Shamir compilation, privacy and credible communication/verification savings. Novelty uncertain.
 
-**Next gate on explicit PI authorization:** one concrete alternative scalar-membership/PCS mechanism with a source-comparable cost/security falsifier; confirm official edition. **No author contact/public disclosure/email without PI approval.**
+**Next gate on explicit PI authorization:** one concrete alternative scalar-membership or **multi-point PCS proof that keeps ALL terminal sumcheck coordinates independent** with a source-comparable cost/binding/security falsifier; do not re-propose shared-q2 or archived brute Brakedown. Confirm official edition. **No author contact/public disclosure/email without PI approval.**
 
-**Evidence:** `findings/vfhe-crt-lookup-cross-component-soundness.md`; `findings/vfhe-crt-full-range-piop-and-commitment-audit.md`; `findings/vfhe-fourfold-scalar-sumcheck-amplification-cost-iteration94.md`; `failures/vfhe-bounded-public-A-direct-brakedown-repair-archived-iteration95.md`; `findings/vfhe-confidential-pi-review-package-iteration74.md`; `logs/vfhe-state-2026-10-12-pre-paco-handoff.md`.
+**Evidence:** `failures/vfhe-shared-brakedown-q2-challenge-fourfold-soundness-iteration136.md`; `findings/vfhe-crt-lookup-cross-component-soundness.md`; `findings/vfhe-crt-full-range-piop-and-commitment-audit.md`; `findings/vfhe-fourfold-scalar-sumcheck-amplification-cost-iteration94.md`; `failures/vfhe-bounded-public-A-direct-brakedown-repair-archived-iteration95.md`; `findings/vfhe-confidential-pi-review-package-iteration74.md`; `logs/vfhe-state-2026-10-12-pre-paco-handoff.md`.
 
 ## P2 — MRFHE auxiliary-Y cross-batch packing (PARKED / REOPEN_IF)
 

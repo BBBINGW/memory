@@ -52,3 +52,18 @@ Impact: Unable to perform **real full two nonzero KS + D′₂ PPMM + actual com
 Human Action: obtain **author-identified MRFHE Go source or a tarball/patch against exact Lattigo v5.0.2, reproducible FHE(8,5) K1 baseline and K2 test invocation, complete RNS and scale parameters**, security estimate and seed/benchmark protocol. **No author outreach unless PI explicitly approves.**
 Repository Path: **N/A — needed full original code and experiment manifest**, not `papers/supplied/*.pdf`. Promote verified source references once received; no invented paths.
 Readability Verification: **PENDING**, original mixed-radix source never fetched or executed. Supporting *upstream vanilla* code/source inspection verified 2026-10-13 in I141 finding `findings/mrfhe-v502-nonpowertwo-original-implementation-source-gate-iteration141.md`.
+
+
+## Cascudo et al. ePrint 2025/286 — current official February 2026 PDF
+Status: **MISSING_CURRENT_OFFICIAL_BINARY** (the 52-page full text is available from a GitHub mirror, but current official revision identity is **VERSION_UNVERIFIED**)
+Authors: Ignacio Cascudo; Anamaria Costache; Daniele Cozzo; Dario Fiore; Antonio Guimarães; Eduardo Soria-Vazquez
+Venue / Year: CRYPTO 2025; IACR ePrint 2025/286; official landing shows **2026-02-16 revision**
+Identifier: https://eprint.iacr.org/2025/286 and https://eprint.iacr.org/2025/286.pdf
+Needed For: I155 official-revision identity gate on I59–60 CRT scalar-diagonal membership soundness audit
+Missing Evidence: the **exact CURRENT OFFICIAL 2026-revised PDF bytes**, Appendix E.2 Theorem 4.8 proof step and any matching current §4.3/§5 verification relation; byte-level SHA matching to available 52-page GitHub mirror
+Why Public Retrieval Failed: 2026-10-13 official landing reports 2026-02-16 revised theorem proof, but web PDF index yields an OLD **50-page** snapshot, while Research MCP GitHub mirror is **52 pages**, 836746 bytes, SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, source_kind github-mirror, VERSION_UNVERIFIED. The official “See all versions” endpoint gave HTTP 403, direct official PDF download failed; local network official DNS unavailable. No official SHA was obtained. An older searchable PDF must NOT be treated as the current binary.
+Impact: I59–60 exact ideal PIOP counterexample applies to the inspected mirror text but **has not been verified against current official PDF** or a compiled end-to-end proof system. Parent P1 retained OPEN/HUMAN_REVIEW / SOURCE-GATED; code-replacement repair I152–154 PARKED.
+Human Action: obtain today's official ePrint `2025/286.pdf` using a normal browser, retain original bytes (not a 50-page search-index copy), and supply as a PDF file with its download date; after receipt SHA256-pin and read verified pages 23–24 and Appendix E.2, plus §5 if changed; do not contact authors without PI authorization.
+Repository Path: **PENDING** — propose `papers/supplied/eprint-2025-286-official-2026-revision.pdf` only after receiving actual raw file; no path is asserted to exist.
+Readability Verification: **PENDING** for actual official PDF; available MCP mirror physical pp23–24 and 47–49 legible for the critical logical implication despite extraction warnings, but not official version-verified.
+Evidence: `findings/vfhe-current-official-revision-identity-gate-iteration155.md`.

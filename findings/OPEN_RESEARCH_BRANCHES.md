@@ -1,6 +1,6 @@
 # FHE Research Opportunity Backlog
 
-**Reviewed:** 2026-10-13, after I178; I179 not yet begun.  
+**Reviewed:** 2026-10-13, after I179; I180 not yet begun.  
 **Location:** `findings/OPEN_RESEARCH_BRANCHES.md` (the Research MCP presently disallows creating new root-file names).  
 **Authority:** `STATE.md` remains the only authoritative *current iteration / NEXT_ACTION* entry point; this file is a **long-term opportunity index**, never an instruction to launch multiple research hypotheses. PI decides research direction, reopening, contribution and disclosure.
 
@@ -126,13 +126,17 @@
 
 **Source gate unrelated unselected discovery:** recent ePrint **2026/2310** TFHE multi-value LUT log-unit optimization official PDF 403/fixed mirror unavailable; no technical audit conducted, not active. Original authorized PDF required before source-specific work.
 
-## P13 — High-precision dBFV digit lattice to BGV without quotient collapse (OPEN/HUMAN_REVIEW)
+## P13 — dBFV→BGV native digit-lattice migration; direct quotient and naive tuple both fail (HUMAN_REVIEW / PARK-naive)
 
 **Primary source:** Peikert–Zarchy–Zyskind, *High-Precision Exact FHE Made Simple, General, and Fast*, CRYPTO2026, ePrint **2025/2321**, complete43pp Research MCP `github-mirror` PDF SHA256 `1e41b62004aeee0bf572d0ccca8de8c5827ee9a14fb333a1d3d0f4d2ab483849`, VERSION_UNVERIFIED. p3 fn1 **authors explicitly state direct BGV adaptation unknown**. §4.1 p19 defines short digit lattice `L=ker(ev_b:R[B]→R/p)`, §4.2 p20 dBFV ciphertext additive module `K[B]/L` (NOT a K-algebra quotient), §4.4/§4.6 small-error growth/reduction. Its high-precision BFV proof and O~(h²logp) are source contributions, not independently recomputed.
 
 **[I178 FAIL one direct transplant, PASS exact obstruction]** For scalar plaintext modulus p and ordinary co-prime BGV ciphertext modulus q, the naive replacement `K[B]/L → (R/qR)[B]/barL` is the **ZERO ring**: constant `p∈L`, but p is a unit modq when gcd(p,q)=1, hence `1∈barL`. Toy p8,q17,b2,d3: `L=(8,B−2)`, plaintext quotient `Z[B]/L≅Z8`, whereas `Z17[B]/barL=0` since `8·15=1 mod17`; exact exhaustive checks of all 17³=4913 degree<3 polynomials PASS. This is **NOT** a claim all BGV decomposition constructions are impossible, nor an original paper error or a standalone novel theorem. Direct mixing of dBFV fractional additive modulus with BGV's modq ring is ill-defined; must maintain separate modp digit lattice/integer lifts and modq ciphertext arithmetic.
 
-**[OPEN / NEXT decisive test]** Check primary BGV↔BFV conversion [AP13 Appendix A] and whether a nontrivial `(R_q)^d` ciphertext tuple with external integer lift/carry reduction can preserve a BGV `m+p e` decryption invariant under multiplication/relinearization/level-switch, with effective O(d p^(1/d)) error growth rather than merely BFV↔BGV conversion. No actual dBGV correctness/noise/security, concrete performance, or novelty yet. Evidence `findings/dbfv-to-bgv-modq-digit-quotient-collapse-iteration178.md`; PI decides CONTINUE/PARK.
+**[I179 FAIL naive external digit tuple + per-component lattice reduction]** Original AP13: Alperin-Sheriff–Peikert, *Practical Bootstrapping in Quasilinear Time*, ePrint **2013/372**, full28pp GitHub-mirror SHA256 `11cd6de60e5aeb89920aa8715bf6fa32e442fe4d8f650bab49ef866858551560`, Appendix A p25: LSB/BGV↔MSB/BFV ciphertext-encoding conversion uses public `p^{-1}` or `p` modq multiplication with KNOWN plaintext factor `−q^{-1}` or `−q` modp. Therefore trivial dBFV+conversion is prior art, not native new dBGV.
+
+**New exact obstruction** distinct from zero quotient: retaining d ordinary modq BGV LSB ciphertext digit components and publicly reducing **each INTEGER coefficient polynomial** modulo original source's short digit lattice L changes plaintext through secret-dependent q-carry. Toy `p=8,q=17,b=2,d=3,s=1,c0(B)=c1(B)=−8` (constant polynomial): standard LSB centered phase `−16 mod17=1` encrypts digit1 at **zero noise**; source §4.6.1 nearest-plane maps `−8∈L=(8,B−2)` to0 in EACH coefficient, giving plaintext0. General lift invariant is `\tilde c0+s\tilde c1=μ(B)+pe(B)+qk(B)` with **secret-dependent** `k(B)` not in L, so mod-L reduction of public coefficient lifts does not preserve BGV modular-decoded digit plaintext. This is a **particular naïve operation correctness failure**, not proof any BGV digit scheme impossible. Full evidence `findings/dbfv-bgv-mixed-digit-lattice-hidden-q-carry-falsifier-iteration179.md`.
+
+**[HUMAN_REVIEW / NEXT gate]** PARK (i) direct quotient and (ii) independently reduced BGV tuple. Reopen broader dBGV only if a *genuinely distinct*, source-compatible secure q-carry-correction or mixed-modulus decryption invariant can be specified with a **correctness/noise proof** across multiplication/relinearization/modswitch and a credible security-matched efficiency gain beyond **known AP13 conversion plus dBFV internally**. No algorithm/benchmark/novelty proven. Do not repeat elementary q17 toy or claim author paper error. PI decides.
 
 ## Watchlist (not currently executable priority)
 

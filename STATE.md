@@ -1,6 +1,6 @@
-# FHE Research State — After Iteration 154
+# FHE Research State — After Iteration 155
 
-**Checkpoint:** 2026-10-13 · `main` · I154 completed, I155 **NOT STARTED**.
+**Checkpoint:** 2026-10-13 · `main` · I155 completed, I156 **NOT STARTED**.
 **Authority:** This file is a compact recovery entry point, not a history log. The former full 84,552-character `STATE.md` is preserved verbatim at `logs/state-pre-session-handoff-2026-10-13-iteration151.md` (blob SHA `7641c5eb985497ae77e9284ed9e94a5713f3222d`). Long-term directions and archives are indexed in `findings/OPEN_RESEARCH_BRANCHES.md`. Human PI makes direction, continuation, novelty and disclosure decisions.
 
 ## CURRENT TARGET
@@ -9,18 +9,20 @@
 
 ## LAST COMPLETED ITERATION
 
-**154 (2026-10-13)**; **I155 NOT STARTED**. PI's “好的，请继续” following I153 was narrowly interpreted as permission for ONE new non-Hadamard, non-tensor candidate test under the same P1 target. Cyclic-window systematic integer encoder FAILS source-comparable distance by adjacent-message cancellation. Latest archive below.
+**155 (2026-10-13)**; **I156 NOT STARTED.** PI assented to stopping repeated integer code variants and testing whether the current official 2026-02-16 revised ePrint PDF can be verified to match I59–60's 52-page mirror. I155 **UNCLEAR / MISSING_CURRENT_OFFICIAL_BINARY**: official landing confirms the revision date, but its actual current PDF bytes could not be retrieved/hashed and compared. See `findings/vfhe-current-official-revision-identity-gate-iteration155.md`.
 
 ## CURRENT QUESTION
 
-Original P1: can a field-independent bounded-integer, fast code make already authenticated Brakedown F.2 **testing-phase Merkle columns** check global cross-CRT scalar-digit coherence without new costly MLE evaluation openings, **while preserving original F.3 code distance and security**? Three explicit integer-encoder families (I152–154) fail distance; parent vFHE global CRT scalar-digit soundness issue remains **OPEN/HUMAN_REVIEW**; **no active coding candidate**.
+Parent P1 **OPEN/HUMAN_REVIEW / SOURCE-GATED**: does vFHE's Theorem 4.8 and its composed range PIOP in the **actual latest official revised version** still fail to constrain diagonal scalar digits across CRT components? I59–60 established an ideal-PIOP/abstract composition counterexample **in inspected 52-page GitHub-mirror PDF**, not against a byte-confirmed current official edition or a compiled SNARK. I152–154 integer-encoder replacement attempts are **PARKED by PI decision** after three distinct source-distance failures. **No active experiment or alternative research direction.**
 
 ## PRIMARY HYPOTHESIS
 
-**NONE ACTIVE**. I154 [NEGATIVE/FAIL]: `E_{m,L}(x)=(x,f_L x mod(X^m-1))`, `f_L=1+X+…+X^(L-1)`, `m=N=256,d=4,L=64,p=(641,1153), beta=2`, is a field-independent integer `[512,256]` systematic cyclic-window code with **O(m)** encoding and honest integer centered no-wrap (`64<641/2`). A singleton has weight65, but adversarial field message `x=1-X` produces codeword `(1-X,1-X^64)` of **weight4** in both primes, while source Appendix F.3 direct-sum RS `4×[128,64,65]` has exact dmin65. All `1≤L<m` have `dmin≤4`; relative `≤2/m→0`. Detailed evidence: `failures/vfhe-cyclic-window-integer-encoder-local-cancellation-iteration154.md` (SHA `081e681429f059361218716512ac6b3ef00c4f3c`).
+**NONE ACTIVE.** I155 test hypothesis that today's official ePrint PDF is the 52-page mirror (or contains the same Appendix E.2 diagonal-vs-componentwise step): **UNCLEAR**, no current official PDF raw bytes acquired. Official landing currently lists 2026-02-16 revision explicitly fixing an earlier Theorem 4.8 proof flaw, but web PDF index returns a 50-page OLD cached copy; Research MCP mirror (52pp, SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`) still includes Theorem4.8 `β<pmin,2^ell*<pmin`, Remark4.9 (p24) and the disputed Appendix E.2 CRT projection inference (p48). Version identity remains `VERSION_UNVERIFIED`; **do not assert latest official-source defect**. Critical original binary source request in `MISSING_SOURCES.md`.
 
 ## CURRENT EVIDENCE
 
+- **[I155 UNCLEAR / SOURCE GATE]** Official `https://eprint.iacr.org/2025/286` landing lists 2026-02-16 revision to Theorem 4.8 proof. Exact official current PDF bytes unavailable; web's 50pp cache conflicts with Research MCP's 52pp mirror, which has revised Remark4.9 and still contains invalid diagonal⇒fieldwise membership inference on physical p48. Identity NOT proven, no official exploit conclusion. Evidence `findings/vfhe-current-official-revision-identity-gate-iteration155.md`; source request `MISSING_SOURCES.md`.
+- **[PI PARK DECISION]** I152 single-flip Hadamard, I153 tensor multi-flip Hadamard and I154 cyclic-window integer encoder fast repair approaches are **PARKED** after independent source-distance obstructions. Parent P1 remains OPEN/HUMAN_REVIEW; no coding variants without new PI decision.
 - **[DERIVED/EXACT I154; NEGATIVE]** Source-compatible `m=N=256,d=4,p=(641,1153)`. Sliding-window integer code with 64-term parity windows has common integer honest values and `O(m)` encoding; however `(1-X) f_L=1-X^L` makes a weight4 codeword, vs F.3 RS exact distance65. Universal `δ≤2/m`; this is local cancellation and independent of the prior Hadamard obstructions. Archive `failures/vfhe-cyclic-window-integer-encoder-local-cancellation-iteration154.md`.
 - **[DERIVED I153; NEGATIVE]** Multi-flip/tensor Hadamard has `dmin≤2√m`, `δ≤1/√m`, and at m256 exact witness weight32 < RS65. `failures/vfhe-quadratic-tensor-hadamard-crt-encoder-distance-iteration153.md`.
 - **[DERIVED I152; NEGATIVE]** One-coordinate-sign-flip Hadamard exact `dmin4` all m power-of-two ≥4. `failures/vfhe-single-flip-hadamard-crt-integer-encoder-distance-iteration152.md`.
@@ -31,28 +33,25 @@ Original P1: can a field-independent bounded-integer, fast code make already aut
 
 ## MAIN OBSTRUCTION
 
-Original F.3 RS is field-dependent, preventing direct honest CRT integer comparison (I151). Three **different fast field-independent integer encoders** all have low-weight codewords despite toy no-wrap and favorable nominal encoding complexity: I152 rank-one Hadamard flip, I153 tensor Hadamard, I154 overlapping cyclic sliding window. None maintains native-field RS distance at a source-compatible instance. No efficient secure CRT scalar-index binding/PCS repair exists. Do not keep generating nearby coding variants without a new coding-theory architecture with a credible source-comparable distance guarantee.
+**Highest priority source obstruction:** official Feb 2026 ePrint PDF cannot be byte-identified with the 52-page cached GitHub mirror. I59–60's implication fails algebraically in the inspected mirror, but full current official-version applicability and compiled proof impact remain UNVERIFIED. Independently, unchanged source F.3 RS is prime-dependent (I151); three new cheap integer encoder attempts I152–154 fail to maintain its distance. **Integer encoding replacement is PARKED; no new repair or attack established.**
 
 ## OPEN UNCERTAINTY
 
-**[OPEN]** Existence and novelty of a genuinely nonlocal bounded-integer ECC with source-comparable distance and near-linear encoding over each native extension field, no-wrap for actual digit limits, and secure reuse of the source's Brakedown testing columns. Also Fiat–Shamir/PCS binding, key/privacy, 128-bit communication/verifier cost, actual compiled impact of I59–60, and current official ePrint binary equality are NOT verified.
+**[OPEN / SOURCE-GATED]** Current official PDF SHA and contents, possible further official constraints, end-to-end compiled/Fiat–Shamir proof impact, research novelty/priority, author-confirmed status. No disclosure or security claim permitted. Other historical failure archives not reopened.
 
 ## NEXT_ACTION — UNIQUE GATE FOR NEXT ITERATION
 
-**HUMAN_REVIEW / PI DECISION REQUIRED; I155 NOT STARTED.** Choose ONE: **(a)** park the concrete integer-encoder/Brakedown testing-column repair line (retain parent P1 ideal CRT issue OPEN) pending a materially different theoretical premise or coding-theory prior art; **(b)** expressly nominate/authorize a genuinely new high-distance nonlocal integer ECC family with an explicit credible construction and one source-comparable **minimum-distance gate** before any PCS work; **(c)** direct a separate PI-authorized review of source-version/impact rather than keep proposing fast encoder variants. Do not silently restart archived variants or pivot to another FHE target. No outreach/disclosure without PI authorization.
+**ONE EXECUTABLE SOURCE GATE; I156 NOT STARTED.** Retrieve the exact **current official** PDF raw bytes for ePrint 2025/286 (2026-02-16 revision) using a verified download or PI-supplied `papers/supplied/` file; pin SHA256 and compare to mirror `29b6b2e9…`. If different, read the official §4.3 Theorem4.8, Remark4.9, Appendix E.2 and §5, testing whether the CRT-diagonal implication and absence of cross-prime index binding persist. If source still inaccessible, stop and report **MISSING CRITICAL SOURCE**, rather than another inconclusive iteration. Do NOT resume coding variants, pivot, or contact authors without new PI instruction.
 
 ## RELEVANT FILES — NEW CHAT READ ORDER
 
-1. `START_RESEARCH_SESSION.md` → `RESEARCH_PHILOSOPHY.md` → `AGENT.md` → this `STATE.md`.
-2. `findings/OPEN_RESEARCH_BRANCHES.md` — durable other-direction index; current `STATE.md` overrides iteration/NEXT_ACTION.
-3. `failures/vfhe-cyclic-window-integer-encoder-local-cancellation-iteration154.md` — I154 new local-cancellation failure.
-4. `failures/vfhe-quadratic-tensor-hadamard-crt-encoder-distance-iteration153.md` and `failures/vfhe-single-flip-hadamard-crt-integer-encoder-distance-iteration152.md` — earlier structural code-distance failures.
-5. `failures/vfhe-original-rs-merkle-column-crt-integer-comparison-iteration151.md` — original native RS honest mismatch.
-6. `findings/vfhe-crt-lookup-cross-component-soundness.md` and `findings/vfhe-crt-full-range-piop-and-commitment-audit.md` — P1 parent issue.
-7. Other archived failures only if directly relevant; `logs/state-pre-session-handoff-2026-10-13-iteration151.md` for old history only.
+1. `START_RESEARCH_SESSION.md` → `RESEARCH_PHILOSOPHY.md` → `AGENT.md` → this file.
+2. `findings/vfhe-current-official-revision-identity-gate-iteration155.md` — latest verified/unverified boundaries and official-source acquisition gate.
+3. `MISSING_SOURCES.md` — requested official PDF bytes and source resolution instructions.
+4. `findings/vfhe-crt-lookup-cross-component-soundness.md`, `findings/vfhe-crt-full-range-piop-and-commitment-audit.md` — underlying I59–60 mirror-backed abstract finding.
+5. `findings/OPEN_RESEARCH_BRANCHES.md` — durable index.
+6. `failures/vfhe-cyclic-window-integer-encoder-local-cancellation-iteration154.md`, `failures/vfhe-quadratic-tensor-hadamard-crt-encoder-distance-iteration153.md`, `failures/vfhe-single-flip-hadamard-crt-integer-encoder-distance-iteration152.md` — PARKED code variants (read only if needed).
 
 ## STATUS
 
-**I154 CLOSED: FAIL cyclic-window source-comparable native-field code-distance criterion / PASS honest beta2 no-wrap and exact adjacent-cancellation counterexample / P1 vFHE CRT scalar consistency OPEN-HUMAN_REVIEW / NO ACTIVE EXPERIMENT / I155 NOT STARTED / HUMAN PI DECISION REQUIRED.**
-
-No public vulnerability assertion, no outreach or disclosure. Primary source remains VERSION_UNVERIFIED, no end-to-end SNARK proof attack, and no positive verified encoding construction.
+**I155 CLOSED: UNCLEAR / MISSING_CURRENT_OFFICIAL_BINARY.** Latest official landing revision 2026-02-16 CONFIRMED; cached 52pp mirror has disputed Appendix E.2 step, but official-current PDF SHA NOT VERIFIED. Parent P1 CRT scalar consistency OPEN/HUMAN_REVIEW / SOURCE-GATED; integer-encoder fast repair I152–154 PARKED on PI assent; no active experiment; **I156 NOT STARTED**. Next is single official-PDF raw-source gate, or STOP if inaccessible. No outreach/disclosure.

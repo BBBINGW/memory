@@ -1,6 +1,6 @@
 # FHE Research Opportunity Backlog
 
-**Reviewed:** 2026-10-13, after I174; I175 not yet begun.  
+**Reviewed:** 2026-10-13, after I175; I176 not yet begun.  
 **Location:** `findings/OPEN_RESEARCH_BRANCHES.md` (the Research MCP presently disallows creating new root-file names).  
 **Authority:** `STATE.md` remains the only authoritative *current iteration / NEXT_ACTION* entry point; this file is a **long-term opportunity index**, never an instruction to launch multiple research hypotheses. PI decides research direction, reopening, contribution and disclosure.
 
@@ -109,6 +109,12 @@
 **Paper:** Ma–Huang–Wang–Wang, *Faster BGV Bootstrapping for Power-of-Two Cyclotomics through Homomorphic NTT*, ePrint **2024/164**, full 42pp mirror SHA256 `89099f7efc7ab93d1e8b15d2e13c345d0493028f364ac8d9cf3cce289a43abd4`, official parity VERSION_UNVERIFIED.
 
 **[I170 FAIL zero-cost merge]** Exact admissible `M512,p97,ord512(97)=16,L16,D8` coefficient-block CRT over F97 has direct V_{jk}=α_j^k, with primitive32 root ζ19 and α_j=ζ^(2j+1); all 256 entries, all16 cyclic diagonals, and verified inverse fully dense. Thus flattening all source sparse NTT layers into one direct linear map does NOT preserve three-diagonal structure. The original source **already examines collapsing levels vs diagonal/time in §4.1** and absorbs bit reversal in §4.3, so no error or novelty. PARK unless entirely new resource-saving factorization with concrete source comparison. Evidence `findings/bgv-hom-ntt-full-layer-collapse-diagonal-fillin-iteration170.md`.
+
+## P11 — Park lightweight CKKS ciphertext matrix transpose binary-jump key scheduling (OPEN/HUMAN_REVIEW, PRIOR_ART_GATE)
+
+**Paper:** Jai Hyun Park, *Ciphertext-Ciphertext Matrix Multiplication: Fast for Large Matrices*, ePrint **2025/448**, complete 29 physical-page Research MCP `github-mirror` SHA256 `5303087cae3c92a662e053b2a20c89256ad4f20c0544c3dd60019481b44e6c8c`, official binary VERSION_UNVERIFIED.
+
+**[I175 PASS exact group-level schedule; novelty UNCLEAR]** Paper §5.1 lightweight C-MT uses ~3 master key families and sequentially generates `K_i=Enc_s(Psk(X^{5^i}))` and sign coset, with O(N) **max sequential key-update depth** for the last key; Table2 N4096 C-MT regular 3.04s/16.3bit/134MB vs lightweight 4.92s/14.2bit/0.246MB (100 samples, paper-reported). Proposed **basis automorphism masters** `{σ_{5^{2^b}}}`, binary `parent(i)=i-lowbit(i)` DFS schedule: exact modular enumeration N4096 and8192 checks every `σ_{±5^i}` covered without collision, positive max derivation depth `2047→11` (N4096), `4095→12` (N8192), O(logN) *conceptual* resident ancestors. N4096 needs ≈13 conceptual key families versus 3, and STILL `N−1=4095` **total key updates**, so no claim of speedup or measured lower CKKS noise/bit loss. Existing LLKN23 ASIACRYPT2023 **hierarchical rotation-key generation** and 2025/720 likely cover basis-key expansion; prior-art novelty is a strong blocker. P/P' key-switch noise, same-level correctness, ability to permute independent `Auto` task ordering, key security and total bytes not independently implemented. **Next decisive gate:** compare exact LLKN23 original scheme and Park §5.1 master modulus semantics to find whether binary jump is merely existing hierarchy or an actually distinct source-specific resource tradeoff. If known, PARK promptly. Evidence `findings/park-ccmm-lightweight-cmt-binary-jump-key-schedule-iteration175.md`.
 
 ## Watchlist (not currently executable priority)
 

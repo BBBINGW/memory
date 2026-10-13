@@ -1,6 +1,6 @@
 # FHE Research Opportunity Backlog
 
-**Reviewed:** 2026-10-13, after I160; I161 not yet begun.  
+**Reviewed:** 2026-10-13, after I167; I168 not yet begun.  
 **Location:** `findings/OPEN_RESEARCH_BRANCHES.md` (the Research MCP presently disallows creating new root-file names).  
 **Authority:** `STATE.md` remains the only authoritative *current iteration / NEXT_ACTION* entry point; this file is a **long-term opportunity index**, never an instruction to launch multiple research hypotheses. PI decides research direction, reopening, contribution and disclosure.
 
@@ -72,13 +72,23 @@
 
 **Evidence:** `failures/bj-automorphism-extended-external-product-ordinary-online-gadget-iteration125.md`.
 
-## P6 — Generalized CKKS EvalMod composite precision vs inner-degree frontier (OPEN/HUMAN_REVIEW)
+## P6 — Generalized CKKS EvalMod p1-only weighted approximation (PARKED / REOPEN_IF)
 
-**Paper:** Min, Lee, Song, *Enhanced CKKS Bootstrapping with Generalized Polynomial Composites Approximation*, ePrint **2025/429**, §3.1–3.3, §5. Research MCP full 19pp GitHub mirror SHA256 `150b337c0b11bc284b1f5d129c7ef1455451de0fe7cbbfd19ba8cb21e7e8dd4d`; official latest PDF VERSION_UNVERIFIED.
+**Paper:** Min–Lee–Song, *Enhanced CKKS Bootstrapping with Generalized Polynomial Composites Approximation*, ePrint **2025/429**, source mirror full 19 pp, SHA256 `150b337c0b11bc284b1f5d129c7ef1455451de0fe7cbbfd19ba8cb21e7e8dd4d`, latest official PDF version UNVERIFIED.
 
-**[I160 PASS exact conditioned local analysis]** On the paper's odd-r branch `f1(x)=sin(2πx/r)` and exact `t=f2∘f1` on near-integer domains, valid family `r=4k+1,x=k` has `|f2'(f1(k))|=r/[2π sin(π/(2r))]=Θ(r²)`. Thus a bounded small **independent additive first-stage f1 error** can be amplified by this factor, a conditional `~2log₂r` inner-error precision tax for fixed final tolerance. Exact analytic and finite-difference tests r=5,9,17,33,49 with K26 yield A_r≈2.575,…,243.314, ratio94.5×; no actual CKKS precision/algorithmic gain claimed. `findings/ckks-generalized-composite-f1-f2-quadratic-sensitivity-iteration160.md`.
+**[I160–164 source-shaped analysis, PI PARKED]** `f1=sin(2πx/r)`, ideal `|f2'(f1((r−1)/4))|=Θ(r²)` for odd r=4k+1, so p1 perturbations can be locally amplified. Original source §3.3/5.1 does not explicitly optimize f2'-weighted inner-stage error but benchmarks complete real CKKS output in §5.2. Degree43 K26 ε2^-8 **ideal outer** experiment suggested 2.14× sampled error improvement; the more source-shaped independent **Set I K23 ε2^-6 r5** same degree53 p1 and shared degree25 outer `p2=q5◦T5` test yields only **1.03525× (3.525%, ~0.05 ideal bits)** final output error improvement because the p2 error ≈9.79e−12 dominates p1≈8e−13. No continuous certified supremum, original author coefficients or author-matched Lattigo execution; `MISSING_SOURCES.md` retains source artifact request. **No FHE level, latency, precision or originality gain proven.** PI assent after I164 parked standalone p1 weighting. Reopen only with a materially different **joint p1/p2/noise-level** source-aware scheme with credible modulus/level cost gain and implementation; do not simply rescan polynomial degrees. Evidence `findings/ckks-generalized-composite-source-shaped-p2-dominance-iteration164.md` (plus I160–163).
 
-**[OPEN]** Is this end-to-end weighted sensitivity already handled by original source §3.3 least squares/minimax and §5 joint degree/precision choices? **Next cheap falsifier** read source optimization criteria and compare to `|f2'|·|p1−f1|`, do not assume omission from local derivative. If handled, PARK as textbook inverse-conditioning; if a genuine measurable fixed-depth gap survives, test ONE source-matched weighted-vs-unweighted approximant. Novelty and actual performance gain UNVERIFIED, no paper bug or disclosure claim.
+## P7 — TFHE HFP dependent-noise microaudit (PARKED / REOPEN_IF)
+
+**Paper:** Bergerat et al., *TFHE Gets Real*, ePrint **2025/257**, original 59pp mirror SHA256 `8544b4f2a8c0a22ba9d1d8f0a306e81a014243c7e12a8773e2d36cccf1f61ee2` official parity VERSION_UNVERIFIED.
+
+**[I165–166 tested and PI PARKED]** Alg2/Lemma2 explicitly assume independent centered Gaussian input noises and use `Var(E1−E2)=2σ²`. The generic LWE pair (c,−c) gives 4σ² but is **outside their stated assumption** and not a source-legal pair of HFP exponent ciphertexts. One explicitly legal source-API DAG `F'=CarryPropagateFloat(F); Addition(F',F')` aliases an exponent and yields **zero** pre-PBS subtraction noise, not a harmful 4σ² effect. No actual HFP unsafe DAG or broken parameter bound shown. Reopen only with a **specific valid post-refresh HFP negative covariance input DAG** and quantified failure/cost saving; do not revisit generic covariance facts. Evidence `findings/tfhe-gets-real-intsub-dependent-input-noise-scope-iteration165.md`, `findings/tfhe-gets-real-hfp-input-alias-correlation-gate-iteration166.md`.
+
+## P8 — Unpacked AHE Cussen PC-MM source notation audit (PARKED / NOT FHE)
+
+**Paper:** Ramapragada–Banerjee, *Fast Plaintext-Ciphertext Matrix Multiplication from Additively Homomorphic Encryption*, ePrint **2025/711**, full 33pp ALTERNATE_SOURCE SHA256 `347e7ffd1aefeb1c75c7561fda545becf33845b32d43aeed0a926c33570d2c81`; authors’ public code `sinesyslab/fast_pcmm_ahe_cic25`, main commit `191acd3b3c35db1d2a23b5984e46af8ee019e5b1`.
+
+**[I167 negative]** Algorithm3 line8's original-coefficient expression denotes the **value of already reconstructed products** in line6; the actual pinned C code calls `ECP_NIST256_pinmul` over compressed input `A_post_compression` only, reconstructs with EC additions, and accumulates `result_outer_product`. NO duplicated uncompressed multiplications in the proposed implementation and NO author algorithm/complexity gap. Source is *unpacked additive ECC HE*, not CKKS/BFV/TFHE. Do not claim direct packed-FHE novelty. Evidence `findings/fast-pcmm-ahe-algorithm3-reconstruction-use-source-gate-iteration167.md`. No reopen without a completely distinct, quantified FHE-only constraint/cost mechanism.
 
 ## Watchlist (not currently executable priority)
 

@@ -1,6 +1,6 @@
 # FHE Research Opportunity Backlog
 
-**Reviewed:** 2026-10-13, after I179; I180 not yet begun.  
+**Reviewed:** 2026-10-13, after I180; I181 not yet begun.  
 **Location:** `findings/OPEN_RESEARCH_BRANCHES.md` (the Research MCP presently disallows creating new root-file names).  
 **Authority:** `STATE.md` remains the only authoritative *current iteration / NEXT_ACTION* entry point; this file is a **long-term opportunity index**, never an instruction to launch multiple research hypotheses. PI decides research direction, reopening, contribution and disclosure.
 
@@ -137,6 +137,8 @@
 **New exact obstruction** distinct from zero quotient: retaining d ordinary modq BGV LSB ciphertext digit components and publicly reducing **each INTEGER coefficient polynomial** modulo original source's short digit lattice L changes plaintext through secret-dependent q-carry. Toy `p=8,q=17,b=2,d=3,s=1,c0(B)=c1(B)=−8` (constant polynomial): standard LSB centered phase `−16 mod17=1` encrypts digit1 at **zero noise**; source §4.6.1 nearest-plane maps `−8∈L=(8,B−2)` to0 in EACH coefficient, giving plaintext0. General lift invariant is `\tilde c0+s\tilde c1=μ(B)+pe(B)+qk(B)` with **secret-dependent** `k(B)` not in L, so mod-L reduction of public coefficient lifts does not preserve BGV modular-decoded digit plaintext. This is a **particular naïve operation correctness failure**, not proof any BGV digit scheme impossible. Full evidence `findings/dbfv-bgv-mixed-digit-lattice-hidden-q-carry-falsifier-iteration179.md`.
 
 **[HUMAN_REVIEW / NEXT gate]** PARK (i) direct quotient and (ii) independently reduced BGV tuple. Reopen broader dBGV only if a *genuinely distinct*, source-compatible secure q-carry-correction or mixed-modulus decryption invariant can be specified with a **correctness/noise proof** across multiplication/relinearization/modswitch and a credible security-matched efficiency gain beyond **known AP13 conversion plus dBFV internally**. No algorithm/benchmark/novelty proven. Do not repeat elementary q17 toy or claim author paper error. PI decides.
+
+**[I180 FAIL proposed PUBLIC EXACT carry metadata security]** A speculative carry-aware repair would publish an extra noiseless auxiliary congruence modulo p alongside the ordinary BGV ciphertext. In power-of-two cyclotomic rings with p=2^k, such unblinded linear metadata reveals the small secret whenever its public coefficient is invertible. An exact mod8/mod17 negacyclic CRT example demonstrates the failure; for a uniformly sampled auxiliary polynomial, invertibility holds with probability 1/2. This is **NOT** a vulnerability in BGV/dBFV or the papers, only a rejection of the proposed plaintext-visible auxiliary representation. See `findings/dbfv-bgv-public-crt-carry-sidecar-key-recovery-iteration180.md`. **HUMAN_REVIEW / recommend PARK trivial public carry sidecars**. Broader dBGV should continue only on an encrypted/noisy or genuinely hidden carry representation with demonstrated correctness, security and better cost than existing dBFV+AP13; otherwise pivot. I181 NOT STARTED.
 
 ## Watchlist (not currently executable priority)
 

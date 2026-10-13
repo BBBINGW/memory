@@ -1,6 +1,6 @@
-# FHE Research State — After Iteration 157
+# FHE Research State — After Iteration 158
 
-**Checkpoint:** 2026-10-13 · `main` · I157 completed, I158 **NOT STARTED**.
+**Checkpoint:** 2026-10-13 · `main` · I158 completed, I159 **NOT STARTED**.
 **Authority:** Compact current research recovery entry, not all history. Prior long state `logs/state-pre-session-handoff-2026-10-13-iteration151.md` (blob `7641c5eb985497ae77e9284ed9e94a5713f3222d`); backlog `findings/OPEN_RESEARCH_BRANCHES.md`. Human PI decides targets, contribution, pivots, and disclosure. Agent performs one minimal test per authorized iteration.
 
 ## CURRENT TARGET
@@ -11,18 +11,20 @@
 
 ## LAST COMPLETED ITERATION
 
-**I157 (2026-10-13), I158 NOT STARTED.** One source-specialized exact scalar HYBRID `ApproxModDown` falsifier. In OpenFHE v1.4.2 normal `KeySwitchInPlace→KeySwitchCore→EvalFastKeySwitchCore→ApproxModDown` (not `KeySwitchDown` as the direct intermediary), one-P/one-Q exact down-conversion of `P+E`, `P=5,Q=17,E=±1` symmetric centered, produces output 0/1 against ideal1, i.e. conditional mean additive error −1/2. **FAIL general zero-bias extension to isolated rounded map; UNCLEAR true two-component decrypted HYBRID KS noise**. Archive `findings/spru-openfhe-hybrid-approxmoddown-rounding-conditional-bias-iteration157.md` blob `303f86df2c56c92547c947a047e1d0c9eac1334e`.
+**I158 (2026-10-13), I159 NOT STARTED.** Source-consistent two-component HYBRID KS exact scalar specialization **FAILS universal post-decryption cancellation of I157's rounding drift**. For one Q17/P5, sOld=sNew=1, digit1, public a=P5, error e∈{−1,+1} equally, source private-private key equation b=−a sNew+P sOld+e=e; extended core outputs (b,a), separately ApproxModDown → (−1 or 0,1), decrypted result 0/1 (ideal1), conditional error mean −1/2. Zero-noise e0 baseline decrypts exactly1. No proof of typical source noise behavior. Archive `findings/spru-openfhe-two-component-hybrid-ks-rounding-drift-iteration158.md` blob `d812c83d12e47aa6d3d53f42c4bcf4c3b617d05b`.
 
 ## CURRENT QUESTION
 
-Can the **two-component decrypted** HYBRID KeySwitch error in source SPRU Trace retain a useful centered decomposition/bounded predictable bias after `ApproxModDown`? I157 killed the unjustified assumption that the **isolated down-conversion of one scalar component** preserves centeredness. Need determine whether actual `ct0+s·ct1` combination cancels this toy's component bias under valid KeySwitch evaluation-key equations. No live OpenFHE precision, paper error or performance result established.
+**SPRU current analytic issue:** Does the *distribution over actual uniform public key a and centered source discrete Gaussian e*, together with the full two-component HYBRID `ApproxModDown`, make the **incremental decrypted rounding noise** sufficiently centered/small that a meaningful probabilistic bound can improve source Table2 parameters? I158 proves only existence of **conditional nonzero bias for a rare fixed a=P** in an insecure single-P single-Q toy, and cannot justify actual N32768 error growth. Other vFHE parent stays OPEN/SOURCE-GATED; I152–154 integer repair PARKED.
 
 ## PRIMARY HYPOTHESIS
 
-**NONE ACTIVE.** I157 [FAIL source-exact scalar-specialized zero bias]: CKKS `t=0`, one-P `P=5`, one-Q `Q=17`, scalar integer `x=5+E`, `E∈{-1,+1}` independent symmetric. From tagged OpenFHE `ApproxSwitchCRTBasis` (canonical P residue) and `ApproxModDown`, `down(x)=((x mod17)-(x mod5))*7 mod17`, with outputs 0 and1, ideal1. Thus `E[down(5+E)−1]=-1/2`. Let `ξ_j` be full error, `B_j=E[ξ_j|past]` predictable drift, `M_j=ξ_j−B_j` centered; need genuine quantitative bounds, not toy assumptions. **No proof actual two-component decrypted KS bias is −1/2 or nonzero**. Original I156 pre-ModDown martingale statement remains correct **in its own conditional linear model**.
+**NONE ACTIVE.** I158 PASS exact **noncancellation witness**, FAIL proposed universal two-component cancellation: `P=5,Q=17,sOld=sNew=d=1,a=5,b=e` with centered `e±1`. `Down(-1)=-1`, `Down(1)=0`, `Down(5)=1`; after both conversions `Dec_new=Down(b)+Down(a)` takes 0 or1 with ideal1 and mean error −1/2; noiseless e0 baseline1. Source tagged OpenFHE v1.4.2 `KeySwitchGenInternal` private-private equation and `EvalFastKeySwitchCoreExt` two accumulators and `PKERNS::DecryptCore` plus sign were verified. This is **conditional on rare selected a modulo P**, artificial e law and toy parameters; full realistic statistics NOT determined.
 
 ## CURRENT EVIDENCE
 
+- **[DERIVED/EXACT I158]** One-P one-Q full private-private HYBRID KS conditional bias **survives** both conversions and plus-sign decryption for chosen public a=P, with two-component output (Down(b),Down(a))=(-1 or0,1). Valid old ciphertext (0,1) under old secret1, no-noise baseline correct. Keygens have e uniformly ±1 in toy, not author's true Gaussian; a chosen P is rare. Archive `findings/spru-openfhe-two-component-hybrid-ks-rounding-drift-iteration158.md`.
+- **[FACT tagged source decryption]** OpenFHE v1.4.2 `src/pke/lib/schemerns/rns-pke.cpp` blob `4e46c873112c617713a9b5bb4f70c5fd916b17c8`, `PKERNS::DecryptCore` has positive `cv0+cv1*s`; `keyswitch-hybrid.cpp` blob `552fee8fc52c4ee12176e6b9a2ca279b079b7cbc`, `EvalFastKeySwitchCoreExt` accumulates b into cTilda0 and a into cTilda1 before two source `ApproxModDown` calls; `dcrtpoly-impl.h` blob `0fec66253228c4d6f36526f6f63d62c146fe39ca` uses canonical P-residue lift.
 - **[DERIVED/EXACT I157 FAIL isolated rounding-centeredness]** Tagged OpenFHE v1.4.2 ordinary `KeySwitchInPlace → KeySwitchCore → EvalFastKeySwitchCore → ApproxModDown` direct call chain. `src/pke/lib/keyswitch/keyswitch-hybrid.cpp` blob `552fee8fc52c4ee12176e6b9a2ca279b079b7cbc`, `src/core/include/lattice/hal/default/dcrtpoly-impl.h` blob `0fec66253228c4d6f36526f6f63d62c146fe39ca`. Single-P `P5`→single-Q `Q17` canonical-residue basis lift yields `down(5−1)=0` and `down(5+1)=1`, bias `−1/2` relative ideal quotient 1. Source-exact **in isolated scalar subcase**, not a demonstrated full ciphertext decryption bias. Original p11 Lemma5 is only a norm bound. Archive `findings/spru-openfhe-hybrid-approxmoddown-rounding-conditional-bias-iteration157.md`.
 - **[DERIVED/EXACT I156 PASS conditional]** Tower property of conditional means yields pairwise orthogonality for centered independently generated fresh-key errors with past-measurable switch digits in strictly linear/pre-rounded arithmetic. Three-stage exact toy `Z1=e1;Z2=(1+e1)e2;Z3=(1+e1e2)e3`, independent uniform signed e variables, 8-case cross moments all zero. Details `findings/spru-adaptive-distinct-hybrid-ks-error-martingale-gate-iteration156.md`.
 - **[FACT source; not entire actual noise model]** Tagged `openfheorg/openfhe-development` **v1.4.2** `src/pke/lib/keyswitch/keyswitch-hybrid.cpp`, blob `552fee8fc52c4ee12176e6b9a2ca279b079b7cbc`, `KeySwitchGenInternal` creates per-part Gaussian e for each separately called single-key keygen; `KeySwitchInPlace` uses `KeySwitchCore`; **`KeySwitchDown` calls `ApproxModDown`**. Source does not imply rounded error conditionally centered. Its alternate threshold/key-reuse path `ekPrev` exists but is not the author's single-key Trace invocation.
@@ -33,25 +35,25 @@ Can the **two-component decrypted** HYBRID KeySwitch error in source SPRU Trace 
 
 ## MAIN OBSTRUCTION
 
-There is an exact **nonlinear modular down-conversion obstacle** to extending I156's pre-ModDown zero-conditional-mean lemma automatically. The one-P toy yields nonzero predictable drift from symmetric error; however full HYBRID KeySwitch performs **two** separate `ApproxModDown` operations and decrypts their sum against secret `s`, where biases may cancel or combine. The full source key pair/secret structure, actual multi-prime RNS rounding, input digit distributions, evaluation-key public dependencies, subsequent CKKS rescaling and maximum-slot tails remain unverified. No end-to-end Table2 14-bit claim or speed gain.
+Two clean probabilistic facts cannot yet be promoted to a SPRU efficiency/precision claim: I156's pre-rounded distinct-key martingale orthogonality does not automatically survive nonlinear RNS downconversion; I157 isolated scalar map and I158 source-consistent *complete two-component decrypted* map give nonzero conditional drift for chosen public randomness. However the I158 choice a=P has P residue0 (probability ~1/P under uniform a_P), key-error e=±1 is not the real Gaussian, and one-P/Q toy is insecure. Full uniform-a **incremental** noise mean, baseline deterministic rounding bias, multi-prime RNS, tails and actual SPRU stagewise precision remain unverified. These elementary toy observations are not publishable by themselves.
 
 ## OPEN UNCERTAINTY
 
-**[OPEN]** Whether single-component `ApproxModDown` bias survives in the actual **decrypted two-component** KeySwitch with source-consistent `EvalFastKeySwitchCoreExt` and new/old secret equation; conditional drift magnitude/second moments in true multi-prime OpenFHE; future ct×ct rescale, data-dependent key usage; novelty. Do not mistake model-level bias for original author scheme deficiency.
+[OPEN] Whether source keygen's actual a randomness **averages away** the apparent e-dependent rounding bias; proper separation of deterministic e=0 two-component rounding from incremental e contributions; whether scale/parameter budget makes any residual drift meaningful and nontrivial to bound. No real OpenFHE error/precision failure, algorithm, attack or speedup was found.
 
 ## NEXT_ACTION — UNIQUE GATE FOR NEXT ITERATION
 
-**I158 only if authorized.** Perform **ONE exact full two-component decryption falsifier**: read tagged OpenFHE v1.4.2 `EvalFastKeySwitchCoreExt`, relevant `KeySwitchGenInternal`, `EvalFastKeySwitchCore`, decryption sign convention, and construct source-consistent small `P,Q,sOld,sNew` with actual switching-key relation. Test whether `ct0+sNew·ct1` cancels or retains the isolated I157 conditional bias for fresh centered key errors. **Stop at this toy correctness/noise gate**; do not launch full parameter sweeps/benchmark or claim complete KS martingale behavior. Do not reopen vFHE encoder failures.
+**I159 only if PI authorizes.** ONE cheapest distributional falsifier: for the same source-equation one-P/Q two-component toy and one fixed digit, compute the **average incremental decrypted key-error** `Δ(a,e)=Dec(a,e)−Dec(a,0)` under uniformly sampled a mod QP and centered symmetric e; distinguish conditional-on-a mean vs unconditional expectation and compare with a proven O(1) norm ceiling. If averaging removes the special a=P bias or leaves only elementary negligible rounding at realistic Δ, **PARK SPRU microaudit** rather than start more parameter-free examples. Any claim about source Table2 requires subsequent exact multi-prime OpenFHE noise budget. No reopening archived vFHE fixes.
 
 ## RELEVANT FILES — NEW CHAT READ ORDER
 
-1. `START_RESEARCH_SESSION.md` → `RESEARCH_PHILOSOPHY.md` → `AGENT.md` → this `STATE.md`.
-2. `findings/spru-openfhe-hybrid-approxmoddown-rounding-conditional-bias-iteration157.md` — latest exact single-component rounding obstruction and source paths.
-3. `findings/spru-adaptive-distinct-hybrid-ks-error-martingale-gate-iteration156.md` — pre-ModDown conditional centered model.
-4. `findings/spru-trace-distinct-rotation-evaluation-key-index-gate-iteration147.md` — original 8 distinct rotation keys.
-5. `findings/spru-openfhe-v142-fixedauto-pretrace-mul-no-rescale-gate-iteration146.md`; `findings/spru-conditional-pretrace-pk-shared-mask-spectral-covariance-iteration145.md` — older fixed-mask model/source facts.
-6. `findings/OPEN_RESEARCH_BRANCHES.md` — index only; `MISSING_SOURCES.md` if returning to prior vFHE parent.
+1. `START_RESEARCH_SESSION.md` → `RESEARCH_PHILOSOPHY.md` → `AGENT.md` → `STATE.md`.
+2. `findings/spru-openfhe-two-component-hybrid-ks-rounding-drift-iteration158.md` — current two-component exact witness and source sign checks.
+3. `findings/spru-openfhe-hybrid-approxmoddown-rounding-conditional-bias-iteration157.md` — one-component downconversion bias.
+4. `findings/spru-adaptive-distinct-hybrid-ks-error-martingale-gate-iteration156.md` — pre-ModDown martingale model.
+5. `findings/spru-trace-distinct-rotation-evaluation-key-index-gate-iteration147.md` — source distinct rotation keys.
+6. `findings/OPEN_RESEARCH_BRANCHES.md` long-term priorities. vFHE `MISSING_SOURCES.md` only if returning to P1.
 
 ## STATUS
 
-**I157 CLOSED: FAIL automatic conditional-zero-mean extension through a source-specialized `ApproxModDown` map / PASS exact one-P/one-Q conditional-drift witness / UNCLEAR real two-component decrypted HYBRID KS / SPRU target OPEN / I158 NOT STARTED.** P1 vFHE OPEN SOURCE-GATED, integer-encoder repairs I152–154 PARKED. No actual SPRU error bias, precision failure, paper flaw, or performance gain demonstrated. Human PI retains continuation/novelty decisions.
+**I158 CLOSED: FAIL universal two-component rounding-bias cancellation; PASS exact source-consistent 1P/1Q full plus-sign decrypt witness; UNCLEAR actual averaged source HYBRID KS noise and SPRU precision. I159 NOT STARTED.** Human PI should decide whether a single distribution-averaged rounding check merits continuation or park SPRU low-novelty noise microaudits. P1 vFHE stays OPEN/SOURCE-GATED; fast integer encoder repairs I152–154 PARKED. No confirmed source-paper error or publishable contribution.

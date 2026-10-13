@@ -1,6 +1,6 @@
 # FHE Research Opportunity Backlog
 
-**Reviewed:** 2026-10-13, after I138; I139 not yet begun.  
+**Reviewed:** 2026-10-13, after I139; I140 not yet begun.  
 **Location:** `findings/OPEN_RESEARCH_BRANCHES.md` (the Research MCP presently disallows creating new root-file names).  
 **Authority:** `STATE.md` remains the only authoritative *current iteration / NEXT_ACTION* entry point; this file is a **long-term opportunity index**, never an instruction to launch multiple research hypotheses. PI decides research direction, reopening, contribution and disclosure.
 
@@ -28,11 +28,11 @@
 
 **[NEGATIVE] Prior tests:** second key switch generally destroys hoped-for sparse Y support after PCMM (I35); simple W-independent keys undermine security dimension; CKL no-conversion substitutions fail.
 
-**[OPEN] Need:** two complete keyswitches, digit decomposition, PCMM/rescale noise and realistic cost against existing batch methods. Novelty vs CKL/MRFHE batch algebra unknown.
+**[OPEN] Need:** complete two-switch PCMM+rescale noise, digit decomposition and matched security/latency costs. **[PASS symbolic source parameter gate I139]:** source Table5 FHE(8,5), n1=64,d=243, has K=2/3 entire original 64-ciphertext cohorts fitting ONE auxiliary Y block. Under I32's general count including fully **dense second KS** `C_K=3+4d ceil(Kn1/d)/(Kn1)`, C1=18.1875, C2=10.59375, C3=8.0625 => theoretical R-ring KS-equivalent gain 1.7168× / 2.2558×. K4 requires two blocks and regresses. Other Table5 shapes only 0–11.7% in K2/K3. Compared with independent K1, added joint conversion/memory/modulus overhead must stay below 972 (K2) or 1944 (K3) base-switch equivalents per cohort. **NO source FHE(8,5) batch benchmark, full noise/precision/security proof or new algorithm.** I33/I35 negative noise/density facts unchanged; novelty against existing CKL/MRFHE batch schemes uncertain.
 
-**Next gate:** exact second-switch post-PCMM digit-decomposition and output-noise/cost comparison K=1 versus K=2 on same key; kill if lost amortization.
+**Next gate (I140 only if PI authorizes):** for source FHE(8,5), K1 vs K2 with unchanged full original secret/switching key, quantify **first KS → actual D′2 PPMM → second KS → rescale** noise, precision, remaining modulus/security budget, and nonamortizable repacking; kill if consumes the 972 switch-equivalent margin. Do not retry I35 sparse-Y support tests.
 
-**Evidence:** `findings/mrfhe-aux-ring-cross-batch-coefficient-packing.md`; `findings/mrfhe-joint-packing-lifted-ks-noise.md`; `failures/mrfhe-joint-packing-second-switch-sparsity.md`; `failures/mrfhe-joint-packing-noise-isolation.md`.
+**Evidence:** `findings/mrfhe-source-table5-multibatch-dense-ks-frontier-iteration139.md`; `findings/mrfhe-aux-ring-cross-batch-coefficient-packing.md`; `findings/mrfhe-joint-packing-lifted-ks-noise.md`; `failures/mrfhe-joint-packing-second-switch-sparsity.md`; `failures/mrfhe-joint-packing-noise-isolation.md`.
 
 ## P3 — Rectangular encrypted matrix multiplication and output-block costs (PARKED / SOURCE BLOCKED)
 

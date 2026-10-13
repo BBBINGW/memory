@@ -92,5 +92,8 @@ Aikata–Roy rectangular D&C claims a packing formula based on max and min dimen
 ## STATUS
 **I134_CLOSED / FAIL_UNRESTRICTED_ONE_PRODUCT_EXPLICIT_RECTANGULAR_OUTPUT / PASS_BILINEAR_CAPACITY_BOUND / HUMAN_REVIEW / NO_ACTIVE_HYPOTHESIS.** I135 not started. Full original Aikata–Roy PDF read; exact symbolic rank and numerical instance checked; findings and STATE committed/read back. MOAI branch parked per PI authorization. No encrypted CKKS run, proof of actual code bug, author disclosure or background action.
 
+## LONG-TERM OPPORTUNITY BACKLOG
+The PI-approved durable research opportunity index is [`findings/OPEN_RESEARCH_BRANCHES.md`](findings/OPEN_RESEARCH_BRANCHES.md). It tracks OPEN/HUMAN_REVIEW, PARKED, ARCHIVED_SPECIFIC_REPAIR (including **vFHE CRT soundness separately from its archived PCS repair**), source/negative evidence, priorities and precise reopening conditions. This is NOT an active-session directive; this `STATE.md` remains sole current NEXT_ACTION and last-iteration entry. Root new filenames are not yet permitted by GitHub Notes MCP, so the index is under `findings/` and linked here.
+
 ## RESEARCH PROTOCOL
 Read before write. One smallest falsifiable hypothesis plus one cheapest decisive test per iteration. Mark [FACT]/[DERIVED]/[HYPOTHESIS]/[NEGATIVE]/[OPEN]; distinguish noiseless algebra, numeric approximation, CKKS feasibility and actual compiled tests. Preserve evidence provenance, hashes and negative results. Do not modify `AGENT.md`, `RESEARCH_PHILOSOPHY.md`, or `START_RESEARCH_SESSION.md` as part of handoff.

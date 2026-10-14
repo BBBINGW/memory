@@ -98,3 +98,34 @@ Human Action: If authorized, obtain relevant Springer chapter pp292–312 via in
 Repository Path: **PENDING/NONE** (ePrint paper text available from MCP cache; missing source is publisher chapter or exact author experiment artifacts).
 Readability Verification: **PENDING** for publisher §5.1 and author code. ePrint original PDF was parsed/read by Research MCP and web text, not visually verified rendered p19. Once supplied, read exact required source, verify SHA/commit and record method.
 Evidence: `findings/fhew-aku-gaussian-dfr-consistency-iteration190.md`; `findings/fhew-aku-ms2-rounding-code-gate-iteration191.md`; `findings/fhew-aku-author-repro-source-gate-iteration192.md`.
+
+
+## Crockett–Gentry–Kim–Lee–Lee GL matrix-arithmetic bootstrapping full text (new pivot source gate, 2026-10-14)
+
+Status: **MISSING** (primary full PDF; abstract/DOI metadata accessible)
+Authors: Eric Crockett; Craig Gentry; Hyojun Kim; Yeongmin Lee; Yongwoo Lee
+Venue / Year: CRYPTO 2026 Part II pp492–524; ePrint 2026/956
+Identifier: https://eprint.iacr.org/2026/956 ; DOI https://doi.org/10.1007/978-3-032-35374-0_16
+Needed For: Proposed independent post-CGS matrix-FHE source audit, specifically non-power-of-two generalized trace commuting with decryption and ciphertext-plaintext CtS/StC key-switch accounting; choose exactly ONE theorem/lemma after full text is available. NOT an initiated claim that a theorem is wrong.
+Missing Evidence: full original constructions, trace definition, theorem hypotheses, proof of decryption commutation, algorithm and cost/evaluation key details; abstract and bibliography do not establish these.
+Why Public Retrieval Failed: Research MCP get_eprint_paper("2026/956") returned RETRIEVAL_BLOCKED: original PDF HTTP403; arXiv exact-title fallback no matching result; fixed arturo-kong GitHub mirror lacks 2026/956.pdf. Web Springer chapter fetch cache-miss, alternate ePrint mirror direct PDF inaccessible. Secondary Scribd textual repost is NOT verified equivalent to original PDF or a sufficient primary source.
+Impact: technical correctness/noise/security/cost audit MUST NOT begin with the abstract. Can still research other fully accessible targets without claiming this one verified.
+Human Action: If available with authorization, supply the full ePrint PDF or CRYPTO 2026 chapter PDF and, if claiming measured performance, original implementation; no author contact/disclosure without PI permission.
+Repository Path: **PENDING/NONE** — only after an actual authorized upload.
+Readability Verification: **PENDING**; when received, verify file identity/version/PDF hash, read original relevant pages and visually check equations where extraction is unclear.
+Evidence: post-CGS17 source acquisition gate, 2026-10-14.
+
+## Bernard–Carouge–Joye–Orfila–Tap low-noise multi-value TFHE bootstrapping (new pivot source gate, 2026-10-14)
+
+Status: **MISSING** (primary full PDF; publication abstract accessible)
+Authors: Olivier Bernard; Nolan Carouge; Marc Joye; Jean-Baptiste Orfila; Samuel Tap
+Venue / Year: IACR ePrint 2026/2310, posted 2026-10-02
+Identifier: https://eprint.iacr.org/2026/2310
+Needed For: Possible independent source-specific audit of log-unit lattice search and LUT shifting as they affect encrypted-domain truth-table equivalence/noise. Select ONE technical claim if primary text is recovered.
+Missing Evidence: construction and definitions of unit lattice, shift equivalence, noise analysis, theorem scope, reported benchmarks and parameterization.
+Why Public Retrieval Failed: Research MCP get_eprint_paper("2026/2310") returned RETRIEVAL_BLOCKED: IACR PDF HTTP403, no exact-title author-matched arXiv fallback, fixed arturo-kong GitHub mirror does not contain 2026/2310.pdf. Alternative eprint mirror direct PDF inaccessible in web tool. A published abstract and author homepage are metadata only.
+Impact: cannot assert a correctness flaw, improvement idea, or perform paper-formula calculations without original source.
+Human Action: Supply authorized exact PDF or source code/reference artifact; no author contact unless PI approves.
+Repository Path: **PENDING/NONE**.
+Readability Verification: **PENDING**; recover version/hash and inspect relevant original theorem/equations on receipt.
+Evidence: post-CGS17 source acquisition gate, 2026-10-14.

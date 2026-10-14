@@ -1,48 +1,38 @@
 # vFHE Research State — Independent V-Series
 
-**Checkpoint:** 2026-10-14 (Asia/Tokyo)
-**LAST COMPLETED vFHE ROUND:** **V13**. **NEXT:** **V14 NOT STARTED**.
-**STATUS:** V13 **FAIL** one 128-bit global INTEGER scalar Fiat–Shamir challenge reduced into 49-bit CRT prime subfields as a one-shot 128-bit batch equality link; **PASS** precise legal two-Boolean-digit discrepancy with ≈1/p_i error and root cause (extension-field arithmetic ≠ extension-uniform challenge distribution). Whole cross-CRT canonical-int commitment, knowledge extraction, ZK/128-bit security composition, cost and novelty still OPEN.
-**GLOBAL FHE I192 REMAINS FROZEN.** This is vFHE independent round numbering. Old vFHE I193–I196 aliases mean V1–V4 only and do not extend the general series.
+**Checkpoint:** 2026-10-14 (Asia/Tokyo).
+**LAST COMPLETED vFHE ROUND: V14. V15 NOT STARTED.**
+**V14 STATUS:** FAIL the shortcut claiming a single full-extension-field random batched link can be directly checked against an unrelated-prime Pedersen/vector commitment without canonical integer quotient links; PASS explicit 4-basis-coordinate modular quotient relation and exact arithmetic toy. Whole vFHE PCS proof, witness extraction, zero knowledge and efficiency UNKNOWN. NOVELTY NOT VERIFIED.
+**GLOBAL FHE GENERAL COUNTER:** FROZEN at I192. Independent vFHE V1–V4 were historically mislabeled I193–I196; preserve those legacy evidence labels, do not advance global I-series.
 
-## Independent round trajectory
+## Independent round map
 
-V1: common bounded integer toy; V2–V3: degree-two/cyclic prefix low-distance negatives; V4: same-prime Fp→F_(p^d) code-distance invariant; V5–V7: small-support CRT-prime determinant/rank gates; V8: legitimate CRT prime divides a legal five-minor (not global attack); V9: global BOUNDED DIGIT integer difference distance inherits binary RAA under strict no-wrap, but not full native-field code distance; V10: sampled whole-codeword Merkle range not deterministic binding; V11: sampled systematic-only range loses distance amplification, one-digit mismatch passes 1−t/m; V12: third-field shared commitment without knowledge-sound per-native linking fails; **V13: 128-bit integer batching scalar modulo 49-bit native p yields only ≈48-bit error bound even when native arithmetic is F_(p^4)**.
+V1 bounded integer code toy; V2 one-prefix degree-two no-good-distance; V3 cyclic first + second interleaver no-go; V4 base-to-extension code distance invariant; V5–V7 small-support CRT-prime determinant thresholds; V8 actual source-form 49bit prime divides a 5x5 parity minor (NOT whole code-distance collapse); V9 bounded digit-pair global distance reduction to binary RAA under no-wrap; V10 naive sampled encoded-Merkle range binding FAIL; V11 systematic-only random sample detection 1−t/m FAIL; V12 common commitment without explicit cross-characteristic link/range FAIL; V13 shared 128-bit integer challenge reduced mod native p gives only ~48-bit one-shot test; **V14 full-extension challenge removes that sampling issue but NOT cross-characteristic commitment aggregation / modulo-p quotient proof.**
 
-## Human-selected parent target / original sources
+## Parent scientific target
 
-Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO2025, ePrint2025/286 https://eprint.iacr.org/2025/286. Research-MCP read GitHub-mirror 52-page PDF SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, official latest revision VERSION_UNVERIFIED. §3.1 physical p10: native CRT primes p=1+2aN/d, odd a, native fields F_(p^d); Appendix F.2 physical pp50–51: field-native Merkle/field-linear PCS, NOT an ext-field-based cross-CRT shared integer group commitment.
+Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO2025, IACR ePrint2025/286, https://eprint.iacr.org/2025/286. 52pp research-MCP mirror SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`; official PDF revision VERSION_UNVERIFIED. Original §3.1 p10 native CRT fields F_(p_i^d), Appendix F.2 pp50–51 native field-linear Brakedown Merkle PCS. Original cross-CRT scalar lookup gap only source-form ideal-oracle audit, not authenticated compiled attack. Proposed common-integer Pedersen bridge is NOT in source.
 
-Original cross-CRT parent issue [legacy general I59–I60]: per-component CRT scalar digit table proves rectangular rather than diagonal set; source-form ideal-oracle toy shows discrepancy; **NOT** authenticated compiled final-version SNARK exploit or an author-confirmed published flaw.
+## V14: ONE hypothesis / cheapest decisive test
 
-## V13 ONE hypothesis / ONE decisive exact falsifier
+**[HYPOTHESIS FALSIFIED]** With α uniform in F_(p^4), homomorphic aggregation of a third-prime commitment containing a canonical integer vector a can be directly equated to z=Σ α^j a_j in the native field, without any explicit cross-characteristic arithmetic/functional opening proof.
 
-**[HYPOTHESIS FALSE]:** A postcommit shared 128-bit integer random challenge α, reduced modulo each source 49-bit p_i and interpreted as a scalar in F_(p_i^4), when used for ONE power-batched equality `Σ α^j(u_i,j−a_j)=0`, automatically affords ≥128-bit soundness for discrepant bounded canonical digit vectors across all CRT components, with no extra cross-field link overhead.
+**[DERIVED EXACT RELATION]** Expand α^j=Σ_(t=0)^3 c_(j,t) θ^t in chosen Fp basis; choose 0≤ctilde_(j,t)<p. Integer aggregate S_t=Σ_j ctilde_(j,t) a_j. Native z_t=S_t mod p. Need FOUR component equations S_t=z_t+p*k_t with z_t∈[0,p−1], 0≤k_t≤floor(m(p−1)(β−1)/p); these may be proven jointly in one succinct proof. Group aggregation binds S_t mod commitment order r, NOT z_t mod p. A compact vector Pedersen commitment may additionally require nontrivial weighted linear-functional opening/IPA; no free homomorphism between different characteristics.
 
-**[DERIVED/FALSIFIER PASS]** Let β=2, m≥2, a=(0,1,0…), native fake/legal u=(1,0,0…), so discrepancy d=(1,−1,0…). Both vectors individually LEGAL Boolean messages. Batched polynomial is 1−α, and falsely accepts iff α≡1 mod p_i, independent of F_(p_i^4)'s larger cardinality because the integer-reduced α is always in Fp_i. For uniform integer α∈[0,2^128−1], exact probability
+**[EXACT TEST PASS]** Toy irreducible F29^4=F29[θ]/(θ^4+θ+5), α=28+θ genuinely not base-subfield, β16,m5, honest digit vector a=(2,3,5,7,11), unrelated scalar prime r10007. Integer S=(562,423,253,282), reduced native z=(11,17,21,21), quotients k=(19,14,8,9). All S_t<r, proving failure is native-p reduction, NOT r-wrap. Even honest input fails naive direct S=z checks. Fully exact polynomial arithmetic scripted.
 
-    [floor((2^128−2)/p_i)+1]/2^128 ≈ 1/p_i.
+**[SOURCE-SIZE CONDITIONAL]** p=281474976829441 (~49 bits), m1024,β2^20 implies S_t≤302231166800824369152000 (78 bits), k_t≤1073740799 (<2^30). A typical ~255bit group order suffices for non-wrap of this canonical lifted S, but the modulo-p quotient link remains required. Neither beta/m nor commitment scalar group has been mapped to a specific complete original-paper construction.
 
-Source-form N8192,d4 valid 49bit primes p1=281474976829441 and p2=353581838970881 satisfy p_i≡4097 mod8192 and verified prime. Concrete false-accept p1=3.552713677301223447e−15 (48.000000 bits), p2=2.828199556036458081e−15 (48.329038 bits). Adding HONEST components cannot improve the one-bad-component error.
+**[REPRODUCIBLE LOCAL FILES]** `/mnt/data/vfhe_v14_extension_field_link_gate.py` SHA256 `cf972c3fa8b95ad43075ed7859dea48bdd5b18b033805643a17702f81527da44`; `/mnt/data/vfhe_v14_extension_field_link_results.json` SHA256 `1948173a26ffdffb415500541686450a1cfe688eecb27eaafa2e934b3e96b452`. Not checked into repository. These are algebraic tests, NOT a CP-SNARK, ZK proof or performance measurement.
 
-**[CONDITIONAL OPTIONS, NOT REPAIRS]** Independent prime-field checks can compound soundness but must quantify general polynomial degree, component count and FS; for this 2-coordinate witness 3 independent base-field checks give >144 bits for a single component if assumptions hold. A full uniform native extension-field α_i∈F_(p_i^4) makes this degree-1 false equality pass with 1/p_i^4 (~192bits), unlike α∈Fp_i embedded as constant. For a general length-m power-batch nonzero polynomial, Schwartz–Zippel failure≤(m−1)/p_i^d if truly uniform in full extension. This is only an oracle/native field statement: separately proving the aggregate is linked to the actual shared hidden canonical integer commitment over unrelated group scalar field is STILL NOT IMPLEMENTED. A 128bit seed-to-extension map is not automatically statistically uniform on a ~192bit domain. Challenge sampling occurs only AFTER all commitments bind the witness; prechallenge witness choice can force passes.
+**PRIOR ART** cross-system modEq/range CP-ZK is known; Benarroch et al., *Zero-knowledge proofs for set membership: efficient, succinct, modular*, DCC2023 DOI 10.1007/s10623-023-01245-1. No novelty claim.
 
-**Exact executable arithmetic verification:** `/mnt/data/vfhe_v13_prime_subfield_batching_gate.py` SHA256 `7aa6a7e28c5f0f782db89b4e7540273cb9fbf0d77468d234018cdb3a15c0af65`; JSON `/mnt/data/vfhe_v13_prime_subfield_batching_gate_results.json` SHA256 `eb5a40bf1ebdd8f336a55e32175e372071ab3fc7fdddd45e5e3a6a03f76d79df`. Local-only; computes probabilities exactly, checks prime shape/primality, enumerates toy F17/F29/F37 batch root, demonstrates early-challenge failure. No ZK, actual shared commitment, native F.2 extraction, or cost verification.
+**Full technical record:** `findings/vfhe-cross-crt-consistency-research.md`, Section **23** V14; §§22 V13,21 V12,20 V11.
 
-**Subject finding source:** `findings/vfhe-cross-crt-consistency-research.md` **Section22** (V13), Section21 V12, Section20 V11, Section19 V10, Section18 V9. Maintain topic file rather than per-round findings files.
+## NEXT_ACTION: V15 only with PI continuation
 
-## NEXT_ACTION V14 — only on PI continuation
+One precise feasible operation-count comparison: proving the corrected FOUR-coordinate extension aggregate using (A) individually homomorphic digit commitments or (B) one compact vector commitment with a linear-functional/IPA proof, including quotient constraints, native F_(p^4) arithmetic and Fiat–Shamir binding. Determine whether the amortized proposal actually saves work over per-coordinate proofs, WITHOUT assuming free linear-functional openings. If no decisive operation saving can be established, report UNCLEAR/HUMAN_REVIEW. Original F.2 native-field extraction, global diagonal consistency, ZK/hiding, 128-bit soundness, and paper-version authentication still OPEN.
 
-ONE explicit extension-field cross-characteristic batch-link feasibility gate: with common hidden canonical digit vector a committed in third-field/group commitment C, and honest native α_i∈F_(p_i^4) sampled postcommit, can we make the batched relation
+## Workflow
 
-    z_i = Σ_j α_i^j embed_(p_i^4)(a_j) = Σ_j α_i^j u_i,j
-
-knowledge-sound and ZK WITHOUT silently treating an F_(p_i^4) scalar as an endomorphism of the unrelated commitment scalar group? Cheapest test: express α_i in 4-dimensional F_(p_i)-basis, count required independent native scalar/basis relations or cost; test for group-modulus alias if trying to claim one exponent equation proves equality across fields. If cannot justify cheap link, report UNCLEAR and suggest PI-controlled pivot to existing commit-and-prove/range proof primitives rather than inventing a free cross-field homomorphism. No full PCS coding/performance claim.
-
-## Outstanding blockers
-
-Cross-CRT common witness knowledge extraction from original Brakedown F.2 under arbitrary field challenge; canonical vector commitment hidden but linked; practical bit/range constraints; scalar/extension conversions; Fiat–Shamir and 128-bit soundness; witness privacy; complexity versus paper's native RS optimizations; source official version authentication. V9 bounded-digit code-distance is a conditional lemma only; **no integrated repaired protocol** and **no verified publication novelty**.
-
-## Protocol
-
-Follow AGENT.md and RESEARCH_PHILOSOPHY.md; ONE primary hypothesis + cheapest decisive test; read before write, verify commits by rereading, exact provenance and PASS/FAIL/UNCLEAR. Root STATE.md is only a pointer and freezes global I192. Human PI controls pivots, security disclosures and contribution assessment.
+Root STATE.md is only a pointer, global I192 frozen. Human PI decides pivots and contributions. Agent follows AGENT.md one hypothesis + one cheap decisive test, read before write and verify by reread.

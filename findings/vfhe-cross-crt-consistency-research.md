@@ -9,14 +9,14 @@
 
 Primary: Ignacio Cascudo, Anamaria Costache, Daniele Cozzo, Dario Fiore, Antonio Guimarães, Eduardo Soria-Vazquez, *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO 2025, IACR ePrint 2025/286, https://eprint.iacr.org/2025/286.
 
-Primary text inspected: 52-physical-page Research MCP GitHub-mirror PDF, SHA256 \`29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19\`; latest official publisher/ePrint binary **VERSION_UNVERIFIED**. Relevant source: §3.1 CRT product fields, §4.3 Figure 1 / Theorem 4.8, §5 PC compilation, Appendix D.3, Appendix E.2, Appendix F.1–F.3.
+Primary text inspected: 52-physical-page Research MCP GitHub-mirror PDF, SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`; latest official publisher/ePrint binary **VERSION_UNVERIFIED**. Relevant source: §3.1 CRT product fields, §4.3 Figure 1 / Theorem 4.8, §5 PC compilation, Appendix D.3, Appendix E.2, Appendix F.1–F.3.
 
-Let \`R_q ≅ ∏_{k=1}^{μ} F_k\` and the intended *diagonal* digit set be
-\`T_β^diag = {(j·1_{F_1},…,j·1_{F_μ}) : j=0,…,β−1}\`.
+Let `R_q ≅ ∏_{k=1}^{μ} F_k` and the intended *diagonal* digit set be
+`T_β^diag = {(j·1_{F_1},…,j·1_{F_μ}) : j=0,…,β−1}`.
 Per-field membership only enforces
-\`T_β^rect = ∏_k {0,…,β−1}_{F_k}\`, which strictly contains \`T_β^diag\` for μ≥2 and β≥2.
+`T_β^rect = ∏_k {0,…,β−1}_{F_k}`, which strictly contains `T_β^diag` for μ≥2 and β≥2.
 
-**[DERIVED, I59–I60] Concrete source-form witness:** \`R=Z_77[X]/(X²+1)\`, CRT primes 7 and 11; \`h=56\` maps to (0,1), so h is not a diagonal Boolean digit although each CRT projection is Boolean. Earlier records give valid theorem parameters, honest fieldwise memory transcripts CRT-glued into an identically valid ring grand-product relation, a shared false public \`v\`, true decomposition sumcheck, and compatible source-style independent field PCS commitments. The inspected ideal PIOP / theorem-level conclusion is challenged. This is **not** a proven exploit against a compiled deployed SNARK, not a confirmed current official-version flaw, and not a claim of confidentiality or 128-bit security compromise.
+**[DERIVED, I59–I60] Concrete source-form witness:** `R=Z_77[X]/(X²+1)`, CRT primes 7 and 11; `h=56` maps to (0,1), so h is not a diagonal Boolean digit although each CRT projection is Boolean. Earlier records give valid theorem parameters, honest fieldwise memory transcripts CRT-glued into an identically valid ring grand-product relation, a shared false public `v`, true decomposition sumcheck, and compatible source-style independent field PCS commitments. The inspected ideal PIOP / theorem-level conclusion is challenged. This is **not** a proven exploit against a compiled deployed SNARK, not a confirmed current official-version flaw, and not a claim of confidentiality or 128-bit security compromise.
 
 The underlying obstruction is algebraic: purely componentwise polynomial constraints / per-field witnesses do not bind a *single common table index*. Repeating the same fieldwise condition does not cure this distinction.
 
@@ -42,17 +42,17 @@ No publishability, algorithmic security, or efficiency breakthrough has yet been
 
 ## 4. Current repair proposal — COMMON INTEGER-CODE BRIDGE
 
-**[HYPOTHESIS, protocol NOT BUILT]** Instead of taking the original differently rooted per-prime RS-coded columns and trying to equate them, first encode one *common integer* vector by a public small-coefficient integer generator \`G∈Z^{m×M}\`:
+**[HYPOTHESIS, protocol NOT BUILT]** Instead of taking the original differently rooted per-prime RS-coded columns and trying to equate them, first encode one *common integer* vector by a public small-coefficient integer generator `G∈Z^{m×M}`:
 
-\`C=Enc_Z(x)=xG,   x∈{0,…,β−1}^m\`.
+`C=Enc_Z(x)=xG,   x∈{0,…,β−1}^m`.
 
 Choose G and parameters with a no-wrap honest envelope, such as
-\`max_j ∑_i |G_{ij}|(β−1)<p_min\`
+`max_j ∑_i |G_{ij}|(β−1)<p_min`
 (and preferably nonnegative encoded output), so honest columns can have a unique bounded integer interpretation, independent of which CRT prime sees them.
 
-A future protocol might Merkle-commit the **same canonical encoded integer columns** once, then link each native field \`F_k\` evaluation/testing transcript to its reduction modulo \`p_k\`. Field-specific response vectors at arbitrary evaluation challenges generally remain different; *only the properly shared encoded column data* is a plausible reuse target. The integer-column commitment may require hiding/blinding and a redesigned extractor/proximity protocol.
+A future protocol might Merkle-commit the **same canonical encoded integer columns** once, then link each native field `F_k` evaluation/testing transcript to its reduction modulo `p_k`. Field-specific response vectors at arbitrary evaluation challenges generally remain different; *only the properly shared encoded column data* is a plausible reuse target. The integer-column commitment may require hiding/blinding and a redesigned extractor/proximity protocol.
 
-**Conditional mathematical lemma [DERIVED]:** If a common committed word C is verified to be within Hamming distance strictly less than \`d_min/2\` of \`Enc_{F_k}(x^(k))\` for every k, with all these comparisons living in one *consistently interpreted* alphabet/metric and the encoder injective on the admissible table digits, then triangle inequality + minimum distance imply all \`x^(k)\` coincide. The difficult step is proving that the actual interactive PCS forces those premises with negligible error; different fields cannot simply be compared in their native arithmetic without a shared canonical representation.
+**Conditional mathematical lemma [DERIVED]:** If a common committed word C is verified to be within Hamming distance strictly less than `d_min/2` of `Enc_{F_k}(x^(k))` for every k, with all these comparisons living in one *consistently interpreted* alphabet/metric and the encoder injective on the admissible table digits, then triangle inequality + minimum distance imply all `x^(k)` coincide. The difficult step is proving that the actual interactive PCS forces those premises with negligible error; different fields cannot simply be compared in their native arithmetic without a shared canonical representation.
 
 **Warning:** An unsalted Merkle commitment and/or openings of low-entropy digit columns may leak a witness or permit dictionary guessing. A shared commitment does not by itself preserve the original protocol's ZK property.
 
@@ -63,27 +63,27 @@ One necessary algebraic gate has been tested, not a full protocol.
 Parameters: m=8, β=2, source-form N=8, d=4, p0=29, p1=37; both p_i=4a_i+1 with odd a_i.
 
 Define an integer-linear systematic expand-accumulate code
-\`Enc_Z(x)=(x, Prefix(xA)) ∈ Z^16\`,
-where \`Prefix(y)_j=∑_{t≤j}y_t\`, and A is a public 8×8 {0,1} matrix, each row weight 2, with zero-based support:
+`Enc_Z(x)=(x, Prefix(xA)) ∈ Z^16`,
+where `Prefix(y)_j=∑_{t≤j}y_t`, and A is a public 8×8 {0,1} matrix, each row weight 2, with zero-based support:
 
-\`\`\`text
+```text
 r0 (4,7)    r1 (1,4)    r2 (1,2)    r3 (0,5)
 r4 (3,4)    r5 (3,6)    r6 (5,6)    r7 (2,6)
-\`\`\`
+```
 
 **[DERIVED+REPRODUCED, PASS on this toy]** Honest binary output values lie in [0,16], strictly below both 29 and 37. Therefore the *identical integer codeword* can be used for honest input in both fields. Encoding is O(m) operations for this chosen sparse/accumulator template.
 
-Exact enumeration of all \`3^8−1=6560\` nonzero differences of binary vectors gives minimum codeword Hamming weight 3, relative distance \`3/16\`. It can also be proved over **every odd-characteristic field (including extensions)**: weight≥3 inputs are handled by the systematic part; weight-2 inputs give nonzero parity because no two distinct weight-2 rows of A are proportional; a weight-1 input produces two same-sign impulses whose prefix has at least two nonzero positions in odd characteristic. Difference \`e_7−e_5\` attains total codeword weight exactly 3.
+Exact enumeration of all `3^8−1=6560` nonzero differences of binary vectors gives minimum codeword Hamming weight 3, relative distance `3/16`. It can also be proved over **every odd-characteristic field (including extensions)**: weight≥3 inputs are handled by the systematic part; weight-2 inputs give nonzero parity because no two distinct weight-2 rows of A are proportional; a weight-1 input produces two same-sign impulses whose prefix has at least two nonzero positions in odd characteristic. Difference `e_7−e_5` attains total codeword weight exactly 3.
 
-**Recheck on 2026-10-14:** Local \`/mnt/data/i193_vfhe_universal_integer_ea_toy.py\` (SHA256 \`70e27821a362761316d36c2f097ec1634b20349e00c8bcf566d33e07c67d7502\`) was rerun successfully. This file is local; the MCP cannot read \`local/\` or infer that local artifacts are in Git.
+**Recheck on 2026-10-14:** Local `/mnt/data/i193_vfhe_universal_integer_ea_toy.py` (SHA256 `70e27821a362761316d36c2f097ec1634b20349e00c8bcf566d33e07c67d7502`) was rerun successfully. This file is local; the MCP cannot read `local/` or infer that local artifacts are in Git.
 
-**No asymptotic claim:** \`3/16\` at m=8 does **not** imply code distance Ω(M) for m256 or m1024. This test does not establish the repair's PIOP soundness, witness privacy, author implementation parity, or 128-bit security.
+**No asymptotic claim:** `3/16` at m=8 does **not** imply code distance Ω(M) for m256 or m1024. This test does not establish the repair's PIOP soundness, witness privacy, author implementation parity, or 128-bit security.
 
 ## 6. Preliminary cost opportunity — NOT benchmarked
 
-In an illustrative F.2 evaluation interface with \`μ=6144, m=256, t=32\`, 25-byte native \`F_{p^4}\` elements:
-- Original repeated native vectors + coded columns: \`μ·m·(1+t)·25 = 1,297,612,800 bytes = 1237.5 MiB\`.
-- Hypothetical shared-integer-column interface with 4-byte bounded symbols and *unchanged* per-field evaluation vectors: \`μ·m·25 + t·m·4 = 39,354,368 bytes ≈37.53 MiB\`.
+In an illustrative F.2 evaluation interface with `μ=6144, m=256, t=32`, 25-byte native `F_{p^4}` elements:
+- Original repeated native vectors + coded columns: `μ·m·(1+t)·25 = 1,297,612,800 bytes = 1237.5 MiB`.
+- Hypothetical shared-integer-column interface with 4-byte bounded symbols and *unchanged* per-field evaluation vectors: `μ·m·25 + t·m·4 = 39,354,368 bytes ≈37.53 MiB`.
 
 This ≈33× **isolated interface calculation** assumes a working shared commitment, the same sampling count, no extra extractor/PCS checks and a safe 4-byte integer representation. It omits privacy, commitment, Merkle, soundness budget, testing, extra protocol messages, and actual implementation costs. **Not an end-to-end gain or an actual usable parameter claim.**
 
@@ -98,12 +98,12 @@ This ≈33× **isolated interface calculation** assumes a working shared commitm
 - I151: direct same-integer comparison of **existing native RS/NTT coded columns** rejects honest inputs because per-prime roots differ.
 - **I193 is NOT I151 repeated**: it studies a replacement field-independent bounded-integer encoder.
 
-For exact negative witnesses read \`findings/OPEN_RESEARCH_BRANCHES.md\` P1 and relevant files in \`failures/\`.
+For exact negative witnesses read `findings/OPEN_RESEARCH_BRANCHES.md` P1 and relevant files in `failures/`.
 
 ## 8. Remaining decisive proof obligations
 
-1. **Uniform distance at source scale:** construct/check a specified small-integer sparse code family with positive constant relative distance over every relevant \`F_{p_i^d}\`, not just a small binary-message experiment.
-2. **No-wrap envelope:** bound all *honestly opened* code symbols with the actual source \`m, β, p_min\`; distinguish Boolean-domain digits from random-challenge PCS vectors (which are generally not small integers).
+1. **Uniform distance at source scale:** construct/check a specified small-integer sparse code family with positive constant relative distance over every relevant `F_{p_i^d}`, not just a small binary-message experiment.
+2. **No-wrap envelope:** bound all *honestly opened* code symbols with the actual source `m, β, p_min`; distinguish Boolean-domain digits from random-challenge PCS vectors (which are generally not small integers).
 3. **Shared commitment soundness:** specify the actual committed object, binding/extractor, word-consistency/proximity proof, sampling order and cross-field errors. Show a cheating CRT vector with inconsistent digits is caught except negligible probability.
 4. **Zero knowledge:** hiding, blinding, and unopened/opened low-entropy integer code symbols under leakage adversaries.
 5. **Full protocol integration:** source F.2 evaluation testing, field-specific vectors, domain-separated Fiat–Shamir, correct 128-bit soundness budget.
@@ -114,18 +114,18 @@ For exact negative witnesses read \`findings/OPEN_RESEARCH_BRANCHES.md\` P1 and 
 
 **Question:** Does the *specific* 0/1 sparse-expand + prefix-accumulate template maintain a constant relative minimum distance, or does it have an explicit family of o(M)-weight codewords when m grows?
 
-**Cheap falsification first:** inspect Block et al. ePrint 2024/1871 §4 to determine exactly where their arbitrary-field distance proof uses independently sampled nonzero field coefficients; seek an explicit small-support cancellation pattern for a fixed-integer-weight generator at \`m=256\` or \`m=1024\` (prefer a general mathematical witness over exhaustive large enumerations). If one exists and generalizes, **KILL this particular encoder specialization**, while retaining the abstract shared canonical integer commitment research problem. Do NOT move directly to a full PCS implementation before this gate.
+**Cheap falsification first:** inspect Block et al. ePrint 2024/1871 §4 to determine exactly where their arbitrary-field distance proof uses independently sampled nonzero field coefficients; seek an explicit small-support cancellation pattern for a fixed-integer-weight generator at `m=256` or `m=1024` (prefer a general mathematical witness over exhaustive large enumerations). If one exists and generalizes, **KILL this particular encoder specialization**, while retaining the abstract shared canonical integer commitment research problem. Do NOT move directly to a full PCS implementation before this gate.
 
 **CURRENT DECISION:** parent target = vFHE cross-CRT consistency (PI-selected); most recent completed test = I193; next test not started; current candidate = OPEN/UNCLEAR, not a proven repair.
 
 ## 10. Evidence paths (repository)
 
-- \`findings/vfhe-crt-lookup-cross-component-soundness.md\` — precise ideal-PIOP counterexample.
-- \`findings/vfhe-crt-full-range-piop-and-commitment-audit.md\` — composed range relation and PCS scope.
-- \`findings/vfhe-confidential-pi-review-package-iteration74.md\` — internal evidence review; no author transmission.
-- \`failures/vfhe-original-rs-merkle-column-crt-integer-comparison-iteration151.md\` — why unchanged RS columns fail.
-- \`findings/vfhe-shared-integer-ea-column-bridge-iteration193.md\` — detailed construction and source-first test.
-- \`findings/OPEN_RESEARCH_BRANCHES.md\` P1 — historical backlog / failed strategies.
-- \`STATE.md\` — authoritative session checkpoint (do not use this document to silently override active state).
+- `findings/vfhe-crt-lookup-cross-component-soundness.md` — precise ideal-PIOP counterexample.
+- `findings/vfhe-crt-full-range-piop-and-commitment-audit.md` — composed range relation and PCS scope.
+- `findings/vfhe-confidential-pi-review-package-iteration74.md` — internal evidence review; no author transmission.
+- `failures/vfhe-original-rs-merkle-column-crt-integer-comparison-iteration151.md` — why unchanged RS columns fail.
+- `findings/vfhe-shared-integer-ea-column-bridge-iteration193.md` — detailed construction and source-first test.
+- `findings/OPEN_RESEARCH_BRANCHES.md` P1 — historical backlog / failed strategies.
+- `STATE.md` — authoritative session checkpoint (do not use this document to silently override active state).
 
 **Use this file as the single topic-level home for future verified vFHE consistency results. Keep each atomic technical test and full provenance in its numbered archive as needed, but do not force the scientific narrative into a numbered iteration list.**

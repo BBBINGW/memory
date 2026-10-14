@@ -1503,3 +1503,19 @@ A web-search-cached PDF reference for the public eprint URL presented **50 pages
 
 **END V20:** STATUS=PASS explicit ideal **outer coefficient-range** false-statement accepting witness; source version and compiled security HUMAN_REVIEW. **NEXT_ACTION V21:** independently authenticate the latest exact author/proceedings edition and visually verify Figure1 product-tree indexing, then investigate whether the actual compiled PCS/Fiat–Shamir proof adds any soundness/binding condition not present in source Pi_range/F.1–F.3. Verify official version and method independently before contacting authors; only PI can authorize disclosure or pivot. **STATE_UPDATE=YES:** vFHE V20 completed, general I192 remains frozen.
 
+
+### Independent V20 reproduction — 48 exact sumcheck transcripts
+
+**2026-10-14 independent replication of existing V20 note, read-before-write:** The cumulative technical archive already contained the original V20 result while standalone state remained at V19. We therefore DID NOT create a second numbered V20 hypothesis or rename existing records. We independently reimplemented the same one-test falsifier in a fresh Python program, with an explicit verifier for all three polynomial sumchecks and exact interpolation over source ring R.
+
+**[SOURCE]** §4.3 p20–23 Eq22, Fig1, Lemmas4.3–4.7, Thm4.8 of cached 52-page ePrint2025/286 mirror; PDF version equivalence to current IACR/CRYPTO official edition still VERSION_UNVERIFIED.
+
+**[INDEPENDENT DERIVATION]** Choose p13,N4,d2, B4,b2,c1,beta4, ell1, nu2,gamma0,ellstar3. p=1+(2N/d)·3; p>beta and p>2^ellstar=8. e=7+4X² is idempotent with CRT projections (1,0), but its coefficient values 7 and 4 violate [0,3]. Set v(0)=v(1)=e and h(i,j)=e iff j=0, else 0. Eq22 and all its MLE extensions hold exactly. Actual native lookup counters are factor1 final(6,2,0,0), factor2 final(8,0,0,0); CRT-lift final(8−2e,2e,0,0), fixed pre-(sigma,tau). Product-tree oracles use source f(1,i)=f(i,0)·f(i,1), root f(1,1,...,1,0), and both virtual Fig1 sumcheck sums are exactly zero. The outer Pi_decomp sumcheck has true target e. This is a false-coefficient statement with an accepting source ideal-IOP transcript, not a cryptographic commitment attack.
+
+**[EXPERIMENT]** Fresh standalone Python in THIS session:
+- `/mnt/data/vfhe_v20_outer_range_independent_gate.py` SHA256 `72a6fc7f55352b121e8866d3f5aa67642e905a7d845f6faced3dd977ae9b2f5c`.
+- `/mnt/data/vfhe_v20_outer_range_independent_results.json` SHA256 `0739cbb1944bdd100e18ca057ca131ac24ec0effa015ac04e5f5b49738e3bbcd`.
+
+48 deterministic seeded independent **complete ideal sumcheck transcript configurations** PASS; each uses fresh whole-ring challenges for ri, sigma,tau,chi,rho,xi and all challenge coordinates of: one outer degree-2 2-variable sumcheck and two inner degree-3 3- and 2-variable sumchecks. Interpolation at public scalar nodes 0..d with exact F13 inverses checks every g_j(0)+g_j(1) and final virtual oracle evaluation; no numerical approximations. Four GP polynomial recursions and root equality also checked. Re-executed twice with identical SHA256. Proof holds for all allowed verifier challenges by CRT-lifted honest per-factor transcripts; sample count is only reproducibility evidence.
+
+**Critical scope:** This replicates the already archived V20 ideal-IOP result, does not authenticate official current PDF, prove a full compiled PCS/Fiat-Shamir vFHE break, verify real 49bit implementation, or supply novel repair. The original manuscript's PDF text extraction around GP Figure1 may drop superscripts; independently verify rendered authoritative edition before any disclosure. **Next V21** official version/rendered-equation authentication; PI controls communication. General I192 remains frozen.

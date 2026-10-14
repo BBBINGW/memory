@@ -1,33 +1,42 @@
-# FHE Research State — vFHE cross-CRT consistency after I194
+# FHE Research State — vFHE Cross-CRT Consistency after I195
 
-**Checkpoint date:** 2026-10-14 (Asia/Tokyo)
-**LAST COMPLETED ITERATION:** **I194 COMPLETED**; **I195 NOT STARTED**.
-**STATUS:** **FAIL** narrowly scoped row-weight-2 single-prefix-code family; **OPEN/HUMAN_REVIEW** for parent cross-CRT shared integer commitment; NOVELTY NOT VERIFIED. No active technical hypothesis until PI selects next test.
+**Checkpoint:** 2026-10-14, Asia/Tokyo.
+**LAST COMPLETED ITERATION:** I195 COMPLETED. **I196 NOT STARTED.**
+**STATUS:** FAIL for cyclic row-weight-two double-accumulator with any second permutation; root cross-CRT problem OPEN; candidate global common-integer-code proof system NOT CONSTRUCTED, NOVELTY NOT VERIFIED; HUMAN_REVIEW for next subbranch. No active test until PI authorizes next turn.
 
-## CURRENT TARGET (PI-selected)
+## CURRENT HUMAN-SELECTED PARENT TARGET
 
-vFHE common scalar digit/index consistency across CRT fields. Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO 2025, ePrint 2025/286, https://eprint.iacr.org/2025/286. Original primary 52pp Research MCP GitHub mirror SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, latest official parity VERSION_UNVERIFIED.
+vFHE *cross-CRT shared scalar digit-index consistency*.
+Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO 2025, ePrint 2025/286 (https://eprint.iacr.org/2025/286). Cached 52pp ePrint mirror PDF SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, official latest VERSION_UNVERIFIED.
 
-**Gap [DERIVED I59–I60]:** CRT-product fieldwise digit lookups enforce rectangular per-field membership, not a common diagonal scalar digit. Exact ring-idempotent witness in `R=Z77[X]/(X²+1)` uses h56→(0,1), ideal polynomial-oracle proof accepts a false range relation; original §5 componentwise PCS does not itself cure the abstraction. **Not** authenticated end-to-end SNARK exploit or verified latest-edition vulnerability. Original existing RS-coded column direct integer comparisons FAIL honest completeness (I151); other cheap PCS/lookup repairs archived P1.
+**KNOWN STRUCTURAL GAP [I59–I60]:** componentwise CRT-field digit table memberships enforce rectangular closure, not the same diagonal common integer digit. Toy source-form Ring `R=Z77[X]/(X²+1)` with `h56→(0,1)` gives source-level ideal PIOP counterexample under inspected mirror version; original componentwise F.1 PCS does not impose diagonal digit relation. NOT a validated deployed final-version SNARK attack, privacy failure or author-confirmed vulnerability.
 
-## LATEST TEST / EVIDENCE
+## THIS ROUND I195 (ONE PRIMARY HYPOTHESIS, ONE TEST)
 
-**I193 positive toy gate:** one 8×8 integer A with each row two 1s, `E_A(x)=(x,Prefix(xA))`, m8,p29/p37,beta2: identical honest bounded integer encodings and minimum weight3/16 over odd-characteristic extension fields. **Finite toy only.**
+**Primary hypothesis (falsified):** adding a second arbitrary permutation and prefix accumulator to the fixed row-two cyclic integer expansion `A_i=e_i+e_{i+1 mod m}`, via
+`C_pi(x)=(x,U(xA),U(P_pi U(xA)))∈F^{3m}`, could restore asymptotically positive relative distance.
 
-**I194 decisive negative theorem:** For **every** binary m×m matrix A with exactly two distinct 1s per row, over ANY odd-characteristic field or its extensions, systematic single-prefix code `E_A:F^m→F^{2m}` satisfies `d_min=O(sqrt(m))`. Proof models rows as graph edges: even alternating paths with close numeric endpoints, small-component signless-incidence dependencies, even cycles, or paired odd cycles. Parallel rows yield distance≤2. Therefore **relative distance O(1/sqrt(m))→0**: exact row-weight-2 + one accumulator specialization is UNUSABLE as constant-distance Brakedown/PCS code. Source-size direct cyclic witness x=e0−e1 yields codeword weight4 for every m≥4: m256 4/512 (0.78125%) and m1024 4/2048 (0.1953125%). Additional graph instances independently checked. This is an established algebraic obstruction to this specific encoding, NOT a universal impossibility of small-integer coding, shared commitments, or vFHE repair. Novelty of theorem itself not established.
+**[DERIVED PASS mathematical counterexample; FAIL hypothesis]** For EVERY pi and m≥64, let B=ceil(2sqrt(m)), group second-stage output positions into B-blocks. Among nonoverlapping adjacent input pairs `(i,i+1)` with even i, pigeonhole yields distinct i,j whose two permuted position pairs lie respectively in the SAME two short blocks. Binary bounded-digit difference `x=e_i−e_{i+1}−e_j+e_{j+1}`, equal to `(e_i+e_{j+1})−(e_{i+1}+e_j)`, has `wt(x)=4` and `U(xA)=e_i+e_{i+1}−e_j−e_{j+1}` of weight4; after pi each block has +1 and −1 and the second prefix is supported in at most `2(B−1)` positions. Hence
+`d_min(C_pi)≤2ceil(2sqrt(m))+6`, `d_min/(3m)=O(m^-1/2)`, uniformly for all second interleavers, over all intended odd-characteristic extension fields and even within legal {0,1} digit pairs. This definitively kills **that concrete cyclic first-stage double accumulator**, not all RAA encoders.
 
-**TOPIC HOME / DETAILS:** `findings/vfhe-cross-crt-consistency-research.md`, §11. This topic file is the PRIMARY place for subsequent subject-specific results; do not force research into more numbered findings files. Existing numbered findings kept as provenance. Local reproducible script `/mnt/data/vfhe_cross_crt_row2_distance_obstruction.py` SHA256 `955966c21c37f2eba1e6b247405dcf8b88ae4a75dfc41ec1e91c54222053a3f7`; results SHA256 `eb6cbce53c3acfebfdcd7a1673f212b114128d215bd8368b58d95269373c61c9`. Local files not automatically accessible to MCP.
+**[EXPERIMENT]** Exact integer and modular checks F29,F37,F65537 for m256/1024, identity/reverse/seeded random permutation all PASS. Witness wt: m256=11,11,32 of768; m1024=11,11,70 of3072. Theorem caps respectively70,134; results are explicit upper bounds not actual d_min. Local script `/mnt/data/vfhe_cross_crt_double_accumulator_gate.py` SHA256 `558b5daa8ac9782f97bf2d5c25e4d41b704e755f4aa206c68ca0e57a3a7d4a20`; output JSON SHA256 `e89ed32b6d9780e480ba3b395ab05c31875f9099356aa11edb1f72ce8d61709a`.
 
-## MAIN OPEN OBSTRUCTION
+**Honest no-wrap conditional:** for x in [0,beta−1]^m, the second prefix ≤2m²(beta−1); for m1024,beta2^20 this is <2^41<2^48. The negative result is distance, not necessarily modular wrap.
 
-A usable shared canonical integer-code/Merkle bridge requires a DIFFERENT fast, small-integer, positive-constant-distance code **with proof over all CRT extension fields and honest no-wrap**. Even if found, one must establish shared commitment binding, field-specific F.2 evaluation integration, hiding/ZK for small indices, Fiat–Shamir and global 128bit soundness, and total protocol cost; no working repaired vFHE exists.
+**[PRIOR ART]** Kliewer et al. *Coding Theorems for Repeat Multiple Accumulate Codes*, arXiv0810.3422, proves linear growth for specified classical RAA random-interleaver ensembles, not for this fixed cyclic-first layout or arbitrary odd-characteristic extension fields. IEEE ISIT 2008 `Explicit Interleavers for a Repeat Accumulate Accumulate (RAA) code construction` likewise specifically addresses nontrivial interleaver design. **Do not call double accumulation in general impossible.**
 
-## NEXT_ACTION — conditional, requires PI to continue
+## TOPIC HOME
 
-**One candidate/one minimal test**, to be selected by PI: pick ONE distinct encoder class (e.g. fixed degree≥3 *or* double interleaved accumulator, not both in same iteration); before PCS work seek an explicit o(m)-weight codeword family or derive a positive distance argument under bounded-integer coefficients and source no-wrap constraints at m256/m1024. Also check known RA/RAA and field-agnostic PCS prior art before claiming novelty. Do not resurrect row-degree2 with single prefix. No external author contact/disclosure without PI approval.
+All precise math, proof, context, negative evidence, assumptions: `findings/vfhe-cross-crt-consistency-research.md`, **Section 12**. This is the topic-level independent Markdown research file requested by PI; do not create another numbered findings file. Section 11 preserves I194 uniform O(sqrt(m)) failure for all row-two single-prefix matrices. Older I193 toy remains a correct finite necessary algebraic check, but not scalable evidence. Other archived failures in `findings/OPEN_RESEARCH_BRANCHES.md` P1, particularly original field-dependent RS Merkle column failure I151.
 
-## OTHER BRANCHES
+## MAIN UNSOLVED PROBLEM
 
-AKU ePrint2025/381 I190–192 PARKED SOURCE_VERSION_GATED; LFBS PRCA I188–189 hoisting/bookkeeping PARKED; threshold FHE PRSS I184–187 direct repairs PARKED; GBFV and dBFV→BGV cheap ideas, GL generic BigSwitch archived per `findings/OPEN_RESEARCH_BRANCHES.md`. Preserve history.
+A true global consistency repair needs a cross-CRT-binding commitment to ONE canonical bounded integer digit vector, with some fast code of POSITIVE constant relative distance simultaneously over all native extension fields, sufficiently small honest encoded integers (no-wrap), a complete new PCS proximity/extraction protocol, privacy/ZK, Fiat–Shamir, 128-bit security accounting, and source-comparable end-to-end cost. No such complete protocol or valid speedup is proved.
 
-**Agent protocol:** ONE hypothesis and ONE cheapest decisive test per authorized turn, [FACT]/[DERIVED]/[HYPOTHESIS]/[NEGATIVE]/[OPEN] provenance, read before write; PI decides research direction and strategic pivots.
+## NEXT_ACTION — only if PI requests continuation
+
+One distinct test of **genuine two-independent-interleaver** repetition-two RAA-inspired small-integer code, where first interleaver is not frozen to cyclic layout. Establish an explicit general-field/canonical-integer distance bottleneck or cheapest precise counterexample, before full PCS implementation. Literature's *binary* random-interleaver linear-distance theorem cannot simply be assumed to cover the actual integer code over large odd primes/extension fields. On a failure, park the exact candidate; no automatic target pivot.
+
+## OTHER ARCHIVES
+
+AKU 2025/381 (I190–192) source-version gated; LFBS PRCA I188–189, threshold PRSS I184–187, GBFV/dBFV→BGV and GL BigSwitch branches remain as previously recorded. Read before write; single hypothesis/test; human PI selects major strategic decision and any author contact/disclosure.

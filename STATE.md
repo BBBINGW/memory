@@ -5,11 +5,11 @@
 
 ## CURRENT PI-SELECTED WORKSTREAM (SEPARATE COUNTER)
 
-**vFHE cross-CRT scalar digit/index consistency**, independent round **V18 COMPLETED**, next **V19 NOT STARTED**.
+**vFHE cross-CRT scalar digit/index consistency**, independent round **V19 COMPLETED**, next **V20 NOT STARTED**.
 
 **Authoritative separate round state:** `findings/vfhe-cross-crt-state.md`.
 **Technical evidence + research story:** `findings/vfhe-cross-crt-consistency-research.md`.
-**Current status:** V18 constructs an explicitly false scalar table lookup (CRT idempotent e=7+4X², projections (1,0)) and CRT-glues valid fieldwise memory-counter/grand-product oracles into ONE R-valued Fig.1 ideal PIOP transcript. Its grand product roots and both Boolean-domain sum-check claims hold identically, so the source-specified ideal oracle protocol has a concrete algebraic soundness counterexample in the inspected ePrint2025/286 mirror. This is NOT a checked final compiled Brakedown/Fiat–Shamir SNARK exploit, and official latest paper edition remains VERSION_UNVERIFIED. V19 compiler-interface gate next; details §27 of independent findings.
+**Current status:** V19 audited ePrint2025/286 source §2.2, §5, Appendix F.1/F.2/F.3 and found NO implicit common-integer-digit diagonal predicate added by the CRT-product polynomial commitment compiler. An exactly encoded per-field F.3 piecewise [2,1] RS/Merkle toy for the V18 illegitimate scalar ring digit e=7+4X²→(1,0) passes 8192 F.2 authenticated extension-field testing/evaluation checks, while e∉{0,1}. This demonstrates ring polynomial commitment/extraction does not imply scalar table membership. The claim is scoped to the inspected 52-page research-MCP mirror (version unverified); no real compiled SNARK exploit or final-official-PDF verification. Next V20 tests full OUTER coefficient-range PIOP Eq22 + Fig1. Global I192 remains frozen.
 
 ### Legacy numbering mapping — provenance only
 

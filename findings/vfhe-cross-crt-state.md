@@ -1,54 +1,58 @@
 # vFHE Research State — Independent V-Series
 
 **Checkpoint:** 2026-10-14 (Asia/Tokyo)
-**LAST COMPLETED vFHE ROUND: V7. V8 NOT STARTED.**
-**STATUS:** V7 PASS exact two-prefix Cauchy–Binet minor bound and source-form high-49-bit restricted-distance gate. UNCLEAR for lower 49-bit primes and unrestricted code distance, complete cross-CRT PCS, ZK/security/cost. NOVELTY NOT VERIFIED.
-**Global FHE research counter remains FROZEN at I192**, independent of this separate V-series. Legacy V1–V4 were originally labeled I193–I196 in old vFHE notes; keep those original filenames as provenance and do not advance the global I-series.
+**LAST COMPLETED vFHE ROUND: V8. V9 NOT STARTED.**
+**Status:** V8 PASS exact *legal source-form 49-bit CRT prime* causing one rank-changing 5×5 parity minor for the integer double-accumulator code. This refutes FULL 5-minor rank invariance across all allowed CRT primes, **NOT** global code distance, bounded-digit safety, or vFHE SNARK soundness. Parent target OPEN/HUMAN_REVIEW, NOVELTY NOT VERIFIED.
+**Global FHE research counter remains frozen at I192**. This independent vFHE V-series does not increment or overwrite the original FHE I-series.
 
-## vFHE independent historical map
+## Numbering / historical map
 
-| Separate round | Verified scope |
-|---|---|
-| V1 (legacy I193) | Small-integer shared-code toy m8, nonzero distance only |
-| V2 (legacy I194) | Row-weight2 one-prefix systematic code family cannot have positive constant relative distance |
-| V3 (legacy I195) | Fixed cyclic first stage + any second permutation and prefix also low relative distance |
-| V4 (legacy I196) | For fixed G over Fp, Hamming minimum distance is same over extension F_(p^d); weighted RAA results cannot directly certify our unweighted n2,L2 |
-| V5 | Restricted input-support≤3 rank/distance prime invariance from small minors |
-| V6 | Restricted input-support≤4 rank/distance prime invariance for m≤1024, p>2^48, via monotone parity minors |
-| **V7** | **Sharper two-stage Cauchy–Binet bound** certifies restricted support≤5 for **m1024, p>368933561632000**; source legal near-tight 5×5 minor >lower 49-bit p but NOT divisible by p |
+V1 (legacy I193): bounded-integer shared codeword m8 toy; V2 (legacy I194): any binary row-weight-2 single prefix has vanishing relative distance; V3 (legacy I195): cyclic first expansion plus any second prefix/perm similarly fails; V4 (legacy I196): same-prime extension-field minimum distance invariance, weighted RAA proof mismatch; V5: supports≤3 cross-prime minor preservation; V6: supports≤4 cross-prime minor preservation at m≤1024,p>2^48; V7: sharper five-minor Cauchy–Binet sufficient threshold; **V8: actual allowable prime-divisible five-minor with rank change**. Legacy filenames retained as evidence and not renumbered.
 
-## Research target / primary source
+## Parent task and original evidence
 
-Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO2025, ePrint2025/286 https://eprint.iacr.org/2025/286. Full 52-page research MCP GitHub-mirror PDF SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`; latest official version equivalence **VERSION_UNVERIFIED**. §3.1: p=1+(2N/d)a for odd a; §6: 49-bit CKKS benchmark primes (code m need not equal ring N).
+Paper: Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO 2025, ePrint 2025/286, https://eprint.iacr.org/2025/286; 52-physical-page research-MCP mirror SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, exact official revision VERSION_UNVERIFIED. §3.1 physical p10 defines CRT primes p=1+2aN/d, odd a; §6 pp27–29 uses 49-bit native RNS primes. Old source-form ideal PIOP CRT-idempotent counterexample shows **rectangular vs diagonal digit-table membership** discrepancy; NOT an authenticated deployed compiled-SNARK exploit.
 
-Original cross-CRT gap [legacy general I59–I60]: native per-field lookup enforces RECTANGULAR digit membership rather than DIAGONAL common integer digit. A source-form R=Z77[X]/(X²+1) CRT-idempotent ideal-PIOP counterexample exists under inspected mirror version. **Not** a verified fully compiled/deployed SNARK exploit or latest officially confirmed vulnerability.
+Objective: a **one-common-bounded-integer-digit cross-CRT binding/hiding verification** integrated with native field PCS, correct soundness/ZK/Fiat–Shamir and useful performance. Still no full repair.
 
-## V7 — ONE PRIMARY HYPOTHESIS, ONE MINIMAL DECISIVE TEST
+## V8 — ONE decisive test, exact verified outcome
 
-**Question:** Does the two-accumulator prefix structure materially tighten the 5×5 integer-minor upper bound enough to preserve rank/distance at source-form CRT primes, versus the generic V6 bound which exceeds 49-bit primes? Counter-test with one near-maximizing exact legal permutation to see if bound is almost tight.
+**Question:** Is the V7 lower-49-bit uncovered five-minor rank region only an artifact of sufficient size bounds, or does any actually permissible CRT prime DIVIDE a nonzero minor from a legal true two-permutation unweighted repeat2 double-positive-prefix integer generator?
 
-**[DERIVED/PASS]** Let G=[I_m|P], P=Rep2·Perm1·U1·Perm2·U2 with n=2m, positive prefix U. For any r×r parity minor, Cauchy–Binet gives det P_{S,J}=Σ_{T} det Z_{S,T} det U2_{T,J}, Z=Rep2·Perm1·U1·Perm2. Since before Perm2 each row is nonnegative monotone ending at 2, |det Z_{S,T}|≤2^r. For sorted parity columns J, the U2 minors are 0 or 1, with nonzero count ∏ℓ_i where positive interval lengths sum≤n. Therefore
+**[DERIVED+EXACT, PASS non-invariance]** Set code message m1024, accumulators n2048, source ring N8192,d4. A legal five-selected-input first interleaver has stage-block lengths L=[357,400,421,373,497]. Each first-stage block contains a unit odd transition from first copy of selected row and L_i−1 prefix-plateau positions; 2038 nonselected repeat labels fill remainder. Second permutation is a separate **legal but deliberately tuned** permutation, grouping each plateau into block j, and routing odd transition i to block σ(i) for σ=[4,1,0,2,3]. Sample second-prefix parity columns J=[356,756,1177,1550,2047], selected message rows S=[0,1,2,3,4]. Exact 5×5 parity minor:
 
-  |det P_{S,J}| ≤ D(n,r)=2^r·q^{r−h}(q+1)^h,  n=qr+h, 0≤h<r.
+    M=
+    [[714,1514,2356,3102,4095],
+     [2,801,1643,2389,3381],
+     [1,1,843,1589,2581],
+     [0,0,1,747,1739],
+     [0,0,0,1,993]].
 
-Unit systematic columns expand to lower-degree parity minors; at m1024,r≤5 maximum is D(2048,5)=**368933561632000**. For every p above this threshold, zero/nonzero status of all generator minors involving≤5 message rows survives mod p. Hence restricted d_{≤5} is identical over Q, qualifying CRT base fields and their extensions, for a **fixed integer G**. At m256/m512 the threshold <2^48, so ALL p>2^48 qualify. At m1024 only SOME 49-bit primes qualify. Full unrestricted d_min unchanged? UNKNOWN.
+Two independent exact determinant methods find
 
-**[EXACT COUNTER-WARNING / TIGHTNESS]** Legal m1024 first permutation places both repeats of inputs 0–4 at starts of consecutive blocks [410,410,410,409,409], filling other positions with other repeated symbols; second permutation identity. The sampled 5×5 parity minor is triangular with diagonal [819,819,819,817,817], determinant **366687257496651**, 99.3911% of universal bound. Valid source-form 49-bit prime p_L=**281474976829441** is smaller than this determinant (but does NOT divide it; remainder **85212280667210**). Valid higher source-form 49-bit prime p_H=**368933562830849** exceeds bound and is guaranteed. p_L and p_H both are prime and p mod8192=4097 for N8192,d4. This explicitly defeats any hope of certifying *all* 49-bit primes by an absolute minor bound below p_L, but is **NOT** an actual rank-changing CRT example.
+    det(M)=p_star=353581838970881,
+    p_star=1+4096·86323691155, 86323691155 odd,
+    2^48<p_star<2^49, isprime(p_star)=True,
+    p_star mod8192=4097.
 
-**[MINIMAL EXPERIMENT PASS]** Python script `/mnt/data/vfhe_v7_cauchy_binet_five_support.py` SHA256 `1e4c90e62215a45dd73ba1cfc91841919719819acbb0b72ba1eef66f670afda1`; JSON `/mnt/data/vfhe_v7_cauchy_binet_five_support_results.json` SHA256 `cee8f200a75d5ce890dca8b4c0dfa92ed96a42480fd3f86bcce7d5f058f03142`. Files LOCAL ONLY, not Git. Exact 5×5 determinant construction and 60-term independent small Cauchy–Binet identity match; random 5-minor samples for m256,1024,2048 support numerical bound but do not certify missing lower-prime cases.
+Thus rank_Q(M)=5, rank_Fp_star(M)=4; at other source-form 49-bit prime p_other=281474976829441, rank_Fp_other(M)=5. M was independently regenerated from complete length-2048 permutations and two prefix arrays (not an invented matrix). The full G=[I_m|P] remains full rank over each field.
 
-## Main unresolved FHE+ZK research
+Explicit mod-p_star LEFT null coefficient vector on S:
 
-- **Global Hamming relative distance** of genuine unweighted two-independent-interleaver n2,L2 integer RAA across entire prime-field code: **OPEN**. Local support≤5 gates do not establish asymptotic good code.
-- **Full shared canonical integer Merkle commitment**, proximity/extraction, fieldwise Appendix F.2 evaluation compatibility, zero-knowledge masking/hiding, Fiat–Shamir security/error, full system proof cost and true novelty: **OPEN**. A few code minors cannot repair vFHE's diagonal digit flaw.
-- Original paper current official-version parity / full compiled protocol: VERSION_UNVERIFIED.
+    x=(248360433806974,147393490404705,227528283364297,265412092786493,1).
 
-**Full proof and provenance:** `findings/vfhe-cross-crt-consistency-research.md`, Section16 V7; §15 V6, §14 V5; earlier V1–V4 mapping at top.
+Its five selected parity entries are zero mod p_star but NONZERO as integers. On the entire codeword of length3m3072 from the SAME lifted integer x: weight over Q2053; over p_star2048; over p_other2053. These codewords have LARGE weight, and the null coefficients are NOT admissible {0,1} or β=2^20 bounded digit differences. **No actual min-distance drop, no bounded digit attack, no vFHE exploit demonstrated.**
 
-## NEXT_ACTION — V8 only on PI continuation
+[REPRODUCTION] Targeted deterministic seed1826 search explored 165987 structured length/permutation candidate proposals, of which 35 determinants were source-congruent 49-bit numbers before finding this prime. This is a SELECTED witness; π1/π2 are *not* independently drawn random samples, even though every generated permutation is individually legal. No ensemble probability/typical security claim. Script `/mnt/data/vfhe_v8_prime_divisible_minor.py` SHA256 `7ef42c152a386db4cafa5a526f1c047f17eb69e7d4ed928d75993cb983a85355`; results `/mnt/data/vfhe_v8_prime_divisible_minor_results.json` SHA256 `6d66f63e957a1686af7376d8f18f0f87a50ea63abd948b2b1016efb0d65492c4`. Reran twice with identical hashes. LOCAL artifacts, not present in Git.
 
-ONE decisive investigation: find a real legal **49-bit CRT prime divisor** of a nonzero 5×5 parity minor of this actual RAA integer generator (giving first genuine rank-change witness); OR rigorously exclude divisibility for a meaningful source-compatible subclass. Do not confuse having |det|>p with p|det. If no cheap decisive result, halt narrow low-support work and recommend PI consider global-distance or cross-CRT shared-commitment proof directly. Maintain one primary hypothesis/test.
+**Interpretation:** V6 all-support≤4 preservation for m1024,p>2^48 still holds; V8 demonstrates V7's high-49-bit sufficient threshold is meaningful: below it there can be real rank-changing five-minors. But rank preservation of EVERY SMALL submatrix is **NOT necessary** for a constant relative minimum distance. Cannot kill integer shared-code architecture on this basis.
 
-## Archive process
+## Current priority and NEXT_ACTION (V9 only if PI continues)
 
-Global root `STATE.md` is only the frozen I192 index into this track. This file holds vFHE rounds; technical record in `findings/vfhe-cross-crt-consistency-research.md`. Follow `AGENT.md`, read-before-write and read-after-write, [FACT]/[DERIVED]/[OPEN] provenance, PI controls strategic pivots and any disclosure.
+**STOP narrow t=5/6/7 prime divisibility search.** One globally decisive hypothesis: for true unweighted, independently sampled/explicitly defined two-interleaver repeat2 double-positive-prefix integer code, can we prove or falsify positive constant **unrestricted** Hamming relative distance on large native prime fields? Examine actual matching random-ensemble vs deterministic structure (and no-wrap), rather than import weighted nonbinary RAA theorem with different hypotheses. Start with a cheapest single global obstruction or a proof lemma, not an implementation. If mathematically UNCLEAR, recommend PI HUMAN_REVIEW to redirect toward direct cross-CRT PCS binding/extraction design instead of coding micro-lemmas.
+
+The overall shared integer column commitment's binding/proximity, digit privacy/ZK, Fiat–Shamir security, 128-bit failure bound and true end-to-end cost remain unresolved.
+
+## Source of truth
+
+Full technical narrative including exact legal permutation construction and caveats: `findings/vfhe-cross-crt-consistency-research.md` Section **17** (V8); previous V7 §16, V6 §15, V5 §14. General `STATE.md` points here and keeps I192 frozen. AGENT.md: read-before-write, one hypothesis+decisive test, report PASS/FAIL/UNCLEAR, precise provenance, verify after writing. PI retains all research pivots/contribution/disclosure decisions.

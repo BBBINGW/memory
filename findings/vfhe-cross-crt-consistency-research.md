@@ -1106,3 +1106,28 @@ A single 128-bit global integer challenge mapped into these domains is insuffici
 **V14 NEXT_ACTION (only on PI continuation):** One concrete sound cross-field aggregated **extension-field** relation candidate: Given common canonical bit/vector commitment C and a TRUE α_i∈F_(p_i^4), can a prover furnish a succinct proof that the native batched value z_i=Σ α_i^j u_i,j equals Σ α_i^j embed(a_j), while binding a to C, WITHOUT silently assuming an F_(p_i^4) scalar acts homomorphically on a DIFFERENT prime-order commitment group? First test the existence of an explicit matching relation at all 4 Fp_i basis components and assess unavoidable native-field multiplication/bit constraints. If a cheap sound link does not follow, mark UNCLEAR or recommend PI pivot to a known commit-and-prove implementation rather than inventing zero-cost linking.
 
 **End V13:** STATUS=FAIL one-global-128bit-integer scalar batch link soundness; PASS exact two-coordinate legal falsifier and prime-subfield entropy analysis; OPEN cross-characteristic aggregate link/ZK/knowledge extraction/cost; STATE_UPDATE=YES independent vFHE only, global I192 unchanged.
+
+
+## 23. vFHE V14 — quotient obstruction for extension-field batched links
+
+Date: 2026-10-14. Separate V-series: V14; general FHE I192 remains frozen.
+
+**Primary hypothesis:** A genuine postcommit F_(p^4) random challenge makes it possible to directly verify the extension-field aggregate against a third-field Pedersen/vector-commitment linear aggregate, without explicit modular reduction linking. **STATUS: FAIL shortcut; PASS exact quotient relation; full CP/PCS proof and cost UNCLEAR.**
+
+**Source [FACT]:** Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO2025, ePrint2025/286, §3.1 (physical PDF p10) uses characteristic p and degree-d CRT fields; Appendix F.2 pp50–51 is a separate native-field Merkle/Brakedown construction. Neither the cross-field Pedersen bridge nor this batched scheme is part of the source paper. Inspected cached 52pp research-MCP mirror SHA256 29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19; latest revision parity VERSION_UNVERIFIED.
+
+**Proof [DERIVED]:** Fix a canonical digit vector a_j in [0,beta−1], integer commitment scalar modulus r, and native K=F_p[theta]/f(theta), deg f=4. Let alpha∈K be a TRUE extension element and expand its powers alpha^j=Σ_(t=0)^3 c_(j,t) theta^t. Lift c_(j,t) to canonical integers ctilde_(j,t) in [0,p−1]. Put S_t=Σ_j ctilde_(j,t)*a_j in Z. The native honestly computed aggregate z=Σ_j alpha^j embed(a_j) has coordinates z_t=S_t mod p. The CORRECT cross-characteristic relation therefore needs witnesses k_t with
+    S_t=z_t+p*k_t, 0≤z_t<p, 0≤k_t≤floor(m*(p−1)*(beta−1)/p), t=0,1,2,3.
+The zero-quotient shortcut S_t=z_t is not complete. A Pedersen homomorphic combination of separately committed digit scalars binds S_t mod r, NOT native z_t mod p; a single vector Pedersen commitment with independent generators does not itself admit arbitrary weighted-sum openings. Four base-coordinate relations MAY BE PACKAGED into one succinct proof; this is NOT a four-proof-size lower bound.
+
+**One exact counterexample [EXPERIMENT]:** K=F_29[theta]/(theta^4+theta+5), irreducible polynomial verified, alpha=28+theta, m5, beta16, honest a=(2,3,5,7,11), unrelated scalar prime r=10007. Exact independent integer aggregates S=(562,423,253,282); native F_29^4 coefficient vector z=(11,17,21,21); quotient k=(19,14,8,9). Every S_t=z_t+29*k_t, all S_t<r yet all S_t differ from z_t. Thus raw group/native equality REJECTS an honest witness even though there is NO wrap modulo r. Even m2,a=(1,1),alpha=28+theta gives S=(29,1,0,0),z=(0,1,0,0),k=(1,0,0,0).
+
+**Illustrative 49-bit envelope [DERIVED]:** p=281474976829441, m1024,beta=2^20. Per-basis lifted S_t≤m*(p−1)*(beta−1)=302231166800824369152000 (78 bits). Each k_t≤1073740799 (30 bits). Hence a normal ~255-bit commitment scalar would not wrap under these illustrative parameters, BUT field-p quotient constraints still matter. Message length m1024 is NOT asserted to be the paper's actual PCS row dimension.
+
+**Reproduction:** Local /mnt/data/vfhe_v14_extension_field_link_gate.py SHA256 cf972c3fa8b95ad43075ed7859dea48bdd5b18b033805643a17702f81527da44; JSON /mnt/data/vfhe_v14_extension_field_link_results.json SHA256 1948173a26ffdffb415500541686450a1cfe688eecb27eaafa2e934b3e96b452. Executed exact extension polynomial arithmetic and integer quotient checks. Not a real Pedersen protocol, ZK proof, PCS extractor, random-ensemble experiment, security or performance benchmark.
+
+**Prior art / novelty gate:** Modular equality, range and commit-and-prove techniques exist, e.g. Benarroch et al., *Zero-knowledge proofs for set membership: efficient, succinct, modular*, Designs Codes Cryptography (2023), DOI10.1007/s10623-023-01245-1, §4.2.8. Existing cross-field glue and non-native arithmetic can be expensive; V14 is an elementary completeness gate, not new cryptography.
+
+**NEXT_ACTION V15 (PI continuation):** ONE minimal operation-count/feasibility gate: can a known linear-functional opening and quotient-based CP link amortize over m and CRT components versus per-digit links? Establish which arithmetic and group multi-exponentiation operations remain, without invented speedups. Full native F.2 extraction and zero-knowledge still OPEN.
+
+End V14: STATUS=FAIL shortcut / PASS exact necessary arithmetic relation; STATE_UPDATE=YES in independent V-series only.

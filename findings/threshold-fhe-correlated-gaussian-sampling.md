@@ -441,3 +441,90 @@ Both exist in the working container, not silently promoted to GitHub Notes.
 **RESULT:** Generalized the five-term obstruction; a specific Q=508 certificate forces `TV≥6.98341203e-39>2^-128` for every norm-constrained seven-term integer-Gaussian convolution. At least eight independent Gaussian terms are NECESSARY at this fixed parameter regime, not proven sufficient.
 **NEXT_ACTION (CGS-06, requires PI continuation):** For the **same M=114243, σ0=8, k=8**, select ONE explicitly specified primitive 8-square integer factor using a stated criterion minimizing low-frequency torus/Fourier concentrations, then run a **single source-independent decisive Fourier-frequency falsifier** (a certified >2^-128 gap), or if that fails, produce a legitimate tighter closeness upper-bound plan. Do NOT interpret absence of a small-frequency distinguisher as success. Before any FHE build, still require hidden secret-conditioned sampling, Shamir all-subset reconstruction, nonlinear threshold sharing/security and end-to-end cost.
 **STATE_UPDATE:** NO to global/vFHE STATE.md; **CGS TOPIC_RECORD_UPDATE:** YES, append this section only.
+
+---
+
+## 10. CGS-06 — a reproducibly selected eight-term candidate still fails the Gaussian Fourier gate (2026-10-14)
+
+**Independent CGS subtrack** (not general frozen I counter, not vFHE V counter). One primary hypothesis and one decisive candidate-specific Fourier test; **no universal k=8 failure claim**.
+
+### Recovery, provenance and already-known boundaries
+
+[FACT, REPO] Re-read previous CGS-01...05 sections of this same file, `AGENT.md` and `STATE.md` before writing. At start of iteration topic SHA `7bed58427e8966992573f66128c7d92f92f1a342`, global state SHA `4efa09926b695956e1618906f434eec16c883f94` (general I192 frozen, vFHE V6). Do not alter these state files.
+
+[FACT, SOURCE] Okada–Takagi, *Low Communication Threshold FHE from Standard (Module-)LWE*, ePrint 2025/409, 40 physical-page Research MCP mirror SHA256 `98993522b80695ab415cc5d8c28dddc1dbe8b78ac3550d2063140ce718c6a301`, `VERSION_UNVERIFIED`. Original §3.3 Lemma 3.7 p14 gives a sufficient condition for discrete-Gaussian integer linear sums, and Algorithm 6 p26 samples scalar `ζ∼D_(Z,σ0 sqrt(Bpub²−||s||²))`, which is Shamir-pre-shared per session. We retain CGS-02 through CGS-05's fixed *padding-only* instance, not a full 128-bit secure FHE parameter instantiation.
+
+[FACT, RELATED PRIOR ART] Genise–Micciancio–Peikert–Walter, *Improved Discrete Gaussian and Subgaussian Analysis for Lattice Cryptography*, PKC 2020, full preprint at https://cseweb.ucsd.edu/~daniele/papers/PKC2020.pdf. The paper's **Theorem 1** treats linear images of lattice discrete Gaussians under smoothing of `Λ∩ker(T)`, and its convolution theorem family includes independent integer combinations (**Theorem 4**). The conceptual kernel-lattice gate is established prior art, **NOT our novel technique**. The web PDF's visual screenshot failed cache retrieval; text was available, and any theorem-level application to a prospective sampler must still verify exact statement/assumptions against reliable original pages. This is a promising **next verification instrument**, not a current proved positive sampler.
+
+### One primary hypothesis and falsifier
+
+**H-CGS06 [HYPOTHESIS]** Once k=8 avoids the *uniform* k≤7 obstruction of CGS-05, an explicitly selected well-dispersed eight-square integer root under the fixed `M=114243,σ0=8` may give `TV≤2^-128` between `W_a=Σ_i a_iG_i` (`G_i iid D_(Z,8)`) and target `T∼D_(Z,8 sqrt(M))`.
+
+**ONE DECISIVE TEST:** Reproducibly select one candidate using an explicit worst-nontrivial-Fourier-mode proxy; then exhibit **one exact rational character** `f(z)=cos(2πtz)` and analytically certified `TV>2^-128`. An arbitrary floating-grid absence of a character would NOT prove success.
+
+### Candidate selection with deterministic, stated limitation [COMPUTED]
+
+Source-shaped padding instance: `Bpub=338`, conditional `||s||²=1`, `M=338²−1=114243`, `σ0=8, κ=128`. Source only allows the **padding-width/secret-bound subset** of conditions already checked CGS-02/03; real LWE security, typical secret-key distribution, the original joint transcript, and any threshold Gaussian sampler remain unverified.
+
+1. Fixed `random.Random(20261014)`, 25,000 proposals of six coefficients in `[30,182]`; complete each by all positive `u²+v²=remaining` with `15≤u≤v≤209`, sorted roots, keep 8 pairwise-distinct primitive entries. This produces **5,288 unique roots**. 
+2. Consider **the first 5,000 roots sorted lexicographically**. For each, maximize the *conservative dispersion proxy* `min_(1/400≤t≤1/2) Σ_i dist(a_i t,Z)²`, calculated by enumerating nearest-integer transition boundaries `t=(j+1/2)/a_i`; inside each interval the objective is a quadratic and its minimizer is the clipped rational `(a·n)/M`. This is deterministic finite search, **not a global optimum over all eight-square roots, not a proof of closeness**, and the proxy is not the true TV.
+3. Selected `a=(66,68,93,96,116,129,130,201)`. Exact check: `Σa_i²=114243`, `gcd(a)=1`, all eight entries distinct; floating proxy `min S(t)≈0.2365396566966897`.
+
+### Exact Fourier distinguisher [DERIVED: rational certificate]
+
+The selected minimizer occurs in a cell with nearest integers
+`n=(24,25,34,35,42,47,47,73)`.
+Its exact rational frequency and energy satisfy
+`
+ a·n=41524,   t=(a·n)/(a·a)=41524/114243,
+ Σ_i (t a_i−n_i)² = Σ_i n_i²−(a·n)²/M = 27023/114243.
+`
+All are exact integer/rational equalities independent of floating scanning. `1/400<t<1/2`.
+
+Let `φ_σ(x)=E_(G←D_Z,σ)[exp(2πixG)]`. Poisson summation gives
+`
+ φ_σ(x) =
+ [Σ_(j∈Z) exp(−πσ²(j−x)²)]
+ / [Σ_(j∈Z) exp(−πσ² j²)] ≥0.
+`
+Set `u=exp(−64π)` and `D_up=1+2u/(1−u³)`. For `W_a=Σ_i a_iG_i` and `f(z)=cos(2πtz)`, by independence and the nearest term of each numerator:
+`
+ E[f(W_a)]=Π_i φ_8(t a_i)
+ ≥ exp(−π64·27023/114243)/D_up^8
+ = 2.2148110523356737699108...·10^-21.
+`
+For target `T∼D_(Z,S)`, `S²=64M=7,311,552`, since `t∈[1/400,1/2]`, the **uniform** Poisson upper bound is
+`
+ E[f(T)] ≤ exp(−πS²/400²)
+           +2 exp(−πS²/4)/(1−exp(−2πS²))
+ = 4.4856035130069068787490...·10^-63.
+`
+Therefore, using `|f|≤1` and the bounded-function TV inequality,
+`
+ TV(Law(W_a),D_(Z,8sqrt(M)))
+ ≥ (E[f(W_a)]−E[f(T)])/2
+ > 1.1074055261678368849554...·10^-21
+ > 3.76830573585718792·10^17 · 2^-128.
+`
+This is a **rigorous numeric constant from exact analytic inequalities**, with high-precision decimal evaluations, not simulated ciphertext security. A second direct evaluation of the product of five-to-eight discrete-Gaussian characteristic functions agrees with the analytic bound.
+
+### Reproducer and SHA [COMPUTED]
+
+- `/mnt/data/thfhe_cgs06_eight_term_fourier_falsifier.py`, SHA256 `86ec1fc1b2b21690952261dc410f4e0366b1c1dd85c60326b42d349b1d924a5c`.
+- `/mnt/data/thfhe_cgs06_eight_term_fourier_results.json`, SHA256 `a92c290cb650e7c768fa0bb3093aa49cb1ae5cf2508fc6dcfd7fa9cb683eb7f0`.
+Both have been run, hash-verified and left as **local reproducibility files**, not uploaded into GitHub Notes.
+
+### Meaning, negative result and limitations
+
+**FAIL (candidate only):** Even the **best by the stated proxy among a deterministic sample of 5,000 valid k=8 roots** has a single Fourier character with TV far beyond the (2^{-128}) test threshold. CGS-05's failure to exclude k=8 uniformly was NOT a positive existence theorem; we now have one specifically falsified eight-term candidate, **not a no-go theorem for all eight-term roots**.
+
+**No novelty claim:** Torus/Fourier/Poisson tests and lattice kernel smoothing are traditional tools. The explicitly named Genise–Micciancio–Peikert–Walter theorem already handles linear-image smoothing in general. The candidate/constant are problem-specific numerical-algebraic checks, not a publishable primitive by themselves.
+
+**Not addressed:** The original source's full decrypted residual includes independent flooding/rounding and adversary corruption; the actual protocol's distinguishability and security may differ from the padding-only TV. No attack on the source, no simulator, no compression of O(LDec) shares, no private factor selection, no hidden fresh Gaussian innovations, no Shamir degree reduction, no MLWE covariance sampling, no full parameter/communication cost assessment.
+
+### End CGS-06
+
+**STATUS:** **FAIL** for one deliberately selected eight-term convolution; **PASS** exact Fourier TV certificate; **UNCLEAR/HUMAN_REVIEW** for all-eight-term family and complete Threshold FHE correlated sampling.
+**RESULT:** Deterministic pool of 5,288 primitive eight-square roots; selected candidate among 5,000 under a stated minimax Fourier-energy proxy; exact rational witness `t=41524/114243` with energy `27023/114243`, proving `TV>1.107405526e-21` for that candidate at source-shaped σ0=8. The k≥8 *necessary* lower bound from CGS-05 remains valid, but eight terms are not sufficient merely by dimension.
+**NEXT_ACTION (CGS-07, only on PI's next continuation):** **Stop selecting arbitrary new k=8 integer roots.** Read Genise–Micciancio–Peikert–Walter PKC 2020 **Theorem 1 + Theorem 4** (original reliable full text), derive one explicit **kernel-lattice smoothing sufficient condition** for integer map `a:Z^k→Z` at source σ0. Then perform ONE cheap feasibility/cost gate for a **specified scalable dimension k or structured small-coefficient factor** that *provably* satisfies it, or falsify parameter feasibility. Treat correlated-secret Shamir/PCF and original simulation as separate mandatory stages. If impossible to beat direct native Gaussian pre-sharing cost, recommend ARCHIVE fixed-sum engineering direction and ask PI.
+**STATE_UPDATE:** **NO** to global/vFHE `STATE.md`; **CGS TOPIC_RECORD_UPDATE:** YES, this section appended only.

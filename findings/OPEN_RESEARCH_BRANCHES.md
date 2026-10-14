@@ -278,3 +278,25 @@ as conservative upper-bound recurrences. With n64, A0=2^2.8, d0=2^-24.4, depth1 
 **STATE_UPDATE:** Add independent P20 entry to backlog only; global I192, vFHE V track and CGS files UNCHANGED.
 
 **Reproducible local files:** `/mnt/data/P20_SIMD_ALU_Triangle_Decode_Certification_Gate_2026_10_14.md` SHA256 `643bdf0855d324390ca01c1f7f1a66ea6754ccb80ebd23d059921a73d7213150`; script `/mnt/data/simd_alu_triangle_theorem4_depth_gate.py` SHA256 `848dfd725bb33aea3cc88b9774a30051ca9bb2c8fe92222207b4b7718e79f112`; JSON `/mnt/data/simd_alu_triangle_theorem4_depth_results.json` SHA256 `10b2be632c022c2ca04cda88c3116721a54d863913c7f56c3fdc975a5c6058e6`.
+
+
+---
+
+### P20 follow-up — fresh binary carries defeat a naive (X−2)-divisible overflow invariant (2026-10-14)
+
+**One primary hypothesis [H-P20b]:** For the Gao–Zheng triangle full multiplication (ePrint 2026/233, Definition 13 physical p16), two freshly encoded arithmetic-mode ciphertext plaintexts, each initially with zero integral overflow I and zero noise, always produce an overflow polynomial divisible by t=X−2 in the **integral** arithmetic quotient Z[X]/(X^n−X+2). If true, repeated multiplication might accumulate powers of t and sharpen Theorem4's generic infinity-norm bound. Read AGENT.md, RESEARCH_PHILOSOPHY.md, STATE.md and previous P20 first; globally frozen I192 and independent vFHE state are NOT advanced. Original ePrint 2026/233 43pp Research MCP PDF SHA256 f16f4004d76450fb2264e6a5b36c3eceac2f87586148b96073c76ca7775f0f92, VERSION_UNVERIFIED; verified source pp14–16 and26.
+
+**One source-compatible falsifier [FAIL, exact algebra]:** Choose n64, m=m'=3, binary polynomial u=u'=1+X, and initial f=f'=Delta/t u in real extension. The source's ideal (pre-rounding) Mult is (t/Delta)ff'=(Delta/t)u². Since [9]_t=1+X³ and
+u²−[9]_t=2X+X²−X³=(X−2)(−X−X²),
+its integral overflow is I1=−X−X². The reduction Z[X]/(X^n−X+2,X−2) is Z/(2^n), so I1 belongs to t times the integral quotient ONLY IF I1(2)=0 mod 2^n. But I1(2)=−6 !=0 modulo 2^64. Thus NO universal (X−2)-divisibility, even for noiseless fresh encodings and no 64bit wrap, since 3×3=9. The obstruction is internal binary polynomial carry. Over the real quotient t is a unit, so t-divisibility there is trivial and is NOT the tested invariant.
+
+**General identity [DERIVED]:** For u=[m]_t and u'=[m']_t, let uu'=[mm']_t+tC. For zero-error inputs with arbitrary integer overflows I,I', ideal output overflow is
+I''=tII'+Iu'+I'u+C.
+The new carry C is NOT generally a multiple of t, independently of inherited factors in I,I'. Consequently a simple t-adic valuation induction cannot provide the extra second-layer noise certification sought after P20's failed generic-bound gate. This is a rejection of OUR proposed refinement, not a paper bug, DFR proof, FHE attack, or universal bound against carry-aware analysis. No publishable novelty shown.
+
+**Exact sanity [COMPUTED]:** Independent deterministic Python synthetic polynomial division yields C coeffs [0,-1,-1], zero remainder and C(2)=-6 for n4,n8,n64; quotient residues 10,250,18446744073709551610 respectively, all nonzero. Code /mnt/data/p20_triangle_carry_tadic_gate.py SHA256 6eb0026bd2b7f5d0a77793b881f211cb4249335e1cc7a2f7cf55b0150b8b3ec4; results /mnt/data/p20_triangle_carry_tadic_results.json SHA256 420d973e3bdf1144c699de32cba469409b1d31f7e189d977fca2fe3a2bd47c88. Complete local research note /mnt/data/P20_Triangle_Carry_Ideal_Obstruction_2026_10_14.md SHA256 2813b460518b1f9f894fe81c8f0a764da311aa9b7a35b8fb522aecc5c1b72d66.
+
+**STATUS:** FAIL candidate universal t-divisible overflow invariant; PASS exact primary-source algebra/verification; parent P20 HUMAN_REVIEW / recommend PARK this low-yield t-adic-only approach.
+**RESULT:** Ordinary binary carry creates an overflow outside (X−2), before noise/rescaling. A useful new refinement would have to account for the carry polynomial and quantify full CKKS errors, not merely exploit t factors.
+**NEXT_ACTION:** Do not repeat generic norm/t-adic toys. Only revisit P20 on a concrete, nontrivial carry-aware mathematical invariant with an independently quantified depth-two improvement including rescale/key switch noise; otherwise PARK P20 and pivot to a separate full-text-verifiable FHE optimization. PI makes final PARK/ARCHIVE call.
+**STATE_UPDATE:** Update OPEN_RESEARCH_BRANCHES.md P20 only; do NOT modify STATE.md, vFHE or CGS.

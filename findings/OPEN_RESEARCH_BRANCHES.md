@@ -230,3 +230,26 @@ I187 update: Existing MPC Gaussian sampling (ePrint 2023/1594) requires nonlinea
 **NEXT_ACTION:** Recover authenticated original 2026/956 full PDF and compare Definition2/Lemma4 and Appendix B proof line-for-line against secondary text; only if matched, verify the stable-index property in the paper's precise allowed Z^n−i or Phi_p setup, with valid modulus assumptions. If original remains unavailable, PARK this conditional finding and pivot to already authenticated primary sources. No public disclosure/author contact without PI.
 
 **STATE_UPDATE:** Append this P19 backlog entry only; global frozen I192, independent vFHE series and CGS state unchanged. Full local report `/mnt/data/GL_Bootstrap_Trace_BaseChange_Gate_2026_10_14.md` SHA256 528462951246dbdcaee01c48126fa478669f25d0f43012313a81b538578d03a0, deterministic script `/mnt/data/matrix_fhe_gl_trace_base_change_gate.py` SHA256 1f447357ea22dd10b7dbd7bc8f025fcb8ff55ee40e9869438c38a4a5dda5e48a, JSON `/mnt/data/matrix_fhe_gl_trace_base_change_results.json` SHA256 956ad9952d58e1ee55c3ca69ba33e58ceeb64bcf7dcf1bbb1470029a80887082.
+
+
+---
+### P19 follow-up — proven power-of-two GL trace stability under odd-modulus base change (2026-10-14)
+
+**Source [FACT]:** Verified Gentry–Lee ePrint 2025/1935 complete 27 physical pages, Research MCP PDF SHA256 985173da6bc45f1c89c86769d5b6b16bfcdd98bf07e91476cd424778b8d9ec84, official version parity unverified. p5 explicitly defines n a power of two and GL's auxiliary Z quotient Z[i][Z]/(Z^n−i); p12 Definition3.4 defines Tr_Z as Z^0 coefficient; p15 Theorem3.12 extracts Z-independent secret factors. The distinct Crockett et al. **ePrint 2026/956 remains FULL-PDF MISSING**: IACR PDF HTTP403, pinned GitHub mirror absent, Springer PDF inaccessible. Official Lemma4 and non-power-of-two trace still unverified; previous P19 allegation is **CONDITIONAL on secondary transcription**, not a confirmed paper flaw.
+
+**Primary hypothesis, one analytical test [PASS]:** For any nonzero commutative coefficient ring A with 2 invertible and i²=−1, n=2^m>=2, in S=A[Z]/(Z^n−i), ALL coefficient-fixing power-substitution automorphisms Z↦Z^k are indexed by k=1+4j mod4n, j=0..n−1. This is because preserving Z^n=i requires i^k=i, hence k≡1 mod4, and every such k is invertible modulo4n when n is power of two. The same index set persists under arbitrary coefficient base change A→B with 2 invertible and i preserved.
+
+**Exact theorem [DERIVED]:** For a=Σ_(r=0)^(n−1) a_r Z^r, the unnormalized complete power trace is Σ_(j=0)^(n−1)σ_(1+4j)(a)=n a_0. Proof: for r∈[1,n−1], write r=2^t u (u odd), h=n/2^(t+1); (Z^(4r))^h=i^(2u)=−1, so the sum over n indices j cancels in pairs j and j+h. Constant monomial contributes n. Because n is invertible for any odd modulus, (1/n)Tr_pow(a)=a_0 EXACTLY the original GL constant-term trace. In both source and target groups the same indexed sum is used, so complete trace commutes with the coefficient map; any Z-independent s can be pulled out.
+
+**Boundary [DERIVED/EXACT]:** In base change Z[i]→F2, i→1, n4, original four powers k=1,5,9,13 collapse to identity; the new target F2[Z]/(Z^4−1) has two *distinct* power automorphisms k1,k3. On Z, the base-changed source complete trace is 0 while the target complete trace is Z+Z³ ≠0. The target two maps were exhaustively tested on all 16 elements and 256 ordered multiplication pairs. Thus invertibility of 2 / fourth-root order is substantive for FULL-group stability.
+
+**Computation [COMPUTED]:** Seven exact odd-modulus finite quotient tests at n2,4,8, q5/13/17, enumerate the full indexed automorphism group and trace on all basis monomials, all PASS. This is a sanity check for an analytic proof, not a runtime benchmark, FHE security argument, or official 2026 source check.
+
+**STATUS:** PASS exact original power-of-two GL trace stability and char2 boundary; **SOURCE_VERSION_GATED/HUMAN_REVIEW** 2026/956 generalized non-power-of-two construction. The previous broad monic-f counterexample does NOT hit original GL ring. Theorem is elementary group-averaging algebra, NOT verified cryptographic novelty or paper vulnerability.
+**RESULT:** Source-supported stability condition eliminates previously suspected generalized obstruction for the original GL n=power2 odd-modulus regime; non-power2 new paper remains unresolved.
+**NEXT_ACTION:** PARK repeated original n=power2 toy tests. When official ePrint2026/956 is acquired, compare Definition2/Lemma4/Appendix B before verifying one non-power-of-two group-index/base-change condition, and check FHE correct/noise/security separately. Never contact authors without PI permission.
+**STATE_UPDATE:** P19 backlog only; no global I/vFHE V or CGS edits.
+
+**Full local proof:** /mnt/data/GL_P19_Pow2_Trace_BaseChange_Stability_2026_10_14.md SHA256 bc14b775cb4489033d546f864b64790f027c37a5ed576241076eacaf5b882e5c.
+**Repro script:** /mnt/data/gl_pow2_trace_stability_gate.py SHA256 3066ad603388338e743d2d655476905861f18d44aca5ef87dfe71c8473db9704.
+**JSON:** /mnt/data/gl_pow2_trace_stability_results.json SHA256 a4d7bdc695768bf5ab4abf1e24b933f960e7cc0a6a9f65f670e4444fe9f49396.

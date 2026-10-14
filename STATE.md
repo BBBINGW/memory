@@ -5,11 +5,11 @@
 
 ## CURRENT PI-SELECTED WORKSTREAM (SEPARATE COUNTER)
 
-**vFHE cross-CRT scalar digit/index consistency**, independent round **V9 COMPLETED**, next **V10 NOT STARTED**.
+**vFHE cross-CRT scalar digit/index consistency**, independent round **V10 COMPLETED**, next **V11 NOT STARTED**.
 
 **Authoritative separate round state:** `findings/vfhe-cross-crt-state.md`.
 **Technical evidence + research story:** `findings/vfhe-cross-crt-consistency-research.md`.
-**Current status:** Structural lookup/soundness question remains OPEN/HUMAN_REVIEW; integer-code bridge is a candidate, not a working PCS/SNARK repair. V9 proves a full-message-support lower bound for BOUNDED integer digit differences: with p_min>m(2m+1)(beta−1), all CRT components have identical zero support and inherit the binary RAA code's distance, hence conditionally Ω(m) for good binary interleavers. This does NOT establish unrestricted Fp-linear minimum distance or F.2 PCS soundness; shared integer Merkle binding/extraction and ZK remain open.
+**Current status:** Structural lookup/soundness question remains OPEN/HUMAN_REVIEW; integer-code bridge is a candidate, not a working PCS/SNARK repair. V10 falsifies the deterministic claim that one shared integer Merkle root plus range checks on a few opened columns alone enforces one global bounded CRT digit witness: a two-prime CRT lift of two distinct valid Boolean codewords passes both native linear-code checks, but some unopened integer leaves exceed the permitted bound. Quantified postcommit detection is probabilistic, and a non-circular native-codeword-to-common-integer witness extractor remains OPEN.
 
 ### Legacy numbering mapping — provenance only
 

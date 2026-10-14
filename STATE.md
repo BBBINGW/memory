@@ -5,11 +5,11 @@
 
 ## CURRENT PI-SELECTED WORKSTREAM (SEPARATE COUNTER)
 
-**vFHE cross-CRT scalar digit/index consistency**, independent round **V13 COMPLETED**, next **V14 NOT STARTED**.
+**vFHE cross-CRT scalar digit/index consistency**, independent round **V14 COMPLETED**, next **V15 NOT STARTED**.
 
 **Authoritative separate round state:** `findings/vfhe-cross-crt-state.md`.
 **Technical evidence + research story:** `findings/vfhe-cross-crt-consistency-research.md`.
-**Current status:** Structural lookup/soundness question remains OPEN/HUMAN_REVIEW; integer-code bridge is a candidate, not a working PCS/SNARK repair. V13 disproves 128-bit single-check soundness from one globally shared 128-bit INTEGER Fiat–Shamir challenge merely reduced modulo each ≈49-bit CRT prime and embedded in F_(p^4): valid mismatched Boolean vectors yield a 1−alpha batch equation with false acceptance ≈1/p≈2^−48, not 2^−128. Truly uniform full-extension challenges could increase native identity-test soundness but still require an explicit cross-characteristic knowledge-sound link to the hidden common integer commitment; full protocol/security/cost OPEN.
+**Current status:** Structural lookup/soundness question remains OPEN/HUMAN_REVIEW; integer-code bridge is a candidate, not a working PCS/SNARK repair. V14 shows a true full-extension random challenge does not make third-prime group commitments natively compatible with CRT extension-field aggregates: honest lifted integer S_t differs from native residue z_t=S_t mod p. Explicit basis-coordinate quotient links S_t=z_t+p k_t and a sound linear-functional opening are required; no CP-SNARK, secure extractor, ZK proof or speedup has yet been built. Independent vFHE file holds full results.
 
 ### Legacy numbering mapping — provenance only
 

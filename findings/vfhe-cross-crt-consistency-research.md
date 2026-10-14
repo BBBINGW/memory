@@ -465,3 +465,97 @@ Local reproducer `/mnt/data/vfhe_v6_monotone_minor_gate.py`, SHA256 `aa98b19c078
 **NEXT_ACTION (V7 only with PI continuation):** cheapest falsification of prime-specific rank/distance effects at support 5 (since B^5 can exceed 49-bit p even for m1024); test one concrete bounded-integer minor structure or short-codeword family, not random-only confidence or a whole PCS build.
 
 **End V6:** STATUS=PASS scoped structural minor theorem and source-form exact arithmetic, NEXT_TEST=message support5, STATE_UPDATE=YES independent V-series only. No global I-series iteration advanced.
+
+
+## 16. vFHE V7 — Cauchy–Binet five-minor bound is nearly tight; partial 49-bit cross-prime stability (2026-10-14)
+
+**ONE primary falsifiable hypothesis and minimal decisive test:** At true independent-first/second-interleaver repeat2/accumulate2 integer code size m=1024, can the generic V6 t=5 failure to keep |det| below 49-bit p be resolved by the actual TWO-stage prefix matrix structure? Seek an exact structural upper bound, with a near-maximizing legal permutation/5×5-minor test to determine whether this is a useful improvement or merely an artifact of loose inequalities. Does NOT attempt a full code-distance or PCS proof.
+
+**STATUS:** PASS stronger universal integer five-minor bound and a sharpness witness; PASS restricted d_{≤5} cross-prime invariance **only for 49-bit primes above a new explicit threshold**; **UNCLEAR** for small 49-bit primes p just over 2^48; **NO** new prime-specific rank-changing codeword found or claimed; vFHE protocol repair and novelty still OPEN/NOT VERIFIED.
+
+### Grounded original paper
+
+Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO 2025, IACR ePrint 2025/286 (https://eprint.iacr.org/2025/286), previously examined full 52-page MCP mirror SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, official latest version VERSION_UNVERIFIED. Original §3.1 physical p10: CRT primes p=1+(2N/d)a with a odd. Original §6 physical p27 benchmarks with 49-bit primes, but does NOT equate candidate code input m with CKKS N.
+
+### New two-stage factorization theorem [DERIVED + PROVED]
+
+Let m≥1, n=2m, and G=[I_m | P] where P is the integer-linear parity matrix
+
+    P = Rep₂ · Perm₁ · U₁ · Perm₂ · U₂,
+
+for arbitrary (including independently sampled) permutations on n positions. Here Rep₂∈{0,1}^{m×n} repeats each input twice, U₁,U₂∈{0,1}^{n×n} are **positive prefix** upper-triangular matrices (entry U_{i,j}=1 iff i≤j), and all products are interpreted for row-vector encoding. Define A=Rep₂·Perm₁·U₁, Z=A·Perm₂, so P=Z·U₂.
+
+**Claim (exact structural bound):** For EVERY r×r parity minor P_{S,J},
+
+    |det(P_{S,J})| ≤ D(n,r) := 2^r q^{r−h}(q+1)^h,
+
+where n=qr+h, 0≤h<r. More generally, an arbitrary r×r minor of systematic G reduces, after expanding any identity columns, to a smaller s×s parity minor, s≤r. Thus every minor of size at most t is bounded by max_{1≤s≤t} D(2m,s).
+
+**Proof:** Since each row of A consists of prefix sums of two 1s, it is nonnegative monotone in original first-stage position and its maximum is exactly 2. By V6's monotone-row-minor lemma, any r×r subdeterminant of A has absolute value ≤2^r; permuting its columns (Z=A Perm₂) changes a selected determinant only by sign, so |det Z_{S,T}|≤2^r for every column subset T.
+
+By Cauchy–Binet:
+
+    det P_{S,J} = ∑_{T⊂[n],|T|=r} det Z_{S,T} · det (U₂)_{T,J}.
+
+Take sorted parity column indices 0≤j1<...<jr<n and j0=−1. The prefix matrix U₂ has det(U₂)_{T,J}=1 precisely for sorted row positions t_i with j_{i−1}<t_i≤j_i for each i, and equals 0 otherwise. This is shown by subtracting consecutive prefix columns or by the staircase shape. Consequently the number of nonzero Cauchy–Binet terms is EXACTLY
+
+    ∏_{i=1}^r (j_i−j_{i−1}).
+
+Set ℓ_i=j_i−j_{i−1}>0. They have sum ∑ℓ_i=j_r+1≤n. The product of r positive integers with sum≤n is at most q^{r−h}(q+1)^h for n=qr+h by integer AM–GM / balancing. Bound each term's |det Z| by 2^r and sum absolute values, yielding claimed inequality. QED.
+
+The new bound is approximately (4m/r)^r, improving V6's (4m)^r by about r^r. It relies critically on **two** positive prefix layers and repeat factor exactly 2; it does not cover native randomized-field-weight RAA variants, or arbitrary encoders.
+
+**Coding-distance corollary (strictly restricted support):** If prime p>max_{1≤r≤t} D(2m,r), EVERY generator minor of order≤t keeps its zero/nonzero status when reducing integer G modulo p. Therefore for every input support S of size ≤t, ranks of all its column submatrices agree over Q, Fp, and F_(p^d); hence the minimum nonzero codeword Hamming weight among messages of support ≤t is field/CRT-prime independent across all such p. This is the rank argument from V5 and extension-field equality from V4. **NO consequence about unrestricted d_min or cross-CRT PCS proof** follows.
+
+### Explicit source-style 49-bit threshold at m=1024
+
+Here n=2048 and t=5. The maximum max_{1≤r≤5} D(2048,r) occurs at r=5:
+
+    D(2048,5) = 2^5 · 409^2 · 410^3 = 368933561632000.
+
+A qualifying 49-bit source-form prime must exceed this exact number; note 2^48=281474976710656, so the bound is NOT enough for all 49-bit primes. Concrete VERIFIED source-form examples for ring N=8192,d=4, with p=4096a+1 and odd a, p mod 8192=4097, both primality-tested:
+- lower p_L=281474976829441 (<D): theorem DOES NOT certify support≤5;
+- higher p_H=368933562830849 (>D): theorem DOES certify support≤5.
+Both are within [2^48,2^49). The p_L failure is **failure of this sufficient criterion only**, not an actual detected rank change.
+
+At m256, D(512,5)=360267381504; at m512 D(1024,5)=11529104880000, both <2^48: ALL 49-bit primes p>2^48 preserve support≤5 restricted distance there. At m2048 D(4096,5)=11805909173735040 >2^49: this criterion does not certify typical source primes.
+
+### Near-tight constructed legal permutation [DERIVED + EXACT TEST]
+
+To see whether D(2048,5) is a very loose bound, construct an actual legal first permutation on all 2m=2048 repeat positions, selecting message rows 0..4, such that in the FIRST accumulator the two copies of selected row i appear at the beginning of consecutive blocks with lengths [410,410,410,409,409], and all other (unselected) repeated symbols fill the remaining 2038 slots. Choose the SECOND permutation to be identity. This is a **legal deterministic permutation instance**, not a claim about typical random double-interleaver ensembles.
+
+Sample the five parity output columns at endpoints of these blocks. The resulting exact 5×5 matrix is
+
+    [[819,1639,2459,3277,4095],
+     [0,819,1639,2457,3275],
+     [0,0,819,1637,2455],
+     [0,0,0,817,1635],
+     [0,0,0,0,817]].
+
+It is upper-triangular, so its determinant equals
+
+    819^3 × 817^2 = 366687257496651,
+
+which is **99.3911%** of D(2048,5), and importantly is **larger than p_L**. Thus no generic claim |5×5 minor|<p_L holds for this encoder family. However
+
+    (det mod p_L) = 85212280667210 ≠0
+
+and the determinant is also nonzero mod p_H. This witness does **NOT** show an actual CRT-prime-dependent rank change, new short codeword, or soundness attack.
+
+### Minimal independent verification [EXPERIMENT]
+
+Reusable Python script `/mnt/data/vfhe_v7_cauchy_binet_five_support.py`; SHA256 `1e4c90e62215a45dd73ba1cfc91841919719819acbb0b72ba1eef66f670afda1`.
+Results JSON `/mnt/data/vfhe_v7_cauchy_binet_five_support_results.json`; SHA256 `cee8f200a75d5ce890dca8b4c0dfa92ed96a42480fd3f86bcce7d5f058f03142`. Created and executed in current runtime; these are LOCAL artifacts, NOT Git repository files.
+
+- Verify actual 49-bit source-form primes by deterministic primality checks.
+- Verify above m1024 5×5 matrix from exact repeat2, first permutation, identity second permutation, and TWO actual positive cumulative sums; determinant exactly matches factorization; 99.39% tightness.
+- Independently check a SMALL Cauchy–Binet identity m6,r3: 60 enumerated nonzero prefix-subdeterminants, direct parity minor det−16 equals sum of terms−16, maximum first-stage subdeterminant2≤2^3.
+- Additional NONEXHAUSTIVE seeded random parity minors: m256 180, m1024 180, m2048 60; verified all exact 5×5 determinants ≤D(2m,5), no zero/mod-p mismatches in these samples. Such samples NEVER replace the theorem and say nothing universal about the lower p_L or m2048.
+
+### End-of-iteration decision
+
+**STATUS: PASS for derived structural upper bound and upper-49-bit subset; UNCLEAR for ALL 49-bit primes or actual source-prime-induced new support-5 dependencies.** The near-tight extremizer is a warning that just tweaking elementary determinant inequalities will not certify p_L, and the research need is a **prime-divisibility/rank mechanism**, not merely |det| bounds. More important, local support t checks do not establish the globally constant relative distance or valid hiding shared-commitment architecture.
+
+**NEXT_TEST (V8 only if PI continues):** One decisive attempt to find a *real* 49-bit source-form prime divisor of a nonzero 5×5 parity minor of a legal repeat2/two-prefix instance, **or** derive a precise arithmetic non-divisibility constraint for such minors. If neither is available cheaply, park low-support micro-optimizations and request PI strategic choice to tackle global distance / shared PCS architecture directly. No general claim of vFHE repair, new code, security/128-bit improvement or novelty.
+
+**STATE_UPDATE: YES, independent V-series only**; global general FHE round remains I192.

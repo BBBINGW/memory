@@ -1,58 +1,63 @@
 # vFHE Research State — Independent V-Series
 
-**Checkpoint:** 2026-10-14 (Asia/Tokyo)
-**LAST COMPLETED vFHE ROUND: V9. V10 NOT STARTED.**
-**STATUS:** PASS globally quantified **BOUNDED-DIGIT-pair distance** across ALL no-wrap CRT primes, conditional on classical binary random-two-interleaver RAA good-distance event. Not a proof of unrestricted Fp-field code distance or the original F.2 polynomial-commitment security. Parent vFHE cross-CRT binding and zero knowledge remain OPEN / HUMAN_REVIEW; novelty NOT VERIFIED.
-**Global general FHE counter FROZEN at I192.** Independent vFHE V-series: V1–V4 were accidentally called I193–I196 in older notes; preserve legacy paths, never advance global I-series for vFHE.
+**Checkpoint date:** 2026-10-14 (Asia/Tokyo).
+**LAST COMPLETED vFHE ROUND:** **V10**. **NEXT:** V11 NOT STARTED.
+**V10 STATUS:** FAIL naive deterministic shared-Merkle-root + sample-only integer range binding. PASS exact two-source-CRT-component lift counterexample, complete Merkle openings, and quantified missed-bad-column probability; CONDITIONAL positive sampling lemma if each native field is already soundly bound/extracted to a bounded digit codeword. **OPEN** actual cross-CRT native PCS binding/extraction, ZK, 128-bit FS/soundness and end-to-end cost. NOVELTY NOT VERIFIED.
+**Global general FHE iteration counter FROZEN at I192**. vFHE has its own V-series. Legacy labels I193–I196 in old vFHE archives are V1–V4; do NOT advance the general I-series.
 
-## Independent rounds
+## vFHE research sequence
 
-| Round | Core verified outcome |
+| Independent V | Result |
 |---|---|
-| V1 (legacy I193) | Common bounded-integer m8 toy code nonzero distance only |
-| V2 (legacy I194) | All degree-2 single-prefix encoders have O(sqrt m) distance upper bound |
-| V3 (legacy I195) | Cyclic first stage plus any one more perm/prefix similarly fails constant distance |
-| V4 (legacy I196) | Fp→F_(p^d) distance invariance for same prime-base code; weighted nonbinary RAA literature model mismatch |
-| V5 | All source-compatible p>384m³ preserve input-support≤3 rank/distance |
-| V6 | For m≤1024,p>2^48 preserve support≤4 distance via monotone parity-minor bound |
-| V7 | Cauchy–Binet bound preserves support≤5 only above p>368933561632000 for m1024, near-tight example |
-| V8 | Legal 49-bit p_star=353581838970881 equals an actual five-parity minor determinant; rank_Q5 vs rank_Fp4 (large-coefficient witness, NOT min distance/attack) |
-| **V9** | **GLOBAL support bound for ALL admissible small integer digit pairs**, across EVERY p>m(2m+1)(beta−1), by non-wrap + primitive-integer mod2 transfer + known binary RAA distance theorem |
+| V1 (legacy I193) | Small bounded-integer m8 shared-code toy |
+| V2 (legacy I194) | Row-weight-2 single positive-prefix codes: asymptotically vanishing relative distance |
+| V3 (legacy I195) | Cyclic first row-weight-2 plus arbitrary second permutation/prefix: similarly vanishing relative distance |
+| V4 (legacy I196) | Fixed prime p to extension F_(p^d) distance invariant; weighted nonbinary RAA theorem mismatch |
+| V5 | Support≤3 rank/distance invariant across sufficiently large CRT primes |
+| V6 | Support≤4 invariant at m≤1024,p>2^48 by monotone parity-minor lemma |
+| V7 | Cauchy–Binet five-minor bound nearly tight; upper-49-bit sufficient threshold |
+| V8 | Actual legal 49bit prime p_star divides nonzero five-parity minor, gives submatrix rank drop (not global dmin) |
+| V9 | All **bounded-digit integer differences** inherit binary RAA global distance over every no-wrap CRT prime; unrestricted native-field PCS distance unproved |
+| **V10** | **One shared Merkle root with only sampled integer leaf-range openings DOES NOT deterministically force one global bounded integer witness**; exact CRT-lifted a≠b counterexample, postcommit detection is probabilistic |
 
-## Parent evidence
+## Human-selected parent target / source
 
-Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO2025, ePrint2025/286, https://eprint.iacr.org/2025/286. 52-page GitHub-mirror primary PDF SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, latest official equality VERSION_UNVERIFIED. §3.1 native CRT components F_(p_i^d), §6 uses 49-bit primes, Appendix F.2 physical pp50–51 Brakedown field-linear testing/evaluation.
+Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO2025, IACR ePrint 2025/286 (https://eprint.iacr.org/2025/286). Full 52-page Research-MCP GitHub mirror PDF SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`; official latest parity VERSION_UNVERIFIED. Appendix F.2, physical pp50–51: per-field field-linear matrix commitment / Merkle columns, verifier samples random r and subsequent Q, checking Enc(rU_f)|Q = rUhat_f|Q. No shared-integer Merkle interface is claimed in the original paper.
 
-Original structural gap [legacy I59–I60]: CRT-field componentwise digit table membership permits rectangular non-diagonal index vectors. Source-form idempotent ideal-PIOP counterexample under inspected mirror PDF, NOT authenticated current final compiled SNARK exploitation. Goal is one common, hidden bounded INTEGER digit witness across CRT primes, with a fully sound efficient shared-codeword commitment; NOT yet achieved.
+Original cross-CRT gap from legacy general I59–I60: per-component table membership covers rectangular CRT tuple, not intended diagonal common integer digit. Source-form ideal-oracle CRT idempotent toy exists, but no validated compiled latest-version SNARK exploit.
 
-## V9 — ONE hypothesis and decisive test
+## V10 — ONE primary hypothesis / decisive minimal test
 
-**HYPOTHESIS [PASS within BOUNDED digit domain]:** For fixed public integer RAA G=[I_m|P] with repeat2, TWO free interleavers and TWO positive prefix accumulators, there is a field-independent **global** positive constant relative distance among any pair of honest bounded digit messages, even if the FULL Fp code admits V8's prime-specific rank change, provided p_i satisfies a quantified no-wrap bound.
+**Question:** If the proposed repair shares ONE Merkle root of canonical integer CRT lifts, and checks integer leaf range ONLY for Q randomly opened columns, does that alone globally bind all unopened columns to one bounded digit witness while original F.2 per-field linear tests pass?
 
-**Exact derived lemmas:**
+**[DERIVED/EXPERIMENT FAIL deterministic claim]** True integer unweighted repeat2/two independently seeded permutations/two positive-prefix code, m8,beta2,M24, seed20261014, H=m(2m+1)(beta−1)=136. Two native source-form 49-bit CRT primes p=281474976829441, q=353581838970881, both p mod8192=4097 valid for original ring N8192,d4. Distinct valid Boolean input witnesses a=e6, b=e2 have integer codeword E(a),E(b) differing in EXACTLY 5 positions D={2,6,15,22,23}, found by exhaustive 3^8−1=6560 nonzero digit differences.
 
-(1) For each parity output coordinate j, column sum of the m×2m parity generator P is at most `B(m)=m(2m+1)` (achieves equality at final output), since across all unit-input messages, the first prefix gives the list 1,…,2m and the second prefix accumulates a permuted list of these. All P_ij≥0. For a,b∈[0,beta−1]^m and x=a−b, each coordinate of integer xG has magnitude≤B(m)(beta−1). Thus for ANY CRT p_i>B(m)(beta−1), reducing the common integer codeword modulo p_i (and its extension) preserves its EXACT full zero/nonzero support. This is for bounded digit DIFFERENCES, not generic native field vectors.
+CRT lift Y_j in [0,pq) uniquely satisfies Y_j≡E(a)_j(mod p) and Y_j≡E(b)_j(mod q). A single SHA256 Merkle commitment to ALL 24 Y_j has root
+`84c67c4c77a932477f449d5faaa838e9ab447707d9be1f6a5bcac94a78553e80`,
+with individually verified proofs for ALL 24 leaves; modified leaves fail. Both native component messages and their field-linear combinations are exactly valid at ALL coordinates. Because honest integer codewords lie in [0,H] and H<min(p,q), Y_j∈[0,H] iff E(a)_j=E(b)_j; exactly 5 invalid leaves. Sampled valid leaves reveal no inconsistency.
 
-(2) For nonzero x∈Z^m, divide by gcd of entries to obtain primitive x' with at least one odd coordinate. Let u=x' mod2, a nonzero F2 vector. Since generator entries integral and code is systematic, any integer zero coordinate remains zero modulo2, so `wt_Z(xG)=wt_Z(x'G)≥wt_F2(u(G mod2))≥dmin(binary systematic RAA)`.
+For postcommit Q drawn uniformly without replacement, |Q|=t, with range checks on opened columns, exact bad-commit acceptance probability:
 
-Combine:
-`wt_(F_(pi^d))(E(a)−E(b))=wt_Z(E_Z(a−b))≥dmin(C_F2)`
-for ALL a≠b bounded and ALL CRT prime factors obeying no-wrap, simultaneously. If independent random interleavers satisfy the known binary RAA asymptotic good-distance theorem, this restricted distance is Ω(m) over EVERY such prime. It is **not** the unrestricted Fp-linear dmin guarantee needed for a naive native-field PCS replacement.
+    Pr[accept] = comb(24−5,t)/comb(24,t).
 
-**Primary prior art:** Guruswami & Machmouchi, *Explicit Interleavers for a Repeat Accumulate Accumulate (RAA) Code Construction*, ISIT 2008, DOI10.1109/ISIT.2008.4595333, Definition1 / Theorem1 quoting Bazzi–Mahdian–Spielman: binary repeat k≥2 with TWO uniformly random independent interleavers has dmin≥epsilon m with probability≥1−delta for large enough m. Applies to BINARY parity-only encoder, and appending external systematic x cannot decrease distance. Does NOT mean their distinct inner-systematic variant is our architecture. The result is an asymptotic ensemble guarantee, not a finite 128bit claim.
+At t4: 3876/10626=36.4766%, exhaustively verified ALL 10626 subsets. At t8: 75582/735471=10.2767%; t12 ≈1.86335%; t20=0.
 
-**Source-scale illustration:** m1024, beta=2^20 implies `B(m)(beta−1)=1024·2049·1048575=2200094899200 (<2^42<2^48)`. Every benchmark-style 49bit CRT prime p>2^48 satisfies for this HYPOTHETICAL code size and lookup digit range; do not identify code m with source ring N without argument. A fixed 49bit prime cannot sustain no-wrap as m→∞ with fixed beta; primes must grow as m² beta.
+**[POSITIVE CONDITIONAL LEMMA, not full PCS proof]** If for each CRT native field a SEPARATE sound mechanism first proves/extracts an EXACT codeword Enc(a_i) for a_i∈[0,beta−1]^m, and Y is fixed before Q, then if two extracted a_i differ, V9 no-wrap and bounded digit distance d0 imply at least d0 out-of-range shared integer leaves. Hence
 
-**Exact experiment PASS:** 3 independent seeded permutation pairs (seeds2,11,2026), m6,beta3, no-wrap threshold156, all 3×(5^6−1)=**46872 nonzero bounded digit differences** exhaustively checked. Compare integer support vs p257,p263 and 49bit source-form primes281474976829441 and353581838970881. All identical; every primitive integer input mod2 has wt≤ integer output, and binary minimum distances are seedwise [4,3,3] vs bounded-digit min [4,8,5]. Script `/mnt/data/vfhe_v9_bounded_digit_global_distance.py` SHA256 `47a53d738e23f0cfa13733e9b5faed6dcf09c7b79c5beae8122a315ac3d76936`; JSON `/mnt/data/vfhe_v9_bounded_digit_global_distance_results.json` SHA256 `2fc1fd4a19aa9126890a8e0309d0fe761f89393ad50a2fb95441f521b8dc4758`. Both local-only and rerun with identical hashes.
+    Pr[pass] ≤ comb(M−d0,t)/comb(M,t) ≤(1−d0/M)^t,
 
-**KEY F.2 SOUNDNESS BLOCKER:** Original Appendix F.2 proof verifier samples arbitrary `r∈F^m` and checks `Enc(r·U_f)|Q=r·Uhat_f[:,Q]`, then for evaluation uses arbitrary native field `q1·U_f`. These are NOT legal bounded-digit differences. Thus V9's restricted distance cannot by itself justify proximity/knowledge soundness if we simply swap RS Enc to integer RAA within the original field-native Brakedown PCS. Need a NEW shared-canonical-bounded-integer commitment/extractor that first binds ALL underlying integer rows to bounded digits, otherwise using the restricted lemma is circular. Also unopened leaf range/hiding and FS remain open.
+with source-seed concrete d0 required for target 128-bit accounting. ORIGINAL F.2 has arbitrary native-field random r and q1, so its testing cannot be justified merely from V9's *bounded* digit distance. No non-circular exact native-codeword extractor or shared integer witness extractor has been constructed. This is only a conditional proximity intuition. A range check after revealing Q is ineffective if root not bound before Q.
 
-**Detailed proof/source/experiment:** `findings/vfhe-cross-crt-consistency-research.md` Section **18** (V9); legacy §17 V8, §16 V7.
+**Reproducible local-only artifacts:** `/mnt/data/vfhe_v10_shared_merkle_crt_lift_gate.py` SHA256 `fc7de6805b5ad9ff5adecaa02aa02bfa6e7522a06161d0c105d76ff114cea9e7`; results JSON `/mnt/data/vfhe_v10_shared_merkle_crt_lift_gate_results.json` SHA256 `19848a3da4bcba881d6b671f499ab767554c80dab06285768c2244e0413383fa`. Locally created/tested; not Git repository files. Scope: toy proposed repair, not original or deployed vFHE SNARK.
 
-## NEXT_ACTION — V10 only on PI continuation
+**Full provenance + technical derivation:** `findings/vfhe-cross-crt-consistency-research.md` Section **19** for V10 (previous V9 §18, V8 §17). Do not create new numbered global findings files.
 
-One smallest non-circular **shared integer Merkle commitment/range binding** test, target a malicious prover who commits to apparently bounded *opened* columns but CRT-lifts inconsistent **unopened** field columns. Does checking integer leaf representation (e.g. 48bit) + current F.2 query consistency actually force the SAME bounded digit vector, or can a dishonest precommitted word evade until sampling? Specify sample order, exact success probability and zero-knowledge risks; KILL naive construction if it fails. No generic PCS build until this gate.
+## Main OPEN and NEXT_ACTION — V11 only when PI continues
 
-## Archive protocol
+**Next single falsifier:** can an F.2 native-field codeword commitment plus Merkle authentication of systematic positions NON-CIRCULARLY extract one COMMON bounded integer digit vector across different CRT primes? Test a CRT-idempotent tuple of distinct bounded digit messages that each pass their own exact field-linear encoding and systematic leaves but has NO common bounded integer lift. If no global link, KILL the naive fieldwise extraction→shared-witness implication and identify what *one new proof mechanism* must provide. Don't conflate sampled detection probability with a complete FS/PCS security proof.
 
-Global `STATE.md` remains I192 and only points here. This standalone state is sole V-series round counter. Update `findings/vfhe-cross-crt-consistency-research.md` with scientific proof/evidence. Human PI controls pivots, author contact and contribution claims; follow AGENT.md one falsifiable hypothesis/cheapest test, read before write and reread after write.
+**Missing:** full native field-codeword extraction/knowledge soundness; Merkle binding of hidden unopened leaves; integer range/diagonal consistency; hiding/ZK of low-entropy digit leaves; Fiat–Shamir + 128-bit errors; performance and novelty.
+
+## Repository boundary
+
+Global `STATE.md` is a pointer and freezes I192; this file holds independent vFHE progress; detailed verified results go into `findings/vfhe-cross-crt-consistency-research.md`. Research follows AGENT.md read-before-write and 1 primary hypothesis/1 decisive test; human PI controls strategic pivots, author disclosure and final contribution judgment.

@@ -181,3 +181,8 @@ Last four terms ≤u/2, early terms geometric; ell0/1 simpler; `3(B+1)(2+1/(B²(
 3. Update backlog **only when a branch's research status, best evidence, or reopening conditions materially change**; update STATE whenever latest round/NEXT_ACTION changes.
 4. Preserve provenance and negative results, distinguish paper statements from our conjectures and empirical simulations from actual CKKS security/precision/performance; don't claim novelty from mere absence of prior search hits.
 5. PI approves archive/continue/pivot, external author contact and public disclosure. No automatic background research.
+
+
+## P16 — Threshold FHE PRSS padding (I184–I185; OPEN/HUMAN_REVIEW)
+
+Okada–Takagi ePrint2025/409 §1.2 opens removal of O(LDec) pre-shared padding. I184 independent PRF replacement fails Shamir correlation. I185 sources CDI05 and ePrint2021/1223 show ordinary correlated PRSS already known; a conventional seed generator independent of the hidden MLWE key cannot directly produce Algorithm7's key-dependent discrete Gaussian parameters. See findings/threshold-fhe-prss-gaussian-covariance-gate-iteration185.md. Reopen only with private conditional Gaussian sampling, compatible simulation security and a cost advantage. I186 NOT STARTED.

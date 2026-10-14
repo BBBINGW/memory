@@ -5,11 +5,11 @@
 
 ## CURRENT PI-SELECTED WORKSTREAM (SEPARATE COUNTER)
 
-**vFHE cross-CRT scalar digit/index consistency**, independent round **V20 COMPLETED**, next **V21 NOT STARTED**.
+**vFHE cross-CRT scalar digit/index consistency**, independent round **V21 COMPLETED**, next **V22 NOT STARTED**.
 
 **Authoritative separate round state:** `findings/vfhe-cross-crt-state.md`.
 **Technical evidence + research story:** `findings/vfhe-cross-crt-consistency-research.md`.
-**Current status:** V20 supplies a false **outer coefficient-range** ring-oracle statement that the original inspected ePrint2025/286 ideal Pi_range accepts: N4,p13,d2; non-scalar CRT idempotent e=7+4X² has coefficients violating B4, but source Eq22 Pi_decomp is exactly true, and honest independent CRT field memory counters glue into ring grand-product oracles passing Figure1 and both inner sumchecks. Sixteen exact whole-ring challenge transcripts also pass the outer degree-2 sumcheck. V19 separately checked source split-field PCS compiler and found no automatic scalar-digit diagonal binding. These are scoped to the **52-page version-unverified Research MCP PDF**; no authenticated official current-source matching, compiled Fiat–Shamir SNARK exploit, 128-bit attack or end-to-end vFHE forgery is established. V21 next: official-version/manual Figure1 and full compiled-transcript binding audit, with PI-controlled disclosure. See independent findings §29.
+**Current status:** V21 performed a source-structured miniature F.1/F.2/F.3 polynomial-commitment compilation of V20's false outer coefficient-range statement (ring e=7+4X² with CRT images 1,0). Three staged hash-challenge transcripts verified all 864 Merkle-authenticated encoded-column checks and all V20 ideal PIOP algebraic identities while false coefficient-range persists; altered authentication fails. This shows standard binding to component polynomials is not itself a scalar CRT-diagonal membership predicate, but is NOT an exact published compiler/Brakedown/Fiat–Shamir vFHE exploit. Latest official/proceedings full PDF remains VERSION_UNVERIFIED versus 52pp inspected mirror; web-indexed ePrint 50pp edition differs, publisher Springer DOI 10.1007/978-3-032-01907-3_21 full chapter gated. V22 should authenticate final source and inspect any actual compiled proof system; otherwise PI HUMAN_REVIEW. Details §§29–30 of independent findings and V21 checkpoint. Global I192 FROZEN.
 
 ### Legacy numbering mapping — provenance only
 

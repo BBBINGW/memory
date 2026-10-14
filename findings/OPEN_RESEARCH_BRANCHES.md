@@ -324,3 +324,27 @@ The new carry C is NOT generally a multiple of t, independently of inherited fac
 **Local full note:** `/mnt/data/P21_Nested_RNS_Lazy_Canonical_Lift_Gate_2026_10_14.md` SHA256 `18d507c3a1e6fb998515a736b53c5666b73458b625cee0713c7b0180d9dd228c`.
 **Deterministic code:** `/mnt/data/p21_nested_rns_lazy_crt_lift_gate.py` SHA256 `dd08fc5e6fb1afaabbad436869379554a977678d4838470a77c2f0a5713064a7`.
 **JSON:** `/mnt/data/p21_nested_rns_lazy_crt_lift_results.json` SHA256 `55eee58b836c7811bfb8ffd03b9573bb370a45cdddd119cb696c621517e42ed6`.
+
+
+---
+
+### P21 follow-up — Algorithm 4 published range conditions preclude the lazy-CRT centered-wrap obstruction (2026-10-14)
+
+**ONE primary hypothesis:** Does the exact old P21 canonical-lift wrap counterexample remain feasible at an **actual** Algorithm 4 / Theorem 7 callsite, respecting the *complete* source inequalities? Previously P21 only checked the weaker §3.3 `r<sqrt(P)` condition.
+
+**Original-source anchors [FACT]:** Boneh–Kim *Homomorphic Encryption for Large Integers from Nested Residue Number Systems*, ePrint 2025/346, Research MCP 31-page original full PDF (SHA256 `7a26e911b00368dace336f4324e8e3f036927a57683cf5fbea1e26ee19777ef5`, version unverified). Theorem 2 p15: first-layer integer lazy-output bound `|x'_j|≤r_j(k+Σ_i p_i)/4`; Definition 7–8 p18: distinct approximate/exact rescale interfaces; Algorithm 4 p21: `P_I=prod_{i∈I}p_i > (k+4+Σp_i)*ell/2` and `(max_j r_j)^2 ≪ P_J=prod_{i∉I}p_i`, plus further input norm constraints; Theorem 7 p22 controls rounding accumulation by `|e'|<(k+4+Σp_i)*ell/4<P_I/2` and uses `Rescale_{P_I}` rather than an unjustified canonical representative swap.
+
+**ONE decisive exact source-algebra test [PASS]:** Define `P=P_I P_J`, `S=Σp_i`, `ell≥1`. Using only `r_j²<P_J` (a weak consequence of the paper's `≪`) and `P_I>ell(k+4+S)/2`, obtain
+`2P > ell(k+4+S)r_j² ≥ r_j(k+S)`.
+Consequently `r_j(k+S)/4 < P/2`; Theorem 2 implies `|x'_j|<P/2`, so `center_P(x'_j mod P)=x'_j` for every legitimate first-layer lazy conversion with target r_j. The P21 wrap mechanism is **excluded by the actual nested Algorithm 4 prerequisites**, not an exploitable algorithmic obstruction. This does **not** independently establish correctness of full Theorem 7, CKKS rounding/noise, secret-key security or benchmarks.
+
+**Old witness fails Alg4 eligibility [COMPUTED]:** P21 had `k=2, (p0,p1)=(37,997), P=36889, r=79, x=-1`; its correct integer lazy output 18485 wraps modulo P. If `ell=2`, any proper nonempty index subset has `P_I≤997<1040=ell(k+4+sum p)/2`. If `ell=1`, only `I={1}` gives `P_I=997>520`, but complement `P_J=37<79²=6241`. Thus no compatible I,ell for the witness under Alg4's two explicit inequalities.
+
+**Positive exact integer sanity [COMPUTED, not a secure FHE instantiation]:** Choose `k=4,ell=2`, `p=(100000007,100000123,1000003,1000117)` distinct primes, `I={2,3}`, `r=(10007,10009)`. `P_I=1000120000351>202000258`, `P_J=10000013000000861>10009²`; for source-small x=-1, exact Theorem2 lazy outputs `x'_{10007}=25233230905` and `x'_{10009}=2879689389` are unchanged by center modulo full `P=10001213005070865666320302211`, and reduce to -1 modulo target r_j. High-size toy factors illustrate integer arithmetic only, not the small-prime efficient parameter regime or a full security instantiation.
+
+**STATUS:** PASS source prerequisite/no-wrap lemma; FAIL feasibility of old P21 counterexample at actual Alg4 callsite; **PARK RECOMMENDED** for naive canonical-lift objection, subject to PI. No flaw, attack, novel primitive or benchmark improvement established.
+**RESULT:** Source itself supplies enough magnitude margin to block first-layer lazy centered-wrap. Do not repeat such tests outside the source's `P_I,P_J` assumptions.
+**NEXT_ACTION:** Park this particular P21 shortcut; only revisit Nested RNS for a concrete nontrivial CKKS precision/rounding claim satisfying every published scale assumption, or pivot to a different accessible primary-source FHE target.
+**STATE_UPDATE:** Append only this P21 note to `findings/OPEN_RESEARCH_BRANCHES.md`. Global I192 frozen, vFHE V and CGS untouched.
+
+**Local complete reproducibility:** `/mnt/data/P21_Algorithm4_Range_Certification_2026_10_14.md` (SHA256 `a927604d7ec90f7b3250fff16655f878b2e1ac0396a57ff39e8b0a0983b209b5`), script `/mnt/data/p21_algorithm4_no_wrap_gate.py` (SHA256 `cf11bc2ebbbe0433383795f00ecf6f8f42ca837337055874de940b8765819786`), JSON `/mnt/data/p21_algorithm4_no_wrap_results.json` (SHA256 `277694385d9cdadb0d2cda54410d89da0fb419f6d7a157078aa92d6e8573634e`).

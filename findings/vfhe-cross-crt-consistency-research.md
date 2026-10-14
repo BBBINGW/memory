@@ -1595,3 +1595,32 @@ Date 2026-10-14. Independent vFHE V22; global FHE I192 frozen. **ONE PRIMARY HYP
 [EXPERIMENT/ARTIFACT] Exact structured evidence summary /mnt/data/vfhe_v22_official_source_gate.json SHA256 4a99a0a7e6cf76f8b635ad14abea5addcd77c0d08ddb15c8cf686ba3565769b7; records official_pdf_sha256=null, current_pdf_byte_verified=false, fig1_official_visual_verified=false. No PDF was generated or falsely named as official.
 
 [DECISION] Source gate UNRESOLVED; existing MISSING_SOURCES.md item for current Feb2026 official binary remains MISSING_CURRENT_OFFICIAL_BINARY. V22 completed as SOURCE_BLOCKED/HUMAN_REVIEW; **NEXT V23 ONLY ON PI CONTINUATION:** ideally PI supplies original official current PDF via ordinary browser, exact bytes + download date, then SHA/pagination/visual Fig1/E.2 comparison. If unavailable PI may instead authorize ONE mirror-scoped minimal diagonal-binding repair falsifier, but not a claim against authenticated latest paper. No unilateral author outreach. General FHE I192 remains frozen.
+
+
+## 32. vFHE V23 — product-closure impossibility for R-polynomial-only diagonal digit repairs (2026-10-14)
+
+**ONE hypothesis [H-V23, FAIL]:** A finite number of additional **conjunctive polynomial identities over the CRT product ring** R_q, allowing arbitrary existential ring-valued witness oracles but NO non-componentwise predicate or common external integer witness, can enforce `h ∈ t_beta^diag={(j,...,j):j∈[0,beta-1]}` instead of rectangular per-factor digit membership.
+
+**Source [FACT, strictly scoped]:** Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, ePrint 2025/286, 52pp Research MCP Github mirror SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, VERSION_UNVERIFIED. Source §3.1 CRT split, §4.3 Eq22/Fig1/Theorem4.8, Appendix E.2 p48, §5/F.1–F.3. Official IACR landing records 2026-02-16 revision “Fixed a flaw in the proof of Theorem 4.8,” but official current PDF bytes still NOT retrievable/hashed; open web PDF is OLD indexed 50pp and screenshot failed cache miss. Latest official or Springer identity is NOT asserted. MISSING_SOURCES.md remains open.
+
+**GENERAL EXACT NO-GO [DERIVATION]:** For R=∏_(k=1)^μ F_k (μ≥2), any set
+`A={x∈R^n: ∃w∈R^m, P_i(x,w)=0 in R for all i}`
+with arbitrary finitely many polynomials P_i ∈ R[x,w] factors **exactly** as `A=∏_k A_k`, where `A_k={x_k: ∃w_k, P_i^(k)(x_k,w_k)=0 for every i}`. Reason: ring operations and an existential R-witness are precisely componentwise field operations and independent component witnesses. Since beta>=2 and beta<min characteristic, `T_diag={(j,...,j):0≤j<beta}` is NOT a CRT Cartesian product (its fieldwise projections each contain digit0 and digit1, yet cross pair (1,0) is forbidden); no A of this form equals T_diag. Therefore unlimited additional polynomial equation gates, including existential auxiliary ring oracles, cannot alone define a common scalar digit. Claim is about **CONJUNCTIONS**, not global disjunctions or explicit non-ring coefficient/integer checks.
+
+**Interactive scope [DERIVATION]:** If the verifier's checks are conjunctive R-polynomial identities with perfect completeness and ring-valued challenges/answers, each pair of honest scalar-digit transcripts can be pasted componentwise using CRT, preserving round ordering and identities for ALL projected challenges. Hash-authenticated polynomial commitments do not automatically check more than equality/evaluation of the pasted ring oracles. This no-go does NOT apply when the verifier explicitly mixes CRT components via coefficient projection, shared integer witness, full-ring equality disjunction, cross-field quotient relation, or some other noncomponentwise predicate.
+
+**ONE exact source-shaped falsifier [EXPERIMENT]:** R=F13[X]/(X⁴+1)≅F_(13²)×F_(13²) via factors (X²−5),(X²−8), beta4. Let e=7+4X², e²=e, Φ(e)=(1,0); e not in scalar digit table {0,1,2,3}. Yet `e(e−1)=0`, `∏_(j=0)^3(e−j)=0`, and with ring auxiliary w=e, conjunction `e²−e=0; w−e=0; ew−w=0` all hold. General polynomial gluing identity `F(e*x1+(1−e)*x0,e*w1+(1−e)*w0)=eF(x1,w1)+(1−e)F(x0,w0)` is exact for any F∈R[x,w]. Python 250 exact random ring-coefficient polynomial sanity tests PASS, along with original idempotent/root/CRT checks. No reliance on randomness for the theorem itself.
+
+**Research filter [CONCLUSION]:** PARK the entire “add only more R_q polynomial identities/ring-local grand product gates” repair class. To genuinely repair diagonal membership, need some deliberately **noncomponentwise binding**: e.g. independently committed one common bounded integer digit and explicit per-prime and per-extension coordinate link proofs, or base-prime-linear coefficient-extraction plus distinct CRT-prime scalar agreement. WARNING: forcing nonconstant X coefficients to 0 alone does not link **different q-primes**. No candidate cost/soundness of such a repair has been proven; previous V13–V16 already warn of costs. Elementary CRT product closure is not itself a novel publishable theorem.
+
+**STATUS:** FAIL H-V23; PASS algebraic no-go within specified model. Actual final official paper, complete compiled SNARK security and a cost-competitive patch all remain HUMAN_REVIEW/UNVERIFIED.
+
+**RESULT:** A class of tempting low-cost fixes is mathematically incapable of enforcing the desired diagonal scalar membership.
+
+**NEXT_ACTION V24 (only on PI continuation):** Pick ONE genuine noncomponentwise shared-index/digit binding mechanism, derive its exact statement and cheapest falsifier (security plus F.1–F.3 PCS/prover/verifier costs), then reject or expand. Keep original Feb2026 official PDF gap separately open; no author contact without human PI.
+
+**STATE_UPDATE:** YES independent V23, global general I192 remains frozen.
+
+**Local full proof:** `/mnt/data/VFHE_V23_CRT_Product_Closure_Nogo_2026_10_14.md` SHA256 `e22ed367bc22850a64ba08cfa9ed1322a78c8d54dd0210b724e1ba8b0c736524`.
+**Code:** `/mnt/data/vfhe_v23_crt_polynomial_repair_nogo.py` SHA256 `307be6a14809372e36a40716e35d472f00f0d49a28dabd9b73d7c582fc81bca5`.
+**JSON:** `/mnt/data/vfhe_v23_crt_polynomial_repair_nogo_results.json` SHA256 `7b807f210bd5d2be2ded6c4d31381ec36aa647246d656a07ed4b469b174fb774`.

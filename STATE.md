@@ -5,11 +5,11 @@
 
 ## CURRENT PI-SELECTED WORKSTREAM (SEPARATE COUNTER)
 
-**vFHE cross-CRT scalar digit/index consistency**, independent round **V5 COMPLETED**, next **V6 NOT STARTED**.
+**vFHE cross-CRT scalar digit/index consistency**, independent round **V6 COMPLETED**, next **V7 NOT STARTED**.
 
 **Authoritative separate round state:** `findings/vfhe-cross-crt-state.md`.
 **Technical evidence + research story:** `findings/vfhe-cross-crt-consistency-research.md`.
-**Current status:** Structural lookup/soundness question remains OPEN/HUMAN_REVIEW; integer-code bridge is a candidate, not a working PCS/SNARK repair. V5 proved a narrowly scoped cross-prime invariance of ≤3-input-support codeword distance at relevant prime sizes, not unrestricted linear distance.
+**Current status:** Structural lookup/soundness question remains OPEN/HUMAN_REVIEW; integer-code bridge is a candidate, not a working PCS/SNARK repair. V6 extends a narrowly scoped cross-prime invariance to input support ≤4 at code dimension m≤1024 and p>2^48 using monotone-parity-minor bounds; not unrestricted linear distance.
 
 ### Legacy numbering mapping — provenance only
 

@@ -39,6 +39,6 @@ The new field-aligned/Frobenius check authenticates **ONE scalar vector per p_i*
 **STATE_UPDATE:** YES independent V30; GLOBAL I192 frozen.
 
 **Reproducibility**
-- Report: /mnt/data/VFHE_V30_Native_CRT_Isomorphism_Frobenius_Gate_2026_10_15.md SHA256 75602debe4b8c0d83abd378461a6ffb421161285ea58c631730170e9e015d3ed
+- Report: /mnt/data/VFHE_V30_Native_CRT_Isomorphism_Frobenius_Gate_2026_10_15.md SHA256 b9210290d32ef5b17c34108423ca7eaeaec405789351244c17e5a66f88626fe4
 - Python: /mnt/data/vfhe_v30_aligned_native_field_gate.py SHA256 634d2f7bc413fd3b6811eceaa7b04cab5bfb45f6640b223b509675dcd832b06f
 - JSON: /mnt/data/vfhe_v30_aligned_native_field_results.json SHA256 12604e69acd5fc82bbbd85b2e7dc580d9e9b61b720139639bf6be6162fcafaa3

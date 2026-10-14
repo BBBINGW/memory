@@ -255,3 +255,76 @@ Honest digit no-wrap is not the issue in this particular regime: for x∈[0,β�
 **NEXT_ACTION, only if PI continues:** Specify one true double-interleaver, repetition-two, two-accumulator systematic integer encoder; first minimal test for a field/prime-induced or combinatorial low-weight word that breaks constant distance, and separately check no-wrap. Do not import binary RAA theorem or claim a novel code without careful provenance.
 
 **End:** STATUS=FAIL (cyclic first-stage + any second interleaver); RESULT=uniform O(√m) distance bound with explicit binary pair and source-scale checks; NEXT_ACTION=true independent-two-interleaver RAA smallest falsifier; STATE_UPDATE=YES.
+
+
+## 13. I196 — extension-field invariance of integer-generator code distance; true two-interleaver RAA literature boundary (2026-10-14)
+
+**One primary hypothesis/test (authorized PI continuation):**
+Can a *truly independently interleaved* repetition-two, two-prefix-accumulator, **unweighted small-integer** systematic RAA encoder develop **new shorter codewords solely from extending its coefficient field from F_p to F_(p^d)**, as in source vFHE extension-field CRT components? An F9 brute-force example and an algebraic basis-decomposition proof decisively test this. A separate original-literature **applicability check** prevents claiming the full RAA distance theorem without its hypotheses.
+
+**Status:** PASS exact extension invariance lemma + F3/F9 exhaustive check. FAIL importing the cited WNRMA nonbinary *linear-distance guarantee* into the unweighted repeat-2/two-accumulator source architecture. Whether the prime-field code at m256/1024 has positive asymptotic relative distance: **UNCLEAR/OPEN**. vFHE full cross-CRT commitment STILL UNCONSTRUCTED. NOVELTY NOT VERIFIED; the algebraic lemma is a standard base-field generator-matrix fact, not a new coding-theory theorem.
+
+### General exact lemma [DERIVED — rigorous]
+
+Let G∈F_p^{k×N} be a public matrix with coefficients in the **prime subfield**, for example any integer matrix reduced modulo p. Let K=F_(p^d), with d≥1, and consider the two *linear* codes
+
+C_p={xG : x∈F_p^k}, and C_K={xG : x∈K^k}.
+
+**Claim: d_min(C_K)=d_min(C_p)** (assuming G has nonzero rank; if degenerate, define d_min of nonzero codewords in both).
+
+Proof: Choose F_p-basis b_1,…,b_d for K, and decompose any x∈K^k uniquely as x=Σ_j b_j x^(j), x^(j)∈F_p^k. Because G entries are in F_p,
+
+xG=Σ_j b_j(x^(j)G).
+
+By F_p-linear independence of the basis, at each coordinate t, (xG)_t=0 in K iff **all** (x^(j)G)_t=0 in F_p. Thus
+
+supp(xG)=∪_j supp(x^(j)G).
+
+For any nonzero codeword xG, at least one nonzero x^(j)G exists, so wt(xG)≥d_min(C_p). Conversely C_p embeds in C_K, so d_min(C_K)≤d_min(C_p). Equality follows.
+
+**Scope caveat:** This lemma is for the *same generator G reduced modulo the same prime p* and its degree-d field extension. It does NOT equate distances of G mod **different** CRT primes p_i; characteristic-dependent rank/cancellation can differ. It also does NOT establish positive constant distance in F_p at any scale. A source’s random field weights outside F_p break the base-subfield assumption.
+
+### Exact smallest test [EXPERIMENT]
+
+Define the genuinely two-independent-permutation integer RAA encoder
+
+Rep_2(x)=(x_0,x_0,…,x_{m−1},x_{m−1}) in Z^{2m};
+r_1=P_{π1} Rep_2(x); z=Prefix(r_1);
+r_2=P_{π2} z; w=Prefix(r_2);
+E(x)=(x,w)∈Z^{3m}.
+
+Use two independently seeded permutations pi1 and pi2 (not fixed cyclic first layout) and m=4. Enumerate all 3^4−1=80 nonzero input vectors over F3. Then represent F9=F3[a]/(a²+1) and independently enumerate all 9^4−1=6560 nonzero extension-field input vectors. Confirm both distances are **exactly 4**, with matching matrix construction and no reliance on floating point. The full integer generator matrix, permutations, and witnesses are in the reproducible local JSON.
+
+Artifacts **local, not in Git**:
+- `/mnt/data/vfhe_raa_extension_invariance_gate.py` SHA256 `e0aa5283830e6514a535e8e86394a8571b322f92d85dcb38c94184bb2d9d1d7d`.
+- `/mnt/data/vfhe_raa_extension_invariance_gate_results.json` SHA256 `a433f26af9b3ca768ed4d1a16e65189a97eddb866124a63c8e531975879c071e`.
+
+For nonnegative honest bounded digits x∈[0,β−1]^m the final accumulator entry obeys the conservative integer bound
+
+`max_j |w_j| ≤ m(2m+1)(β−1)`.
+
+At m256 or m1024, β=2^20, bounds are exactly 137707257600 (38 bits) and 2200094899200 (42 bits), each <2^48; thus **a conditional honest no-wrap feasibility envelope** for source-like p_min≥2^48 exists. This is NOT a bound on arbitrary prover or PCS random-evaluation vectors, and no concrete original paper parameter reconciliation has been proved.
+
+### Source-theorem gate [FACT, relevant but distinct from our proof]
+
+Rosnes & Graell i Amat, *On the Analysis of Weighted Nonbinary Repeat Multiple-Accumulate Codes*, arXiv:1101.5966 (2011), https://arxiv.org/abs/1101.5966, original Sections I–III, in particular Fig.1, Theorems 4 and 5:
+
+- Source analyzes **weighted** nonbinary ensembles; each encoder stage includes random nonzero field weight multipliers. These are NOT the all-{0,±1}-integer fixed generator we need for a common canonical integer codeword.
+- Theorem 5 explicitly establishes typical linear min-distance for (L≥3,n≥2) OR (L=2,n≥3); the tempting (L=2,n=2) is **NOT** among these sufficient regimes.
+- Its proved numerical field-size range in Theorem 5 is 3≤q≤2^25; source vFHE works with ≈49-bit prime p_i and degree-d extensions (e.g. p_i^4), far beyond that range. By the new exact lemma we need only analyze **p_i**, not the much larger p_i^d, but p_i itself still exceeds 2^25.
+- Published nonbinary accumulators use generator 1/(1+D) plus randomized weights; our positive prefix U corresponds to 1/(1−D). Sign conjugations may relate constituent accumulators in isolation, but cannot be used to silently transfer an entire repeated, interleaved, unweighted ensemble theorem.
+- Binary RAA result Kliewer et al., arXiv:0810.3422, likewise cannot be read as a nonbinary/unweighted prime-field guarantee.
+
+These differences block *direct theorem citation*, not prove the actual proposed integer code has bad distance.
+
+### Small exploratory observation, NOT a distance certificate
+
+For true independent permutations and the **particular signed weight≤2 Boolean difference family**, exact integer generation and search found candidate codewords at m256 (min observed 123/768) and m512 (133/1536); different random seeds and the shrinking ratio are NOT an asymptotic proof. A complete two-symbol pair scan at m1024 with a different seed found 922/3072. None gives global d_min or rules out full-weight low codewords. Do not treat these independent seed samples as an estimate of a guaranteed distance constant. The decisive contribution of I196 is the **extension-field equality proof and precise imported-theorem boundary**, not the exploratory ratios.
+
+### Technical decision
+
+The previous two negative results I194–195 do NOT by themselves kill this genuine two-interleaver RAA integer generator. However, the classical nonbinary positive-distance theorem cannot currently certify our precise unweighted (n=2,L=2) scheme. We have removed one concern for free: testing over F_(p^d) is mathematically redundant once G mod p is fixed.
+
+**NEXT_ACTION (only after PI continuation):** One new falsifier for *prime-field* distance of the genuine (n=2,L=2), unweighted two-interleaver integer RAA at source-scale m; target an explicit low-support generator dependency/short codeword **or** a carefully delimited proof via a prior ensemble whose coefficient distribution genuinely matches small integer weights. If no source-compatible distance result or short counterexample appears, mark UNCLEAR and consider PI-controlled pivot to n=3 or a genuinely different bounded-code family. Separately, the global cross-CRT Merkle commitment, proximity, hiding, Fiat–Shamir, and end-to-end cost remain OPEN.
+
+**End I196:** STATUS=PASS prime→extension minimum-distance invariance, FAIL automatic source-theorem transfer, UNCLEAR prime-field linear-distance / full repair; RESULT exact lemma + F3/F9 exhaustive check + verified source mismatch; STATE_UPDATE=YES.

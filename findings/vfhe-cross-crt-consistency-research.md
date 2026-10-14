@@ -669,3 +669,100 @@ The rank mismatch occurs at input support **five**, consistent with V6's theorem
 **V9 NEXT_ACTION (only if PI continues):** STOP raising the support threshold t. One global falsification/proof gate: rigorously test whether the **unweighted true two-interleaver repeat2 double-prefix** code can have positive constant relative minimum distance over all relevant large primes, using a proof that actually matches integer 0/1 coefficients and NOT the weighted nonbinary RAA theorem. If that cannot be proved or decisively falsified by a cheap global obstruction, declare UNCLEAR and move to a **shared-commitment cross-CRT extraction** gate only at PI direction. Do not frame this isolated linear-rank witness as a cryptographic attack or contribution.
 
 **End V8:** STATUS=PASS real CRT-prime-specific five-parity-minor rank witness; RESULT=first genuine divisibility, exact full encoding construction and same-codeword weight comparison; STATE_UPDATE=YES independent vFHE V-series, global FHE iteration remains I192.
+
+
+## 18. vFHE V9 — global bounded-digit distance via binary RAA reduction plus integer no-wrap (2026-10-14)
+
+**Primary falsifiable hypothesis [PASS in stated restricted model]:** Does the genuine *unweighted* repeat-two / two-independent-interleaver / two-positive-prefix **integer** systematic code inherit a **globally linear relative distance among LEGAL bounded integer digit vectors**, simultaneously over all source CRT primes, from the known binary RAA ensemble theorem, even though V8 exhibits a field-specific five-minor rank difference for unrestricted large-coefficient Fp witnesses?
+
+One decisive test: prove/reject a uniform zero-pattern transfer from the Z code to all Fp under a quantified no-wrap bound, then independently exhaust all bounded input-difference vectors in a toy instance and compare binary, integer, and multiple base-field weights.
+
+**STATUS: PASS** exact deterministic inequality and exhaustive toy. This closes a necessary **bounded-digit code-distance** gate (conditioned on a random two-interleaver realization satisfying the classical binary RAA distance guarantee and source p>no-wrap threshold). **UNCLEAR** unrestricted native Fp-linear code distance, genuine Brakedown F.2 PCS soundness, cross-CRT binding/proximity, hiding/ZK, Fiat–Shamir, parameterized 128-bit error, or protocol performance. **NOT** a completed vFHE repair, not established novelty.
+
+### Exact mathematical result [DERIVED]
+
+Write n=2m and the integral row-vector code generator
+
+    G_Z=[I_m | Repeat2·Perm1·U1·Perm2·U2] in Z^(m×3m),
+
+with two arbitrary permutations on n points, positive prefix U_j, and duplicate-each-coordinate Repeat2. Let beta≥2 and define legal digit set A_beta={0,…,beta−1}^m. For a≠b∈A_beta, set x=a−b, so |x_i|≤beta−1.
+
+**Lemma 1 (exact integer no-wrap, UNIFORM across primes):**
+Each individual parity generator entry G_{i,m+j} is a nonnegative integer. Its COLUMN sum across all input rows has maximum EXACTLY
+
+    B(m)=1+2+⋯+(2m)=m(2m+1),
+
+at the final second-accumulator output coordinate, independent of the two interleavers. Indeed summing unit-input contributions across all m rows gives the all-ones length-n vector at the repeat stage, whose first cumulative vector is (1,2,…,n), irrespective of Perm1; Perm2 only reorders the entries; the largest second prefix sums all n entries. Thus for any admissible x,
+
+    |(xG_Z)_j|≤B(m)(beta−1)  for all j,
+
+including systematic coordinates. If EVERY selected CRT base prime p_i satisfies
+
+    p_i > B(m)(beta−1),
+
+then zero/nonzero support of the ENTIRE same integer codeword xG_Z is unchanged under reduction modulo each p_i and inside each extension F_(p_i^d):
+
+    supp_Z(xG_Z)=supp_Fpi(xG_Z mod p_i)
+                   =supp_F_(pi^d)(xG_Z mod p_i),
+
+and consequently all these weights are exactly equal. This is a statement for **legal bounded integer differences**, not arbitrary p_i-field messages. The bound is strict <p; centered lifts not required just for zero preservation (although honest nonnegative canonical symbols also fit into [0,p−1]).
+
+**Lemma 2 (mod-2 distance transfer, GLOBAL over all message supports):**
+For any nonzero x∈Z^m, let g=gcd(|x_1|,…,|x_m|)>0 and x'=x/g∈Z^m primitive. By definition some x'_i is odd, so u=x' mod2 is a NONZERO binary message. Because G_Z is integral,
+
+    E_F2(u)=(x'G_Z) mod 2.
+
+Every integer zero coordinate of x'G_Z is also a zero coordinate of E_F2(u), so
+    wt_Z(xG_Z)=wt_Z(x'G_Z)≥wt_F2(E_F2(u))≥d_min(C_F2(G mod2)).
+
+This holds with NO restriction on input weight/support and without any determinant/minor assumptions. It is an elementary code-over-Z→mod2 support argument; not original coding theory.
+
+**Combined restricted distance theorem:**
+
+For every fixed choice of two permutations, every source collection of primes satisfying p_min>B(m)(beta−1), and every two DISTINCT legal digit vectors a,b,
+
+    wt_F_(p_i^d) (E(a)−E(b))
+        =wt_Z(E_Z(a−b))
+        ≥d_min(C_F2(G mod2)), for ALL i.
+
+Hence the restricted, LEGAL-DIGIT-pair minimum distance over every CRT field is at least the SAME binary-code min distance; and the codeword weights are identical across primes. This entirely bypasses V8's prime-divisible five-minor example because its modular null coefficients are vastly outside legal digit-difference range.
+
+**Published probabilistic global consequence:** Guruswami & Machmouchi, *Explicit Interleavers for a Repeat Accumulate Accumulate (RAA) Code Construction*, ISIT 2008, DOI https://doi.org/10.1109/ISIT.2008.4595333, Definition 1 / Theorem 1 quoting Bazzi–Mahdian–Spielman 2003, gives for repeat factor k≥2 and TWO independent uniform random interleavers, for each fixed failure-probability tolerance δ>0 an epsilon>0 such that, for sufficiently large m, the BINARY (non-systematic) RAA parity code has d_min≥epsilon m with probability≥1−δ. The binary systematic [I|P] version used here has distance at least as large as that parity code, so the SAME event implies
+
+    min_(a≠b∈A_beta) wt_Fpi(E(a)−E(b)) ≥epsilon m
+
+simultaneously for EVERY native CRT p_i satisfying the deterministic no-wrap bound. For code length 3m, relative restricted distance is ≥epsilon/3. This is asymptotic with p_i sufficiently large AS A FUNCTION OF m and beta; for fixed 49-bit p it cannot be extended to arbitrary growing m. The published theorem is a **probabilistic binary ensemble** statement, not 128-bit finite-length guarantee or an explicit certified pair of source-size permutations.
+
+***Provenance caveat:*** The quoted theorem is for binary RAA with FULL two random interleavers; Guruswami–Machmouchi's different inner-systematic construction and its second-permutation length 3m are NOT the one used here. We specifically use their Definition1/Theorem1 non-systematic RAA, append an external systematic copy x (which cannot decrease binary distance), and do NOT conflate the two encoder definitions. Rosnes–Graell i Amat 2011 *weighted nonbinary* RAA theorem is likewise NOT imported into this unweighted construction.
+
+### Original vFHE PCS F.2 scope: why this PASS is still NOT an operational PC repair
+
+Original source ePrint2025/286, Appendix F.2, physical PDF pp50–51:
+- The committed row code is a FIELD-LINEAR Enc:F^m→F^M, with all witness rows originally native field vectors.
+- Testing verifier samples **arbitrary r∈F^m** and checks at queried Merkle columns `Enc(r·U_f)|Q = r·Uhat_f[:,Q]`; evaluation uses **arbitrary field q1** similarly.
+- These linear combinations are NOT guaranteed to lie in the bounded digit box A_beta. In a naive drop-in replacement of F.2's Enc with our integer RAA, V9's *restricted* distance DOES NOT justify the standard field-linear proximity/soundness argument. The prover also has not yet been forced to bind a shared canonical integer codeword across primes.
+- Any future use of V9 needs a separately sound proof that the committed underlying message/rows are bound to **one canonical bounded integer vector** BEFORE applying this restricted-distance lemma; otherwise citing the binary RAA theorem for native field PCS is unsound/circular. Privacy/hiding for low-entropy digit Merkle leaves and Fiat–Shamir remain open.
+
+### Source-form parameter sanity and independent minimal exact test
+
+At m=1024,beta=2^20, exact maximum absolute honest difference-coded parity coefficient is bounded by
+
+    B(m)(beta−1) = 1024·2049·1048575
+                = 2200094899200 < 2^42 < 2^48.
+
+Thus ANY source-form 49-bit p_i>2^48 satisfies no-wrap for all legal digit pairs with those m,beta. This includes V8's exceptional p_star=353581838970881; the exceptional arbitrary Fp-field vector lies outside this admitted bounded-difference domain. Source ePrint2025/286 §6 physical p29 uses 20-bit lookup-table example, but m1024 and beta=2^20 here are still **an explicitly chosen hypothetical code/lookup parameter envelope**, not a verified full paper instantiation. For m growing and fixed beta, p must grow at least quadratically for this particular sufficient bound to persist.
+
+**EXPERIMENT EXACT:**
+- Standalone deterministic `/mnt/data/vfhe_v9_bounded_digit_global_distance.py`, SHA256 `47a53d738e23f0cfa13733e9b5faed6dcf09c7b79c5beae8122a315ac3d76936`.
+- JSON `/mnt/data/vfhe_v9_bounded_digit_global_distance_results.json`, SHA256 `2fc1fd4a19aa9126890a8e0309d0fe761f89393ad50a2fb95441f521b8dc4758`. LOCAL-only artifacts, not Git.
+- For each of 3 independently seeded genuine π1,π2 pairs (seeds2,11,2026), take m6,beta3, no-wrap threshold 6·13·2=156. **Exhaust all 5^6−1=15624 nonzero admissible differences per seed**, total 46872 differences. Compare exact integer codeword support against reductions mod 257,263 and two 49-bit source-form primes p=281474976829441 and p=353581838970881. ALL match exactly. For each vector, divide by coefficient gcd, reduce primitive message mod2 and verify `wt_Z≥wt_F2≥binary_dmin`.
+- Exact binary linear-code minimum distances for seeds2,11,2026: **4,3,3** (code length18); exact minimum Hamming weights over all bounded integer differences: **4,8,5**, respectively. These demonstrate the theorem's inequality; equality is not required. The experiment was run twice with identical SHA256 digests.
+- No source-size full dmin search, performance benchmark, or new 128bit parameter was attempted.
+
+### Decision and NEXT_ACTION
+
+**PASS** a globally quantified, common-prime, bounded-digit-distance gate, transferred from authentic binary RAA prior art via exact integer no-wrap. **NOT** a proof of the *unrestricted full Fp code's* global minimum distance. No repaired commitment/proximity/SNARK or new cryptographic contribution has been produced.
+
+**Next V10 (only when PI continues):** test ONE sound non-circular **binding/extraction interface** that makes original Appendix F.2's prover/committed object genuinely a *shared canonical bounded integer witness* before relying on V9's restricted-codeword distance. Cheap falsifier: does a proposed shared-Merkle column commitment plus range-constrained openings actually enforce the boundedness of UNOPENED columns against malicious CRT-lifted inconsistent prover vectors? If not, KILL that naïve interface before building any larger PCS. No more local minor-rank checks unless new reasoning requires them.
+
+**End V9:** STATUS=PASS bounded-digit global restricted-distance theorem and exhaustive finite check; OPEN unrestricted PCS and integration; RESULT positive proof gate with exact no-wrap, binary RAA citation and F.2 obstacle; STATE_UPDATE=YES independent vFHE; global general I192 unchanged.

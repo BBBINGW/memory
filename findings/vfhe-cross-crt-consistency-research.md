@@ -1,7 +1,7 @@
 # vFHE Cross-CRT Scalar Consistency — Standalone Research Record
 
 **Research theme:** enforce one common *integer* digit/index across CRT components of proof-friendly FHE/ZK range proofs.
-**Status (2026-10-14):** STRUCTURAL GAP REMAINS; original I193 weight-two single-accumulator specialization FALSIFIED asymptotically; wider common-integer-code bridge still OPEN/UNPROVEN; NOVELTY NOT VERIFIED.
+**Status (2026-10-14):** STRUCTURAL GAP REMAINS; both the exact row-weight-two single-accumulator specialization and its cyclic-first-layer + arbitrary-second-interleaver/two-accumulator extension have VANISHING RELATIVE DISTANCE; the wider shared-integer-code bridge remains OPEN/UNPROVEN; NOVELTY NOT VERIFIED.
 **Human PI controls:** parent direction, contribution/pivot decisions, author contact, disclosure.
 **Maintenance:** This is a *topic-level, independent research file*, not an iteration log. Append or refine only upon a material verified result; preserve the old numbered records as evidence. Each future authorized test still follows AGENT.md: one primary hypothesis + one cheapest decisive test.
 
@@ -191,3 +191,67 @@ Block et al., *Field-Agnostic SNARKs from Expand-Accumulate Codes*, CRYPTO 2024,
 **PRESERVE** the broader cross-CRT **shared canonical integer codeword / shared commitment** research direction. The next individual minimal hypothesis (only on PI continuation) should specify one genuinely different encoder class—e.g. fixed small-integer row weight≥3, or more than one independently interleaved accumulator—with its own provable/rapidly falsifiable field-distance and no-wrap gate, before building any PCS. Do not infer success for these alternatives from Brakedown/EA theorems.
 
 **End:** STATUS=FAIL (H194 constant-distance possibility for row-weight-2 single accumulator), RESULT=universal \`O(sqrt(m))\` upper bound + exact source-sized codewords, NEXT_ACTION=PI decides whether to test one different encoder family, STATE_UPDATE=YES.
+
+
+## 12. New result — adding one arbitrary second interleaver + accumulator to cyclic row-2 expansion still has vanishing distance (2026-10-14)
+
+**Decision:** I195 finished. FAIL the specifically defined cyclic-first-row-weight-two plus arbitrary *single second permutation* and two-prefix systematic code. PASS a uniform-in-the-second-permutation explicit low-weight *bounded-digit-difference* theorem. Preserve broader RAA with **independent first interleaver** and the cross-CRT common integer codeword research target. No full repaired protocol, no original source exploit, no novelty claim.
+
+### Prior art and exact scope [FACT]
+
+- Kliewer, Zigangirov, Koller, Costello, *Coding Theorems for Repeat Multiple Accumulate Codes*, arXiv:0810.3422, abstract/introduction https://arxiv.org/abs/0810.3422: classical RAA ensembles with random interleavers and repetition code have linear asymptotic distance at rates ≤1/3 under their model. This DOES NOT cover our fixed cyclic first sparse layout and just one free second permutation, or extension-field integer canonical lift/privacy.
+- *Explicit Interleavers for a Repeat Accumulate Accumulate (RAA) Code Construction*, IEEE ISIT 2008, https://doi.org/10.1109/ISIT.2008.4595333, motivates genuinely nontrivial first interleaver and graph constructions for positive RAA distance. It is not a ready-made vFHE repair.
+- Prior parent paper Cascudo et al., ePrint 2025/286 Appendix F.2/F.3, uses prime-dependent RS fields; a field-agnostic linear encoder alone does not enforce a common CRT scalar index absent a new shared commitment/proximity protocol.
+
+### Primary hypothesis and decisive gate
+
+[HYPOTHESIS — FALSIFIED] Keeping first-stage cyclic sparse matrix with exactly two ones per row and appending one **arbitrary** second permutation followed by one more prefix accumulator is sufficient to admit a positive-constant-relative-distance family, perhaps via well-chosen interleavers.
+
+[ONE TEST] Derive a short valid binary-digit input difference for EVERY second permutation (not just random samples), then instantiate at m256/m1024 with independent exact integer and modular arithmetic. No full PCS work.
+
+### Constructive theorem [DERIVED]
+
+Let m≥64, F any odd-characteristic field or its extensions. Rows of A∈{0,1}^{m×m} are `A_i=e_i+e_{i+1 mod m}`. Prefix operator `U(y)_k=∑_{t=0}^k y_t`. For **arbitrary** permutation π of [m], define `P_πz` by `(P_πz)_{π(k)}=z_k`, and
+
+`C_π(x)=(x, U(xA), U(P_π U(xA))) ∈ F^{3m}`.
+
+Then there are two honest bounded Boolean input vectors a,b∈{0,1}^m whose distinct codewords satisfy
+
+`wt(C_π(a)−C_π(b)) ≤ 2⌈2√m⌉+6`.
+
+Consequently `d_min(C_π)/(3m)=O(m^{-1/2})→0` **uniformly over the second permutation**. Even the restricted binary-digit-pair distance deteriorates.
+
+**Proof:** Set `B=⌈2√m⌉`. Restrict to candidate disjoint pairs `(i,i+1)` with i even and 0≤i≤m−3. Their number is `⌊(m−1)/2⌋`. Partition all m output positions into `K=⌈m/B⌉` consecutive blocks, each of length at most B. For m≥64 one checks `⌊(m−1)/2⌋ > K²`. Associate to each i the ordered block-ID pair `(floor(π(i)/B),floor(π(i+1)/B))`. By pigeonhole, distinct, disjoint i,j lie in the same block-pair class.
+
+For each admissible i, take `u_i=e_i−e_{i+1}`. As the first matrix is cyclic, `u_iA=e_i−e_{i+2}` and `U(u_iA)=e_i+e_{i+1}`. Let `x=u_i−u_j=e_i−e_{i+1}−e_j+e_{j+1}`. It is literally the difference of two legal binary vectors `a=e_i+e_{j+1}` and `b=e_{i+1}+e_j` (disjoint positions).
+
+Then `wt(x)=4`, `wt(z)=wt(U(xA))=4`, and the permuted first-prefix output is `P_πz=e_{π(i)}+e_{π(i+1)}−e_{π(j)}−e_{π(j+1)}`. Two impulses of opposite signs lie in ONE short block, and the other pair of opposite signs in ONE possibly different short block. Each block thus has net coefficient zero (also if the two blocks coincide). The prefix sum of this vector is zero outside the union of those blocks and has at most B−1 nonzero positions in each. Thus `wt(U(P_πz))≤2(B−1)`, and the full codeword weight is at most `4+4+2(B−1)=2B+6`. All equalities hold over Z and all intended odd-characteristic fields. QED.
+
+This bound does **not** extend to arbitrary first-stage row-weight-two matrices with two random independent interleavers or to classic RAA ensembles; there is a deliberate fixed *cyclic* first-stage restriction.
+
+### Exact source-scale minimal verification [EXPERIMENT]
+
+Standalone deterministic local script `/mnt/data/vfhe_cross_crt_double_accumulator_gate.py` SHA256 `558b5daa8ac9782f97bf2d5c25e4d41b704e755f4aa206c68ca0e57a3a7d4a20`. JSON output `/mnt/data/vfhe_cross_crt_double_accumulator_gate_results.json` SHA256 `e89ed32b6d9780e480ba3b395ab05c31875f9099356aa11edb1f72ce8d61709a`. Tests construct legal a,b, confirm every component of `C(a)−C(b)` exactly, verify Hamming weights in Z,F29,F37,F65537 and the general bound:
+
+| m | π | witnessed wt / 3m | theorem upper bound |
+|---:|---|---:|---:|
+| 256 | identity | 11/768 | 70 |
+| 256 | reverse | 11/768 | 70 |
+| 256 | seeded random | 32/768 | 70 |
+| 1024 | identity | 11/3072 | 134 |
+| 1024 | reverse | 11/3072 | 134 |
+| 1024 | seeded random | 70/3072 | 134 |
+
+This is an explicit upper-bound certificate, NOT the exact d_min. Strong universal statement is from the proof, not six tests.
+
+Honest digit no-wrap is not the issue in this particular regime: for x∈[0,β−1]^m, first-stage y entries ≤2(β−1), z entries ≤2m(β−1), second prefix entries ≤2m²(β−1). For m1024, β=2^20, this is <2^41<2^48, hence compatible with p_min>2^48 as a **conditional source-style parameter envelope**. For small test p29/p37, no-wrap of arbitrary honest vectors is **NOT** claimed; those moduli are only used for algebraic codeword verification.
+
+### Research consequence / next unique gate
+
+**KILL:** fixed cyclic A with row support {i,i+1}, even when followed by arbitrary π and a second prefix accumulator, as the constant-relative-distance commitment code. Do not keep retrying different π: the theorem is uniform.
+
+**KEEP:** true RAA architecture with TWO independently designed/randomized interleavers (not fixed cyclic expansion), shared integer coefficient matrix/no-wrap, and extension-field soundness. Binary classical RAA results are suggestive **but neither the proof over all odd extension fields nor the cross-CRT zero-knowledge PCS exists**.
+
+**NEXT_ACTION, only if PI continues:** Specify one true double-interleaver, repetition-two, two-accumulator systematic integer encoder; first minimal test for a field/prime-induced or combinatorial low-weight word that breaks constant distance, and separately check no-wrap. Do not import binary RAA theorem or claim a novel code without careful provenance.
+
+**End:** STATUS=FAIL (cyclic first-stage + any second interleaver); RESULT=uniform O(√m) distance bound with explicit binary pair and source-scale checks; NEXT_ACTION=true independent-two-interleaver RAA smallest falsifier; STATE_UPDATE=YES.

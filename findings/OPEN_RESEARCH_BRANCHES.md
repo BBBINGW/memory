@@ -300,3 +300,27 @@ The new carry C is NOT generally a multiple of t, independently of inherited fac
 **RESULT:** Ordinary binary carry creates an overflow outside (X−2), before noise/rescaling. A useful new refinement would have to account for the carry polynomial and quantify full CKKS errors, not merely exploit t factors.
 **NEXT_ACTION:** Do not repeat generic norm/t-adic toys. Only revisit P20 on a concrete, nontrivial carry-aware mathematical invariant with an independently quantified depth-two improvement including rescale/key switch noise; otherwise PARK P20 and pivot to a separate full-text-verifiable FHE optimization. PI makes final PARK/ARCHIVE call.
 **STATE_UPDATE:** Update OPEN_RESEARCH_BRANCHES.md P20 only; do NOT modify STATE.md, vFHE or CGS.
+
+
+---
+
+## P21 — Boneh–Kim Nested RNS lazy CRT canonical-lift composition gate (2026-10-14)
+
+**Paper [FACT]:** Dan Boneh, Jaehyung Kim, *Homomorphic Encryption for Large Integers from Nested Residue Number Systems*, ePrint **2025/346**, https://eprint.iacr.org/2025/346. Full original PDF READY via Research MCP mirror, **31 physical pages**, SHA256 `7a26e911b00368dace336f4324e8e3f036927a57683cf5fbea1e26ee19777ef5`, VERSION_UNVERIFIED. Read pp13–17 source: §3.2 defines CRT plaintext `Z_P`, §3.3 p14 specifies `r<sqrt(P)`, Theorem2 p15 gives *integer* HPS formula `x'=Σy_i[hat p_i]_r-v[P]_r=x+r e`, with `|x'|≤r(k+Σp_i)/4`, Algorithm3 p16 returns **lazy** `Z_P` output, Theorem3 p17 requires small **input** `|z|≪min_i(P/p_i)`. This candidate is independent of archived P19/P20 and does not modify global I192 or parallel vFHE V17.
+
+**ONE HYPOTHESIS [our proposed shortcut, NOT authors' stated claim]:** If `|x|≪min_i(P/p_i)` and `r<sqrt(P)`, the centered canonical integer lift of the lazy output class in `Z_P` always preserves its intended residue modulo `r`, so the class may be reused as an ordinary normalized `Z_r` value without an additional output range/metadata check.
+
+**ONE decisive exact counterexample [FAIL shortcut; PASS source identity]:** Set k2, CRT primes (p0,p1)=(37,997), P=36889, r=79, x=−1. Then r²=6241<P; gcd(P,r)=1; input smallness |x|/min(hat p_i)=1/37. With centered CRT residues `y=(-18,485)`, `Σy_i/p_i=−1/36889` so v=0 EXACTLY; reduced factors `[997]_79=−30`, `[37]_79=37`. Hence `x'=(-18)(-30)+485(37)=18485=−1+234·79`. **Theorem2 passes** (x'≡−1 mod79), but x'>P/2=18444.5 so the same stored CRT class has center_P(x')=−18404, whose residue mod79 is 3 rather than correct 78. All identities verified with exact integer/Fraction arithmetic; source smallness symbol “≪” is qualitative and not asserted to be an explicit security-grade source parameter instantiation. A second small diagnostic (23,131), r51 x−1 gives x'−1531, canonical +1482, residues 50 vs3.
+
+**Structural invariant needed [DERIVED]:** Reduction `Z/PZ→Z/rZ` on arbitrary integer representatives is well-defined iff r|P. For CRT target coprime to P, converting a lazy class via a chosen canonical lift needs a **no-wrap** invariant or explicitly tracked lift metadata. From Theorem2's output bound, sufficient (NOT necessary) no-wrap condition is `r(k+Σp_i)/4 < P/2`, i.e. `r<2P/(k+Σp_i)`; here bound 997/14≈71.214 versus r79. The source's separate r<sqrtP does NOT imply that sufficient bound for unbalanced CRT primes.
+
+**Source and contribution boundary:** Does NOT refute Theorem2, which is the correct integer congruence; does NOT yet refute Theorem3's output claim, which is expressly **lazy modulo P**, NOT canonical mod r; does NOT establish actual nested Algorithm4/Theorem7 failure, security leakage, DFR, or performance difference. §4 imposes additional restrictive rescale/size premises that may already block reuse at this boundary. The missing link is a **source-faithful callsite** actually taking a canonical lift with insufficient range. Algebra is classical, NOVELTY UNVERIFIED; do not contact authors.
+
+**STATUS:** FAIL our naive normalization/composition; PASS exact modular arithmetic; actual paper scheme correctness UNCLEAR / HUMAN_REVIEW.
+**RESULT:** Separate output-lift bound is needed to interpret the lazy CRT class as a normalized target-modulus residue; x=-1 alone can wrap.
+**NEXT_ACTION:** Test ONE actual Algorithm4/Theorem7 intermediate-lift interface using its full published range restrictions. If source premises prevent this instance, PARK P21. Do not repeat unqualified CRT wrap examples or imply paper flaw.
+**STATE_UPDATE:** Only append independent P21 to `findings/OPEN_RESEARCH_BRANCHES.md`; no global/vFHE/CGS edits.
+
+**Local full note:** `/mnt/data/P21_Nested_RNS_Lazy_Canonical_Lift_Gate_2026_10_14.md` SHA256 `18d507c3a1e6fb998515a736b53c5666b73458b625cee0713c7b0180d9dd228c`.
+**Deterministic code:** `/mnt/data/p21_nested_rns_lazy_crt_lift_gate.py` SHA256 `dd08fc5e6fb1afaabbad436869379554a977678d4838470a77c2f0a5713064a7`.
+**JSON:** `/mnt/data/p21_nested_rns_lazy_crt_lift_results.json` SHA256 `55eee58b836c7811bfb8ffd03b9573bb370a45cdddd119cb696c621517e42ed6`.

@@ -5,11 +5,11 @@
 
 ## CURRENT PI-SELECTED WORKSTREAM (SEPARATE COUNTER)
 
-**vFHE cross-CRT scalar digit/index consistency**, independent round **V17 COMPLETED**, next **V18 NOT STARTED**.
+**vFHE cross-CRT scalar digit/index consistency**, independent round **V18 COMPLETED**, next **V19 NOT STARTED**.
 
 **Authoritative separate round state:** `findings/vfhe-cross-crt-state.md`.
 **Technical evidence + research story:** `findings/vfhe-cross-crt-consistency-research.md`.
-**Current status:** Structural lookup/soundness question remains OPEN/HUMAN_REVIEW; integer-code bridge is a candidate, not a working PCS/SNARK repair. V17 returns to ePrint2025/286 source: §3.1 CRT factor values and §5/F.1/F.2 independent native PCS do NOT automatically give a common scalar integer digit vector or justify V16 m=1024 as source m_PCS. Appendix E.2 physical p48 falsely infers that an invalid ring scalar-table digit must be invalid in at least one CRT field. Exact source-form toy p13,N4,d2 has e=7+4X² projecting to (1,0), individually valid Boolean digits while e is not scalar 0/1. The inspected paper's proof gap is grounded; ideal PIOP transcript, final compiled SNARK, and actual exploit remain UNVERIFIED. Next V18 source-faithful ideal PIOP gate.
+**Current status:** V18 constructs an explicitly false scalar table lookup (CRT idempotent e=7+4X², projections (1,0)) and CRT-glues valid fieldwise memory-counter/grand-product oracles into ONE R-valued Fig.1 ideal PIOP transcript. Its grand product roots and both Boolean-domain sum-check claims hold identically, so the source-specified ideal oracle protocol has a concrete algebraic soundness counterexample in the inspected ePrint2025/286 mirror. This is NOT a checked final compiled Brakedown/Fiat–Shamir SNARK exploit, and official latest paper edition remains VERSION_UNVERIFIED. V19 compiler-interface gate next; details §27 of independent findings.
 
 ### Legacy numbering mapping — provenance only
 

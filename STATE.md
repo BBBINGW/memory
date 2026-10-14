@@ -5,11 +5,11 @@
 
 ## CURRENT PI-SELECTED WORKSTREAM (SEPARATE COUNTER)
 
-**vFHE cross-CRT scalar digit/index consistency**, independent round **V14 COMPLETED**, next **V15 NOT STARTED**.
+**vFHE cross-CRT scalar digit/index consistency**, independent round **V15 COMPLETED**, next **V16 NOT STARTED**.
 
 **Authoritative separate round state:** `findings/vfhe-cross-crt-state.md`.
 **Technical evidence + research story:** `findings/vfhe-cross-crt-consistency-research.md`.
-**Current status:** Structural lookup/soundness question remains OPEN/HUMAN_REVIEW; integer-code bridge is a candidate, not a working PCS/SNARK repair. V14 shows a true full-extension random challenge does not make third-prime group commitments natively compatible with CRT extension-field aggregates: honest lifted integer S_t differs from native residue z_t=S_t mod p. Explicit basis-coordinate quotient links S_t=z_t+p k_t and a sound linear-functional opening are required; no CP-SNARK, secure extractor, ZK proof or speedup has yet been built. Independent vFHE file holds full results.
+**Current status:** Structural lookup/soundness question remains OPEN/HUMAN_REVIEW; integer-code bridge is a candidate, not a working PCS/SNARK repair. V15 shows that for two direct corrected link interfaces (individual homomorphic Pedersen digit commitments, or vector Pedersen plus separate standard IPA openings), O(log m) proof communication per native basis-coordinate linear form does NOT imply sublinear verifier GROUP work: direct MSM accounting remains O(Fm), where F is the number of separately linked extension-field instances. Source ring has N/d factors per CRT prime, so assuming F equals just the number of primes needs justification. No implemented cryptographic speedup/PCS soundness established; vFHE remains OPEN.
 
 ### Legacy numbering mapping — provenance only
 

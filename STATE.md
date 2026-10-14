@@ -5,11 +5,11 @@
 
 ## CURRENT PI-SELECTED WORKSTREAM (SEPARATE COUNTER)
 
-**vFHE cross-CRT scalar digit/index consistency**, independent round **V39 COMPLETED**, next **V40 NOT STARTED (SOURCE_VERSION_GATED / HUMAN_REVIEW)**.
+**vFHE cross-CRT scalar digit/index consistency**, independent round **V40 COMPLETED (SOURCE_BLOCKED)**, next **V41 NOT STARTED (HUMAN_REVIEW / SOURCE_VERSION_GATED)**.
 
 **Authoritative separate round state:** `findings/vfhe-cross-crt-state.md`.
 **Technical evidence + research story:** `findings/vfhe-cross-crt-consistency-research.md`.
-**Current status:** V39 proves an existing 52pp (SHA29b6b2e9…) full-text mirror ALREADY contains the fieldwise Lemma4.6/pmin proof amendment in physical p24 Remark4.9 BUT STILL asserts false global-to-one-native CRT digit nonmembership in AppendixE.2 p48: e(X)=261 in R377 has projections (1,1,0,0) all locally in t4, yet e is not any canonical ring digit and meets beta4<13,2^ellstar8<13. This is prior V17–V23's mirror-specific CRT gap independently reverified, NOT a new attack or a verified failure in CURRENT OFFICIAL ePrint 2026-02-16 revision. Official landing says proof of Theorem4.8 was fixed on that date; current PDF bytes inaccessible (web only stale 50pp, MCP 52pp VERSION_UNVERIFIED, local DNS blocked). Full finding `findings/vfhe-v39-remark49-official-edition-source-gate.md`. NEXT HUMAN_REVIEW: PI provides true February2026 PDF or explicitly pivots to another source-complete paper; stop speculative huge BP++ wrappers until official source comparison. General I192 frozen.
+**Current status:** V40 targeted official current PDF acquisition/authentication FAILED. Live official ePrint2025/286 HTML authenticates 2026-02-16 revision note Fixed a flaw in Theorem4.8 proof, but web PDF URL returns stale 50pp index, screenshot/version-history click fails and container byte download fails. Therefore the exact official revised PDF SHA remains UNAVAILABLE. The inspectable 52pp Research MCP GitHub mirror VERSION_UNVERIFIED (SHA29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19) still has amended fieldwise Remark4.9 p24 and false global-not-digit⇒native-not-digit step AppendixE.2 p48, already refuted by V17–V23/V39 source-shape CRT 261; this does NOT establish the status of CURRENT official authors' Theorem4.8 or a compiled-SNARK exploit. Full finding `findings/vfhe-v40-official-revision-source-authentication-gate.md`, source evidence remains MISSING in `MISSING_SOURCES.md`. NEXT HUMAN_REVIEW: PI supplies actual 2026 official PDF with provenance, or explicitly authorizes an independent, source-complete FHE pivot. Stop speculative repair wrappers and no unsolicited author contact. GENERAL FHE I192 remains FROZEN.
 
 ### Legacy numbering mapping — provenance only
 

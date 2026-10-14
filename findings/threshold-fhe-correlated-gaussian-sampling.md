@@ -93,3 +93,66 @@ Reproducer local script: `/mnt/data/thfhe_cgs01_integer_gaussian_convolution.py`
 **RESULT:** Identified existing integral/ring Gram-root techniques, especially a direct same-author prior work; isolated a parity-support obstruction invisible to covariance-only analysis; derived primitive five-square existence for integer scalar shapes; reproduced M8 near-Gaussian distribution comparison; located the unproved kernel-lattice smoothing/security gates. **NO repaired ThFHE or novel theorem/protocol claimed.**
 **NEXT_ACTION (CGS-02, human-authorized):** Choose one **source-compatible scalar parameter regime** and one **specified primitive integer root selection**; derive or falsify a quantitative **smoothing bound for the kernel lattice** `L_a=ker_Z(a)` at the actual `σ0`, and determine whether the resulting *per-session* statistical error can meet the source multi-query security requirement. Only if this survives, evaluate a hidden-innovation Shamir/MPC/PCF sampler. **ONE hypothesis + ONE decisive test.**
 **STATE_UPDATE:** **NO** to the existing vFHE/I194 `STATE.md`; **RECORD_UPDATE:** YES (this independent CGS topic file).
+
+---
+
+## 6. CGS-02 — source-shaped primitive-five-square Gaussian has a large modular-residue defect (2026-10-14)
+
+**Research numbering:** `CGS-02`, independent of the vFHE `I` iteration sequence. This section **supersedes CGS-01's open smoothing test** only for the single specified primitive factor; it does NOT contradict CGS-01's finite M8 experiment or invalidate all primitive roots.
+
+### One primary hypothesis and one decisive falsifier
+
+**[HYPOTHESIS]** The generic primitive five-square strategy `a=(1,b1,b2,b3,b4)`, `sum ai²=M=Bpub²-||s||²`, with independent `Gi←D_(Z,σ0)`, may be adopted as an across-source-parameters discrete-Gaussian padding primitive at the **original allowed σ0**, simply because `gcd(a)=1` and `||a||²=M`.
+
+**[FALSIFIER / ONE TEST]** Choose one bounded-secret, scalar Algorithm 6 source-shape-compatible `M, σ0` and primitive five-square root, and find one explicit residue distinguisher with constant total-variation separation between `sum ai Gi` and `D_(Z,σ0 sqrt(M))`. This is a quantitative kernel-smoothing necessary gate, not a test of complete interactive ThFHE security.
+
+### Primary paper and parameter envelope
+
+[FACT] Okada–Takagi ePrint 2025/409, 40-physical-page mirror PDF SHA256 `98993522b80695ab415cc5d8c28dddc1dbe8b78ac3550d2063140ce718c6a301`, VERSION_UNVERIFIED:
+- §3.3 p13 Lemma 3.4 gives `η_ε(Z) ≤ sqrt(ln(2(1+1/ε))/π)`.
+- **Lemma 3.7 p14** (citing MP13 Theorem 3.3) already gives a sufficient linear-combination discrete-Gaussian convolution condition `s_i ≥ 2 ||z||∞ η_ε(L)`; primitivity determines output lattice support but alone does not guarantee closeness. This is **existing published machinery**, not new insight to claim as theorem.
+- Algorithm 6 p26 and Lemma 6.1 pp26–27 use `M=Bpub²−||s||²>0`, `σ0≥sqrt(2)η_ε(Z)`, and `Bpub²≥n Blwe²+1` in the scalar case. Other flooding, modulus and underlying FHE conditions are independent and have not been instantiated here.
+
+**[SOURCE-SHAPED CONDITIONAL INSTANCE]** At finite `κ=128`, let `ε=2^-128`, `n=128`, coefficient/secret bound `Blwe=1`, and conditional bounded secret `s=(1,0,...,0)`, so `||s||²=1`. Take `Bpub=338`, `σ0=8`.
+Then `Bpub²=114244≥129=nBlwe²+1`. Lemma 3.4 implies `η_ε(Z)≤5.334978203`, so `sqrt(2)η_ε(Z)≤7.544798529<8`. Thus the relevant original padding-width/secret-bound constraints are met. **Do not claim a complete 128-bit LWE security instantiation, a typical secret distribution, or a practical Bpub choice**: this is a source-allowed *conditional integer padding-shape* witness.
+
+`M=338²−1=114243=1+2(239²)`. Specify the primitive five-term Gram root `a=(1,239,239,0,0)`: gcd is 1 and `sum ai²=M`.
+
+### Exact distributional separation via modulo 239 [DERIVED]
+
+Let `G0,G1,G2 iid D_(Z,8)` and
+`W=G0+239(G1+G2)`. Target `T∼D_(Z,S)` with `S=8 sqrt(114243)=2703.988165654576...`. Although `||a||²=M`, the congruence `W mod239=G0 mod239` means the large-factor Gaussian randomness is erased by this residue test.
+
+Let `E⊂Z/239Z` be the 41 centered classes represented by `[-20,20]`. Then `Pr[W mod239∈E]≥Pr[|G0|≤20]`. Since the unnormalized discrete Gaussian tail is dominated by a geometric series and `ρ_8(Z)≥1`,
+
+`Pr[|G0|≥21] ≤ 2 exp(-π·21²/8²)/(1−exp(-π·43/8²)) < 9.031×10^-10.`
+
+For `T∼D_(Z,S)`, Poisson summation on each residue class and `ρ_S(Z)≥S` give
+`Pr[T mod239=r] ≤ (1+θ)/239`, where
+`θ ≤ 2u/(1−u³),  u=exp(-π(S/239)²)`.
+Here `θ<4.564×10^-175` (computed at 100 decimal digits).
+
+Thus `Pr[T mod239∈E]≤(41/239)(1+θ)`, and the data-processing/event characterization of total variation yields
+`
+ TV(Law(W),Law(T))
+ ≥ Pr[W mod239∈E]−Pr[T mod239∈E]
+ > 0.82845188194.
+`
+The lower bound is a **provable inequality**, not an FFT/Monte-Carlo estimate. Exact rational parameter equalities, an analytic tail estimate, and the Poisson bound are evaluated by high-precision mpmath; no repeated sampling is necessary.
+
+**Reproducer** in this session: `/mnt/data/thfhe_cgs02_modular_residue_obstruction.py`, SHA256 `6bc2d89c3c96f37ab907b0e8bc7739663ac5c5c656f8faba9be30f23712a4428`. Local script is not committed via Research MCP.
+
+### Significance and limitations
+
+**[NEGATIVE, decisive for specified construction]** A primitive five-square integer Gram root **can fail spectacularly** to simulate the required discrete Gaussian at `σ0` that already meets source Lemma 6.1's minimal scalar-width condition. The parity test in CGS-01 was only the simplest example; now **even gcd-one full support** can have a large arithmetic-congruence discrepancy.
+
+**[PRIOR ART CONNECTION]** Applying already-source-cited Lemma 3.7 as a *sufficient*, conservative condition to `a=(1,239,239)` requires `σ0≥2·239·η_ε(Z)`. Using the p13 Lemma 3.4 upper estimate gives a sufficient concrete setting `σ0≥2550.12`, >318× our `σ0=8`. This is not a necessary lower bound for all possible samplers and does not imply no improvement over Lemma 3.7 is possible.
+
+**[DO NOT OVERCLAIM]** This only kills the choice `a=(1,239,239,0,0)` with `σ0=8` and any general argument that relies solely on primitive gcd + Gram equality. It does **not** show every primitive factor for M=114243 fails, every source-realistic Bpub suffers, or the original ThFHE protocol fails. Real output distribution includes other independent flooding/rounding noises, which can hide some padding-only distinctions; no full residual-transcript attack is established. No 128-bit ThFHE instantiation was evaluated. Existing I184–I187 nonlinear/PRSS failures remain unchanged. **NOVELTY NOT VERIFIED**; modular character distinguishers and Gaussian smoothing are standard tools.
+
+### End of CGS-02
+
+**STATUS:** **FAIL** for the selected primitive five-square direct sampler at the source-admissible width; **PASS** rigorous quantitative modular-residue certificate; **UNCLEAR** optimized integer roots, multivariate MLWE, hidden-innovation threshold execution.
+**RESULT:** Explicit primitive source-shaped M114243 root gives `TV>0.82845188194` at `σ0=8`; existing source Lemma 3.7 already supplies the relevant convolution bound, highlighting an enormous possible gap between source's base σ0 and a sufficient coefficient-sensitive σ0. Selecting Gram roots only by `AA^T=Σ` and gcd is not enough; kernel-lattice smoothing / modular mixing must enter selection.
+**NEXT_ACTION (CGS-03; one hypothesis/test only):** For the **SAME** `M=114243, σ0=8`, choose one deliberately **balanced primitive 5-square factorization** (not the prior `(1,239,239,0,0)`), derive a *certified* upper bound on kernel-lattice smoothing error (or one decisive modular-residue lower bound) with a fixed ε target. This distinguishes an inherent five-square/source-width obstruction from an avoidable *bad-root-selection* artifact before spending resources on MPC/PCF integration. First check whether source Lemma 3.7 or a tighter kernel argument already applies. No FHE implementation yet.
+**STATE_UPDATE:** NO to independent vFHE `STATE.md`; **CGS TOPIC_RECORD_UPDATE:** YES (this append only).

@@ -5,11 +5,11 @@
 
 ## CURRENT PI-SELECTED WORKSTREAM (SEPARATE COUNTER)
 
-**vFHE cross-CRT scalar digit/index consistency**, independent round **V21 COMPLETED**, next **V22 NOT STARTED**.
+**vFHE cross-CRT scalar digit/index consistency**, independent round **V22 COMPLETED**, next **V23 NOT STARTED**.
 
 **Authoritative separate round state:** `findings/vfhe-cross-crt-state.md`.
 **Technical evidence + research story:** `findings/vfhe-cross-crt-consistency-research.md`.
-**Current status:** V21 performed a source-structured miniature F.1/F.2/F.3 polynomial-commitment compilation of V20's false outer coefficient-range statement (ring e=7+4X² with CRT images 1,0). Three staged hash-challenge transcripts verified all 864 Merkle-authenticated encoded-column checks and all V20 ideal PIOP algebraic identities while false coefficient-range persists; altered authentication fails. This shows standard binding to component polynomials is not itself a scalar CRT-diagonal membership predicate, but is NOT an exact published compiler/Brakedown/Fiat–Shamir vFHE exploit. Latest official/proceedings full PDF remains VERSION_UNVERIFIED versus 52pp inspected mirror; web-indexed ePrint 50pp edition differs, publisher Springer DOI 10.1007/978-3-032-01907-3_21 full chapter gated. V22 should authenticate final source and inspect any actual compiled proof system; otherwise PI HUMAN_REVIEW. Details §§29–30 of independent findings and V21 checkpoint. Global I192 FROZEN.
+**Current status:** V22 is a SOURCE/IMPLEMENTATION availability gate, NOT an actual 128-bit SNARK exploit. Official IACR metadata dates a revision 2026-02-16 explicitly 'Fixed a flaw in the proof of Theorem 4.8'; no byte-authentication of that current official PDF or publisher chapter was possible (web indexed 50pp older PDF vs Research MCP 52pp version-unverified mirror SHA256 29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19). Author-linked public `vfhe/proof-friendly-CKKS` is benchmark/POC code for CKKS, generic sumcheck, piecewise RS: no full indexed Pi_range lookup verifier/Fiat–Shamir implementation was located. V20 ideal outer Pi_range false-statement transcript and V21 miniature PCS interface remain evidence for INSPECTED MIRROR only; official version, real compiled SNARK soundness effect, and nontrivial repair require further proof. V23 next: authorized exact final source or genuine full verifier if available, otherwise PI-reviewed cross-CRT diagonal repair feasibility and provenance package. No unsolicited author outreach. Details in `findings/vfhe-cross-crt-consistency-research.md` §31 and separate state. Global I192 FROZEN.
 
 ### Legacy numbering mapping — provenance only
 

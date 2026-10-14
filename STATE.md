@@ -5,11 +5,11 @@
 
 ## CURRENT PI-SELECTED WORKSTREAM (SEPARATE COUNTER)
 
-**vFHE cross-CRT scalar digit/index consistency**, independent round **V15 COMPLETED**, next **V16 NOT STARTED**.
+**vFHE cross-CRT scalar digit/index consistency**, independent round **V16 COMPLETED**, next **V17 NOT STARTED**.
 
 **Authoritative separate round state:** `findings/vfhe-cross-crt-state.md`.
 **Technical evidence + research story:** `findings/vfhe-cross-crt-consistency-research.md`.
-**Current status:** Structural lookup/soundness question remains OPEN/HUMAN_REVIEW; integer-code bridge is a candidate, not a working PCS/SNARK repair. V15 shows that for two direct corrected link interfaces (individual homomorphic Pedersen digit commitments, or vector Pedersen plus separate standard IPA openings), O(log m) proof communication per native basis-coordinate linear form does NOT imply sublinear verifier GROUP work: direct MSM accounting remains O(Fm), where F is the number of separately linked extension-field instances. Source ring has N/d factors per CRT prime, so assuming F equals just the number of primes needs justification. No implemented cryptographic speedup/PCS soundness established; vFHE remains OPEN.
+**Current status:** Structural lookup/soundness question remains OPEN/HUMAN_REVIEW; integer-code bridge is a candidate, not a working PCS/SNARK repair. V16 proves that, under IDEAL prior binding of one shared canonical integer vector and every native per-factor residual, a fresh random Fp^L vector can fold all L=4(N/d) native link relations for ONE CRT prime into a single length-m functional per independent round, with exact false-accept probability 1/p for any fixed nonzero residual. In a separately opened direct MSM model, three folds reduce per-prime group input terms from 8192m to 3m (N8192,d4), but dense Fp coefficient folding remains O(3*8192*m), and actual common-a source mapping, third-field CP proof, ZK and whole soundness are OPEN.
 
 ### Legacy numbering mapping — provenance only
 

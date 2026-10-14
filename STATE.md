@@ -1,47 +1,42 @@
-# FHE Research State — Session Handoff after Iteration 192
+# FHE Research State — after Iteration 193
 
-**Checkpoint date:** 2026-10-14 (Asia/Tokyo)  
-**LAST COMPLETED ITERATION:** **I192 COMPLETED**. **I193 NOT STARTED.**  
-**STATUS:** **NO ACTIVE TECHNICAL HYPOTHESIS** / `HUMAN_REVIEW`. Current AKU audit `PARKED — SOURCE_VERSION_GATED` until missing primary material is verified. No new parent target has been selected by the human PI.
+**Checkpoint date:** 2026-10-14 (Asia/Tokyo)
+**LAST COMPLETED ITERATION:** **I193 COMPLETED**. **I194 NOT STARTED**.
+**STATUS:** I193 necessary algebraic gate **PASS**; scalable protocol/security/performance **UNCLEAR**; `NOVELTY NOT VERIFIED`. **No active technical hypothesis during handoff**; vFHE is the PI-selected parent target, not a confirmed repaired protocol. Await PI before executing I194.
 
 ## CURRENT TARGET
 
-Last investigated: Qi Zhang, Mingqiang Wang, Xiaopeng Cheng, *Faster FHEW Bootstrapping with Adaptive Key Update*, **CANS 2025**, IACR ePrint **2025/381**, https://eprint.iacr.org/2025/381. This is the **most recent PARKED audit**, not an active construction or confirmed paper vulnerability.
+**vFHE cross-CRT scalar-index consistency**, Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO 2025, ePrint **2025/286**, https://eprint.iacr.org/2025/286. Primary source 52pp Research MCP GitHub mirror SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`; publisher/latest official byte-equivalence VERSION_UNVERIFIED.
+
+**Original gap [DERIVED I59–I60]:** native CRT-field lookup validates the rectangular product of digit tables, not the diagonal common scalar-digit relation. Exact source-form idempotent counterexample R=Z77[X]/(X²+1), h56, standalone and full ideal Pi_range PIOP, survives original componentwise §5/F.1 commitments under analyzed source. **NOT** an authenticated final-version compiled-SNARK exploit, nor confirmed actual deployed compromise. Prior I95, I136–I151 simple repairs archived: do not repeat direct RS Merkle column integer equality (FAIL honest completeness), same-point/one-point integer lifts, basic masked aggregations, shared challenge or Merkle-only batching.
 
 ## CURRENT QUESTION
 
-Can the §5.1 Gaussian-key theoretical failure model and reported Table 3 Algorithm 6 DFR `2^-36` be reconciled using the **actual author-edition paper equation and experiment code**? Source verification remains blocked, so do not treat this question as an active hypothesis test without new material.
+Could a new **common bounded-integer encoded witness / shared Merkle coded-column commitment** bind all CRT factors to the SAME small integer digit, while permitting native field-linear PCS evaluation checks with adequate distance and with practical proof/privacy cost?
 
-## PRIMARY HYPOTHESIS
+## MOST RECENT COMPLETED TEST: I193
 
-**NONE ACTIVE.** The last tested hypothesis (I192)—that authenticated publisher equations or original author experiment artifacts were publicly available and sufficient for an exact DFR reproduction—was **FAIL** for the evidence then accessible. Conditional question for any future authorized reopening: whether the author-version complete `β` calculation yields its reported `2^-36` DFR.
+[FACT/source] §5/F.1–F.3 of 2025/286 commits to prime-specific coded matrices and RS/NTT roots. Brakedown (ePrint 2021/1043) and field-agnostic Expand-Accumulate Codes (ePrint 2024/1871) supply linear-code/accumulator ingredients, but their arbitrary-field proofs do NOT directly imply a bounded integer common generator when random nonzero field coefficients are replaced by integer 1.
 
-## CURRENT EVIDENCE
+[DERIVED+EXACT] Toy systematic integer code Enc(x)=(x,prefix(xA)), m8,beta2,p29,p37, A eight distinct weight-two {0,1} rows. Honest encoded values ≤16<p_min29; hence identical integer-coded columns at both primes. Exhaustive 3^8−1=6560 bounded nonzero differences and an independent full odd-characteristic extension-field argument establish exact minimum Hamming distance **3/16**. A mismatch e7 vs e5 changes exactly 3 positions. Local executable `/mnt/data/i193_vfhe_universal_integer_ea_toy.py` SHA256 `70e27821a362761316d36c2f097ec1634b20349e00c8bcf566d33e07c67d7502` (LOCAL ONLY, not GitHub MCP accessible).
 
-- **[FACT/source]** Public 27-page ePrint version, Research MCP GitHub-mirror PDF SHA256 `bbc507b8323f4a65dea806bb663c9eea8ef2954e41259cad3b9db11256a03faf`, **VERSION_UNVERIFIED** against CANS publisher edition. Springer DOI: https://doi.org/10.1007/978-981-95-4434-9_14 (CANS 2025 LNCS 16351, pp. 292–312).
-- **[DERIVED, I190]** Under the **extracted** §5.1 model (not an experimentally verified failure distribution), parameters `n=447, σ=3.19, q=1024, Qks=16384`, `σ_ms2²=(||s||²+1)/12`, `||s||²≈nσ²` imply `β≥19.4716` from final ModSwitch alone; extracted `DFR=erfc((q/8)/(2β))` gives a **modeled** lower estimate `≈3.347×10^-6≈2^-18.19`, conflicting with Table 3's `2^-36`. This is **conditional model/table inconsistency**, NOT proof of actual ciphertext failure, flawed cryptographic security, or inaccurate latency.
-- **[FACT+DERIVED, I191]** Present-day upstream OpenFHE uses Gaussian small-key `dgg(3.19)` and coefficientwise final `qKS→q` round. At ratio 16, exact scalar rounding residual has **mean +1/32** (ties upward), variance `255/3072`; source-style `β_MS2≈19.4335`. Integer-level ModSwitch verification passed, but this is **NOT** the author's fixed 2025 implementation, nor full FHE bootstrapping or DFR replication.
-- **[NEGATIVE, I192]** Verified final CANS chapter existence, but full rendered §5.1 is restricted; original author AKU source/commit/DFR estimator not authenticated or accessed; rendered ePrint equation screenshot unavailable. No author contacted. The source-availability hypothesis **FAIL**; alleged actual correctness error **UNCLEAR**.
+[OPEN / NOT PROVEN] Uniform constant distance for source m256/1024 and all odd-characteristic extensions; new **one shared integer Merkle commitment** PC binding/proximity and cross-field extraction; hiding and digit leakage; random-query order/FS; 128-bit parameter/error budget; actual total bandwidth/runtime at source security. Illustration only: one F.2 evaluation's raw columns and vectors could drop ~1237.5 MiB to ~37.53 MiB under mu6144,m256,t32 and 4-byte encoded integer IF all shared-column assumptions hold; **NOT** proven total vFHE gain. Novelty vs published codes/PCS NOT verified.
+
+Detailed source, method, proof, caveats: `findings/vfhe-shared-integer-ea-column-bridge-iteration193.md`.
+Original gap: `findings/vfhe-crt-lookup-cross-component-soundness.md`, `findings/vfhe-crt-full-range-piop-and-commitment-audit.md`.
+Earlier failed direct coded-column idea: `failures/vfhe-original-rs-merkle-column-crt-integer-comparison-iteration151.md`.
+Further historical branches: `findings/OPEN_RESEARCH_BRANCHES.md` (P1), which is long-term index and not active-state authority.
 
 ## MAIN OBSTRUCTION
 
-Missing **authenticated primary evidence**: the full final CANS §5.1 with rendered formulas and/or the author's exact AKU implementation/commit, Gaussian-key parameters, full `β` worksheet and Table 3 DFR estimation code. Current OpenFHE HEAD is not evidence of what authors ran. Registered in `MISSING_SOURCES.md` as `Zhang–Wang–Cheng AKU DFR author-edition source (I192)`.
+The I193 result proves only a SMALL toy code; it does not establish a family with **uniformly positive relative distance and O(m) or near-NTT encoding** on native fields when all generator coefficients are small bounded integers. Brakedown/EA arbitrary-field analyses use field-dependent random coefficients. Even a suitable code would require an entirely new shared-commitment soundness and privacy proof; original fieldwise commitments do not automatically enforce diagonal digits.
 
-## OPEN UNCERTAINTY
+## NEXT_ACTION — I194 only if PI confirms CONTINUE
 
-Publisher/ePrint formula equivalence; possible normalization/typographic/implementation differences; complete `σ_acc,σ_ms1,σ_ks,σ_ms2` contributions and dependence; actual Gaussian-key decryption tail and DFR; any impact on 20.7% source-reported speedup under matched DFR, key size and >=128-bit lattice security. **No confirmed paper error, attack, or new FHE algorithm.**
+**ONE decisive source-sized integer-EA distance gate:** For a specific sparse {0,1}-coefficient expand-accumulate code family inspired by Block et al. ePrint 2024/1871 §2–§4, analyze whether fixing all nonzero weights to 1 yields a constant lower bound on relative Hamming distance over *all* relevant odd-characteristic extension fields at m=256 or1024. Prefer search for an explicit low-weight/codeword or asymptotic cancelling pattern that kills distance, before any large implementation. If no distance survives, KILL this simple code specialization; keep abstract common-integer commitment problem but do not auto-launch a different research parent.
 
-## NEXT_ACTION — new session, not an authorized research iteration
+## PARKED / OTHER BRANCHES
 
-**ONE minimal source-availability/legibility gate:** Check the AKU entry in `MISSING_SOURCES.md` for **NEW** authenticated publisher §5.1 pages or author-pinned implementation/DFR script supplied since I192. If present, verify actual identity/commit/SHA and that the exact formula or estimator is readable; report whether `SOURCE_VERSION_GATED` can be lifted, then await PI authorization for the next single hypothesis. **If none is present, STOP the AKU audit, report PARKED, and ask PI to select the next research target. Do not autonomously select one or begin I193 on handoff.** Do not repeat the previous Gaussian/ModSwitch toy checks.
+AKU ePrint 2025/381 **PARKED — SOURCE_VERSION_GATED** after I190–I192; modeled Gaussian-DFR/table discrepancy conditional only, original author §5.1 rendered final chapter/code missing (`MISSING_SOURCES.md`). LFBS PRCA I188–189 simple hoisting/bookkeeping PARKED; threshold FHE PRSS I184–187 direct repairs PARKED; GBFV I182–183, direct dBFV→BGV I178–181, and GL generic BigSwitch archived/parked in branch index. Do not repeat these without new material premise.
 
-## RELEVANT FILES
-
-Read in order: `START_RESEARCH_SESSION.md`, `RESEARCH_PHILOSOPHY.md`, `AGENT.md`, `STATE.md`. Then read:
-- `findings/fhew-aku-gaussian-dfr-consistency-iteration190.md`
-- `findings/fhew-aku-ms2-rounding-code-gate-iteration191.md`
-- `findings/fhew-aku-author-repro-source-gate-iteration192.md`
-- `MISSING_SOURCES.md` (AKU section)
-- `findings/OPEN_RESEARCH_BRANCHES.md` (P18, I190–I192) for other direction statuses only when needed.
-
-**OTHER BRANCHES:** LFBS PRCA I188–189 naive hoisting/bookkeeping PARKED; threshold FHE PRSS I184–187 simple repairs PARKED (broader unbounded-`LDec` open); GBFV I182–183, direct dBFV→BGV I178–181 and earlier unsuccessful ideas archived in corresponding findings/failures and branch index. Preserve all. Research principle: one smallest falsifiable hypothesis + one cheapest decisive test; the human PI controls target, pivots and final scientific judgment.
+Rule: ONE primary falsifiable claim and ONE cheapest decisive test per authorized iteration; read before write, evidence provenance, preserve archive, PI chooses all strategic pivots and public disclosure.

@@ -1,7 +1,7 @@
 # vFHE Research State — Independent V-Series
 
 **Checkpoint:** 2026-10-14 (Asia/Tokyo).
-**LAST COMPLETED vFHE ROUND: V17. V18 NOT STARTED.**
+**LAST COMPLETED vFHE ROUND: V18. V19 NOT STARTED.**
 **STATUS:** V17 FAIL the source-interface assumption that native CRT field commitments automatically extract SAME bounded integer digit vector; PASS exact SOURCE-FORM p13/N4/d2 nontrivial idempotent refuting a concrete implication in inspected source Appendix E.2 Theorem 4.8 proof. Original compiled SNARK exploit, final paper version and complete ideal PIOP transcript NOT VERIFIED. V16 abstract random folding remains mathematically correct in its IDEAL common-a model; no actual original-source cost or 128-bit PCS repair established.
 **GLOBAL GENERAL FHE ITERATION COUNTER:** FROZEN I192. vFHE has own V-series. Legacy V1–V4 once labeled I193–I196; preserve historical filenames/iterations without advancing global sequence.
 
@@ -34,3 +34,12 @@ ONE source-faithful **ideal PIOP** counterexample/completeness gate: instantiate
 ## Authority and workflow
 
 Global root `STATE.md` holds I192 frozen and points here. This file is the sole independent V-round counter, topic file holds full evidence. Follow AGENT.md and RESEARCH_PHILOSOPHY.md one falsifiable hypothesis + cheapest decisive test, read-before-write, reread after commit, [FACT]/[DERIVATION]/[EXPERIMENT] separation. Human PI controls research direction, disclosure, and contribution assessment.
+
+
+## V18 — source Figure1 IDEAL PIOP transcript, PASS (2026-10-14)
+
+Confirmed CRT-idempotent false range lookup htilde=e=7+4X² over R=F13[X]/(X⁴+1), N4,d2,p13, beta2,ellstar1. This non-scalar ring element maps to native field digit pair (1,0) while each native component individually passes scalar digit table membership. One prechallenge read counter with leaves (0,1), one prechallenge final counter with ring leaves [2(1−e),2e], then four post-(sigma,tau) grand product oracle trees (interpolated to MLE), satisfy *every* printed Figure1 GP recursion, both virtual zero-sum obligations and final grand product root equality identically for ring challenges; no diagonal consistency enforced. Exact experiment tested 676 parameter configurations. This is a constructed **source-specified ideal PIOP soundness counterexample**, not a proven compiled cryptographic SNARK exploit, not official latest PDF authentication; avoid confusing levels.
+
+Technical section `findings/vfhe-cross-crt-consistency-research.md` §27. Local script `/mnt/data/vfhe_v18_ideal_piop_crt_attack.py` SHA256 e80af660f6b79d7da47fd11cc6eb7a4efa4ff3271f622659ec456c0affe534e3, JSON `/mnt/data/vfhe_v18_ideal_piop_crt_attack_results.json` SHA256 d68f436ad2308b6d9b81edf2b23e43df49ab1864ef0438efc7e43edc8765704b. Script proves ground equations, not full separate interactive sumcheck transcript; both sum claims true, hence honest ideal sumcheck prover exists.
+
+**NEXT_ACTION V19 only if PI continues:** audit §2.2 and F.1/F.2 compiler: can ring oracle family via CRT be independently committed fieldwise in source PCS with NO implicit diagonal extraction, or is there a hidden global consistency check? Also check current author PDF edition before security claim. No author outreach until human PI.

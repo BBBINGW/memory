@@ -5,11 +5,11 @@
 
 ## CURRENT PI-SELECTED WORKSTREAM (SEPARATE COUNTER)
 
-**vFHE cross-CRT scalar digit/index consistency**, independent round **V8 COMPLETED**, next **V9 NOT STARTED**.
+**vFHE cross-CRT scalar digit/index consistency**, independent round **V9 COMPLETED**, next **V10 NOT STARTED**.
 
 **Authoritative separate round state:** `findings/vfhe-cross-crt-state.md`.
 **Technical evidence + research story:** `findings/vfhe-cross-crt-consistency-research.md`.
-**Current status:** Structural lookup/soundness question remains OPEN/HUMAN_REVIEW; integer-code bridge is a candidate, not a working PCS/SNARK repair. V8 found a legal integer double-prefix RAA 5×5 parity minor whose exact determinant is the source-form 49-bit CRT prime p=353581838970881: rank_Q=5, rank_Fp=4, while another legal CRT prime yields rank5. This is an isolated submatrix rank discrepancy, NOT a change in global minimum code distance, bounded-digit attack, or vFHE protocol repair.
+**Current status:** Structural lookup/soundness question remains OPEN/HUMAN_REVIEW; integer-code bridge is a candidate, not a working PCS/SNARK repair. V9 proves a full-message-support lower bound for BOUNDED integer digit differences: with p_min>m(2m+1)(beta−1), all CRT components have identical zero support and inherit the binary RAA code's distance, hence conditionally Ω(m) for good binary interleavers. This does NOT establish unrestricted Fp-linear minimum distance or F.2 PCS soundness; shared integer Merkle binding/extraction and ZK remain open.
 
 ### Legacy numbering mapping — provenance only
 

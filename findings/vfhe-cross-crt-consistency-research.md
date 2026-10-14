@@ -1030,3 +1030,79 @@ Benarroch, Campanelli, Fiore, Gurkan, Kolonelos, *Zero-knowledge proofs for set 
 **Next V13 if PI continues:** ONE cheapest **amortized/batched cross-domain LINK proof** test: can we replace m·μ individual scalar links by a common random linear-combination check while preserving extraction and commit-before-challenge soundness over different CRT primes? Demand explicit false-witness soundness probability, no-wrap or proof-system-link to committed vector, and per-field computational cost. Do NOT yet claim repair, privacy, or fast PCS.
 
 **End V12:** STATUS=FAIL automatic cross-characteristic commitment binding; PASS exact necessary-modEq+range+link conditions and toy verification; NOVELTY NOT VERIFIED; STATE_UPDATE=YES independent vFHE V-series only, global general FHE I192 remains frozen.
+
+
+## 22. vFHE V13 — 128-bit integer challenge collapses to ≈48-bit base-field batch-link soundness (2026-10-14)
+
+**ONE PRIMARY HYPOTHESIS / DECISIVE TEST.** A proposed cheap *single random linear-combination link* can amortize m·μ individual hidden digit equalities by choosing a GLOBAL 128-bit integer Fiat–Shamir scalar alpha, reducing alpha modulo each ~49-bit CRT prime p_i (then embedding in the native extension field F_(p_i^d)), and checking in each native field
+
+    ∑_(j=0)^(m−1) alpha^j (u_(i,j) − a_j) = 0.
+
+Claim to FALSIFY: This ONE batched relation enjoys 128-bit false-witness soundness simply because the source common integer challenge has 128 bits or because the native proof arithmetic uses F_(p_i^4). We grant an IDEAL cross-field batch equality oracle binding the committed a and extracted native u_i; this is a STRONGER assumption than any implemented protocol, making the falsifier robust.
+
+**STATUS: FAIL the 128-bit one-shot shortcut**; exact lower bound ~2^−48 per inconsistent CRT component for a legal TWO-COORDINATE Boolean difference. PASS conditional math improvement when using a TRUE full-extension random challenge or repeating independent prime-field checks, but neither produces an actual zero-knowledge link to a third-field shared commitment. Novelty NOT VERIFIED; random batching/Schwartz–Zippel and characteristic-domain conversion are standard principles.
+
+### Primary source anchors [FACT]
+
+Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO2025, ePrint2025/286 https://eprint.iacr.org/2025/286, Research MCP inspected mirror (52pp, PDF SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, version-unverified):
+- §3.1 physical p10 specifies native CRT primes p=1+(2N/d)a, a odd, native fields F_(p^d) for d configurable.
+- Appendix F.2 physical p50–51 uses randomized field-linear checks and Merkle commitments. It does NOT describe our proposed global 128-bit cross-CRT integer challenge or third-field canonical Pedersen commitment.
+Existing literature on random linear-combination batching and polynomial identity testing is background, not this candidate's novelty (e.g. 2024+ literature on batched polynomial evaluations, and Schwartz–Zippel).
+
+### Exact two-digit counterexample [DERIVED, no cryptographic assumptions]
+
+Set β=2, input code/message length m≥2. In the canonical committed integer digit vector use
+
+    a=(0,1,0,…,0),
+
+while ONE native CRT field's extracted/legal Boolean digit vector is
+
+    u=(1,0,0,…,0).
+
+Both satisfy [0,β−1]^m, but u≠a. Their discrepancy d=u−a=(1,−1,0,…,0) has constant coefficients in EVERY prime-field and extension-field incarnation.
+
+The batched polynomial is
+
+    F_i(alpha)=∑_j alpha^j (u_j−a_j)=1−alpha ∈ F_(p_i)[alpha].
+
+It is not the zero polynomial, but **passes** iff alpha≡1 mod p_i.
+
+If alpha is uniform in F_(p_i), exact false acceptance is 1/p_i. If alpha is uniform among 128-bit NONNEGATIVE integers 0≤alpha<2^128 and embedded as alpha→(alpha mod p_i)·1 in F_(p_i^4), acceptance probability is EXACTLY
+
+    [floor((2^128−2)/p_i)+1] / 2^128.
+
+This is within 2^−128 of 1/p_i, since 2^128 distinct integers reduce almost uniformly to Fp_i. In particular: a 128-bit hash/random integer does NOT induce an F_(p_i^4)-uniform challenge via the **scalar integer embedding**; its image is contained entirely in the ~49-bit PRIME SUBFIELD. Degree-4 extension arithmetic alone provides no soundness amplification.
+
+For genuine *independently, uniformly sampled* alpha∈F_(p_i^4), this particular nonzero degree-1 relation has **exact** acceptance probability 1/p_i^4, roughly 192 bit. But producing and proving a cross-field aggregate link for such alpha requires a separate protocol; an integer scalar α cannot be treated as uniformly distributed in the extension via simple reduction. Moreover a full uniform extension element requires much more entropy than just choosing a 128-bit integer; formal finite soundness depends on actual hash-to-field/challenge distribution.
+
+For a general fixed error vector with polynomial F_i of degree≤m−1 over F_(p_i^d), standard Schwartz–Zippel gives Pr[pass]≤(m−1)/|F| for alpha uniformly in F. The displayed TWO-digit vector is a specific lower-bound witness showing one scalar prime-subfield test cannot guarantee 128 bits. Under a single FALSE CRT component and any number of honest other CRT components, full all-components verification still has this ~1/p_i false acceptance probability; requiring every component valid does not automatically multiply the error by the number of components.
+
+### Exact source-form numeric check [EXPERIMENT]
+
+Set source-form ring N=8192,d=4 (hence p=4096·odd+1), use the two previously verified 49-bit primes
+
+    p1=281474976829441,
+    p2=353581838970881.
+
+Both pass deterministic Miller–Rabin suitable for 64-bit integers; p1≈2^48, p2≈2^48.329. The exact probabilities and effective bits from the formula are:
+
+- p1: 3.552713677301223447e−15, approximately **48.000000 bits**.
+- p2: 2.828199556036458081e−15, approximately **48.329038 bits**.
+
+A single 128-bit global integer challenge mapped into these domains is insufficient for 128-bit proof soundness in THIS perfectly authenticated hypothetical aggregate-check model. For a single fixed invalid component, three INDEPENDENT prime-field samples yield around 144/145 bits for this degree-1 witness, if every sample is committed properly and proofs have independent errors; this is NOT a full protocol error bound. For general degree m−1 polynomial, a single base-field scalar random test may have failure upper bound ~m/p, which is even weaker than 1/p.
+
+**Timing attack:** if alpha is announced before a/u are bound, cheating can choose a nonzero discrepancy in the alpha-weighted linear hyperplane and pass with probability 1. The postcommit challenge ordering is mandatory for even the 1/p analysis.
+
+**Reproducible standalone exact gate:** `/mnt/data/vfhe_v13_prime_subfield_batching_gate.py`, SHA256 `7aa6a7e28c5f0f782db89b4e7540273cb9fbf0d77468d234018cdb3a15c0af65`; result JSON `/mnt/data/vfhe_v13_prime_subfield_batching_gate_results.json`, SHA256 `eb5a40bf1ebdd8f336a55e32175e372071ab3fc7fdddd45e5e3a6a03f76d79df`. The script generates exact probabilities, verifies both source-form primes' primality and congruences, enumerates F17/F29/F37 scalar roots (exactly alpha=1), and checks arithmetic of the malicious two-digit relation. These are LOCAL files and do not implement third-field Pedersen/PCS link proofs, privacy, SNARK or 128-bit multi-component error accounting.
+
+### Scientific decision: avoid a false batching contribution
+
+**KILL one-shot 128-bit claim:** Global 128-bit integer alpha reduced mod each CRT p_i (and injected into native F_(p_i^4)) creates at most base-field soundness; a two-coordinate false Boolean witness passes with probability approximately 2^−48. Extra CRT domains do not remove a discrepancy isolated to one domain.
+
+**KEEP two conditional alternatives (NOT implementations):**
+(A) At least several independent BASE-FIELD challenges per component, with errors for a general fixed discrepancy polynomial carefully bounded, all commitments fixed BEFORE challenges; challenge count depends on m, component count and 128bit target. For arbitrary d vector, a **FULL RANDOM VECTOR** of field coefficients has exact 1/p_i false acceptance rather than the possible (m−1)/p_i for one power-derived scalar challenge, though this still does not solve cross-characteristic commitment binding.
+(B) Truly uniform extension-field challenge(s) α_i∈F_(p_i^4) can yield ≈196-bit challenge space and a native polynomial identity check error≤(m−1)/p_i^4. However proving the full-extension aggregate from an unrelated-prime hidden vector commitment requires a NEW knowledge-sound, zero-knowledge-compatible cross-field link; native F.2 arbitrary field coefficients cannot simply act on a third-field Pedersen exponent.
+
+**V14 NEXT_ACTION (only on PI continuation):** One concrete sound cross-field aggregated **extension-field** relation candidate: Given common canonical bit/vector commitment C and a TRUE α_i∈F_(p_i^4), can a prover furnish a succinct proof that the native batched value z_i=Σ α_i^j u_i,j equals Σ α_i^j embed(a_j), while binding a to C, WITHOUT silently assuming an F_(p_i^4) scalar acts homomorphically on a DIFFERENT prime-order commitment group? First test the existence of an explicit matching relation at all 4 Fp_i basis components and assess unavoidable native-field multiplication/bit constraints. If a cheap sound link does not follow, mark UNCLEAR or recommend PI pivot to a known commit-and-prove implementation rather than inventing zero-cost linking.
+
+**End V13:** STATUS=FAIL one-global-128bit-integer scalar batch link soundness; PASS exact two-coordinate legal falsifier and prime-subfield entropy analysis; OPEN cross-characteristic aggregate link/ZK/knowledge extraction/cost; STATE_UPDATE=YES independent vFHE only, global I192 unchanged.

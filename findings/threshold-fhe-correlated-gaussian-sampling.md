@@ -528,3 +528,18 @@ Both have been run, hash-verified and left as **local reproducibility files**, n
 **RESULT:** Deterministic pool of 5,288 primitive eight-square roots; selected candidate among 5,000 under a stated minimax Fourier-energy proxy; exact rational witness `t=41524/114243` with energy `27023/114243`, proving `TV>1.107405526e-21` for that candidate at source-shaped σ0=8. The k≥8 *necessary* lower bound from CGS-05 remains valid, but eight terms are not sufficient merely by dimension.
 **NEXT_ACTION (CGS-07, only on PI's next continuation):** **Stop selecting arbitrary new k=8 integer roots.** Read Genise–Micciancio–Peikert–Walter PKC 2020 **Theorem 1 + Theorem 4** (original reliable full text), derive one explicit **kernel-lattice smoothing sufficient condition** for integer map `a:Z^k→Z` at source σ0. Then perform ONE cheap feasibility/cost gate for a **specified scalable dimension k or structured small-coefficient factor** that *provably* satisfies it, or falsify parameter feasibility. Treat correlated-secret Shamir/PCF and original simulation as separate mandatory stages. If impossible to beat direct native Gaussian pre-sharing cost, recommend ARCHIVE fixed-sum engineering direction and ask PI.
 **STATE_UPDATE:** **NO** to global/vFHE `STATE.md`; **CGS TOPIC_RECORD_UPDATE:** YES, this section appended only.
+
+
+---
+## CGS-09 (2026-10-14): two-scale structure, 19 ones + 7139 fours
+
+**Primary hypothesis:** At M=114243 and sigma0=8, does W=U+4Y, where U is the sum of 19 independent D_Z,8 variables and Y the sum of 7139 such variables, approximate D_Z,8sqrt(M) within 2^-128?
+
+**One decisive test [PASS]:** By PKC 2020 ePrint 2020/337 Theorem 3.1 (physical p12) and Theorem 4.6 (p18), analyze the A18 and A7138 root-lattice smoothing and the 1D kernel of (u,v)->u+v on Z x 4Z. With epsilon=2^-180, analytic upper bounds on the three dual theta excesses are 1.230e-64, 4.620e-62, and 4.224e-104, respectively, all less than epsilon. Their output errors compose to TV <= 6 epsilon/(1-epsilon) < 3.916e-54. Exact squared Gaussian shapes: 1216+7310336=7311552=64M.
+
+**Cost:** 7158 independent base Gaussian draws per padding, 74.94% fewer than CGS-08's 28563, but still vastly more than one direct wide Gaussian. This does NOT solve private secret-dependent coefficients, correlated Shamir shares, unlimited decryption queries, joint-view simulation, or end-to-end FHE cost. Not a protocol result; novelty unverified. Full proof and reproducible code saved as local CGS-09 artifacts.
+
+**STATUS:** PASS single-output distribution; overall Threshold FHE sampler UNCLEAR.
+**RESULT:** Rigorous near-Gaussian convolution using 19 ones and 7139 fours.
+**NEXT_ACTION:** Do not continue a coefficient-compression treadmill. Revisit the original Algorithm 6 O(LDec) storage obstacle and test one source-compatible seeded/secret-conditioned Shamir correlation-generation mechanism, with the corrupted-party joint view as the primary gate. Only extend Gaussian sum dimensions if this protocol interface becomes plausible.
+**STATE_UPDATE:** NO to global/vFHE state. CGS-topic update only.

@@ -1,6 +1,6 @@
 # FHE Research Opportunity Backlog
 
-**Reviewed:** 2026-10-13, after I181; I182 not yet begun.  
+**Reviewed:** 2026-10-14, after I182; I183 not yet begun.  
 **Location:** `findings/OPEN_RESEARCH_BRANCHES.md` (the Research MCP presently disallows creating new root-file names).  
 **Authority:** `STATE.md` remains the only authoritative *current iteration / NEXT_ACTION* entry point; this file is a **long-term opportunity index**, never an instruction to launch multiple research hypotheses. PI decides research direction, reopening, contribution and disclosure.
 
@@ -141,6 +141,20 @@
 **[I180 FAIL proposed PUBLIC EXACT carry metadata security]** A speculative carry-aware repair would publish an extra noiseless auxiliary congruence modulo p alongside the ordinary BGV ciphertext. In power-of-two cyclotomic rings with p=2^k, such unblinded linear metadata reveals the small secret whenever its public coefficient is invertible. An exact mod8/mod17 negacyclic CRT example demonstrates the failure; for a uniformly sampled auxiliary polynomial, invertibility holds with probability 1/2. This is **NOT** a vulnerability in BGV/dBFV or the papers, only a rejection of the proposed plaintext-visible auxiliary representation. See `findings/dbfv-bgv-public-crt-carry-sidecar-key-recovery-iteration180.md`. **HUMAN_REVIEW / recommend PARK trivial public carry sidecars**. Broader dBGV should continue only on an encrypted/noisy or genuinely hidden carry representation with demonstrated correctness, security and better cost than existing dBFV+AP13; otherwise pivot. I181 NOT STARTED.
 
 **[I181 FAIL cheap encrypted carry correction; recommend PARK naive I178–181]** The exact centered mod-q carry is generally **nonlinear in the secret**, and simply keeping secret bits encrypted does NOT make q-carry a public affine/key-switch patch. For arbitrary binary LWE secret dimension n, q=2n+3 odd, all public a_i=1 and b=2, `k(s)=(A−center_q(A))/q=∏_i s_i`, where A=2+Σs_i. Unique Boolean multilinear degree is n; exact Möbius truth-table verification for n4/q11,n8/q19,n12/q27. Only for standard arithmetic circuits on separately encrypted s_i with addition and binary multiplication, this requires depth≥ceil(log2n); **NOT** universal FHE/circuit or security lower bound, nor uniform-random-mask typical cost. AP13 Appendix B already computes nonlinear MSB/rounding homomorphically, while source dBFV §5 has BFV digitwise bootstrapping, so the difficulty is **KNOWN**, not an original-paper bug or publishable technique. Finding `findings/dbfv-bgv-encrypted-qcarry-nonlinear-boolean-degree-gate-iteration181.md`. PI review: park the elementary q/p quotient/tuple/public sidecar/cheap-carry direct-port subbranch unless a distinct confidential, noise-correct and source-costed mechanism beats dBFV plus AP13; general dBGV direct adaptation remains mathematically open. **I182 NOT STARTED**, target pivot recommended.
+
+## P14 — Kim GBFV→CKKS Approximate Modular Reduction Theorem 9 integer no-wrap audit (CLOSED / PARK)
+
+**Main original** Jaehyung Kim, *Bootstrapping GBFV with CKKS*, ePrint2025/888, complete22pp Research MCP github-mirror PDF SHA256 `604a22c3abe24fe0c91f1fccf9b09c0599156b6d9e759a9f352f03262e14a8e3`, current official VERSION_UNVERIFIED, §4.1 Theorems5–8 and §4.2 Lemmas3–4/Algorithm3/Theorem9 pp10–18. Context Geelen–Vercauteren *Better GBFV Bootstrapping and Faster Encrypted Edit Distance Computation*, ePrint2025/1104, complete22pp SHA `2128d7f5e568b6d66f71f6ad5f913baf34847103ef694246348d27d89ca0956f`, VERSION_UNVERIFIED.
+
+**[I182 FAIL claimed hidden output plaintext overflow; PASS separate safe inequality]** Let `B=|b|≥2,` `n=N/k,` `p=B^n+1,` `u<B^ell,` `ell<n−4`; source bounds post-conversion `Phi=Flatten(m)+(X^k−b)I` by `|phi_i|≤3(B+1)/2,` degree `<k(ell+2)`. The centered digit weights satisfy `|[b^j]_u|≤min(B^j,u/2)`. The integer post-transform low-degree output coefficients thus obey
+```
+ |y_i| ≤ [3(B+1)/2] Σ_(j=0)^(ell+1) min(B^j,u/2)
+       < [3(B+1)/2] [2+1/(B²(B−1))] B^ell
+       < B^(ell+5)/2 ≤ B^n/2 < p/2.
+```
+Last four terms ≤u/2, early terms geometric; ell0/1 simpler; `3(B+1)(2+1/(B²(B−1)))<B^5` for every B≥2. This supplies an explicit source-conditional **integer nonwrapping certificate**, NOT a new FHE scheme, original-paper mistake or complete security/noise correctness validation. Exhaustive `N16,k1,b2,ell11,p65537` 8,382,462 legal integer (m,u) combinations gave zero wrapping with I0 (max |y|1536); allowing every independently e-compatible I_j sign near source `|e_j|/q<1/4` yields worst-case |y|3633, still <p/2. Theorem9's stated degree+input margin suffices on the digit integer-representative subproblem; **PARK** simple overflow audit. Evidence `findings/gbfv-ckks-modular-reduction-integer-nowrap-bound-iteration182.md`. Do not claim multi-million encrypted tests; all are plaintext model calculations.
+
+**Source unavailable:** ePrint2026/2310 and 2026/1604 full text currently Research MCP RETRIEVAL_BLOCKED; no technical claims based on their abstracts.
 
 ## Watchlist (not currently executable priority)
 

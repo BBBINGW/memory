@@ -373,3 +373,20 @@ Consequently `r_j(k+S)/4 < P/2`; Theorem 2 implies `|x'_j|<P/2`, so `center_P(x'
 **Repro local report:** `/mnt/data/P22_Carousel_Nondivisible_LUT_Phase_Alignment_Gate_2026_10_14.md` SHA256 `b87c0f3c489ba2c0e8a0aaf72d98423918b5c63a1063032cd61210ca2830396c`.
 **Script:** `/mnt/data/p22_carousel_phase_alignment_gate.py` SHA256 `b7af331b7044452967d1cb18ccf05888dfd6ecac4669a8828e8a2c6d75408f50`.
 **JSON:** `/mnt/data/p22_carousel_phase_alignment_results.json` SHA256 `0431b00b58400a829c08077f4dc8ccf5fe87b6727116ba0947c77af9fa261232`.
+
+
+---
+### P22 final closure — exact nearest-LUT margin and published-parameter gate (2026-10-14)
+
+**Scope:** Research MCP cache ePrint2024/2032 Carousel 34pp, SHA256 5ddec99ebbe14b270b413e21ab4923abf0ed5dba8d0f1d053b3fde1c5a35d6c8; pp4,12,26 reread in this iteration. Status VERSION_UNVERIFIED. Exact Springer ASIACRYPT2025 published full text NOT authenticated; no claim of formal published-paper correctness error. This closes P22's arithmetic test, not the larger FHE problem.
+
+**Primary assertion [H-P22C]:** The center-alignment correction to the cached nearest-LUT guard eliminates the constructed nondivisible case while it vanishes for all implemented parameters (p=4,8,16,N=2048).
+
+**One exact check [PASS]:** Set c_m=round(Nm/p), delta_m=c_m−Nm/p. Since round((p/N)(c_m+e))=round(m+(p/N)(delta_m+e)), sufficient non-tie decoding condition is |delta_m+e|<N/(2p). For old witness (N,p,m,e)=(8395,3,1,−1399), c_m=2798 and delta_m=−1/3, so |delta_m+e|=1399+1/3>8395/6=1399+1/6; actual identity LUT gives 0, not 1, as before. All arithmetic can be checked exactly as fractions, no floating error needed. For p=4,8,16 and N=2048, N/p is integer (512,256,128 respectively), hence delta_m=0 for EVERY m; the cached |e|<N/(2p) criterion is sufficient for phase/LUT center rounding for these parameter choices. This is NOT a fresh full scheme correctness/noise/DFR/security proof.
+
+**Research decision:** **PARK P22** (provisional until PI's ultimate decision). Previously diagnosed universal formula missing a center-offset term, but counterexample is outside implemented plaintext-modulus/divisibility parameters, is low-probability crafted LWE mask+secret, and no same-formula authenticated formal ASIACRYPT source is in hand. Elementary correction has no established publication value. Do not continue producing similar tiny rounding examples. Only reopen on authenticated final paper (same unqualified theorem or claimed range) plus genuine security-parameter distributional DFR significance. No unsolicited author contact.
+
+**STATUS:** PASS exact repaired LUT margin and implemented p|N range; source-version-gated unresolved published claim.
+**RESULT:** Generic radius by |e| alone is insufficient when p∤N; sufficiency restored by |delta_m+e| guard. Actual p=4,8,16 with N=2048 unaffected by this particular obstruction.
+**NEXT_ACTION:** PARK P22, return to PI-selected vFHE V18 or a new primary-source-backed FHE gap upon direction. Do not re-open missing final version opportunistically without clear research value.
+**STATE_UPDATE:** Append P22 closure only to findings/OPEN_RESEARCH_BRANCHES.md; STATE.md global I192 and independent vFHE V17 are unchanged.

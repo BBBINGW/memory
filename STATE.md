@@ -5,11 +5,11 @@
 
 ## CURRENT PI-SELECTED WORKSTREAM (SEPARATE COUNTER)
 
-**vFHE cross-CRT scalar digit/index consistency**, independent round **V33 COMPLETED**, next **V34 NOT STARTED**.
+**vFHE cross-CRT scalar digit/index consistency**, independent round **V34 COMPLETED**, next **V35 NOT STARTED**.
 
 **Authoritative separate round state:** `findings/vfhe-cross-crt-state.md`.
 **Technical evidence + research story:** `findings/vfhe-cross-crt-consistency-research.md`.
-**Current status:** V33 FAIL treating original Bulletproofs (ePrint2017/1066) STOCK aggregated range proof as a log-sized TOTAL canonical-CRT digit CP. The published proof is 1,888B at beta4,H2^24 under 32-byte elements, but explicitly assumes H=16,777,216 public Pedersen value commitments V_j (512MiB if transported separately), which source F.2 native Merkle/RS does not supply. Stock range proof also does not establish 8 cross-prime native-y quotient relations under same bounded a. This FALSIFIES OUR hoped-for cheap V32 aggregate repair, NOT published Bulletproofs or original vFHE. H32 insecure Pedersen/Schnorr toy remains source-binding positive; source latest Feb2026 IACR binary still VERSION_UNVERIFIED. Full H33 finding `findings/vfhe-v33-bulletproofs-aggregate-value-commitment-interface-gate.md`, authoritative independent state updated to V34 NEXT, general I192 remains FROZEN.
+**Current status:** V34 FAIL proposed off-the-shelf Spartan/R1CS **postchallenge existential a** as a replacement for PRECOMMITTED global canonical CRT digit witness. Original native per-prime constant1 (p13) and constant0 (p29) oracle commitments can both be valid; when full extension evaluation points are known, a single legal bounded a can be selected afterward to satisfy their two fieldpoint claims in 372/1024 exact random toy trials, despite incompatible Boolean digit tables. Strong succinct R1CS PoK is not a temporal prebinding relation across separately committed native PCS. Quantified H2^24 naive bit-gates/canonical-lift linear coefficients and original Spartan 2019/550 source §2.1. Full finding `findings/vfhe-v34-spartan-postchallenge-adaptive-integer-witness-gate.md`; V35 requires actual PRECHALLENGE compact VC/external proof and binding to original native F.2 y. Existing V31/V32 conditional positive link NOT refuted. Latest official original vFHE Feb2026 PDF remains VERSION_UNVERIFIED. Global I192 remains frozen.
 
 ### Legacy numbering mapping — provenance only
 

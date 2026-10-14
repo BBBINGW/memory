@@ -1,6 +1,6 @@
 # FHE Research Opportunity Backlog
 
-**Reviewed:** 2026-10-14, after I182; I183 not yet begun.  
+**Reviewed:** 2026-10-14, after I183; I184 not yet begun.  
 **Location:** `findings/OPEN_RESEARCH_BRANCHES.md` (the Research MCP presently disallows creating new root-file names).  
 **Authority:** `STATE.md` remains the only authoritative *current iteration / NEXT_ACTION* entry point; this file is a **long-term opportunity index**, never an instruction to launch multiple research hypotheses. PI decides research direction, reopening, contribution and disclosure.
 
@@ -155,6 +155,14 @@
 Last four terms ≤u/2, early terms geometric; ell0/1 simpler; `3(B+1)(2+1/(B²(B−1)))<B^5` for every B≥2. This supplies an explicit source-conditional **integer nonwrapping certificate**, NOT a new FHE scheme, original-paper mistake or complete security/noise correctness validation. Exhaustive `N16,k1,b2,ell11,p65537` 8,382,462 legal integer (m,u) combinations gave zero wrapping with I0 (max |y|1536); allowing every independently e-compatible I_j sign near source `|e_j|/q<1/4` yields worst-case |y|3633, still <p/2. Theorem9's stated degree+input margin suffices on the digit integer-representative subproblem; **PARK** simple overflow audit. Evidence `findings/gbfv-ckks-modular-reduction-integer-nowrap-bound-iteration182.md`. Do not claim multi-million encrypted tests; all are plaintext model calculations.
 
 **Source unavailable:** ePrint2026/2310 and 2026/1604 full text currently Research MCP RETRIEVAL_BLOCKED; no technical claims based on their abstracts.
+
+## P15 — GBFV few-slot SubConvert native masked automorphism scale-integrality gate (PARKED / REOPEN_IF)
+
+**Sources:** Geelen–Vercauteren ePrint **2025/1104** §3.2.1 pp7–8, full22pp mirror SHA256 `2128d7f5e568b6d66f71f6ad5f913baf34847103ef694246348d27d89ca0956f`; source baseline Geelen–Vercauteren ePrint **2024/1587** §3.3 p11, full32pp mirror SHA256 `3158eb77d6aebe92d34479ed6163af34fde7b9f2fc7d82cb85ca7d50151ea4de`, official revisions both VERSION_UNVERIFIED. The new paper **already acknowledges** few-slot invalid automorphisms and temporary BFV-domain workaround. The GBFV base paper requires `σ(t)∈tR` and uses scale correction `σ(t)/t` to restore `q/t` from `q/σ(t)`.
+
+**[I183 FAIL direct unmodified GBFV.Auto bypass]** Source-compatible strict few-slot example `R=Z[X]/(X^64+1)`, n'=64,n''=4,ℓ=4,b=2,p65537, `t0=X^4−2`, first g=77=5^-1 mod128; `t1=(X⁴−2)(X⁵²−2)`, `σ77(t1)=(X⁵²−2)(X³⁶−2)`. Exact finite-field root r4938 satisfies `r^64=−1`, `t1(r)=0`, `σ77(t1)(r)=48069≠0 mod65537`; so `t1∤σ77(t1)` and the existing ordinary GBFV.Auto is NOT valid at this stage without an additional mechanism. Contrast legal boundary ℓ=n'/n'' at n'=16,n''=4,b4,p257,g13 gives `t1=16−X⁸`, `σ13(t1)=t1` exactly. Masking slot data alone does not fulfill the existing GBFV.Auto precondition or fix ciphertext scaling; this does **not** exclude newly designed masked compensated operators. Exact Galois/root-check PASS, direct ordinary reuse FAIL. Already stated by paper, no novelty or source correctness bug, no performance/security measurements. Archive `findings/gbfv-few-slot-invalid-automorphism-scaling-gate-iteration183.md`.
+
+**NEXT_ACTION:** Recommend PARK the trivial skip-BFV masking idea. Reopen only if there is an explicit new lift-independent masked automorphism with encrypted scale correction, correctness/noise/security proof and measured benefit over the author's BFV detour. On PI continuation prefer a substantially different FHE bottleneck. I184 NOT STARTED.
 
 ## Watchlist (not currently executable priority)
 

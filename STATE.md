@@ -5,11 +5,11 @@
 
 ## CURRENT PI-SELECTED WORKSTREAM (SEPARATE COUNTER)
 
-**vFHE cross-CRT scalar digit/index consistency**, independent round **V6 COMPLETED**, next **V7 NOT STARTED**.
+**vFHE cross-CRT scalar digit/index consistency**, independent round **V7 COMPLETED**, next **V8 NOT STARTED**.
 
 **Authoritative separate round state:** `findings/vfhe-cross-crt-state.md`.
 **Technical evidence + research story:** `findings/vfhe-cross-crt-consistency-research.md`.
-**Current status:** Structural lookup/soundness question remains OPEN/HUMAN_REVIEW; integer-code bridge is a candidate, not a working PCS/SNARK repair. V6 extends a narrowly scoped cross-prime invariance to input support ≤4 at code dimension m≤1024 and p>2^48 using monotone-parity-minor bounds; not unrestricted linear distance.
+**Current status:** Structural lookup/soundness question remains OPEN/HUMAN_REVIEW; integer-code bridge is a candidate, not a working PCS/SNARK repair. V7 proves a two-prefix Cauchy–Binet bound for input support ≤5, covering m1024 only for source-style 49-bit CRT primes p>368933561632000, with a near-tight legitimate minor showing why absolute determinant bounds cannot certify all 49-bit primes. Not a global distance or PCS repair.
 
 ### Legacy numbering mapping — provenance only
 

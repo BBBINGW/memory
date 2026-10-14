@@ -1,0 +1,51 @@
+# vFHE V38 — BP++ vector-input ZK circuit is real prior art, but naive eight-row native CRT glue is ill-typed
+
+**Date**: 2026-10-15 (Asia/Tokyo). Human PI authorized continuing from V37. Read-before-write START_RESEARCH_SESSION.md, RESEARCH_PHILOSOPHY.md, AGENT.md, STATE.md (V37 done, V38 next), authoritative findings/vfhe-cross-crt-state.md and prior V37/V36. Global general FHE I192 FROZEN, SHIP I226 untouched. ONE primary hypothesis and ONE smallest source-format/falsification test. This is our proposed composition, NOT a claim in any original paper.
+
+## H-V38 (primary hypothesis)
+
+BP++ (ePrint 2022/510) takes **ONE prechallenge vector Pedersen commitment C_a to all H bounded digits** directly as its original zero-knowledge arithmetic-circuit input. H-V38 claims that the unmodified BP++ §5 relation therefore requires ONLY 2*d=8 linear constraints for the eight challenged CRT coordinate quotient equalities, with no H-sized input-copy/binding constraints, no extra public lifted sum S, and no other mandatory costs scaling with H.
+
+**Falsifier**: Read the actual original input relation Eq(29)–(32) and vector aggregation Eq(39)–(44). Specialize to k=1 vector of H digits. Check whether an input-enabled BP++ circuit with N_l=8 and N_m=8 is even well-typed for H≫8. Construct a lawful tiny source-shaped F13²/F29² digit vector and native quotient statements for an honest algebraic control. Check whether naive dummy zero multiplication gates are a sound encoding, not just an honest satisfying assignment.
+
+## Primary source provenance [FACT]
+
+- Liam Eagen, Sanket Kanjalkar, Tim Ruffing, Jonas Nick, *Bulletproofs++: Next Generation Confidential Transactions via Reciprocal Set Membership Arguments*, IACR ePrint **2022/510**, https://eprint.iacr.org/2022/510. Connected Research MCP full **38 physical pages**, public fixed GitHub mirror PDF SHA256 **29bb2a877ba96d703f88f65d459a84797f58eaa056a03eceb604488375452603**, source revision **46a197d88b89ccc71d3534d2b61c4a7752dbcb91**, **VERSION_UNVERIFIED** vs final. Original physical p8 "Commitments as Inputs": vector Com(a;s) = a0*G+s*H0+sum_{j>=1} a_j*H_(7+j), from OWN common independent-generator CRS. Original physical p14–15 §5 and Eq(29)–(32): BP++ really accepts vector inputs, unlike STOCK Bulletproofs §5 separate scalar Pedersen input commitments. Original physical p17 §5.2.2 Eq(39)–(44) authenticates a power-challenge aggregation of committed full-length input vectors. Physical p19 **Theorem 2** perfect completeness, honest-verifier ZK and computational witness-extended emulation under stated DL-relation assumption FOR THE SOURCE RELATION; not an existing theorem of its composition with different native F.2 proofs. BP++ OWN CRS is not Yang ePrint2024/827's pairing-structured indexed SRS unless separately proven compatible.
+- Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO2025/ePrint **2025/286** https://eprint.iacr.org/2025/286, 52 physical-page Research MCP fixed public mirror SHA256 **29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19**, **VERSION_UNVERIFIED** vs February2026. Source native CRT prime fields (§3.1 p10), scalar digit table and source Theorem4.8 (§4.3 pp20–23), per-factor Merkle/RS F.1/F.2 PCS authenticating PUBLIC y in Appendix pp50–51. Correct external statement must refer to the SAME PRECOMMITTED global small-integer digit vector a, the source F.2 PUBLIC y for each CRT representative, and bounded integer quotients.
+- Prior V31–V32 conditional correct prebound integer vector + toy authenticated-public-y glue, V33/35 range proof APIs, V34 late-witness attack, V36 public integer S additional leakage, V37 ordinary BP §5 scalar input miscast. V38 audits BP++ DIFFERENT actual vector-input source; no previous negative result says this protocol is invalid.
+
+## One source-shape proof [DERIVATION]
+
+In original BP++ Equation(29)–(32), w_V is CONCATENATION of all k committed witness vectors of length N_v, thus length k*N_v. Equation(30) states **0 = W_l*w + f_l*w_V + a_l**, with W_l of shape N_l×N_w and a_l length N_l. If f_l=1 then **N_l=k*N_v** must hold to type the original source protocol, not N_l=number of challenged native quotient rows. Likewise Equation(31), w_L◦w_R = W_m*w + f_m*w_V+a_m, requires **N_m=k*N_v** if f_m=1. If both binary flags zero, the precommitted inputs are UNUSED by those constraints. Therefore for k=1, N_v=H, any circuit binding this vector through stock input interface needs at least ONE input-enabled constraint subsystem of length H (H equations/slots) — even when the target only needs 8 native quotient equalities. This is an input-interface dimension bound, **NOT** a universal complexity lower bound for all succinct VC/IPA systems, and **NOT** a lower bound on proof bytes.
+
+In the original source §5.2.2, Eq(39)–(44) only gives one special power-weighted aggregation of the full committed input vector via verifier challenges. It is not an unchanged arbitrary native 8×H canonical-lift weight opening. A sound BP++ circuit can COPY digits to auxiliary wires and prove native link with further constraints. But that is an H-sized circuit task, not an O(8)-row native-link shortcut; additional digit range and quotient checks are also necessary.
+
+## One exact source-shaped execution [COMPUTED]
+
+Ran standard Python: **/mnt/data/vfhe_v38_bpp_vector_input_shape_gate.py**, SHA256 **3d7656e34f4d150c9dde880b21698d87a81c117af4dbfd2709efeeb0957b09be**. Results: **/mnt/data/vfhe_v38_bpp_vector_input_shape_results.json**, SHA256 **5dddba72c02a43300f312ff8e2e99f7d4e933ba2d99b5fcb5dd128235504e526**. Both created and script executed in the current container.
+
+Legal tiny native setup N4,d2,p13=1+4*3,p29=1+4*7,beta4,ellstar3,H8, full extension factors K13=F13[u]/(u²−5), K29=F29[v]/(v²−12). Use shared explicit extension challenge coefficient tuples ((2,1),(3,2),(4,3)). Lexicographic canonical integer MLE basis-coordinate rows for two native primes:
+- c13_0 = (8,4,10,3,2,10,3,0)
+- c13_1 = (4,0,2,6,8,12,9,11)
+- c29_0 = (10,16,0,2,10,20,6,24)
+- c29_1 = (26,7,9,15,15,8,5,2).
+
+Take bounded common digit vector a=(0,1,2,3,0,1,2,3), honest lifted sums S=(49,85,126,94), original native public y=(10,7,10,7), integer quotients k=(3,6,4,3). EXACT all four identities S=y+p_i*k pass. Under BP++ OWN generator layout, a single prechallenge toy additive F1009 commitment (omega19, fixed G/H indexed bases) has scalar C=376; the code uses the SAME C rather than a separate per-digit commitment. Prime-order1009 additive toy is INSECURE and this does NOT claim an actual BP++ cryptographic proof.
+
+Check original Eq30 dimensional condition: H8 input f_l=1 with N_l=4 is ILL-TYPED, while N_l=8 passes. An illustrative honest source-format partial relation copies all 8 a_j to auxiliary witness by eight linear equations and checks all four native integer quotients as four dummy-zero Eq31 gate identities. Honest source arithmetic residuals are all zero.
+
+**Important UNSOUND toy gate discovered in the same decisive test:** Merely assigning the dummy multiplicand wires (wL,wR)=(0,0) in the honest sample is NOT a proof that those wires must be zero. Change one native public y by +1; residual becomes −1 in F1009. A malicious prover chooses FREE dummy wires wL=1,wR=−1, so Eq31 still passes! Therefore an actual sound circuit MUST ALSO constrain dummy-factor zero values or use a proper affine-link gadget; the illustrative partial code is not a complete vFHE repair. This is OUR incomplete circuit mistake, not a vulnerability in BP++ when its actual relation is correctly compiled.
+
+## Honest source-scale cost / limits
+
+At H=2^24=16,777,216, beta4, TWO native RNS primes each degree4, there are exactly 8 native coordinate quotient equations. BP++ stock Eq30/31 input-enabled subsystem has >= H coordinates before full digit range/cross-link wiring. A naive explicit 8×H public canonical lifted coefficient matrix has 8H=**134,217,728** scalar cells =4GiB when EACH is stored as a 32-byte external-field element. This is a **naive matrix materialization cost, NOT a communication lower bound**: public challenge r is small and coefficients could be generated algorithmically (but the cost and compatibility with source general W_l/W_m proof must then be established). For beta4, p<2^49, an honest one-row integer sum is bounded 3H(p−1)<2^75, comfortably below a 252-bit external proof field; quotient range and non-native intermediate constraints remain security obligations. No full BP++ compiler or cryptographic proof was executed, no honest runtime or SNARK proof size measured, no 128bit security/ZK composition established.
+
+## Verdict
+
+**STATUS: FAIL H-V38** the near-eight-constraint DIRECT BP++ vector-input shortcut. **PASS** actual published BP++ same-vector ZK circuit interface as promising prior art, original source Eq(29)–(32) compulsory H-sized input shape, exact native quotient example, and explicit unsafe dummy wire gate. **NOVELTY NOT VERIFIED**. No claim that proper BP++ circuit is impossible, or that original BP++/vFHE published paper is wrong.
+
+**RESULT:** Precommitted compact C_a + ZK general circuit is algebraically and syntactically available under BP++ OWN CRS; but complete vFHE glue still requires H-sized input wiring, range proof, dynamically changing non-native coefficient/quotient checks and joint extractor/Fiat–Shamir composition. Short proof body alone does NOT give cheap prover/verifier work.
+
+**NEXT_ACTION V39 / HUMAN_REVIEW:** Strongly prefer checking ACTUAL revised official vFHE ePrint2025/286 Feb2026 Theorem4.8/Appendix E.2 versus cached old mirror, BEFORE spending more on million-element BP++ wrappers. If user explicitly prioritizes building a complete ZK patch, then the next step is ONE correct BP++ full circuit with precommitted common a, all wire-range/non-native quotient checks, actual F.2 public y and a meaningful compiler/prover benchmark; without that, PARK this speculative repair implementation line. No unsolicited author contact. Global general I192 remains FROZEN, SHIP I226 unchanged.
+
+**STATE_UPDATE:** YES this independent V38 finding, state pointer only after checking no parallel advancement; no unrelated changes.

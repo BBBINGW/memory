@@ -2,8 +2,8 @@
 
 **Checkpoint:** 2026-10-14 (Asia/Tokyo).
 **PI-selected target:** SHIP prepared evaluation-key selector memory, Cheon–Hanrot–Kim–Stehlé, EUROCRYPT 2025, ePrint 2025/784.
-**LAST COMPLETED:** **I200 COMPLETED** (PI's independent SHIP continuation numbering); prior I197–I199 and SHIP-M01–M04 preserved. **No compiled Poulpy variant run.**
-**STATUS:** I200 **FAIL naive drop-in packed-key replacement** via verified SHIP source contracts; required dual-accumulator source patch now localized. Actual compiled CKKS masking-leaf test remains **UNCLEAR / IMPLEMENTATION BLOCKED / HUMAN_REVIEW**. I198 prepared payload reduction remains conditional. **NOVELTY NOT VERIFIED**.
+**LAST COMPLETED:** **I201 COMPLETED** (independent SHIP numbering); prior I197–I200 and SHIP-M01–M04 preserved. **No compiled Poulpy variant run.**
+**STATUS:** I201 **PASS narrow derived-key public-postprocessing security-transfer lemma** relative to any original *joint* evaluation-key indistinguishability guarantee. NOT an independent proof of original security, correctness or novelty. Real CKKS execution remains **UNCLEAR / IMPLEMENTATION BLOCKED / HUMAN_REVIEW**; I198 memory savings conditional. **NOVELTY NOT VERIFIED**.
 **Isolation:** SHIP-M01..M04 each in own `findings/ship-memory-MNN-*.md`; global `STATE.md` is actively used by another vFHE I-series conversation. **Do not overwrite or join histories.**
 
 ## Main candidate
@@ -29,8 +29,10 @@ In actual Poulpy SHIP, additional ~h high-precision conjugations plus two maskin
 
 - `findings/ship-memory-I200-drop-in-interface-gate.md`: pinned Poulpy keyset `validate_material` enforces `masks.len()==4*theta`, bootstrap enforces `pi.len()==4*theta`, and single masking accumulator enforces `masks.len()==pis.len()`; direct swap to `2*theta` packed ciphertexts fails. Internal masking/keyset fields are `pub(crate)`; exact benchmark needs an in-crate test-only dual-accumulator kernel and corresponding U,V transformed plaintexts. **This is implementation work, not a crypto impossibility**, and no binary has been run.
 
+- `findings/ship-memory-I201-public-derivation-security-gate.md`: a **newly defined derived** packed key generator can publicly transform the original same-secret mask ciphertext pair `(C1,C2)` to `C1 + X^(N/2) C2` via pinned source `ckks_mul_i_assign` and `ckks_add`, then discard originals. Joint packed key is `T(K_old)`, so distinguishability attacks simulate against the original complete key bundle without a **new** KDM assumption **conditional on original joint-key security**. Not proven for a separately sampled fresh packed encryption; extra selector noise `e1+X^(N/2)e2`, temporary full keygen and online added Galois/IDFT remain. No compiler run.
+
 ## NEXT_ACTION — HUMAN_REVIEW (one PI decision)
 
-The PI has said to continue, provisionally selecting execution rather than PARK, but **no executable Rust runner is connected**. ONE next executable action after a reachable Rust environment is available: create a minimal feature-gated **in-crate dual-accumulator masking-leaf test**, paired selectors `2*theta` with U,V transformed public plaintext arrays, on pinned Poulpy `250d439` and identical real SHIP parameters `N16384,h32,theta4,ld40`; measure actual decrypted max-slot error, masking and early-Galois runtime, prepared selector payload and peak live memory against baseline. Do not alter upstream production keyset by default. If runtime cannot be provided, stop at HUMAN_REVIEW rather than repeat ideal tests. A possible optional route is to connect a cloud-development environment; provisioning may incur charges and requires explicit user action.
+The PI has continued independent SHIP research but no executable Rust runner is connected. Once such a runner is available, implement ONE minimal in-crate dual-accumulator test using **publicly derived** packed selectors `C1 + i*C2` (per I201) rather than a different fresh-encryption distribution. Compare against source baseline at `N=16384,h=32,theta=4,ld=40`, measuring decrypted slot max error, masking/early-conjugation latency, prepared selector bytes and true peak RAM. Preserve exact inherited full-key distribution for the relative security reduction. Until executable code exists, keep **HUMAN_REVIEW / IMPLEMENTATION BLOCKED** rather than accumulating related ideal numerical screens. External cloud provisioning/charging needs explicit user action.
 
 No changes to shared `STATE.md`, prior I193/I194/I195, or original HEaaN / third-party upstream Poulpy. PI retains strategic decision.

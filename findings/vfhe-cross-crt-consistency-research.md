@@ -880,3 +880,83 @@ Result JSON
 **V11 NEXT_ACTION only on PI continuation:** One cheapest test of a NON-CIRCULAR **field-codeword-to-integer-witness extraction** mechanism before the Merkle sampling step. Ask if a seemingly natural "use original F.2 field-linear test, then interpret the committed systematic coordinates as a bounded integer vector" actually extracts ONE vector shared across CRT fields; seek a CRT-idempotent counterexample when systematic coordinates are fieldwise different, even if all fieldwise codeword checks are perfect. This is a distinct extraction hypothesis, NOT one more sampled leaf microcase.
 
 **End V10:** STATUS=FAIL naive deterministic global binding; PASS precise CRT-lift toy certificate & conditional sampling bound; OPEN full shared PCS and soundness/zero-knowledge; STATE_UPDATE=YES independent vFHE, global general FHE I192 unchanged.
+
+
+## 20. vFHE V11 — systematic-only native extractors lose coded distance amplification (2026-10-14)
+
+**One primary hypothesis and one cheapest decisive falsifier:**
+Assume, generously, that EACH native CRT field has an IDEAL sound extractor giving a legal bounded integer digit message and its *exact* valid field-linear RAA codeword. Suppose one extra common integer CRT-lift Merkle commitment binds the field projections, and a verifier authenticates/range-checks only t<m SYSTEMATIC columns (rather than encoded parity leaves), before inferring that all native extractors obtained ONE common bounded integer witness. Can this systematic-only sampling leverage the V9 good full-code distance to obtain small global error?
+
+**RESULT: FAIL.** Even perfect independent field extractors, full Merkle authentication, and full native field-codeword validity DO NOT imply common scalar witness. With two bounded digit vectors differing in a SINGLE digit position, precisely ONE of the m systematic CRT-lift leaves violates the canonical digit range. Uniform postcommit t-subset systematic-only range checks miss it with **exact probability 1−t/m**. This is not a sound 128-bit proof for any t<m at m1024. It is a restricted critique of the PROPOSED auxiliary extraction approach, not a published vFHE attack, and is distinct from V10's sampling of the whole length-3m encoded word.
+
+### Source vs model distinction [FACT]
+
+Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO2025 ePrint2025/286, original Appendix F.2 physical pp50–51, cached mirror PDF SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, official latest edition VERSION_UNVERIFIED. F.2 is a NATIVE FIELD-LINEAR matrix / Merkle proof, with verifier random r∈F^m and postcommit column openings Q checking Enc(rU_f)|Q=rUhat_f[:,Q]. It does not claim a common integer witness or the systematic-only integer range-check optimization. We posit IDEAL per-field extraction as an artificially **strong assumption**, not a proven consequence of published F.2. The ideal extractors are conceptual for a soundness reduction; if verifier literally learns ALL extracted witness digits, it can simply compare them, so that situation is not the tested private-commitment protocol.
+
+### General exact theorem [DERIVED]
+
+Let p,q>β−1 be distinct CRT primes and G_Z=[I_m | P_Z] any systematic integer encoder (RAA or otherwise). Let A_β={0,…,β−1}^m. Suppose two bounded legal vectors a,b∈A_β are extracted fieldwise, their full field codewords match one SAME integer CRT-leaf array Y coordinatewise,
+
+    Y mod p = Enc_p(a),    Y mod q = Enc_q(b),
+
+and a_j=b_j for all j≠j*. If a_(j*)≠b_(j*) then, at the first m systematic leaves, the unique canonical CRT lift Y_j∈[0,pq) satisfies
+
+    Y_j∈[0,β−1] iff a_j=b_j.
+
+Proof: if Y_j<β<min(p,q), then reducing modulo p and q gives the SAME integer, forcing a_j=b_j; if equal, canonical CRT lifting returns their common small integer. Consequently the systematically out-of-range set is EXACTLY {j*}, although the remaining parity codeword positions may differ in Ω(m) coordinates for good G.
+
+For the root fixed before uniformly selecting Q_sys⊂[m] of size t without replacement and range-checking ONLY j∈Q_sys,
+
+    Pr[accept | a≠b one digit] = Pr[j*∉Q_sys]
+                             = C(m−1,t)/C(m,t)
+                             = 1−t/m.
+
+More generally, for any FIXED sampling distribution independent of the hidden differing index and touching at most t distinct systematic coordinates, sum_j Pr[j checked]≤t, so some index j* has Pr[j* checked]≤t/m; a prover able to choose this mismatch before sampling achieves acceptance probability ≥1−t/m. This last minimax argument does NOT claim to cover arbitrary root-dependent inspection algorithms; the exact uniform postcommit formula does.
+
+At illustrative m1024,t128, acceptance probability=0.875; t1023 leaves ≥1/1024≈2^-10. Under uniform one-shot without-replacement systematic-only range sampling, ensuring <2^-128 for a one-digit mismatch requires t=m (unless some additional independent cross-domain check is used).
+
+**Positive exact sufficiency boundary:** If EVERY one of the m systematic canonical CRT leaves is proven in the common digit interval [0,β−1], AND both per-field exact bounded-digit codeword extraction premises hold, then every extracted a_j=b_j=Y_j. Thus complete systematic range enforcement WOULD prove common witness equality. That is a **different, stronger design** (m checks or a sound ZK range proof); may reveal low-entropy private digits if openings are public. The negative result rules out expecting coding-distance amplification from only a small SYSTEMATIC sample, not every approach to cross-field binding.
+
+### Exact one-root binary toy [EXPERIMENT]
+
+Take m=8, β=2, true unweighted repeat-2, independently seeded perm1/perm2, two positive prefix accumulators, seed20261014, G∈Z^{8×24}. Select a=0 and b=e6, differing ONLY in systematic position j*=6. Both are valid Boolean messages; their full field-linear codewords are EXACT and different. Use source-form 49-bit p=281474976829441 and q=353581838970881, each congruent 4097 mod 8192 for source ring N8192,d4; both >honest integer H=m(2m+1)(β−1)=136.
+
+Construct each integer CRT leaf
+
+    Y_j = Enc_Z(a)_j + p·(((Enc_Z(b)_j−Enc_Z(a)_j)·p^(−1)) mod q),
+
+using unique representative 0≤Y_j<pq. The ONE SHA256 Merkle root is
+
+    7052562f3d88036af8dde743bc064029436bd089f2f71546ffa64741ea9bf7f3.
+
+ALL 24 authentication paths verify, modification fails, and both fields satisfy their exact native codeword relation at EVERY coordinate (including arbitrary scalar multiples). Only systematic leaf 6 violates [0,β−1]. By contrast, the FULL encoded codeword differences lie at 17 of 24 coordinates (the systematic position 6 plus every parity position 8..23); 17 leaves violate the full honest canonical range [0,H]. This shows explicitly WHY systematic-only checking throws away V9's coding distance amplification.
+
+EXACT exhaustive all sampled systematic subsets:
+- m8,t1: accept 7/8=87.5%;
+- t2:21/28=75%;
+- t4:35/70=50%;
+- t6:7/28=25%;
+- t7:1/8=12.5%;
+- t8:0/1=0.
+
+This is exact, not a random Monte Carlo measurement. Source-style m1024,t128 acceptance=87.5% follows from the general formula, NOT from a performed m1024 F.2 experiment.
+
+Local independently reproducible STD-LIB Python (not GitHub file):
+`/mnt/data/vfhe_v11_systematic_extraction_gate.py`
+SHA256 `6a2275f3305d23071bc62724b31058997c18928a356b56cda7c49411e01f9a17`.
+JSON `/mnt/data/vfhe_v11_systematic_extraction_gate_results.json`
+SHA256 `cc285ae1a6f7fd1b00138ab559161fcfaccfb6be8dd3cb6fb5fbe508748d94ee`.
+Script executes with zero external libs, rebuilds both interleavers + full matrix, CRT leaf array, one Merkle root and every opening, checks field linearity, and enumerates all systematic t-subsets.
+
+### End of V11 / decision
+
+**FAIL:** \"Independent field-native bounded-digit exact-codeword extraction plus a shared CRT-leaf Merkle root and a FEW SYSTEMATIC-only range checks imply a single globally extracted bounded integer witness with strong soundness.\" The exact one-digit mismatch remains undetected with Pr=1−t/m. Neither a hash collision nor a field-codeword validity flaw is needed.
+
+**KEEP / important protocol separation:**
+(1) Complete systematic position range proof would imply equality, but may leak witness / cost m.
+(2) Parity-encoded column checks CAN harness the V9 bounded-digit full code distance and V10's conditional exponential query bound **IF** every field codeword is already soundly extractable into a legal bounded digit vector and sampled shared integers are range checked. Proving that extraction is a major distinct soundness step. The current original F.2 verifier samples arbitrary native r and q1 vectors, and V9's restricted distance alone cannot prove this prerequisite.
+(3) A ZK-friendly succinct proof of a single committed integer vector plus all range and cross-field reduction relations could potentially solve equality directly, but its cost/security/protocol fit is UNKNOWN. Do not call this a finished contribution.
+
+**V12 next test (PI continuation only):** Stop toy one-root sampling variants. Assess ONE concrete *noncircular and zero-knowledge-compatible* primitive for jointly proving the relation R_diag: there exists a single bounded integer vector a with native component vectors equal to a mod all p_i, WITHOUT disclosing digit values. First cheapest falsifier: whether using a field-native Pedersen/vector commitment with a single arithmetic-field commitment can claim binding simultaneously into different CRT characteristic fields **without explicit cross-field encoding/reduction proof**. If not, KILL that shortcut and identify minimal enforceable constraint. Do not implement full PCS until these statements are precise.
+
+**Status: FAIL naive systematic-only extraction gate, PASS exact minimax probability/one-root counterexample. STATE_UPDATE=YES independent vFHE V11; global I192 unchanged. Novelty unverified, no attack on original protocol.

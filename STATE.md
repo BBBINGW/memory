@@ -5,11 +5,11 @@
 
 ## CURRENT PI-SELECTED WORKSTREAM (SEPARATE COUNTER)
 
-**vFHE cross-CRT scalar digit/index consistency**, independent round **V38 COMPLETED**, next **V39 NOT STARTED**.
+**vFHE cross-CRT scalar digit/index consistency**, independent round **V39 COMPLETED**, next **V40 NOT STARTED (SOURCE_VERSION_GATED / HUMAN_REVIEW)**.
 
 **Authoritative separate round state:** `findings/vfhe-cross-crt-state.md`.
 **Technical evidence + research story:** `findings/vfhe-cross-crt-consistency-research.md`.
-**Current status:** V38 FAIL naive direct BP++ ePrint2022/510 ONE-precommitted-VECTOR ZK circuit with ONLY 2*d=8 native RNS quotient rows, but PASS actual paper's genuine same-vector commitment input mechanism under its OWN CRS. The original §5 source Eq(29)–(32) vector wV has dimension H; any f_l=1 or f_m=1 requires N_l=H or N_m=H, not just eight source quotient checks. Full toy p13/p29,d2,H8 native lifted y/quotients PASS with correct dummy factors; leaving dummy multiplication wires free makes the attempted simplified circuit UNSOUND, since bad native y can be absorbed by wL*wR. At H2^24 eight naive canonical coefficient rows comprise 134,217,728 cells (4GiB uncompressed 32B) and H input-sized constraints; no full BP++ prover or end-to-end vFHE benchmark. Full finding findings/vfhe-v38-bulletproofspp-vector-input-constraint-dimension-gate.md. NEXT V39/HUMAN_REVIEW seek OFFICIAL revised February2026 original source 2025/286 to decide if source-version gated actual Theorem4.8/Appendix E.2 gap survives before any further million-gate external proof engineering. General I192 frozen, SHIP I226 untouched.
+**Current status:** V39 proves an existing 52pp (SHA29b6b2e9…) full-text mirror ALREADY contains the fieldwise Lemma4.6/pmin proof amendment in physical p24 Remark4.9 BUT STILL asserts false global-to-one-native CRT digit nonmembership in AppendixE.2 p48: e(X)=261 in R377 has projections (1,1,0,0) all locally in t4, yet e is not any canonical ring digit and meets beta4<13,2^ellstar8<13. This is prior V17–V23's mirror-specific CRT gap independently reverified, NOT a new attack or a verified failure in CURRENT OFFICIAL ePrint 2026-02-16 revision. Official landing says proof of Theorem4.8 was fixed on that date; current PDF bytes inaccessible (web only stale 50pp, MCP 52pp VERSION_UNVERIFIED, local DNS blocked). Full finding `findings/vfhe-v39-remark49-official-edition-source-gate.md`. NEXT HUMAN_REVIEW: PI provides true February2026 PDF or explicitly pivots to another source-complete paper; stop speculative huge BP++ wrappers until official source comparison. General I192 frozen.
 
 ### Legacy numbering mapping — provenance only
 

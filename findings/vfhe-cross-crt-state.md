@@ -1,8 +1,8 @@
 # vFHE Research State — Independent V-Series
 
 **Checkpoint:** 2026-10-14 (Asia/Tokyo).
-**LAST COMPLETED vFHE ROUND: V22. V23 NOT STARTED.**
-**STATUS:** V22 SOURCE/IMPLEMENTATION-GATED. Official IACR metadata proves 2026-02-16 revision explicitly fixed a flaw in Theorem4.8 proof, but exact official current PDF inaccessible/unauthenticated; the verified research mirror is 52pp SHA256 29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19 VERSION_UNVERIFIED and stale web search indexes 50pp older rendition. Public author reference vfhe/proof-friendly-CKKS is POC for CKKS, generic sumcheck and RS benchmark; no indexed full range-lookup verifier/FS implementation found. Thus V20 ideal soundness counterexample and V21 mini-PCS compilation remain real source-scoped algebraic evidence, NOT confirmed latest published/deployed compiled SNARK failure or 128-bit exploit. V23 next: source-byte authentication or PI-reviewed concrete efficient scalar-diagonal repair; global I192 FROZEN.
+**LAST COMPLETED vFHE ROUND: V23. V24 NOT STARTED.**
+**STATUS:** V23 FAIL any proposed **conjunctive R_q-polynomial-only/existential ring-oracle repair** of common CRT scalar-digit membership. Formal CRT product-closure theorem: such relations factor as Cartesian products of per-field relations and cannot equal the diagonal digit table for beta>=2, μ>=2. Source-shaped e=7+4X²=(1,0) in R=F13[X]/(X⁴+1) satisfies polynomial Boolean and beta4 root equations despite invalid global scalar membership; 250 exact random polynomial sanity tests PASS. PIOP/PCS findings V18–V21 remain scoped to 52pp mirror (VERSION_UNVERIFIED); Feb2026 official PDF unavailable and published/compiled flaw not authenticated. No cost-competitive cross-component repair yet. V24 next: one concrete NON-componentwise shared-digit linkage with soundness/PCS cost falsifier. Global general I192 frozen.
 **GLOBAL GENERAL FHE ITERATION COUNTER:** FROZEN I192. vFHE has own V-series. Legacy V1–V4 once labeled I193–I196; preserve historical filenames/iterations without advancing global sequence.
 
 ## Independent progress
@@ -89,3 +89,12 @@ Technical section `findings/vfhe-cross-crt-consistency-research.md` §27. Local 
 **RESULT:** honest SOURCE_BLOCKED verdict rather than fabricated PIOP-to-real-SNARK exploit. Previous V18–V21 limited findings preserved. Full technical evidence `findings/vfhe-cross-crt-consistency-research.md` §31; downloadable report `/mnt/data/VFHE_V22_Official_Revision_And_Code_Availability_Gate_2026_10_14.md` SHA256 c70a2daf0dcb4b7a15b0cd83371414348b1ac01ea6202e6fa9a5ef86d408113c.
 
 **NEXT_ACTION V23 upon PI continue:** exact-authoritative Feb2026 PDF and Figure1 proof/Appendix E.2 verification or realistic scalar-digit CRT-diagonal repair with rigorous cost before author notification. No repeated no-novelty toys; no author contact without PI; global general I192 frozen.
+
+
+## V23 — CRT product-closure NO-GO for polynomial-only scalar-digit repair (2026-10-14)
+
+**One hypothesis falsified:** Finitely many additional conjunctions of R_q-valued polynomial equations with ring-valued auxiliary witnesses can enforce scalar digit table `T_beta^diag`. **NO:** R_q≈∏F_k, and existential polynomial zero-relations decompose exactly as Cartesian products A=∏A_k; they cannot force factor-digit indices to agree when μ>=2, beta>=2. This is a precise structural **repair-class impossibility**, not a theorem that all SNARK repairs are impossible. The ring-CRT gluing identity under a nontrivial idempotent e has an exact universal proof; source N4,d2,p13 witness e=7+4X²→(1,0) satisfies `e(e−1)=0` and beta4 root test despite `e∉{0,1,2,3}`. 250 exact random R-polynomial sanity tests PASS. Escape requires a genuine cross-factor check (e.g. non-R-linear coefficient extraction AND cross-q-prime integer consistency) or global full-ring membership; performance & soundness unproven. No official current Feb2026 PDF authenticated; compiled SNARK attack NOT claimed.
+
+**Full technical evidence:** `findings/vfhe-cross-crt-consistency-research.md` §32; report `/mnt/data/VFHE_V23_CRT_Product_Closure_Nogo_2026_10_14.md` SHA256 e22ed367bc22850a64ba08cfa9ed1322a78c8d54dd0210b724e1ba8b0c736524; script `/mnt/data/vfhe_v23_crt_polynomial_repair_nogo.py` SHA256 307be6a14809372e36a40716e35d472f00f0d49a28dabd9b73d7c582fc81bca5; JSON `/mnt/data/vfhe_v23_crt_polynomial_repair_nogo_results.json` SHA256 7b807f210bd5d2be2ded6c4d31381ec36aa647246d656a07ed4b469b174fb774.
+
+**NEXT_ACTION V24:** choose one concrete noncomponentwise cross-CRT index/digit constraint, first cheapest algebraic/soundness falsifier and exact overhead to existing field PCS; remain source-version gated. Author contact / disclosure only with PI approval. Global general I192 frozen.

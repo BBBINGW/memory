@@ -1624,3 +1624,59 @@ with arbitrary finitely many polynomials P_i ∈ R[x,w] factors **exactly** as `
 **Local full proof:** `/mnt/data/VFHE_V23_CRT_Product_Closure_Nogo_2026_10_14.md` SHA256 `e22ed367bc22850a64ba08cfa9ed1322a78c8d54dd0210b724e1ba8b0c736524`.
 **Code:** `/mnt/data/vfhe_v23_crt_polynomial_repair_nogo.py` SHA256 `307be6a14809372e36a40716e35d472f00f0d49a28dabd9b73d7c582fc81bca5`.
 **JSON:** `/mnt/data/vfhe_v23_crt_polynomial_repair_nogo_results.json` SHA256 `7b807f210bd5d2be2ded6c4d31381ec36aa647246d656a07ed4b469b174fb774`.
+
+
+## 32. vFHE V23 — scalar-polynomial-only patch fails across distinct CRT primes (2026-10-14)
+
+**ONE primary falsifiable hypothesis [FAIL]:** Can we fix the 52-page MIRROR's Pi_beta_range / Pi_range diagonal CRT gap with ONE extra condition that every lookup digit h(i) is CONSTANT in the ring polynomial variable X (i.e. coefficients of X^1,...,X^(N−1) vanish), while leaving the original per-CRT-field digit table lookup alone? V20 nonconstant idempotent e=7+4X² would be excluded by this scalarity constraint. V23 tests whether it suffices for coefficient range soundness across multiple source-form CRT primes.
+
+**STATUS: FAIL this natural degree-zero shortcut; PASS exact independent two-native-prime false-range algebraic witness plus deterministic GP identities.** We do NOT falsify all joint integer range/commit-and-prove repairs; we do NOT claim a new flaw in a verified current published version or a fully compiled SNARK exploit. The original V17–V21 mirror-scoped claim is unchanged.
+
+### Source/interface [FACT]
+
+Cascudo et al., CRYPTO2025 *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, ePrint 2025/286, cached Research MCP 52pp GitHub mirror SHA256 29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19, VERSION_UNVERIFIED. §3.1 physical p10: native primes p_i=1+(2N/d)*odd, R_q decomposes into product of extension fields F_(p_i^d). §4.3 physical pp20–23: coefficient table T_B in R_q, scalar digit table t_beta={0,...,beta−1}⊂R_q, Eq(22) decomposition and fieldwise lookup Pi_beta_range Fig1. Appendix E.2 p48 makes false inference that ring scalar table nonmembership forces some invalid CRT field projection; V17–V20 cover same-prime nontrivial idempotent. Authors' official revision Feb 2026 exact PDF bytes remain unavailable (V22), so this V23 is MIRROR-model only.
+
+### Counterexample crossing distinct CRT primes [DERIVED]
+
+Choose N=4,d=2, p1=13=1+(2N/d)*3, p2=29=1+(2N/d)*7, q=13·29=377, beta=B=4, c=1, ell=1, nu=2, gamma=0, ellstar=3. Both primes satisfy source odd-multiplier form and theorem beta=4<pmin=13, 2^ellstar=8<pmin. Both native quartic polynomials split into TWO irreducible quadratics: X⁴+1=(X²−z)(X²+z), with ±z both nonsquares (z=5 mod13, z=12 mod29), giving FOUR extension fields total.
+
+Let E=CRT(1 mod13, 0 mod29)=261 mod377, and take the R_q polynomial e(X)=261 with coefficient representation [261,0,0,0]. Then **all X-positive degree coefficients are exactly zero**, satisfying scalar-polynomial/degree-zero repair. Furthermore E²=E mod377, and native CRT extension residues are (1,1,0,0): every native component sees a digit in t4={0,1,2,3}. However e(X) is NOT one of the FOUR canonical INTEGER digits {0,1,2,3} as an R_q element. The TRUE distinction is integer value bounded globally, not polynomial X-degree.
+
+Define outer vtilde(0)=vtilde(1)=e, which VIOLATES the coefficient range table T_4 (constant coefficient=261). Define htilde(i,j)=e if j=(0,0) and 0 for j∈{1,2,3} at each i∈{0,1}. Thus Eq22 vtilde(i)=Σ_(j=0)^3 htilde(i,j)X^j=e exactly and all htilde values are X-CONSTANT (so even scalarity constraints at EVERY digit position pass). Each of the FOUR native fields sees a fully valid table lookup (for p13 the digit e=1, for p29 the digit e=0).
+
+### CRT-glued memory transcript [DERIVED]
+
+Order the 8 h accesses as h=[e,0,0,0,e,0,0,0]. In p13, table counts are final_cts^(13)=(6,2,0,0); in p29, all eight values equal0, so final_cts^(29)=(8,0,0,0). Construct per-prime honest read timestamp arrays by starting all four counters at0 and incrementing on access; they are CRT-combined into ONE ring-valued read_ts oracle with canonical mod377 leaves
+
+    [0,117,118,119,352,237,238,239].
+
+Similarly one ring-valued final_cts oracle has leaves
+
+    [CRT(6,8),CRT(2,0),0,0]
+      =[240,145,0,0]
+      =[(8−2e) mod377,(2e) mod377,0,0].
+
+Both read_ts and final_cts are fixed BEFORE σ,τ, as source Fig1 requires. In every native prime field/factor the projected full h, read and final represent a HONEST digit-table memory transcript. Consequently for ANY ring σ,τ the source products
+
+    WSh=∏(h+σ(read+1)−τ); RS=∏(h+σ read−τ);
+    WSt=∏_j(j−τ); S=∏_j(j+σ final_j−τ)
+
+satisfy WSt·WSh=RS·S as an identity in R_q by CRT. Grand-product proof polynomials built by binary product trees satisfy all Boolean recurrence constraints. Two internal virtual sumcheck zero sums are true because the product-recursion defects are identically zero at all Boolean nodes. Outer Pi_decomp Eq22 equality holds, and its sumcheck target is true as well. This establishes the ideal algebraic Pi_range counterexample for the HYPOTHETICAL scalarity-only patched system. It does NOT implement a full compiled argument/soundness proof.
+
+### Deterministic cheapest verification [EXPERIMENT]
+
+Standalone standard Python:
+`/mnt/data/vfhe_v23_scalarity_only_repair_gate.py` SHA256 `0c3f869deb233ff185036efc4c9916653aa1ceecb1ce4ccaf68283d4f84970d4`.
+JSON:
+`/mnt/data/vfhe_v23_scalarity_only_repair_results.json` SHA256 `27133f8488bf548508809d2854c33e5da816a22557a75629cd10ff1db822e0c6`.
+Both created/run in this session, rerun with identical SHA256; local-only artifacts, not repository source. The script exactly checks p13/29 source-form congruences, primality, irreducibility of four quadratic factor polynomials, E idempotence, X-constancy, false global digit membership and outer coefficient range, every prime-factor native digit membership, Eq22, CRT-lifted per-prime read/final counters, all 4 grand-product tree recursions and final product identity for **233** sigma/tau challenge pairs, including **64** pairs with generally nonconstant ring coefficients. Thus native challenge choices not just small scalar integers are tested. Formula holds universally by fieldwise multiset equality; 233 is independent finite corroboration.
+
+### Correction requirement, cost boundary, and decision
+
+**KILL** "force lookup digits to be constant polynomials in X, then existing per-field t_beta lookup enforces global bounded INTEGER digits." It fixes a within-prime factor mismatch but NOT across-distinct-prime CRT residue mismatch; indeed every nonconstant X coefficient can be zero while all prime-field digits are independently legal and non-diagonal.
+
+**Necessary AND sufficient at purely semantic level:** For every h(i), exhibit ONE canonical integer a_i∈[0,beta−1] (injectively represented because beta<min p) such that **every** native field component equals embed_(p_j^d)(a_i). Equivalently after normal-form coefficient-degree-zero proof, the single constant coefficient in Z_q must admit a CANONICAL lift in [0,beta−1] as integer, not just one bounded residue in EACH prime. Enforcing that link in ZK, committing/injectively extracting that a_i before native challenges, obtaining 128bit soundness and competitive cost are all UNPROVED. Re-checking integer range via the same flawed CRT lookup would be circular. Existing general CP/range/equality designs (V12) are prior art, so no standalone novelty claim.
+
+**NEXT_ACTION V24 upon PI continuation:** ONE minimal, source-specific, noncircular **canonical integer witness LINK** design test. Suggested falsifier: Can a range-constrained common bit decomposition for h(i) and its CRT-native values be batched with a single sound postcommit linear identity check, without assuming the native codeword extractor already proves the intended shared integer semantics? Need one explicit binding/extraction interface and bound for a one-coordinate malicious mismatch, not another toy scalarity sample. Or PI may halt until official ePrint PDF revision is supplied. No unsolicited author contact.
+
+**END V23:** STATUS=FAIL naive minimal patch; RESULT exact p13/p29 CRT prime-level counterexample, full source-form Eq22 and honest fieldwise GP constraints; NEXT_TEST noncircular global integer link; STATE_UPDATE=YES independent V-series only; general global I192 frozen.

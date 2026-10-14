@@ -253,3 +253,28 @@ I187 update: Existing MPC Gaussian sampling (ePrint 2023/1594) requires nonlinea
 **Full local proof:** /mnt/data/GL_P19_Pow2_Trace_BaseChange_Stability_2026_10_14.md SHA256 bc14b775cb4489033d546f864b64790f027c37a5ed576241076eacaf5b882e5c.
 **Repro script:** /mnt/data/gl_pow2_trace_stability_gate.py SHA256 3066ad603388338e743d2d655476905861f18d44aca5ef87dfe71c8473db9704.
 **JSON:** /mnt/data/gl_pow2_trace_stability_results.json SHA256 a4d7bdc695768bf5ab4abf1e24b933f960e7cc0a6a9f65f670e4444fe9f49396.
+
+
+---
+
+## P20 — Gao–Zheng SIMD-ALU triangle Theorem 4 noise-certificate depth gate (2026-10-14)
+
+**NEW independently sourced research candidate, not a continuation of P19 or frozen global I192.** Read START_RESEARCH_SESSION.md, RESEARCH_PHILOSOPHY.md, AGENT.md, STATE.md, current backlog P19 and MISSING_SOURCES before testing. The preferred Crockett et al. 2026/956 original PDF remains RETRIEVAL_BLOCKED (403), so no additional source claims about P19. One primary hypothesis and one decisive parameter-gated test.
+
+**Primary source [FACT]:** Mingyu Gao, Hongren Zheng, *FHE for SIMD Arithmetic Logic Units with Amortized O(1) Bootstrapping per Ciphertext*, CRYPTO2026, ePrint **2026/233**, https://eprint.iacr.org/2026/233. Original complete 43pp Research MCP PDF READY via fixed GitHub mirror, PDF SHA256 `f16f4004d76450fb2264e6a5b36c3eceac2f87586148b96073c76ca7775f0f92`, VERSION_UNVERIFIED. Read p15 Definition10–11 triangle encoding, p16 Theorem1 exact decoding and Definitions12–14, p25 Table3 empirical norm statistics, p26 Proposition3/Theorem4, pp27–29 security/parameter selections. At bit-width n=64, Table3 gives representative log2||I||≈2.8 and log2(||v||/Delta)≈−24.4; p28 log2Delta≈43. Theorem1 requires ||t v||_inf<Delta/2 for t=X−2; Proposition3 states ||t v||<=4||v||, so delta=||v||/Delta<1/8 is a conservative sufficient certificate. The source explicitly adopts application-aware correctness/noise controls, reports actual leveled depths, and does NOT claim this generic bound necessarily certifies them.
+
+**H-P20 [HYPOTHESIS]:** Theorem4's published universal infinity-norm bound alone certifies exact triangle decoding following TWO consecutive FULL multiplications from these source-typical starting quantities, without invoking message-specific overflow/noise structure.
+
+**ONE cheapest test [DERIVED, 75-digit Decimal verified]:** For two operands with identical bounds A_j=||I_j|| and d_j=||v_j||/Delta, Theorem4 gives
+`A_next = 3n(4A_j²+2A_j+1)`,
+`d_next = 3n(2 max(4A_j,1)d_j + 4d_j²)`
+as conservative upper-bound recurrences. With n64, A0=2^2.8, d0=2^-24.4, depth1 obtains A1≈40116.581669 and d1≈0.000483218231, allowing coarse decoder gate d1<1/8. Depth2 obtains A2≈1.23598862081e12 and d2≈29775.457888, so d2<1/8 FAILS AS A SUFFICIENT CERTIFICATE. These quantities are bounds and **do not represent actual error samples**. A large upper bound does not demonstrate incorrect decryption. It also does not challenge paper's measured multiplication depths, independent source security, or CKKS bootstrap implementation.
+
+**Resource and proof limits:** Table3 values are empirical typical initial noise, not certified worst-case inputs; this is a conditional theorem-usefulness gate, NOT a proof that real FHE needs fewer than 2 levels. Theorems 3/5/6 bootstrap precision, key-switch/rescale rounding, ciphertext security, true message/error correlations, and 128-bit failing probability have NOT been tested. A sharper conditional noise invariant might bridge theory/observed performance, but would require a genuinely new, efficient source-shaped theorem with actual parameters and implementation evidence; trivial worst-case-versus-average distinction has NO established novelty.
+
+**STATUS:** FAIL theorem-only two-level sufficiency H-P20; PASS source full-PDF gate and reproducible noise-bound recursion; actual correctness/security/novelty UNCLEAR.
+**RESULT:** Identified a source-grounded, quantified gap between coarse universal noise bounds and reported application-aware leveled behavior for one source-typical n64 regime. No original paper error or attack claimed.
+**NEXT_ACTION:** P20 HUMAN_REVIEW: only pursue if one structured overflow/noise invariant can demonstrably certify a second multiplication with real key-switch/rescale contributions, with a credible technical contribution over known noise analysis. Otherwise PARK and pivot to another full-primary-source FHE problem. P19 remains PDF SOURCE_VERSION_GATED; don't contact authors without PI permission.
+**STATE_UPDATE:** Add independent P20 entry to backlog only; global I192, vFHE V track and CGS files UNCHANGED.
+
+**Reproducible local files:** `/mnt/data/P20_SIMD_ALU_Triangle_Decode_Certification_Gate_2026_10_14.md` SHA256 `643bdf0855d324390ca01c1f7f1a66ea6754ccb80ebd23d059921a73d7213150`; script `/mnt/data/simd_alu_triangle_theorem4_depth_gate.py` SHA256 `848dfd725bb33aea3cc88b9774a30051ca9bb2c8fe92222207b4b7718e79f112`; JSON `/mnt/data/simd_alu_triangle_theorem4_depth_results.json` SHA256 `10b2be632c022c2ca04cda88c3116721a54d863913c7f56c3fdc975a5c6058e6`.

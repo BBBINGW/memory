@@ -559,3 +559,113 @@ Results JSON `/mnt/data/vfhe_v7_cauchy_binet_five_support_results.json`; SHA256 
 **NEXT_TEST (V8 only if PI continues):** One decisive attempt to find a *real* 49-bit source-form prime divisor of a nonzero 5×5 parity minor of a legal repeat2/two-prefix instance, **or** derive a precise arithmetic non-divisibility constraint for such minors. If neither is available cheaply, park low-support micro-optimizations and request PI strategic choice to tackle global distance / shared PCS architecture directly. No general claim of vFHE repair, new code, security/128-bit improvement or novelty.
 
 **STATE_UPDATE: YES, independent V-series only**; global general FHE round remains I192.
+
+
+## 17. vFHE V8 — exact source-form 49-bit prime divides a legal five-row RAA parity minor (2026-10-14)
+
+**Primary hypothesis / one decisive test:** The V7 threshold p>D(2048,5) is only sufficient, but is its missing lower-49-bit range a *real* rank-preservation gap? Search for a nonzero five-row/five-parity-column integer minor of a LEGAL unweighted repetition-two, two-free-permutation, two-positive-prefix systematic code whose exact determinant is divisible by an actually prime 49-bit source-form CRT modulus p=1+4096a (a odd for source N=8192,d=4).
+
+**STATUS: PASS — explicit, independently verified prime-specific MINOR-RANK DROP.** The stronger hypothesis that every actual five-minor remains of identical rank across all source-form 49-bit CRT primes is **FALSIFIED**. The example does NOT establish a change in global minimum distance, a low-weight codeword, a binary-digit-difference witness, a shared-PCS attack, a privacy compromise, or an actual vFHE compiled-SNARK exploit. Novelty / utility as a paper contribution: NOT VERIFIED.
+
+### Primary source evidence [FACT]
+
+Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO2025, ePrint2025/286 https://eprint.iacr.org/2025/286, §3.1, physical PDF p10: p=1+(2N/d)a with a odd; §6 physical PDF p27 benchmarks 49-bit CRT primes. Inspected cached GitHub-mirror PDF 52 pages, SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, latest official binary edition VERSION_UNVERIFIED. The candidate auxiliary integer code's message length m is NOT source ring dimension N.
+
+### The actual finite-field rank-changing certificate [DERIVATION+EXACT COMPUTATION]
+
+Take CKKS **source-form** ring N=8192,d=4; candidate integer RAA code input length m=1024 and accumulator length n=2m=2048. Its systematic generator is
+
+    G = [I_m | P],
+    P = Repeat₂ · Perm₁ · U₁ · Perm₂ · U₂,
+
+with every nonzero Repeat₂ coefficient literally integer 1, both positive prefix U_j and both permutation matrices integral, and NO native-field random edge weights.
+
+Choose five selected input rows S={0,1,2,3,4}. In the first interleaver, place the two repeated positions of each selected row consecutively in order i=0,…,4 (first copy at start of its stage, second copy immediately next), with 2038 other inputs' repeat labels filling the remaining stage positions. Partition the 2048 first-stage output positions into five successive blocks of lengths
+
+    L = [357,400,421,373,497].
+
+Within block i, there is one first-copy *odd transitional* position with first-prefix value
+`o_i=2(e_0+...+e_{i−1})+e_i`
+and L_i−1 positions with plateau first-prefix value
+`v_i=2(e_0+...+e_i)`.
+These stages are all physically present in a valid first permutation; selected rows' copies are among the first 10 original Repeat₂ labels, unused original labels fill the other stages.
+
+The second permutation is a valid explicitly **chosen** permutation of all 2048 stage positions. In its block j it places L_j−1 positions of plateau type v_j, plus one transitional position o_i for which
+
+    σ(i)=j,  σ=[4,1,0,2,3].
+
+Choose the FIVE parity output coordinates at the ends of the resulting second-prefix blocks:
+
+    J=[356,756,1177,1550,2047].
+
+The five consecutive block-sum columns form the **exact** integer matrix
+
+    H =
+    [[714,800,842,746,993],
+     [2,799,842,746,992],
+     [1,0,842,746,992],
+     [0,0,1,746,992],
+     [0,0,0,1,992]].
+
+The actual parity submatrix at the sampled SECOND prefix coordinates is the cumulative-column matrix M=H·U_5, with det(U_5)=1:
+
+    M =
+    [[714,1514,2356,3102,4095],
+     [2,801,1643,2389,3381],
+     [1,1,843,1589,2581],
+     [0,0,1,747,1739],
+     [0,0,0,1,993]].
+
+**Independent exact determinant calculations** (SymPy exact and manually implemented integer Bareiss) both give
+
+    det(H)=det(M)=353581838970881=:p_star.
+
+SymPy's primality verifier gives p_star PRIME; also 2^48<p_star<2^49, and
+
+    p_star=1+4096·86323691155; 86323691155 is odd,
+    p_star mod 8192 =4097.
+
+Thus p_star is a LEGAL source-form 49-bit CRT prime for N8192,d4. By construction,
+
+    rank_Q(M)=5,  rank_Fp_star(M)=4.
+
+For the distinct source-form 49-bit prime `p_other=281474976829441`, which does not divide det(M),
+
+    rank_Fp_other(M)=5.
+
+The full **systematic** code remains full row rank over BOTH primes because of I_m; this local selected-parity minor rank drop is a different assertion.
+
+### Independent modular codeword check [EXPERIMENT]
+
+The explicit nonzero LEFT kernel of M modulo p_star, coefficients on the five selected input rows, is
+
+    x=(248360433806974,147393490404705,227528283364297,265412092786493,1).
+
+All five sampled parity outputs (xM)_j are zero modulo p_star, and nonzero over the ordinary integers. Computing the WHOLE systematic codeword of length 3m=3072 for the SAME lifted integer coefficients gives:
+
+- Hamming weight over Q: **2053**;
+- Hamming weight modulo p_star: **2048**;
+- Hamming weight modulo p_other: **2053**.
+
+Thus five extra parity-coordinate zeroes genuinely arise at this source-form CRT prime for this fixed coefficient vector. This is an **ordinary high-weight** codeword, **NOT** an exhibited globally short codeword, and it does not prove the code's minimum distance differs.
+
+Furthermore the displayed x has HUGE entries modulo p_star: it is NOT the difference of two genuine bounded Boolean indices or a source-compatible beta=2^20 digit witness. It is a valid diagnostic for **field-linear** rank/PCS-distance assumptions only. A repair protocol may impose extra bounds restricting such algebraic inputs; no attack claim.
+
+### Deterministic reproducibility and limits
+
+Standalone script: `/mnt/data/vfhe_v8_prime_divisible_minor.py`, SHA256 `7ef42c152a386db4cafa5a526f1c047f17eb69e7d4ed928d75993cb983a85355`.
+
+Full JSON including selected row/column coordinates, construction L/σ, stage matrix H, exact parity matrix M, exact determinants, primality, ranks, modular null vector, whole codeword weights:
+`/mnt/data/vfhe_v8_prime_divisible_minor_results.json`, SHA256 `6d66f63e957a1686af7376d8f18f0f87a50ea63abd948b2b1016efb0d65492c4`.
+
+These are **local files, not GitHub Notes file bytes**. The script was executed twice and the same SHA256 outputs obtained. Reproducible deterministic seed=1826 searched 165987 structured length/permutation proposals, yielding 35 source-congruent 49-bit determinant candidates before first prime success. This is **targeted search** with selection bias, not a frequency estimate of random interleavers. The first and second permutation of the final witness are specifically coordinated, not independent random samples from an ensemble; each is individually a valid permutation, and the pair is in the support of the independent-uniform-permutation ensemble, but no typical/random success probability is shown.
+
+The rank mismatch occurs at input support **five**, consistent with V6's theorem ensuring all supports≤4 are stable for m1024,p>2^48. V7's upper bound `D(2048,5)=368933561632000` is respected: p_star=353581838970881<D. Therefore V8 is a genuine example showing the V7 lower-prime coverage gap is *not merely a proof-artifact* for arbitrary five-minor ranks.
+
+### Research decision / stop condition
+
+**Scoped conclusion:** cross-prime rank invariance for ALL 5×5 minors at m1024 is FALSE within the allowed 49-bit prime class. This proves that merely ensuring a *canonical integer generator* is common across CRT primes does not imply identical low-support linear dependence structure. It does NOT disprove uniform lower bounds on each prime's minimum distance or a well-constructed cross-CRT PCS; even with a rank drop in a few minors, the code may retain excellent global distance.
+
+**V9 NEXT_ACTION (only if PI continues):** STOP raising the support threshold t. One global falsification/proof gate: rigorously test whether the **unweighted true two-interleaver repeat2 double-prefix** code can have positive constant relative minimum distance over all relevant large primes, using a proof that actually matches integer 0/1 coefficients and NOT the weighted nonbinary RAA theorem. If that cannot be proved or decisively falsified by a cheap global obstruction, declare UNCLEAR and move to a **shared-commitment cross-CRT extraction** gate only at PI direction. Do not frame this isolated linear-rank witness as a cryptographic attack or contribution.
+
+**End V8:** STATUS=PASS real CRT-prime-specific five-parity-minor rank witness; RESULT=first genuine divisibility, exact full encoding construction and same-codeword weight comparison; STATE_UPDATE=YES independent vFHE V-series, global FHE iteration remains I192.

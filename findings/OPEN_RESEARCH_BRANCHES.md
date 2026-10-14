@@ -348,3 +348,28 @@ Consequently `r_j(k+S)/4 < P/2`; Theorem 2 implies `|x'_j|<P/2`, so `center_P(x'
 **STATE_UPDATE:** Append only this P21 note to `findings/OPEN_RESEARCH_BRANCHES.md`. Global I192 frozen, vFHE V and CGS untouched.
 
 **Local complete reproducibility:** `/mnt/data/P21_Algorithm4_Range_Certification_2026_10_14.md` (SHA256 `a927604d7ec90f7b3250fff16655f878b2e1ac0396a57ff39e8b0a0983b209b5`), script `/mnt/data/p21_algorithm4_no_wrap_gate.py` (SHA256 `cf11bc2ebbbe0433383795f00ecf6f8f42ca837337055874de940b8765819786`), JSON `/mnt/data/p21_algorithm4_no_wrap_results.json` (SHA256 `277694385d9cdadb0d2cda54410d89da0fb419f6d7a157078aa92d6e8573634e`).
+
+
+---
+## P22 — Carousel cached-version nondivisible phase/LUT rounding gate (2026-10-14)
+
+**Protocol:** One primary source-shaped hypothesis and one exact integer falsifier. Prior P21 range/no-wrap finding read; global general I192 frozen and independent vFHE V17, CGS state left untouched.
+
+**Source [FACT, VERSION GATE]:** Research MCP READY cached **34 physical-page** PDF for ePrint **2024/2032**, by Intak Hwang, Seonhong Min and Yongsoo Song, title *Carousel: Fully Homomorphic Encryption with Bootstrapping over Automorphism Group*, PDF SHA256 `5ddec99ebbe14b270b413e21ab4923abf0ed5dba8d0f1d053b3fde1c5a35d6c8`, `VERSION_UNVERIFIED`. Read p4 phase criterion and nearest-integer LUT, p10 decomposition-ring (M prime, o even, N=(M−1)/o), pp12/19 algorithms and p26 actual p2,N2048. **Crucial provenance divergence:** online ePrint 2024/2032 PDF search index now shows an earlier/different *Carousel: Fully Homomorphic Encryption from Slot Blind Rotation Technique* by Seonhong Min & Yongsoo Song; peer-reviewed ASIACRYPT2025 (DOI 10.1007/978-981-95-5122-4_5) is Hwang–Min–Song and matches cached title. **Current IACR and Springer complete versions have NOT been authenticated line-for-line. NO CONFIRMED PUBLISHED DEFECT.**
+
+**H-P22 (cached p4, deterministic scope):** For *all* algebraically compatible parameters, a phase `round(Nm/p)+e (mod N)` with `|e|<N/(2p)` is sufficient for the cached LUT `v_i=f(round(pi/N) mod p)` to return `f(m)`, without a divisibility or center-alignment assumption.
+
+**One decisive witness [FAIL this broad deterministic sufficiency]:** Choose M=755551 prime, plaintext p=3, o=ord_M(3)=90 EVEN, N=(M−1)/o=8395 (not divisible by3). Q=2^64, binary secret vector of n=2855 all ones (extremely atypical but within binary key support). For plaintext m=1 let every LWE mask `a_i=A=floor(49Q/(100N))=1076700964397579`, and `b=round(Q/3)−2855A=3074933437881429160`. All are valid nonnegative Z_Q residues; original phase b+Σa_i s_i = round(Q/3), so original LWE error is EXACTLY ZERO. Round every coordinate by N/Q as written in cached Algorithm1/2: each `a_hat_i=0`, `b_hat=1399`, hence phase_hat=1399. The claimed ideal center is `round(N/3)=2798`, hence e=−1399, and **1399<8395/(2·3)=1399.166…**. Yet **identity LUT v_1399=round(3·1399/8395)=0, not m=1**. Exact primary-source operations, integer-only Python, prime and multiplicative-order checks PASS; no rounding ties.
+
+**Necessary correction [DERIVED, sufficient only]:** Center offset `delta_m=round(Nm/p)−Nm/p` lies in [−1/2,1/2]. Then decoder argument is `m+(p/N)(delta_m+e)`. The sufficient per-message guard is `|delta_m+e|<N/(2p)`, with uniform conservative guard `|e|<N/(2p)−1/2`. When p divides N, delta_m=0 and the cached guard is valid as written.
+
+**Critical impact/novelty limits:** Actual cached authors' implemented parameters p=2,N=2048 **satisfy p|N**, so this witness DOES NOT hit published benchmarks. No probability of failure was estimated under correctly random sampled ciphertexts/secret; the constructed repeated mask and all-one key have negligible probability under the stated distributions. This is not a 128-bit attack, RLWE break or deployable exploit. Whether the ASIACRYPT chapter has the same assertion, implicit p|N scope, or a stronger formal DFR theorem is **UNCLEAR/SOURCE_VERSION_GATED**. An elementary quantization-bound fix is very unlikely to be standalone publishable novelty.
+
+**STATUS:** FAIL unqualified cached-p4 deterministic radius; PASS source-shaped algebraic counterexample; published-scope/security effect UNCLEAR / HUMAN_REVIEW.
+**RESULT:** Non-divisible N/p center rounding consumes up to half a phase unit in the LUT guard; it cannot be ignored by a deterministic correctness condition.
+**NEXT_ACTION:** Obtain authenticated ASIACRYPT2025 chapter / exact current-source PDF and check formula/proof and scope. Only if same unqualified claim survives, test one genuinely secure nonaligned parameter set with full distributional DFR; otherwise PARK P22. **No author contact without PI.**
+**STATE_UPDATE:** Append only independent P22 backlog; global STATE.md, vFHE, CGS remain unchanged.
+
+**Repro local report:** `/mnt/data/P22_Carousel_Nondivisible_LUT_Phase_Alignment_Gate_2026_10_14.md` SHA256 `b87c0f3c489ba2c0e8a0aaf72d98423918b5c63a1063032cd61210ca2830396c`.
+**Script:** `/mnt/data/p22_carousel_phase_alignment_gate.py` SHA256 `b7af331b7044452967d1cb18ccf05888dfd6ecac4669a8828e8a2c6d75408f50`.
+**JSON:** `/mnt/data/p22_carousel_phase_alignment_results.json` SHA256 `0431b00b58400a829c08077f4dc8ccf5fe87b6727116ba0947c77af9fa261232`.

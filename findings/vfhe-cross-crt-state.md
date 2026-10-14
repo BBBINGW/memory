@@ -1,8 +1,8 @@
 # vFHE Research State — Independent V-Series
 
 **Checkpoint:** 2026-10-14 (Asia/Tokyo).
-**LAST COMPLETED vFHE ROUND: V23. V24 NOT STARTED.**
-**STATUS:** V23 FAIL any proposed **conjunctive R_q-polynomial-only/existential ring-oracle repair** of common CRT scalar-digit membership. Formal CRT product-closure theorem: such relations factor as Cartesian products of per-field relations and cannot equal the diagonal digit table for beta>=2, μ>=2. Source-shaped e=7+4X²=(1,0) in R=F13[X]/(X⁴+1) satisfies polynomial Boolean and beta4 root equations despite invalid global scalar membership; 250 exact random polynomial sanity tests PASS. PIOP/PCS findings V18–V21 remain scoped to 52pp mirror (VERSION_UNVERIFIED); Feb2026 official PDF unavailable and published/compiled flaw not authenticated. No cost-competitive cross-component repair yet. V24 next: one concrete NON-componentwise shared-digit linkage with soundness/PCS cost falsifier. Global general I192 frozen.
+**LAST COMPLETED vFHE ROUND: V24. V25 NOT STARTED.**
+**STATUS:** V24 FAIL proposed low-cost **shared small integer MLE-opening** shortcut for cross-prime bounded scalar digits. For source-format 49-bit CRT primes N2^14,d4, digit-arity ell*=24,beta4: uniformly sampled S_K={0,..,K−1} shared integer points have universal no-wrap at K3, but single-coordinate unequal digit tables evade one direct PCS evaluation with probability 1−(2/3)^24 and need 1,493,526 independent queries to reach 2^−128; at K4 an explicit HONEST equal digit vector wraps differently mod two primes and gives false rejection. A precise candidate-specific soundness/completeness tradeoff, not all repair protocols. The original ePrint2025/286 52pp cached mirror remains VERSION_UNVERIFIED vs Feb2026 official; no full compiled SNARK forgery, no novel patch. V25 next: a concrete high-entropy/noncircular cross-prime integer witness binding mechanism and strict prover cost gate. Global I192 FROZEN.
 **GLOBAL GENERAL FHE ITERATION COUNTER:** FROZEN I192. vFHE has own V-series. Legacy V1–V4 once labeled I193–I196; preserve historical filenames/iterations without advancing global sequence.
 
 ## Independent progress
@@ -104,3 +104,18 @@ Technical section `findings/vfhe-cross-crt-consistency-research.md` §27. Local 
 `/mnt/data/vfhe_v23_scalarity_only_repair_gate.py` 0c3f869deb233ff185036efc4c9916653aa1ceecb1ce4ccaf68283d4f84970d4;
 `/mnt/data/vfhe_v23_scalarity_only_repair_results.json` 27133f8488bf548508809d2854c33e5da816a22557a75629cd10ff1db822e0c6.
 Detailed companion subsection beneath existing §32 in findings. **No new V-number and no root STATE.md overwrite**. V24 next remains a sound NON-componentwise canonical small integer digit link; source latest PDF still unverified and full SNARK exploit unproved.
+
+
+## V24 — Small shared-integer random MLE evaluations fail soundness/no-wrap cost gate (2026-10-14)
+
+**ONE falsified H-V24:** A few PCS-authenticated evaluations of all CRT digit MLEs at the SAME random integer r∈{0,...,K−1}^ell*, each canonically center-lifted and compared as integers, suffice for a high-soundness common scalar digit proof without a separate quotient/range proof of the evaluation lifts.
+
+**Source-compatible test:** N=2^14,d=4,ell*=24 (ell10,nu14,gamma0), beta4 (B4,b2,c1), p1=562949953216513,p2=562949952987137 are 49-bit primes p=1+8192*a with odd a. Fieldwise scalar digit tables legitimately range in 0..3. From ∑Boolean basis L_b=1, A(r)=∏(|r_i|+|1−r_i|), sharp universal |H(r)|≤(beta−1)(A+1)/2. K3 yields 423644304723<min p/2 ⇒ safe canonical lift. K4 yields 89406967163085939>max p/2; equal honest table h_b=3 iff number of zero bits even yields at r=(3,...,3) this H and distinct centered residues −102075398339628 vs −102075361868844, a false rejection. Since S_K at K>4 includes r3, no higher K is universally complete under this particular checking rule.
+
+**Decisive sparse-mismatch test:** first prime digit table all0, second 1 only at all-one Boolean index, otherwise0; their MLE integer difference D(r)=∏r_i, detected under K3 with exact probability (2/3)^24=5.940319206354905e−5. For independent points, t=1493526 needed for false acceptance ≤2^−128; t−1 fails. Baseline cached §4.3 source q=25 IDEAL ring oracle queries, so added **direct ring queries** ratio ~59741 (not a proof-runtime lower bound; batching not ruled out). Two primes ×4096 extension factors implies up to 8192 field PC openings per direct ring query in simple F.1, without batching. Seeded Monte Carlo 100000→7 detections. This candidate also has unproven zero knowledge if evaluation integers disclosed.
+
+**STATUS:** FAIL low-cost S_K direct integer-lift equality candidate / PASS exact sharp bounds and sparse-difference formula. **Scope:** candidate only, no deployed attack or publication novelty. Original 52pp mirror SOURCE_VERSION_UNVERIFIED, official Feb2026 PDF missing. **NEXT_ACTION V25:** test one common committed bit/index or integer witness with high-entropy tests and sound cross-prime linkage, checking work of F.1/F.2; do not repeat this direct small-r probe or rely on unproved shared-a extraction. No author outreach absent PI.
+
+**Records:** `findings/vfhe-cross-crt-consistency-research.md` §33; report `/mnt/data/VFHE_V24_Small_Integer_Shared_Evaluation_Cost_Gate_2026_10_14.md` SHA256 167d69f9e4b4ad35baa89d90490ae2206054cbcc9a0aa37903aaf180e07f1be7; script `/mnt/data/vfhe_v24_small_integer_eval_gate.py` SHA256 98ed3d37a325f9d2732539a228b483a2653176ecf550305cdc858cbc0ca6ec69; JSON `/mnt/data/vfhe_v24_small_integer_eval_results.json` SHA256 2e4e815b5ebf3d64c4560fe84b38714d5433ac683f228c99c9758686c6fd20f3.
+
+**STATE_UPDATE:** YES independent V24; global I192 frozen.

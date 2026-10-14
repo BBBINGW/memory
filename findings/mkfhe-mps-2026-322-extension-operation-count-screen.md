@@ -1,0 +1,32 @@
+# MKFHE independent screening: source-exact MPS cGSW→RGSW extension vector-gadget operation count
+
+**Date:** 2026-10-14 Asia/Tokyo. **Status:** first exploratory screen only after PI's generic FHE 'continue' following SHIP I226 PARK recommendation; **not an authorized change to global vFHE direction or a permanent SHIP pivot**. Read `START_RESEARCH_SESSION.md`, `RESEARCH_PHILOSOPHY.md`, `AGENT.md`, the concurrent global `STATE.md` (vFHE parallel, READ ONLY), independent `findings/ship-memory-STATE.md` at I226, and `findings/OPEN_RESEARCH_BRANCHES.md` headings/related papers to prevent duplicate work. SHIP state deliberately unmodified.
+
+## Primary-source acquisition and version
+
+**Min, Park, Song**, *Multi-key Fully Homomorphic Encryption with Non-interactive Setup in the Plain Model*, CRYPTO 2026, ePrint **2026/322**. Full **41 physical page** PDF acquired from Research MCP pinned public GitHub mirror, source revision `e80709f5438da1a0ecf221151b89d4458b382546`, SHA256 `bd9bd6793f585e04602262426f4336e01760031ebf673c98852a0212ed6299cc`; metadata **VERSION_UNVERIFIED** vs official publisher version. Read original physical pages **7–8** (§3 overview, sequential vector gadget products, evaluator-chosen order), **15–17** (equations (4),(5), **Algorithm 1** and Lemma 1), **18–19** (cGSW Enc and Lemma 3 with exponential-in-parties noise envelope). Text extraction warnings for symbolic indices, but algorithm control-flow bounds and loop 1..n / 0..d / k ranges are legible. Do NOT invent uninspected exact source formulas or claim paper's theorem flawed.
+
+**Recent direct competitor source gate:** Baoyu Li, Binwu Xiang, Kang Yang, *Levis: Extension-Free Multi-Key Fully Homomorphic Encryption in the Plain Model*, ePrint **2026/2263**, publicly listed at https://eprint.iacr.asia/2026; abstract claims elimination of O(dk^2) extension gadget products per input. Research MCP `get_eprint_paper(2026/2263)` returned **RETRIEVAL_BLOCKED** due original HTTP403, no fixed GitHub mirror and no exact arXiv match; **no full text read, no independent verification of Levis cryptographic claim**, only abstract as context. This reduces likely novelty of rediscovering extension elimination, not a complete prior-art comparison.
+
+## ONE primary falsifiable hypothesis and one minimal decisive check
+
+**H-MPS-01:** Extending **all n parties' one cGSW input per party** to the common MPS RGSW joint key costs only O(d n²) total vector gadget products, by applying the per-ciphertext extension cost O(d n²) just once. Falsify by counting the exact operation sites (Algorithm 1 physical p17 lines 9,13,15) for every `idx=1..n`, then summing over idx. **Scope:** vector gadget product *invocations* only, NOT ring-polynomial operations, memory, encryption time, noise growth, or final ciphertext size.
+
+## Exact proof and executed counter [DERIVATION]
+
+At outer stage i (1-based), each of the d gadget rows j is handled as follows:
+- If `i != idx`, Algorithm 1 line 9 performs SUM over k=0,..,i−1: exactly **i vector gadget products**. Line 7 zero-append is public structure, not a gadget product.
+- If `i == idx`, line 11 loads one cLEV row (no product). Line 13 k=1,..,i−1 costs **i−1 vector products**; line 15 k=0,..,i−1 costs **i vector products**, giving **2i−1**.
+- For single input owner `idx`, all stages together cost `d * (sum_{i=1}^n i + (idx−1)) = d*(n(n+1)/2 + idx−1) = Θ(d n²)` per input.
+- For ONE input per EACH of n owners, total `d * [n*(n(n+1)/2) + sum_{idx=1}^n (idx−1)] = d*(n³+2n²−n)/2 = Θ(d n³)`. Therefore **H-MPS-01 FAILS** at fixed/growing d, notwithstanding each *individual* extension's quadratic count. If d is treated as a fixed constant the familiar O(n²)/O(n³) shorthand results.
+
+Simple checks: n=2,d=1 per-input [3,4], total7; n=3,d=1 [6,7,8], total21; n=4,d=3 [30,33,36,39], total138. All exactly match loops. A no-crypto local Python verifier exhaustively checks n=1..17, d∈{1,2,3,9}, all idx: PASS. Files: `/mnt/data/mps_2026_322_extension_opcount.py` sha256 `864f5ee7bf1760eb64c9490cd8369c26338148061aabf6c140ed007de069d138` and `/mnt/data/mps_2026_322_extension_opcount.json` sha256 `84f22965df38476a5c44efef0913d48b72593223b2d315af3a40b5d4edbcbe4b`.
+
+**Careful paper claim boundary:** Original page 16 explicitly describes reducing a **single** RGSW extension from exponential-naïve to O(n²); original page 8's overview also discusses cubic-looking total gadget-product cost, though text glyphs/first factor are imperfectly extracted. **No contradiction or source theorem error is established.** Current analysis simply prevents using a per-input bound as a whole-batch bound. It ALSO does not assert each vector product has uniform cost: its vector dimension increases with party stage i, so total ring operations may scale differently; no concrete hardware/FHE benchmarking performed. Encryption setup cost and repeated-circuit amortization are excluded.
+
+## Research decision
+
+**STATUS:** **FAIL H-MPS-01** incorrectly lifted whole-batch quadratic bound; **PASS exact Algorithm1 count and reproducibility**; `VERSION_UNVERIFIED` publication parity; technical correctness/security of MPS itself NOT challenged. **NOVELTY NOT VERIFIED**.
+**RESULT:** MPS per-input extension is Θ(d n²) gadget-product invocations, but n input owners each with one cGSW ciphertext induce Θ(d n³) aggregate invocations. This identifies a *real resource scale* but not necessarily a research gap: MPS source already highlights large extension overhead, and later Levis (2026/2263) abstract advertises exactly its removal (full source unavailable). No speculative attack or false correctness accusation.
+**NEXT_ACTION:** For any larger plain-model MKFHE research effort, first acquire and audit the Levis **full source** and compare exact evaluation-key assumptions, joint key, and one-time vs per-input conversion (source currently retrieval-blocked). A legitimate novel follow-up would need a different mechanism/setting not already addressed by Levis, or a security assumption/parameter/noise bound the paper's model does not cover. Do not iterate micro count optimizations as standalone novelty. If user PI has not selected MKFHE direction, preserve this as screening only.
+**STATE_UPDATE:** YES this one scoped finding only. NO edits to independent SHIP STATE, frozen global I192/vFHE state, OPEN_RESEARCH_BRANCHES backlog, or upstream code.

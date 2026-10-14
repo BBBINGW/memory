@@ -2,8 +2,8 @@
 
 **Checkpoint:** 2026-10-14 (Asia/Tokyo).
 **PI-selected target:** SHIP prepared evaluation-key selector memory, Cheon–Hanrot–Kim–Stehlé, EUROCRYPT 2025, ePrint 2025/784.
-**LAST COMPLETED:** **I198 COMPLETED** (PI's I-series label for the independent SHIP continuation); previous SHIP-M04 completed. **No compiled Poulpy variant run.**
-**STATUS:** I198 PASS narrow pinned-IFMA *conditional selector-prepared payload* and online-call-count screen; compiled CKKS accuracy, latency, process peak RAM, security and novelty remain **UNCLEAR / IMPLEMENTATION BLOCKED**; **NOVELTY NOT VERIFIED**.
+**LAST COMPLETED:** **I199 COMPLETED** (PI's independent SHIP continuation numbering); prior I198 and SHIP-M04 completed. **No compiled Poulpy variant run.**
+**STATUS:** I199 **FAIL runner-availability hypothesis / HUMAN_REVIEW / IMPLEMENTATION BLOCKED**. IFMA CPU instructions are present, but rustc/cargo and pinned checkout/dependencies unavailable here. I198 source-layout saving remains conditional; compiled accuracy, latency, peak RAM, security, novelty **UNCLEAR / NOT VERIFIED**.
 **Isolation:** SHIP-M01..M04 each in own `findings/ship-memory-MNN-*.md`; global `STATE.md` is actively used by another vFHE I-series conversation. **Do not overwrite or join histories.**
 
 ## Main candidate
@@ -25,9 +25,10 @@ In actual Poulpy SHIP, additional ~h high-precision conjugations plus two maskin
 - `findings/ship-memory-early-galois-guard-envelope-iteration197.md`: independent ideal-key-noise envelope; superseded for the stricter source-specific bounded sampled-Gaussian screen by existing M04. No production performance assertion.
 - `findings/ship-memory-prepared-ifma-cost-gate-iteration198.md`: selected pinned Poulpy IFMA backend and illustrative `N16384,h32,theta4,base2k52,raised_k468,L9`. Prepared selector left-convolution payload **512×4.5MiB=2.25GiB** baseline; candidate **256×4.5MiB=1.125GiB** (50% saving conditional on implementing the M01 packing). Ct×Pt terms **512→512**; masking per-column IDFT **64→128** (+64), plus **32 early Galois key switches**; existing final conjugation unchanged. These are source-layout / algorithm-operation counts, **not** measured Poulpy timings, accuracy or peak RAM.
 - True compiled Poulpy execution remains blocked locally: `cargo`/`rustc` absent, no compiled library and no DNS fetch. Do not repeat ideal noise simulations as substitutes.
+- `findings/ship-memory-ifma-runner-availability-gate-iteration199.md`: independent I199 execution-readiness test. Local x86_64 AVX512F/IFMA/VL flags PASS; cargo/rustc and compiled/pinned Poulpy checkout FAIL; GitHub/crates.io DNS FAIL. Pinned upstream `.github/workflows/ci.yml` includes Rust `nightly-2026-05-14` and AVX512 native/SDE CI, **but existing CI does not execute an implemented packed-selector variant**. No FHE functional or timing benchmark performed. Move to PI HUMAN_REVIEW rather than additional toy analyses.
 
-## NEXT_ACTION — only on PI continuation
+## NEXT_ACTION — HUMAN_REVIEW (one PI decision)
 
-Obtain a real executable pinned Poulpy Rust runner, and run **ONE** real masking-leaf paired-vs-baseline comparison at the same `N16384,h32,theta4,ld40,k_mask428`. Check prepared selector bytes, actual max decrypted slot error, time spent in masking + high-precision early Galois conjugation, and peak live memory. If such a runner cannot be obtained, report **IMPLEMENTATION BLOCKED / HUMAN_REVIEW**: PI decides PARK or seek implementation support, rather than generating more adjacent toy models. Do not change parent direction automatically.
+Choose **ONE**: (A) provide/authorize access to a Rust environment with pinned Poulpy code and dependencies (native AVX512-IFMA/VL for IFMA latency benchmarks, not merely SDE emulation), so the agent can run exactly one same-plan baseline-vs-packed masking-leaf CKKS accuracy / time / prepared bytes / peak RAM experiment; or (B) PARK the SHIP memory candidate until an executable runner exists. Do not repeat Gaussian/toy/operation-count substitutes and do not switch parent automatically.
 
 No changes to shared `STATE.md`, prior I193/I194/I195, or original HEaaN / third-party upstream Poulpy. PI retains strategic decision.

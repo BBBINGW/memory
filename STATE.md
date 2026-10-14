@@ -1,42 +1,32 @@
-# FHE Research State — after Iteration 193
+# FHE Research State — Independent SHIP-M01 (2026-10-14)
 
-**Checkpoint date:** 2026-10-14 (Asia/Tokyo)
-**LAST COMPLETED ITERATION:** **I193 COMPLETED**. **I194 NOT STARTED**.
-**STATUS:** I193 necessary algebraic gate **PASS**; scalable protocol/security/performance **UNCLEAR**; `NOVELTY NOT VERIFIED`. **No active technical hypothesis during handoff**; vFHE is the PI-selected parent target, not a confirmed repaired protocol. Await PI before executing I194.
-
-## CURRENT TARGET
-
-**vFHE cross-CRT scalar-index consistency**, Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO 2025, ePrint **2025/286**, https://eprint.iacr.org/2025/286. Primary source 52pp Research MCP GitHub mirror SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`; publisher/latest official byte-equivalence VERSION_UNVERIFIED.
-
-**Original gap [DERIVED I59–I60]:** native CRT-field lookup validates the rectangular product of digit tables, not the diagonal common scalar-digit relation. Exact source-form idempotent counterexample R=Z77[X]/(X²+1), h56, standalone and full ideal Pi_range PIOP, survives original componentwise §5/F.1 commitments under analyzed source. **NOT** an authenticated final-version compiled-SNARK exploit, nor confirmed actual deployed compromise. Prior I95, I136–I151 simple repairs archived: do not repeat direct RS Merkle column integer equality (FAIL honest completeness), same-point/one-point integer lifts, basic masked aggregations, shared challenge or Merkle-only batching.
+**ACTIVE PARENT / PI-SELECTED:** SHIP evaluation-key **resident prepared memory**, Cheon–Hanrot–Kim–Stehlé, *SHIP: A Shallow and Highly Parallelizable CKKS Bootstrapping Algorithm*, EUROCRYPT 2025, ePrint **2025/784**, https://eprint.iacr.org/2025/784.
+**ACTIVE SEQUENCE:** **SHIP-M01 COMPLETED**; **SHIP-M02 NOT STARTED**. This uses its **own per-round files**, NOT global old I194 numbering.
+**STATUS:** SHIP-M01 narrow **algebraic PASS** / real CKKS key-switch feasibility, full-bootstrapping noise/latency/peak RAM **UNCLEAR**; **NOVELTY NOT VERIFIED**. Await PI confirmation before M02. No author contact/public disclosure.
 
 ## CURRENT QUESTION
 
-Could a new **common bounded-integer encoded witness / shared Merkle coded-column commitment** bind all CRT factors to the SAME small integer digit, while permitting native field-linear PCS evaluation checks with adequate distance and with practical proof/privacy cost?
+Can the `4hθ` source-form SHIP encrypted column-selector mask **prepared left operands** be compressed while retaining encrypted support/sign secrecy, low depth and competitive 32-core latency (not only reducing persistent serialized key size)?
 
-## MOST RECENT COMPLETED TEST: I193
+## RECENT COMPLETED RESULT — SHIP-M01
 
-[FACT/source] §5/F.1–F.3 of 2025/286 commits to prime-specific coded matrices and RS/NTT roots. Brakedown (ePrint 2021/1043) and field-agnostic Expand-Accumulate Codes (ePrint 2024/1871) supply linear-code/accumulator ingredients, but their arbitrary-field proofs do NOT directly imply a bounded integer common generator when random nonzero field coefficients are replaced by integer 1.
+**[FACT/source]** Source §3.3 Lemma1, §4.4 Eqs.(7)/(8) & Algorithm4 use four **real-valued** masks for each hybrid column candidate; the actual implementation reverses column/mux stage. Independently pinned Poulpy `250d4392656cd313f92ca66d96d8865702d39ddf` holds all **4hθ** rank-1 `CKKSCiphertext` masks and prepares separate two-column `CnvPVecL` for each; a dense-secret conjugation key already exists. Original HEaaN peak memory unmeasured. Full ePrint mirror 33pp SHA256 `3e8deccd8bd5f3845a82baa56c90fbe03fbbe8a7e96844092d4d0f57cba80742`, VERSION_UNVERIFIED.
 
-[DERIVED+EXACT] Toy systematic integer code Enc(x)=(x,prefix(xA)), m8,beta2,p29,p37, A eight distinct weight-two {0,1} rows. Honest encoded values ≤16<p_min29; hence identical integer-coded columns at both primes. Exhaustive 3^8−1=6560 bounded nonzero differences and an independent full odd-characteristic extension-field argument establish exact minimum Hamming distance **3/16**. A mismatch e7 vs e5 changes exactly 3 positions. Local executable `/mnt/data/i193_vfhe_universal_integer_ea_toy.py` SHA256 `70e27821a362761316d36c2f097ec1634b20349e00c8bcf566d33e07c67d7502` (LOCAL ONLY, not GitHub MCP accessible).
+**[DERIVED + EXACT TOY]** Proposed **Complex-Paired Selector Packing**, for private REAL mask values M1,M2 encrypt ONE `C=Enc(M1+iM2)`; given arbitrary public complex P1,P2,
+`F=M1 P1+M2 P2=(C(P1−iP2)+Conj(C(conj(P1)−i conj(P2))))/2` in ideal slot semantics. Aggregate all pairs before **one ciphertext conjugation per masking accumulator**. Deterministic source-mask-replica checked **256** legal secret/half configurations ×8 slots=**2048** comparisons, max floating error 2.29e−16. If unchanged encrypted rank/limbs hold, per support prepared selector count **4θ→2θ (50% fewer)**; ciphertext-plaintext term count remains 4θ, with 2 accumulators, extra transform/normalization, and ~one **costly conjugation/key-switch per support/half**. It does not evade KDM/noise/modulus/security obligations or establish full-system speed/memory savings. Generic complex packing already known, novelty NOT established.
 
-[OPEN / NOT PROVEN] Uniform constant distance for source m256/1024 and all odd-characteristic extensions; new **one shared integer Merkle commitment** PC binding/proximity and cross-field extraction; hiding and digit leakage; random-query order/FS; 128-bit parameter/error budget; actual total bandwidth/runtime at source security. Illustration only: one F.2 evaluation's raw columns and vectors could drop ~1237.5 MiB to ~37.53 MiB under mu6144,m256,t32 and 4-byte encoded integer IF all shared-column assumptions hold; **NOT** proven total vFHE gain. Novelty vs published codes/PCS NOT verified.
+**Detail:** `findings/ship-memory-M01-complex-paired-selector-key-gate.md`. Local exact toy file (LOCAL ONLY) `/mnt/data/ship_m01_complex_pair_toy.py`, SHA256 `ae932f5b7a6b9fef7c37d19c847a4832566029a1582cb97db0f7d661e0576af8`.
 
-Detailed source, method, proof, caveats: `findings/vfhe-shared-integer-ea-column-bridge-iteration193.md`.
-Original gap: `findings/vfhe-crt-lookup-cross-component-soundness.md`, `findings/vfhe-crt-full-range-piop-and-commitment-audit.md`.
-Earlier failed direct coded-column idea: `failures/vfhe-original-rs-merkle-column-crt-integer-comparison-iteration151.md`.
-Further historical branches: `findings/OPEN_RESEARCH_BRANCHES.md` (P1), which is long-term index and not active-state authority.
+**PAST NEGATIVE GATES:** SHIP I171–I174 records in `findings/ship-*-iteration17{1,2,3,4}.md` (see exact filenames in M01), especially seeded persistent compression NOT prepared-memory reduction (I173), and direct per-candidate public-four-mask identity FAIL (I174); do not repeat.
 
-## MAIN OBSTRUCTION
+## NEXT_ACTION — SHIP-M02 ONLY AFTER PI CONTINUE
 
-The I193 result proves only a SMALL toy code; it does not establish a family with **uniformly positive relative distance and O(m) or near-NTT encoding** on native fields when all generator coefficients are small bounded integers. Brakedown/EA arbitrary-field analyses use field-dependent random coefficients. Even a suitable code would require an entirely new shared-commitment soundness and privacy proof; original fieldwise commitments do not automatically enforce diagonal digits.
+**ONE decisive source-level CKKS feasibility gate:** pinned Poulpy implementation — check the dense-key conjugation eval-key's actual supported modulus/precision and the `ship_masking_accumulate` accumulator `raised_k`/scale against candidate split U,V and required rescale. Implement/test **one** minimal rank-1 CKKS convolution+conjugation with nontrivial complex public P1,P2 to measure whether packed reconstruction works at the relevant level with acceptable error; first kill it if extra key-switch/level/noise is structurally prohibitive. Do NOT start a separate hypothesis, full benchmark, or another parent.
 
-## NEXT_ACTION — I194 only if PI confirms CONTINUE
+## FROZEN PREVIOUS PARENT — vFHE I193 (NOT MERGED)
 
-**ONE decisive source-sized integer-EA distance gate:** For a specific sparse {0,1}-coefficient expand-accumulate code family inspired by Block et al. ePrint 2024/1871 §2–§4, analyze whether fixing all nonzero weights to 1 yields a constant lower bound on relative Hamming distance over *all* relevant odd-characteristic extension fields at m=256 or1024. Prefer search for an explicit low-weight/codeword or asymptotic cancelling pattern that kills distance, before any large implementation. If no distance survives, KILL this simple code specialization; keep abstract common-integer commitment problem but do not auto-launch a different research parent.
+**vFHE I193 COMPLETED, I194 NOT STARTED**; previous primary target (Cascudo et al. ePrint 2025/286, CRT cross-component same-integer lookup repair) is **PARKED by PI's switch to SHIP**; there was a bounded-integer EA toy code PASS but scalable field-code distance/security/PCS OPEN. Its complete prior authoritative `STATE.md` is archived **verbatim** in:
+`logs/vfhe-state-2026-10-14-post-I193-pre-SHIP-M01.md` (source blob SHA `de08a0d82d905de5d386c7902022828f30a5cf6b`).
+Primary I193 derivation stays in `findings/vfhe-shared-integer-ea-column-bridge-iteration193.md`; original gap in `findings/vfhe-crt-lookup-cross-component-soundness.md` and `findings/vfhe-crt-full-range-piop-and-commitment-audit.md`. Preserve its existing next source-sized EA distance gate **only if PI explicitly reopens vFHE**. No SHIP result belongs to I193.
 
-## PARKED / OTHER BRANCHES
-
-AKU ePrint 2025/381 **PARKED — SOURCE_VERSION_GATED** after I190–I192; modeled Gaussian-DFR/table discrepancy conditional only, original author §5.1 rendered final chapter/code missing (`MISSING_SOURCES.md`). LFBS PRCA I188–189 simple hoisting/bookkeeping PARKED; threshold FHE PRSS I184–187 direct repairs PARKED; GBFV I182–183, direct dBFV→BGV I178–181, and GL generic BigSwitch archived/parked in branch index. Do not repeat these without new material premise.
-
-Rule: ONE primary falsifiable claim and ONE cheapest decisive test per authorized iteration; read before write, evidence provenance, preserve archive, PI chooses all strategic pivots and public disclosure.
+Rules: AGENT.md one primary hypothesis + one decisive minimal test per authorized round; read before write, explicit evidence provenance, one independent SHIP-MNN file per round, no auto-pivot, no unverified novelty/security/performance claims.

@@ -5,11 +5,11 @@
 
 ## CURRENT PI-SELECTED WORKSTREAM (SEPARATE COUNTER)
 
-**vFHE cross-CRT scalar digit/index consistency**, independent round **V16 COMPLETED**, next **V17 NOT STARTED**.
+**vFHE cross-CRT scalar digit/index consistency**, independent round **V17 COMPLETED**, next **V18 NOT STARTED**.
 
 **Authoritative separate round state:** `findings/vfhe-cross-crt-state.md`.
 **Technical evidence + research story:** `findings/vfhe-cross-crt-consistency-research.md`.
-**Current status:** Structural lookup/soundness question remains OPEN/HUMAN_REVIEW; integer-code bridge is a candidate, not a working PCS/SNARK repair. V16 proves that, under IDEAL prior binding of one shared canonical integer vector and every native per-factor residual, a fresh random Fp^L vector can fold all L=4(N/d) native link relations for ONE CRT prime into a single length-m functional per independent round, with exact false-accept probability 1/p for any fixed nonzero residual. In a separately opened direct MSM model, three folds reduce per-prime group input terms from 8192m to 3m (N8192,d4), but dense Fp coefficient folding remains O(3*8192*m), and actual common-a source mapping, third-field CP proof, ZK and whole soundness are OPEN.
+**Current status:** Structural lookup/soundness question remains OPEN/HUMAN_REVIEW; integer-code bridge is a candidate, not a working PCS/SNARK repair. V17 returns to ePrint2025/286 source: §3.1 CRT factor values and §5/F.1/F.2 independent native PCS do NOT automatically give a common scalar integer digit vector or justify V16 m=1024 as source m_PCS. Appendix E.2 physical p48 falsely infers that an invalid ring scalar-table digit must be invalid in at least one CRT field. Exact source-form toy p13,N4,d2 has e=7+4X² projecting to (1,0), individually valid Boolean digits while e is not scalar 0/1. The inspected paper's proof gap is grounded; ideal PIOP transcript, final compiled SNARK, and actual exploit remain UNVERIFIED. Next V18 source-faithful ideal PIOP gate.
 
 ### Legacy numbering mapping — provenance only
 

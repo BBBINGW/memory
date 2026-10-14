@@ -1,7 +1,7 @@
 # vFHE Research State — Independent V-Series
 
 **Checkpoint:** 2026-10-14 (Asia/Tokyo).
-**LAST COMPLETED vFHE ROUND: V18. V19 NOT STARTED.**
+**LAST COMPLETED vFHE ROUND: V19. V20 NOT STARTED.**
 **STATUS:** V17 FAIL the source-interface assumption that native CRT field commitments automatically extract SAME bounded integer digit vector; PASS exact SOURCE-FORM p13/N4/d2 nontrivial idempotent refuting a concrete implication in inspected source Appendix E.2 Theorem 4.8 proof. Original compiled SNARK exploit, final paper version and complete ideal PIOP transcript NOT VERIFIED. V16 abstract random folding remains mathematically correct in its IDEAL common-a model; no actual original-source cost or 128-bit PCS repair established.
 **GLOBAL GENERAL FHE ITERATION COUNTER:** FROZEN I192. vFHE has own V-series. Legacy V1–V4 once labeled I193–I196; preserve historical filenames/iterations without advancing global sequence.
 
@@ -43,3 +43,18 @@ Confirmed CRT-idempotent false range lookup htilde=e=7+4X² over R=F13[X]/(X⁴+
 Technical section `findings/vfhe-cross-crt-consistency-research.md` §27. Local script `/mnt/data/vfhe_v18_ideal_piop_crt_attack.py` SHA256 e80af660f6b79d7da47fd11cc6eb7a4efa4ff3271f622659ec456c0affe534e3, JSON `/mnt/data/vfhe_v18_ideal_piop_crt_attack_results.json` SHA256 d68f436ad2308b6d9b81edf2b23e43df49ab1864ef0438efc7e43edc8765704b. Script proves ground equations, not full separate interactive sumcheck transcript; both sum claims true, hence honest ideal sumcheck prover exists.
 
 **NEXT_ACTION V19 only if PI continues:** audit §2.2 and F.1/F.2 compiler: can ring oracle family via CRT be independently committed fieldwise in source PCS with NO implicit diagonal extraction, or is there a hidden global consistency check? Also check current author PDF edition before security claim. No author outreach until human PI.
+
+
+## V19 — source CRT PCS compiler interface gate (2026-10-14)
+
+**ONE HYPOTHESIS:** Perhaps original §2.2 / §5 / F.1-F.3, despite independently committed CRT field polynomials, imposes a *hidden* global scalar digit diagonal binding that would REJECT V18's invalid ring lookup oracle e=7+4X²→(1,0). 
+
+**RESULT PASS counterexample / FAIL hidden compiler-repair hypothesis:** Inspected §2.2 physical p9 converts polynomial oracles to polynomial commitments and opening proofs without scalar lookup predicates; §5 p25 and Appendix F.1 p50 define ring PC as **tuple of field PCs** to CRT projections; Appendix F.2 pp50–51 tests ONLY per-field linear-code consistency and polynomial evaluation; Appendix F.3 pp51–52 supplies a piecewise RS encoder. A tuple of separately binding field commitments determines a UNIQUE ring polynomial, but it may have NONDIAGONAL valid digit residues; extraction of ring e does not certify membership in diagonal scalar digit table t_beta. The compiler does not create a missing ring-range condition.
+
+**EXACT source-shaped toy:** R=F13[X]/(X⁴+1), N4,d2,p13, β2, e=7+4X² CRT (1,0) but e∉{0,1}. Native field implementation genuinely uses F13[u]/(u²−5) and F13[u]/(u²−8); pad 1-variable oracles with dummy variable to ell=2 and native F.2 matrix U_f 2x2. F.3 piecewise [N/2=2,N/4=1] RS Enc([a,b])=[a,a,b,b], native encoded matrix 2x4. SHA256 Merkle commits each encoded COLUMN (two extension-field elements per leaf), honest openings verified; corrupted leaf rejected. For all 8 oracle names (h,read_ts,final_cts,table,4GP) x 2 CRT factors x 64 seeded ring challenge instances, ALL F.2 native testing + evaluation exact identities pass; **8192 authenticated column equality checks**, including general F13² challenges/evaluation points. Yet invalid ring scalar digit persists; no hash collision or codeword error needed. Symbolic semantics: honest field PCS completeness supports V18 ideal prover's ring evaluations, conditional on source source-form PIOP correctness and modeled interfaces.
+
+**LIMITS:** Not actual full secure Brakedown extractor, compiled Fiat–Shamir SNARK, deployment or 128bit parameter attack; source mirror edition PDF 52pp SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, version VERSION_UNVERIFIED. Public web search cache of official ePrint PDF has 50pp older-looking rendering; direct live PDF download failed; do NOT assert official latest/proceedings version matches. V18 figure-specific protocol review was 52pp edition only.
+
+**Local reproducible files, run twice identical:** `/mnt/data/vfhe_v19_pcs_compiler_interface_gate.py` SHA256 `32f3964ca023c58aefddd1c4e83c51de7ffd7c17d80a377c51235f6cba3f04fa`; `/mnt/data/vfhe_v19_pcs_compiler_interface_results.json` SHA256 `9afabaa9ffec407e0d401d98d1afc54da5c4b38a181206a6537cfaa961057d9f`. Only notes committed to Git, scripts local. Details in `findings/vfhe-cross-crt-consistency-research.md` §28.
+
+**NEXT_ACTION V20 ONLY ON PI CONTINUATION:** ONE decisive falsifiable bridge to the original **OUTER** coefficient range relation R_range: choose source-compatible N4,B4,β2,c2 and construct an invalid coefficient-range ring polynomial v (not in TB) represented as linear combination of ring idempotent digits h with Eq22, verifying Π_decomp and the V18 inner Π_beta_range. If source Eq22 blocks such witness, document obstruction; otherwise obtain complete outer Π_range ideal counterexample. No more unrelated PCS or RAA tests. PI controls possible author disclosure. General FHE iteration I192 remains FROZEN.

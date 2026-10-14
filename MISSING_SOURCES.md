@@ -129,3 +129,19 @@ Human Action: Supply authorized exact PDF or source code/reference artifact; no 
 Repository Path: **PENDING/NONE**.
 Readability Verification: **PENDING**; recover version/hash and inspect relevant original theorem/equations on receipt.
 Evidence: post-CGS17 source acquisition gate, 2026-10-14.
+
+
+## Li–Xiang–Yang Levis plain-model MKFHE Cofactor Compatibility full text (2026-10-14)
+
+Status: **MISSING** (authenticated full PDF/source; public abstract available)
+Authors: Baoyu Li; Binwu Xiang; Kang Yang
+Venue / Year: IACR ePrint 2026/2263, publicly listed 2026-09-29; preprint, final peer-reviewed status not verified.
+Identifier: https://eprint.iacr.org/2026/2263 ; public abstract mirrored at https://eprint.iacr.asia/2026?offset=100
+Needed For: independently compare Levis-fast/Levis-small against Min–Park–Song CRYPTO 2026 / ePrint 2026/322, especially Cofactor Compatibility, extension-free evaluation, initial ciphertext communication, lifting/key costs and underlying security/noise assumptions.
+Missing Evidence: formal Cofactor Compatibility definition and proof; Levis-fast and Levis-small KeyGen/Enc/Eval/Dec algorithms; relative ciphertext/evaluation-key dimensions; reduction and security assumptions; noise/error growth and benchmark matched parameter tables; optional pinned source/code.
+Why Public Retrieval Failed: Research MCP get_eprint_paper("2026/2263") returned RETRIEVAL_BLOCKED (official ePrint PDF HTTP403, fixed Github mirror no PDF, no exact-title author-matched arXiv paper). Web PDF URLs under eprint.iacr.org and eprint.iacr.asia inaccessible; author publication site and targeted search display abstract/download label but did not provide accessible reliable full text. Search of public repositories for title/Levis/Cofactor Compatibility did not find an independently verifiable release. Do not infer private artifacts do not exist.
+Impact: published abstract explicitly claims MPS's O(dk²) per-input extension eliminated by Levis-fast and O(d) fresh ciphertext communication under Levis-small; this suffices as prior-art/novelty warning **only**. No theorem-level verification of technique, joint-key security, noise or performance. Novel new MKFHE extension-removal mechanism must be differentiated from Levis; do not invent differences without source.
+Human Action: If authorized, supply the exact full PDF or stable author manuscript and (for performance review) code/parameters; no unsolicited author contact.
+Repository Path: **PENDING/NONE**; once supplied, put an authorized copy in papers/supplied/ if repository protocol allows.
+Readability Verification: **PENDING**. After supply, verify PDF SHA/version, read pages defining Cofactor Compatibility and concrete algorithms and visually verify hard mathematical identities.
+Evidence: findings/mkfhe-levis-2026-2263-extension-free-novelty-source-gate.md (2026-10-14).

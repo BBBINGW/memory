@@ -2,8 +2,8 @@
 
 **Checkpoint:** 2026-10-14 (Asia/Tokyo).
 **PI-selected target:** SHIP prepared evaluation-key selector memory, Cheon–Hanrot–Kim–Stehlé, EUROCRYPT 2025, ePrint 2025/784.
-**LAST COMPLETED:** **SHIP-M04 COMPLETED**, **SHIP-M05 NOT STARTED**.
-**STATUS:** Narrow source-gadget sampling+ideal rounding noise falsifier **PASS** (the claim of necessarily prohibitive noise FAIL); actual FHE accuracy, latency, security, prepared RAM reduction **UNCLEAR**; **NOVELTY NOT VERIFIED**.
+**LAST COMPLETED:** **I198 COMPLETED** (PI's I-series label for the independent SHIP continuation); previous SHIP-M04 completed. **No compiled Poulpy variant run.**
+**STATUS:** I198 PASS narrow pinned-IFMA *conditional selector-prepared payload* and online-call-count screen; compiled CKKS accuracy, latency, process peak RAM, security and novelty remain **UNCLEAR / IMPLEMENTATION BLOCKED**; **NOVELTY NOT VERIFIED**.
 **Isolation:** SHIP-M01..M04 each in own `findings/ship-memory-MNN-*.md`; global `STATE.md` is actively used by another vFHE I-series conversation. **Do not overwrite or join histories.**
 
 ## Main candidate
@@ -20,8 +20,14 @@ M04 local reproduction: `/mnt/data/ship_m04_source_noise_bound.py` SHA256 `f589c
 
 In actual Poulpy SHIP, additional ~h high-precision conjugations plus two masking-domain IDFT/normalization paths may erase the real latency win and increase transient RAM. The exact number/size of *prepared* selector operands and total RAM need a modified implementation, and actual full-message CKKS error requires backend-level confirmation. The mathematically ideal key-sampling noise is not a meaningful bottleneck under source high precision, despite the prior low-precision toy warning.
 
-## NEXT_ACTION — SHIP-M05, PI continuation only
+## New results after SHIP-M04: I197, I198
 
-ONE source-specific end-to-end **memory vs online-cost gate** for complex-paired selectors. Prefer a real pinned Poulpy test runner comparing baseline & packed at the SAME plan: prepared left selector-key buffer bytes, scratch/peak live bytes, masking + extra early conjugation wall clock, and maximum per-slot error. If no Rust runner, one grounded analysis of true backend prepared bytes and extra operation counts with explicit unverified runtime cost, then STOP without claiming a speedup. One primary falsifiable hypothesis + one minimal test. No new research target or merge into vFHE.
+- `findings/ship-memory-early-galois-guard-envelope-iteration197.md`: independent ideal-key-noise envelope; superseded for the stricter source-specific bounded sampled-Gaussian screen by existing M04. No production performance assertion.
+- `findings/ship-memory-prepared-ifma-cost-gate-iteration198.md`: selected pinned Poulpy IFMA backend and illustrative `N16384,h32,theta4,base2k52,raised_k468,L9`. Prepared selector left-convolution payload **512×4.5MiB=2.25GiB** baseline; candidate **256×4.5MiB=1.125GiB** (50% saving conditional on implementing the M01 packing). Ct×Pt terms **512→512**; masking per-column IDFT **64→128** (+64), plus **32 early Galois key switches**; existing final conjugation unchanged. These are source-layout / algorithm-operation counts, **not** measured Poulpy timings, accuracy or peak RAM.
+- True compiled Poulpy execution remains blocked locally: `cargo`/`rustc` absent, no compiled library and no DNS fetch. Do not repeat ideal noise simulations as substitutes.
+
+## NEXT_ACTION — only on PI continuation
+
+Obtain a real executable pinned Poulpy Rust runner, and run **ONE** real masking-leaf paired-vs-baseline comparison at the same `N16384,h32,theta4,ld40,k_mask428`. Check prepared selector bytes, actual max decrypted slot error, time spent in masking + high-precision early Galois conjugation, and peak live memory. If such a runner cannot be obtained, report **IMPLEMENTATION BLOCKED / HUMAN_REVIEW**: PI decides PARK or seek implementation support, rather than generating more adjacent toy models. Do not change parent direction automatically.
 
 No changes to shared `STATE.md`, prior I193/I194/I195, or original HEaaN / third-party upstream Poulpy. PI retains strategic decision.

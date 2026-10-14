@@ -1401,3 +1401,46 @@ No PDF or code was committed to Github; only this archived research NOTE. No act
 
 **NEXT_ACTION V19 (on PI continuation only):** ONE source-faithful EXTENSION of this invalid Pi_beta_range witness to the full outer Pi_range (Eq22 decomposition, Figure1, Pi_decomp) for a ring value with an invalid small COEFFICIENT range, without inventing a hidden digit-to-coefficient link. If that passes, a falsified coefficient-range proof is closer to the CKKS high-level validation interface. Retain separate source PDF version warnings and privacy/soundness distinctions. After that, before contacting authors, verify exact official/version-equivalent source and independent formal transcript review, and let human PI decide disclosure.
 **END V18:** STATUS=PASS complete Figure1 ideal PIOP counterexample; STATE_UPDATE=YES; global I192 frozen.
+
+
+## 27. vFHE V18 — CRT-lifted dishonest ideal PIOP Figure 1 transcript
+
+Date: 2026-10-14. Independent vFHE V18; global I192 frozen.
+
+**One hypothesis / decisive test:** Does the p13,N4,d2 idempotent from V17 extend from one false implication in source Appendix E.2 to a valid transcript satisfying ALL ideal-oracle algebraic verifier constraints in paper Figure 1 Π_beta_range, for an invalid t_beta={0,1} ring lookup? Distinguish ideal oracle algebra from compiled PCS/SNARK and Theorem4.8 quantitative soundness at concrete tiny security.
+
+**STATUS: PASS exact constructed dishonest ideal-IOP algebraic acceptance**, subject to the precise scope: fieldwise honest grand-product/memory prover oracles glued via CRT, transcript's claimed lookup is false in ring, yet Fig1 grand products, final root identity and both Boolean-domain sumcheck polynomial SUM claims hold for every verifier challenge (checked exhaustively for a subset and proven by CRT). This refutes soundness of the SOURCE-SPECIFIED ideal oracle relation in this model. Does NOT verify a real compiled Brakedown PCS, FS transform, non-oracle implementation, 128bit concrete soundness or official current PDF version.
+
+**Original source [FACT]:** Cascudo et al. *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO2025, ePrint2025/286. Cached 52pp GitHub mirror SHA256 29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19, official latest parity VERSION_UNVERIFIED. §3.1 p10 CRT factor decomposition; §4.3 p22 Lemma4.6 field memory-counter, pp22–23 Fig1 Π_beta_range 3 rounds; Thm4.8 p23 β<p_min and 2^ellstar<p_min; Appendix E.2 physical p48 gives false 'some field factor outside scalar table' inference. Figure1 explicitly has prover precommit read_ts,final_cts BEFORE verifier sigma,tau, then prover constructs GP f oracles BEFORE verifier chi,rho,xi, then two sumcheck protocols verify zero sums. No additional diagonal-equality step found in these inspected protocol lines. This is an ideal PIOP finding for inspected edition, not an exploit against another edition.
+
+**Counterexample [DERIVATION]:** N4,d2, p13=1+(2N/d)*3, ellstar1, beta2. R=F13[X]/(X4+1)≅F13²×F13² via (X²−5)(X²+5). e=7+4X² maps CRT (1,0), e²=e, e not in scalar {0,1}. Let htilde be constant polynomial e, so BOTH Boolean inputs htilde(0)=htilde(1)=e and the original ring t2 membership relation is FALSE. Source Theorem4.8 side bounds beta2<p13 and 2^ellstar2<p13 hold. Native components see honest lookup digits (1,1) and (0,0).
+
+**Memory counters BEFORE sigma,tau:** One R-valued read_ts oracle has Boolean leaves (0,1). CRT field component1 has two accesses to table digit1, component2 two accesses to table digit0. Their legal final-count tables are component1 (0,2), component2 (2,0). CRT glue into ONE R-valued final_cts oracle with leaves [2(1−e),2e] (in two field-coordinate pairs [(0,2),(2,0)]).
+
+**After sigma,tau:** Figure1's four corresponding 2-leaf vectors, writing products of elements in commutative R:
+ WSh leaves: (e+sigma−tau,e+2sigma−tau);
+ RS leaves: (e−tau,e+sigma−tau);
+ WSt leaves: (−tau,1−tau);
+ S leaves: (−tau+2sigma(1−e),1−tau+2sigma e).
+The ring product equality WSt·WSh=RS·S holds identically in R for EVERY ring sigma,tau, by applying CRT into the two fields and using memory-count equality. Explicit sigma,tau can be arbitrary ring elements; the proof is per-component, not dependent on integer challenges or exceptional-set sampling.
+
+**Grand-product oracle tables:** For ANY 2-leaf values (v0,v1) in R, define a polynomial via its 2x2 Boolean interpolation table
+ f(0,0)=v0; f(0,1)=v1; f(1,0)=v0*v1; f(1,1)=0.
+This implements source Lemma4.7's recursion at both input bits i=0 and i=1:
+ f(1,0)=f(0,0)f(0,1), f(1,1)=f(1,0)f(1,1)=0;
+ and root f(1,0)=P.
+For each of the four products choose its corresponding f as Fig1's grand-product oracle after sigma,tau and BEFORE chi,rho,xi. Resulting virtual sums over Boolean X of
+   [f_WSh(1,X)−f_WSh(X,0)f_WSh(X,1)+chi*(f_RS(1,X)−f_RS(X,0)f_RS(X,1))]*eq(rho,X)
+ and analogously for WSt,S with xi, are exactly ZERO because the GP recursion defects vanish for EACH Boolean X. Thus BOTH requested sumcheck zero targets are TRUE polynomial sum statements; ideal sumcheck prover can answer all challenges honestly (the interpolated polynomial may be nonzero outside Boolean hypercube, but that is expected and sumcheck checks the sum, not pointwise zero away from Boolean inputs). The final root equality is also true. All verifier queries access the same pre-specified/interpolated R-valued oracles.
+
+**Ordering:** read_ts and final_cts fixed before sigma,tau; f_WSh,f_RS,f_WSt,f_S selected after sigma,tau, before chi,rho,xi, as required; virtual-oracle sumcheck uses previously fixed polynomials. No challenge-dependent redefinition of previously bound oracles.
+
+**Exact experiment:** /mnt/data/vfhe_v18_ideal_piop_crt_attack.py SHA256 e80af660f6b79d7da47fd11cc6eb7a4efa4ff3271f622659ec456c0affe534e3; JSON /mnt/data/vfhe_v18_ideal_piop_crt_attack_results.json SHA256 d68f436ad2308b6d9b81edf2b23e43df49ab1864ef0438efc7e43edc8765704b. Standard Python. 676 test configurations include all 13² base-scalar sigma,tau with 3 chi/rho/xi combinations, plus 169 mixed-component ring sigma/tau choices. Each verified four GP recursions, final root product, two virtual Boolean-sum defects, false scalar table membership, true all factor table membership. The symbolic CRT reasoning establishes truth for all ring challenges, not just the 676 tested.
+
+**Potential subtleties / scientific restrictions:** Source PDF extraction may distort Figure1's indices, but current construction matches Lemma4.7 printed recursion and factor-level honest memory counter semantics. Need independent TEX/rendered-PDF check before author-facing claim. The calculation does not independently implement a generic interactive sumcheck transcript at each random verifier challenge; it proves its claimed sum identity true, which suffices for existence of a perfectly complete ideal sumcheck prover. This construction depends on the SOURCE-SPECIFIED ideal-oracle model; source's polynomial commitment implementation and any external cross-field constraints not tested. Avoid asserting full final SNARK compromised or that cited authors have not already patched a newer version. The very small toy p13 has no meaningful 128bit parameters, although algebraic acceptance is identity and its CRT mechanism extends abstractly whenever the ring has at least two field factors.
+
+**Decision:** PASS transition from proof-step error (V17) to source-specified ideal oracle algebraic soundness failure. Full cryptographic exploitation status UNCLEAR / HUMAN_REVIEW. No proactive disclosure without human PI decision.
+
+**NEXT V19 on PI continuation:** ONE decisive external-source / compiled-interface gate: inspect original §2.2 PCS compilation and F.1/F.2 oracle commitment binding for whether any global scalar-table representation consistency is additionally enforced; prove or disprove that CRT-glued oracles can be committed/extracted as one ring polynomial without a diagonal check. If not, document precise obstruction; if yes, formulate bounded, reproducible adversarial transcript and possible minimal fix. In parallel confirm ePrint newest author version provenance as necessary; do not silently change source edition.
+
+**END V18:** STATUS PASS ideal Fig1 counterexample; RESULT CRT-glued prover memory counter, GP and sumcheck true identities for invalid ring table input; STATE_UPDATE YES, vFHE V-series only; global FHE I192 frozen.

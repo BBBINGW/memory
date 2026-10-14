@@ -1,15 +1,15 @@
 # Global FHE Research State — Independent vFHE Track
 
-**Checkpoint:** 2026-10-14 (Asia/Tokyo)
+**Checkpoint:** 2026-10-15 (Asia/Tokyo)
 **GLOBAL GENERAL FHE ITERATION COUNTER:** **I192 is the last completed global round. This counter is FROZEN** while the human PI directs independent vFHE work. Do not start I193+ as a continuation of the old general sequence merely because the vFHE project continues.
 
 ## CURRENT PI-SELECTED WORKSTREAM (SEPARATE COUNTER)
 
-**vFHE cross-CRT scalar digit/index consistency**, independent round **V32 COMPLETED**, next **V33 NOT STARTED**.
+**vFHE cross-CRT scalar digit/index consistency**, independent round **V33 COMPLETED**, next **V34 NOT STARTED**.
 
 **Authoritative separate round state:** `findings/vfhe-cross-crt-state.md`.
 **Technical evidence + research story:** `findings/vfhe-cross-crt-consistency-research.md`.
-**Current status:** V32 PASS an actual auditable but CRYPTOGRAPHICALLY INSECURE toy Pedersen-bit/OR-Schnorr + quotient/Schnorr native-to-cross-prime linking interface: original source Appendix F.2 Merkle/RS PCS PUBLICLY authenticates y first, then third-field proof takes EXACT same y as common public input rather than rechecking SHA/Merkle within SNARK. Exact p13/p29,N4,d2,ellstar3,H8,beta4 honest native F.2 and 36 OR plus four aggregate Schnorr proof verifications pass; native mixed CRT261 (mod13=1,mod29=0) with shared canonical a0 passes independent native F.2 but is rejected by p13 integer CP. Group subgroup order r1009 is trivial to break, so NO actual 128bit soundness, proof extraction, FS composition, zero knowledge or original source compiled exploit established. Nonaggregated source-sized H2^24,beta4 cost ~1GiB Pedersen bit commitments plus ~6GiB OR proof transcript; NOT practical, not a lower bound. V32 standalone finding `findings/vfhe-v32-public-y-cp-glue.md`, V32 checkpoint in separate state. **NEXT V33** evaluate one published succinct aggregate bit/vector proof retaining authenticated public F.2 y or human-review source version; global FHE I192 FROZEN.
+**Current status:** V33 FAIL treating original Bulletproofs (ePrint2017/1066) STOCK aggregated range proof as a log-sized TOTAL canonical-CRT digit CP. The published proof is 1,888B at beta4,H2^24 under 32-byte elements, but explicitly assumes H=16,777,216 public Pedersen value commitments V_j (512MiB if transported separately), which source F.2 native Merkle/RS does not supply. Stock range proof also does not establish 8 cross-prime native-y quotient relations under same bounded a. This FALSIFIES OUR hoped-for cheap V32 aggregate repair, NOT published Bulletproofs or original vFHE. H32 insecure Pedersen/Schnorr toy remains source-binding positive; source latest Feb2026 IACR binary still VERSION_UNVERIFIED. Full H33 finding `findings/vfhe-v33-bulletproofs-aggregate-value-commitment-interface-gate.md`, authoritative independent state updated to V34 NEXT, general I192 remains FROZEN.
 
 ### Legacy numbering mapping — provenance only
 

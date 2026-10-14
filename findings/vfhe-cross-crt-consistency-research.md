@@ -766,3 +766,117 @@ Thus ANY source-form 49-bit p_i>2^48 satisfies no-wrap for all legal digit pairs
 **Next V10 (only when PI continues):** test ONE sound non-circular **binding/extraction interface** that makes original Appendix F.2's prover/committed object genuinely a *shared canonical bounded integer witness* before relying on V9's restricted-codeword distance. Cheap falsifier: does a proposed shared-Merkle column commitment plus range-constrained openings actually enforce the boundedness of UNOPENED columns against malicious CRT-lifted inconsistent prover vectors? If not, KILL that naïve interface before building any larger PCS. No more local minor-rank checks unless new reasoning requires them.
 
 **End V9:** STATUS=PASS bounded-digit global restricted-distance theorem and exhaustive finite check; OPEN unrestricted PCS and integration; RESULT positive proof gate with exact no-wrap, binary RAA citation and F.2 obstacle; STATE_UPDATE=YES independent vFHE; global general I192 unchanged.
+
+
+## 19. vFHE V10 — one shared integer Merkle root does not deterministically bind CRT digits from sampled range checks (2026-10-14)
+
+**One primary falsifiable hypothesis:** Suppose we improve the proposed *shared canonical-integer Merkle codeword* architecture by committing to ONE integer array Y of encoded columns, using the same leaf root for all CRT native fields. Do postcommit sample openings checking honest integer leaf range alone already **force the entire unopened array** to encode a SINGLE bounded digit witness (no new proof layer) when the original Appendix F.2 linear field consistency checks pass?
+
+**Result: FAIL for the deterministic implication.** An explicit two-prime CRT-lifted Y has ONE genuinely authenticated Merkle root and is an EXACT valid (but DIFFERENT) bounded-digit codeword in each native field, despite having invalid large integer lifts at only a few coordinates. It passes all field-linear code-consistency identities regardless of challenge; a verifier that checks the common-integer *range only on t postcommit columns* accepts precisely when it misses those bad columns, with quantifiable probability. This is a scoped attack on the NAIVE **proposed repair**, NOT on original vFHE or the actual F.2 PCS.
+
+### Primary source anchor [FACT]
+
+Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO 2025, ePrint2025/286, Appendix F.2 physical pp50–51 from Research MCP mirror (52pp, SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, official latest version VERSION_UNVERIFIED):
+- F.2 commits to a FIELD matrix Uhat_f whose columns are authenticated as Merkle leaves.
+- Testing verifier sends random r∈F^m; prover gives v=r·U_f; then verifier samples column set Q uniformly AFTER the encoded commitment, checks openings and Enc(v)|Q = r·Uhat_f[:,Q].
+- Evaluation uses a field vector q1 and other sampled columns.
+- Source F.2 does NOT introduce our new shared-integer-root/CRT canonical leaf-range check; that hypothetical auxiliary modification is ONLY OUR design target. We must not describe this example as an exploit of the published protocol.
+
+### Smallest exact attack [DERIVATION / EXPERIMENT]
+
+Take m=8, beta=2, length M=3m=24. Use the genuine UNWEIGHTED public integer generator G=[I_m | Repeat2 Perm1 U1 Perm2 U2] with two independent seeded permutations, seed 20261014. Two **legal Boolean digit vectors**
+
+    a=e_6,  b=e_2,
+
+are distinct, and E_Z(a),E_Z(b) differ in EXACTLY d=5 positions
+
+    D={2,6,15,22,23} (0-based indices).
+
+All honest codeword entries are nonnegative and bounded by
+
+    H=m(2m+1)(beta−1)=8·17=136.
+
+Select TWO different genuine SOURCE-FORM 49-bit CRT primes (original N=8192,d=4; p=4096·odd+1):
+
+    p=281474976829441,
+    q=353581838970881,
+
+both prime, both >H, both ≡4097(mod 8192).
+
+For EACH j in [M], set unique representative Y_j∈[0,pq) by coordinatewise CRT:
+
+    Y_j = A_j + p·(((B_j−A_j)·p^{-1}) mod q),
+
+where A=E_Z(a), B=E_Z(b). Then **for every coordinate**, not only sampled ones,
+
+    Y mod p = Enc_Fp(a),
+    Y mod q = Enc_Fq(b).
+
+Consequently EVERY original-style **FIELD LINEARITY** check (including arbitrary r·U_f) passes perfectly in each component provided native underlying matrices are respectively the valid a and b. A Merkle tree over all 24 canonical pq-residues Y has ONE SHA256 root, and all 24 leaf authentication paths verify. There is no hash collision.
+
+**Exact range criterion:** Because A_j,B_j∈[0,H] and H<min(p,q), the CRT representative Y_j∈[0,H] iff A_j=B_j. Proof: if Y_j≤H then its residues modulo p and q both equal itself, forcing A_j=B_j=Y_j; if A_j=B_j the unique [0,pq) CRT lift is the common small value. Thus
+
+    {j:Y_j>H} = supp(E_Z(a−b)) = D,
+
+exactly FIVE invalid (too large) leaves, with 19 valid-looking leaves. A one-root commit cannot deterministically certify ALL leaves by checking only a proper random subset.
+
+**Postcommit sampling:** Fix the single Merkle root before Q is drawn uniformly without replacement, |Q|=t. The native field linear checks never reject; verifier rejects precisely when Q intersects D, hence
+
+    Pr[PASS] = C(M−d,t)/C(M,t).
+
+Exact toy probabilities:
+- t1:19/24 =79.1667%
+- t2:171/276=61.9565%
+- t4:3876/10626=36.4766%
+- t8:75582/735471=10.2767%
+- t12:50388/2704156=1.86335%
+- t16:969/735471=0.131752%
+- t20:0.
+
+Independently enumerate ALL 10,626 4-subsets: EXACTLY 3,876 miss all invalid leaves, matching the closed formula. If sample indexes are announced BEFORE the commitment, a cheating prover can choose bad positions outside them and the above postcommit bound does NOT apply: commit-before-random-query ordering is mandatory. This is a demonstration of a missing binding requirement, NOT a claim that all properly calibrated Merkle sampling is insecure.
+
+### Conditional positive sampling lemma [DERIVED, NOT A PCS PROOF]
+
+Suppose (a) the shared root is fixed before sample selection; (b) in every CRT field some mechanism INDEPENDENTLY proves/extracts an EXACT codeword encoding of a legitimate a_i∈[0,beta−1]^m; (c) canonical integer samples Y_j are range-tested in [0,H] with H<mink p_k; (d) V9 bounded-integer no-wrap holds; and (e) G has bounded-digit minimum distance at least d0 between every distinct pair of LEGAL bounded digit vectors.
+
+For any two CRT components having a_i≠a_l, the cross-field CRT lift must violate the common integer range on at least
+
+    d0≤wt_Z(E_Z(a_i−a_l))
+
+coordinates (a small leaf congruent to two honest coordinates forces equality of those coordinates). Therefore the probability that t uniform postcommit openings miss ALL invalid columns is at most
+
+    C(M−d0,t)/C(M,t) ≤ (1−d0/M)^t ≤exp(−t d0/M).
+
+If binary RAA interleavers satisfy the classical good-distance event, V9 gives d0≥epsilon m, M=3m, so the last bound is ≤exp(−epsilon t/3), conditional on exact-codeword extraction. One could *in principle* choose t based on actual concrete epsilon, number of CRT comparisons, target 128-bit soundness, and all other failure terms.
+
+**Major unresolved circularity:** Original F.2 tests arbitrary native-field r·U_f and q1·U_f, NOT bounded digit vectors. V9's restricted-distance lower bound does not show those arbitrary FIELD-LINEAR committed rows are close to/extractable as bounded integer codewords. Hence premises (b) and (e) as used in an operational shared PCS are NOT certified by the currently proposed scheme. Treat the conditional lemma as a design obligation, not a security theorem for the full protocol.
+
+### Independent actual verification [EXPERIMENT]
+
+Single reproducible local Python script
+
+    /mnt/data/vfhe_v10_shared_merkle_crt_lift_gate.py
+    SHA256 fc7de6805b5ad9ff5adecaa02aa02bfa6e7522a06161d0c105d76ff114cea9e7
+
+Result JSON
+
+    /mnt/data/vfhe_v10_shared_merkle_crt_lift_gate_results.json
+    SHA256 19848a3da4bcba881d6b671f499ab767554c80dab06285768c2244e0413383fa
+
+- Exhaust ALL 3^8−1=6560 nonzero bounded Boolean difference vectors for this fixed seed and find exact restricted code pair distance d=5, witness e6−e2.
+- Build both genuine two-permutation/two-prefix integer codewords from scratch and recombine coordinatewise CRT into ONE integer leaf array.
+- Verify all 24 Merkle leaf hash-authenticated openings against one root, and a modified leaf fails authentication.
+- Verify TWO fields' exact encoding relations on ALL 24 coordinates for several arbitrary field-linear scalars.
+- Find exact five invalid leaves; exhaustive t4 sampling + combinatorial t1,t2,t3,t4,t6,t8,t12,t16,t20,t24 probabilities.
+- Source primes satisfy N8192,d4 CRT-congruence shape.
+- This is a constructed toy attack on sampled range checking; not a statistical estimate over random real-world interleavers or an actual bit-security assessment.
+
+### Decision and next falsifiable gate
+
+**KILL as a deterministic assertion:** "Shared Merkle root + finite sampled range checks (by themselves) force all unopened leaves to be one canonical bounded integer codeword." One root DOES NOT imply bounded-range validity or equal CRT digit witnesses.
+
+**KEEP as a conditional probabilistic option:** With a proven native-field exact-codeword extractor, V9 restricted distance, rigorous sampling/FS order, and enough queries, canonical leaf range samples can catch different digit vectors with probability at least 1−C(M−d0,t)/C(M,t). It may also require masking/pseudorandomization to preserve ZK of low-entropy digit data, secure leaf-size encoding (~98-bit CRT lifts vs ~49-bit honest), and cost accounting.
+
+**V11 NEXT_ACTION only on PI continuation:** One cheapest test of a NON-CIRCULAR **field-codeword-to-integer-witness extraction** mechanism before the Merkle sampling step. Ask if a seemingly natural "use original F.2 field-linear test, then interpret the committed systematic coordinates as a bounded integer vector" actually extracts ONE vector shared across CRT fields; seek a CRT-idempotent counterexample when systematic coordinates are fieldwise different, even if all fieldwise codeword checks are perfect. This is a distinct extraction hypothesis, NOT one more sampled leaf microcase.
+
+**End V10:** STATUS=FAIL naive deterministic global binding; PASS precise CRT-lift toy certificate & conditional sampling bound; OPEN full shared PCS and soundness/zero-knowledge; STATE_UPDATE=YES independent vFHE, global general FHE I192 unchanged.

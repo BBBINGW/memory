@@ -690,3 +690,24 @@ Since `t=185/q`, the Fourier character is well-defined on residues mod q, with N
 **NEXT_ACTION (CGS-14; only after PI next continuation):** Select ONE named published PCF/PRSS construction with a precise adaptive multi-nonce security game, and test its security definitions against the **source-visible transcript replacement** property with pre-existing public FHE pk, corrupted FHE secret shares and PCF keys. Identify ONE concrete missing condition or prove one smallest compatible hybrid lemma. Do not repeat trivial reuse examples, coefficient enumeration or old Shamir-square attacks.
 
 **STATE_UPDATE:** NO to global/vFHE STATE.md; CGS topic append only.
+
+
+---
+## CGS-15 — Ideal public-circuit PCF vs hidden FHE norm (2026-10-14)
+
+**Independent CGS track. ONE hypothesis/test.** Read AGENT.md, RESEARCH_PHILOSOPHY.md, STATE.md (global I192 frozen, vFHE V15 independently active), and topic history. The prior CGS-14 full report is local only, not falsely claimed to be already committed.
+
+**Primary sources [FACT]:** Abram–Scholl–Yakoubov ePrint 2022/535, original pp43–48: Definition7.1 specifies public circuit description C as input to ideal Public-Key PCF Eval, with Section7 expressly treating correlations without master secrets; Theorem7.8 builds a general ideal PCF using reusable DUS, ROM and PKE. Section7.2 p48 generates an encrypted output under each participant's PKE key. PDF SHA256 01049b2f0bd222fad71ee380838f3409ef560b75da02521b29b0d6d65c6bb0b3, version unverified. Okada–Takagi ePrint 2025/409 §1.2 p4 cites O(LDec) pre-shared-pad storage as open; Algorithm6 p26 specifies existing hidden FHE s and Gaussian padded Shamir shares with squared scale sigma0²(Bpub²−||s||²). Source PDF SHA256 98993522b80695ab415cc5d8c28dddc1dbe8b78ac3550d2063140ce718c6a301, parity unverified.
+
+**H-CGS15:** The unmodified Section7 public-circuit PCF can directly provide per-session Shamir Gaussian shares conditioned on an already existing hidden FHE s, with neither new secret-input joint initialization nor norm leakage.
+
+**ONE source-interface test [FAIL]:** With source-shaped Bpub=338, sigma0=8, n=128, compare bounded secret vectors s_A=(1,0,...) and s_B=(1,1,0,...). Their squared norms are 1 and2, hence M=Bpub²−||s||² is 114243 and114242. (A) A literal public correlation circuit C_M whose Gaussian width M is an explicit embedded constant leaks secret norm² exactly. (B) A single fixed C with no s-dependent input, setup or random coins has an identical output law in both worlds and cannot realize both exact discrete Gaussians. The distribution distinction follows from Pr(1)/Pr(0)=exp(−pi/(64M)), with difference 3.761095105975e-12. This DOES NOT prove a negligible-distance lower bound in all real security parameterizations and DOES NOT rule out additional private-input/obfuscation mechanisms, which require new construction and proofs beyond Theorem7.8.
+
+**Cost gate [SOURCE-BASED COUNT]:** Section7.2 encrypts the N-element correlation output vector under N participant public keys for a full Sample invocation. N full redundant executions would perform N² encryptions in the naive literal deployment. This is NOT a universal computational lower bound nor real-world benchmark.
+
+**STATUS:** FAIL direct public-C integration; PASS original source interface/cost check; real hidden-s correlation protocol UNCLEAR/HUMAN_REVIEW.
+**RESULT:** The strongest general C-selected published mechanism still needs a hidden FHE state-binding interface; original ThFHE O(LDec) storage and corrupted-share transcript proof remain open. No novelty or paper flaw claimed.
+**NEXT_ACTION:** Recommend PARK generic PCF-integration branch for PI decision, unless a concrete secret-conditioned joint-init protocol with a joint-view simulator and competitive cost is identified. Do not continue generic interface counterexamples.
+**STATE_UPDATE:** NO global/vFHE STATE.md writes. Only independent CGS topic append.
+
+Full local CGS-15 report: /mnt/data/CGS-15_ideal_pcf_public_circuit_secret_binding_gate.md; SHA256 ed89d4e2de395d05c23e4c8389c24faf521e2f06989b30cae5e7100ae519b7bf. Repro script /mnt/data/thfhe_cgs15_ideal_pcf_circuit_gate.py; SHA256 5146aa856e8ebb8488bf9aa3cee0ce0dcf59d94c805c39f17a71b5425886baa2; JSON results SHA256 69f4696cb0cc0ed5cfc6550ff232766fdaa059fc1225240095cc6d44cbcc5256.

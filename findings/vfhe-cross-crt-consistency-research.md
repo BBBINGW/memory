@@ -1247,3 +1247,68 @@ Artifacts in runtime, NOT Git repository bytes.
 
 **NEXT_ACTION V17 (PI continuation only):** One decisive REAL INTERFACE feasibility check, not another synthetic error probability: read original ePrint 2025/286 Appendix F.1/F.2 and §3.1 encoding-to-CRT maps, and ascertain whether all k extension-factor digit vectors can be expressed as reductions/embeddings of THE SAME compact canonical integer vector a of length m. If different factors require distinct canonical message vectors of total dimension km, the V16 single length-m commitment assumption breaks and cost model must be revised. Alternatively if source mapping really identifies the same scalar digit in all factors, identify exact occurrence/equation in source and needed extractor (without claiming published exploit).
 **End V16:** STATUS=PASS scoped batching algebra + quantified group-term saving; UNCLEAR real PCS and overall performance; STATE_UPDATE=YES independent vFHE only, global I192 frozen.
+
+
+## 26. vFHE V17 — source CRT factor interface is NOT one automatically extracted scalar-digit witness (2026-10-14)
+
+**One primary hypothesis (tested):** V16's L=d*(N/d) native CRT-factor links all arise from a *single, automatically shared and extracted* canonical integer digit vector a of length m, directly supported by the original ePrint2025/286 §3.1, §4.3, §5, Appendix E.2 and F.1/F.2, so we may interpret every CRT native factor value as a copy/embedding of the same a **without introducing a diagonal-range proof**.
+
+**STATUS: FAIL automatic interface/extraction hypothesis; PASS explicit source-form CRT-idempotent contradiction to an implication in Appendix E.2 proof of Theorem 4.8.** A genuine scalar digit, if it exists, is diagonally embedded; **native field PCS/field-by-field lookup predicates do not force existence of that scalar digit**. V16's random folding mathematics remains correct for its stated IDEAL shared-a input, but m=1024 and its MSM numbers remain hypothetical, not yet mapped to source-native PCS objects. The original compiled/Fiat–Shamir SNARK has NOT been attacked or verified; official source PDF latest parity remains VERSION_UNVERIFIED. This is an independently checkable proof-level issue in the inspected source text, not author-confirmed erratum or established exploit.
+
+### Original full-paper anchor, read directly from acquired PDF [FACT]
+
+Cascudo, Costache, Cozzo, Fiore, Guimarães, Soria-Vazquez, *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO2025 ePrint2025/286 (https://eprint.iacr.org/2025/286). Research MCP cache: 52 physical pages, GitHub ePrint mirror source SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, source kind github-mirror, latest version VERSION_UNVERIFIED.
+
+- §3.1 physical p10: for each native p_i=1+(2N/d)*odd, ring R_(p_i)=Fp_i[X]/(X^N+1) decomposes as ∏_(j=0)^(k−1) R_(i,j), with k=N/d and R_(i,j)=Fp_i[X]/(X^d−ζ_i^(2j+1)) a field of order p_i^d.
+- §4.3 physical pp20–21: coefficient-range TB consists of degree-<N polynomials with N **small canonical coefficient integers**; decomposition uses scalar digit subtable t_beta={0,...,beta−1} embedded diagonally into ring R_q. The target is htilde(i,j,k)∈t_beta as **ring elements**, not just componentwise field membership.
+- §4.3 physical pp22–23: Lemma 4.6 is formulated for FIELDS, Theorem 4.8 claims PIOP soundness for the RING scalar t_beta membership; Remark 4.9 physical p24 acknowledges prior revisions involving beta<p_min and 2^(ell*)<p_min, but does not by itself establish diagonal component consistency.
+- Appendix E.2 physical p48, *Proof of Theorem 4.8* explicitly makes the implication: if (t_beta,[htilde]) not in the ring lookup relation, then **there exists a field CRT projection Φ^(k)(htilde) not in t_beta**. This is algebraically false in products: ∏_k t_beta strictly contains the diagonal image of t_beta whenever at least two factors and beta≥2.
+- §5 physical p25, Appendix F.1 p50: polynomial commitment to a ring polynomial f is the TUPLE of independent native field commitments to Φ^(i)(f), with per-field proving/evaluation. F.2 pp50–51 encodes rows of native matrices U_(Φ^(i)(f)) over separate native fields. These guarantee field-component opening consistency, not that component **values** are the same scalar integer digit.
+- §5 physical p25 defines native Brakedown PCS matrix row dimension `m_PCS=2^(ell/2)` (ell even). This is NOT definitionally the hypothetical **integer digit vector length** `m_digit` used for V9–V16 cost examples. Thus V16's m=1024 has NO original-paper scale authentication merely from F.2.
+
+### Exact minimal counterexample inside ONE source-form native prime [DERIVED / EXACT TEST]
+
+Pick N=4,d=2,k=2 and native prime p=13=1+(2N/d)*3, with odd multiplier 3. In R=F13[X]/(X^4+1), choose fourth primitive root ζ=5; 5²=−1 mod13. Then
+
+    X^4+1=(X²−5)(X²+5) mod13.
+
+5 and −5=8 are NONSQUARE in F13; hence both quadratic factors are irreducible and
+
+    R ≅ F_(13²) × F_(13²),
+
+exactly the factor structure of original §3.1 at a small legal parameter point.
+
+Set scalar Boolean subtable t_2={0,1}⊂R and ring element
+
+    e(X)=7+4X² ∈R.
+
+CRT projections: modulo X²−5, e=7+4·5=27=1 mod13; modulo X²+5, e=7−4·5=−13=0 mod13. Hence
+
+    Φ(e)=(1,0) ∈ {0,1}×{0,1},
+
+yet e∉{0,1} as a **RING ELEMENT**, because e has nonzero X² coefficient and is not equal to constant 0 or 1. Furthermore e²=e modulo X⁴+1; it is a genuine nontrivial CRT idempotent. This explicitly refutes the proof step
+
+    h not∈ t_beta => EXISTS factor j with Φ_j(h) not∈ t_beta.
+
+For ell*=1,beta=2, the source Theorem 4.8 side CONDITIONS beta<p=13 and 2^ell*=2<p=13 both hold. Take htilde constant e for all Boolean oracle rows; native factors see ordinary valid constant Boolean 1 and 0, while the ring scalar table relation fails. This is stronger than merely complaining that the general proof omitted a diagonal condition.
+
+**CAVEAT:** The concrete test directly verifies FALSE implication and the possibility of each native component being individually valid. It does NOT execute all PIOP sum-check/Fiat–Shamir rounds. Fieldwise completeness and CRT lifting of ideal-oracle prover messages suggest a more extensive **candidate** full ideal-PIOP falsifier, but this still requires a checked transcript and any auxiliary constraints, and does NOT establish a real deployed SNARK exploit.
+
+### Two logically distinct legitimate integer interfaces [DERIVED]
+
+1. **Scalar table digit:** If a_j∈[0,beta−1]⊂Z, then Φ_(i,h)(a_j) is exactly that same embedded scalar a_j in EVERY CRT factor. One common vector a of length m_digit is conceptually the desired semantic relation, BUT imposing it from independently committed field vectors is exactly the unresolved R_diag cross-factor linking goal. It is **circular** to assume this common a has been extracted in order to justify the proof that needs to enforce its existence.
+2. **General ring-valued coefficient vector:** A ring element f(X)=Σ_(t=0)^(N−1) f_tX^t is described by N canonical coefficients (subject to q/range). Its CRT-field images are f mod (X^d−ζ^(2j+1)): **factor-dependent linear combinations** of the N coefficients, not copies of a single per-factor scalar digit. Exact toy example f=2+3X+4X²+5X³ at N4,p13 gives its two F13²-coordinate vectors (9,2) and (8,4). One can potentially commit to an N-dimensional *canonical coefficient vector* and link its publicly defined factor-dependent linear transforms, but it is NOT V16's same-scalar-digit c_lj mapping without change.
+
+The original source combines these two object levels: TB imposes canonical COEFFICIENT range for ring v, then h decomposes each coefficient into SCALAR digits t_beta. The native F.2 polynomial matrices are still another object over separate CRT fields. Consequently V16 folding remains a useful **abstract batch gadget** but its dimension/cardinality/per-prime cost requires an actual occurrence map and source-specific extractor. For unstructured general ring-valued witness of s ring elements, coefficient witness dimension can be N*s rather than a chosen m_digit=1024, while a genuine scalar digit witness across many indices has whatever total number of digit slots occurs in §4.3—not necessarily native Brakedown m_PCS.
+
+### Minimal exact, independently rerun script [EXPERIMENT]
+
+`/mnt/data/vfhe_v17_crt_factor_interface_audit.py` SHA256 `ef95aa14980245ea65e693a0be690970e7e6e4ed692a15ee98a453219d95aabd`; JSON `/mnt/data/vfhe_v17_crt_factor_interface_audit_results.json` SHA256 `2e7ddf329a0f4546c046b328591236c1c82e8d83d396d323e41d9206a5f2d33a`. Local files (not Git bytes). Script independently computes factorization/irreducibility via quadratic nonresidues, ring multiplication with X⁴=−1, e²=e, projections (1,0), nonmembership e in ring {0,1}, source small-parameter congruence, and factor-dependent coefficient-vector projections. Ran twice, same hashes. No real PCS proof, ideal PIOP transcript, SNARK, or security exploit.
+
+### Research decision / next minimal falsifier
+
+**FAIL** interpreting all original factorwise committed field-values as AUTOMATIC SAME canonical scalar digit vector, and FAIL transferring V16's m1024 single-length-m MSM count to source workload without mapping. Theorem 4.8 Appendix E.2 proof contains a specific formally incorrect implication for the inspected version. This is a genuine source-anchored algebraic objection, not confirmation that the final compiled protocol is insecure.
+
+**NEXT_ACTION V18 only if PI continues:** one focused **source-accurate IDEAL-PIOP transcript test** for the e=(1,0) CRT idempotent, targeting Π_beta_range Fig.1 §4.3 and Appendix E.2: instantiate fieldwise honest memory-counter and grand-product oracles for each factor, glue with CRT, and check every ring verifier identity for an INVALID scalar-ring lookup instance. Include β<p_min and 2^ell*<p_min, and distinguish ideal oracle from PCS/F-S; if actual scheme has an explicit diagonal check, identify it and revise attack. If the invalid transcript passes, separate theorem/protocol soundness finding from contribution decision, then evaluate minimal source-specific fix. No implementation of unrelated PCS architectures in this iteration.
+
+**END V17:** STATUS=FAIL automatic source interface / PASS exact p13 source-form idempotent and counterexample to Appendix E.2 implication. STATE_UPDATE=YES independent V-series, general I192 unchanged.

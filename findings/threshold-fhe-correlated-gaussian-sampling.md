@@ -346,3 +346,98 @@ These are consistency checks for **the same torus-Fourier mechanism**, not separ
 **RESULT:** For any integer 5-square Gram root with norm²=114243, proved `TV>7.3951730798e-23>2^-128` via a single dimension-five torus packing and Poisson-character argument. This **decisively closes exactly this mathematical sampler family at these parameters**, with precisely stated boundaries; does not fix original secret-conditioned threshold Gaussian generation.
 **NEXT_ACTION:** PI chooses whether to test **ONE** broadened integer-Gaussian sampler family with more than five terms (define k and concrete cost budget first) **or** investigate one named, previously published nonlinear Gaussian correlation / threshold sampling mechanism with a source-compatible security interface; do not automatically pivot, do not repeat roots or run full ThFHE implementation. If choosing a dimension-scaling branch, a smallest next test is a quantitative torus-volume necessary-condition calculation for `k>5` at the same M, σ0 and 2^-128 goal.
 **STATE_UPDATE:** NO to global/vFHE `STATE.md`; **CGS TOPIC_RECORD_UPDATE:** YES (this section appended only).
+
+---
+
+## 9. CGS-05 — dimension/cost gate: even SEVEN integer-Gaussian terms fail the fixed 128-bit TV target (2026-10-14)
+
+**Independent CGS track, one hypothesis + one cheapest decisive test.** This is CGS-05, not a vFHE V-round or legacy I-round. Parent CGS remains an open ThFHE correlated-Gaussian sampling problem; prior I184–I187 and CGS-01–04 findings remain intact.
+
+### Read-before-write / sources
+
+[FACT] Re-read this topic file, `AGENT.md`, and global `STATE.md` (at test start blob `4efa09926b695956e1618906f434eec16c883f94`, frozen old global I192, independently tracked vFHE V6). Verified primary Okada–Takagi, *Low Communication Threshold FHE from Standard (Module-)LWE*, ePrint 2025/409, current MCP mirror 40pp SHA256 `98993522b80695ab415cc5d8c28dddc1dbe8b78ac3550d2063140ce718c6a301`, latest parity `VERSION_UNVERIFIED`: §3.3 pp13–14 Lemma 3.4 smoothing and Lemma 3.7 (citing MP13) Gaussian convolution, Algorithm 6 p26 scalar source padding. A small outside-literature search surfaced familiar Poisson/smoothing and circle-random-walk machinery, but **does not establish novelty** of this packing argument or any protocol.
+
+### ONE primary hypothesis and decisive test
+
+[HYPOTHESIS H-CGS05] The universal five-term obstruction of CGS-04 might disappear as soon as we allow six or seven independent `D_(Z,8)` terms, so `k>5` alone could make a `2^-128`-close integer Gram-root convolution mathematically possible.
+
+**ONE test:** Generalize the exact CGS-04 **torus-volume + Poisson character** certificate from 5 to k dimensions while allowing the character denominator Q to change. Determine the largest k for which this quantitative **sufficient exclusion test** proves a TV lower bound above `2^-128`. Do not enumerate all roots or attempt MPC.
+
+### Fixed tested model [SOURCE-SHAPED CONDITION, NOT FULL SECURITY]
+
+Hold `M=Bpub²−||s||²=338²−1=114243`, `σ0=8`, `κ=128` and the conditional scalar source-bound envelope of CGS-02/03. For arbitrary integer coefficients `a∈Z^k` with `Σa_i²=M`, set
+`
+ W_a=Σ_(i=1)^k a_i G_i, G_i iid D_(Z,8), 
+ T∼D_(Z,8 sqrt(M)).
+`
+This requirement concerns the **padding sample itself**, not the subsequently flooded and rounded original decryption transcript. `ε=2^-128` is a concrete test threshold, not the sole asymptotic parameter choice mandated by the original paper.
+
+### General torus-volume/Fourier lemma [DERIVED]
+
+For any integers k≥1, Q≥2, let `v_k=π^(k/2)/Γ(k/2+1)`, `r_(k,Q)=(1/(Q v_k))^(1/k)`. When `r_(k,Q)<1/2`, consider Q centers `x_j=(ja/Q) mod Z^k` in the flat torus `T^k`, for j=0,...,Q−1. For any `r>r_(k,Q)` sufficiently close and <1/2, Q embedded radius-r Euclidean torus balls have total volume >1; hence two intersect. Their index difference d satisfies `1≤d≤Q−1` and
+`
+ Σ_i ||d a_i/Q||_(R/Z)^2 ≤ 4r_(k,Q)^2.
+`
+The limit is valid because only finitely many d occur. Duplicate points are fine (distance zero).
+
+Write `S²=64M=7,311,552`,
+`u=exp(−64π)`, `D_up=1+2u/(1−u³)`. Applying the source-convention Gaussian characteristic function / Poisson identity to `f(z)=cos(2πdz/Q)`, where d is the guaranteed difference, gives:
+`
+ L(k,Q) = exp(−π·64·4r_(k,Q)^2) / D_up^k
+     ≤ E[f(W_a)].
+`
+Since d is a nonzero residue in [1,Q−1], `dist(d/Q,Z)≥1/Q`. For the target:
+`
+ 0≤ E[f(T)] ≤ U(Q)
+ := exp(−π S²/Q²)
+     + 2 exp(−π S²/4)/(1−exp(−2π S²)).
+`
+Thus **for every integer coefficient vector** `a∈Z^k` with norm² M,
+`
+ TV(Law(W_a), Law(T)) ≥ max(0, (L(k,Q)−U(Q))/2)
+`
+for each Q for which the embedded-ball condition holds. This is a rigorous coefficient-uniform inequality. Quantitative decimal bounds below result from high-precision deterministic evaluation of these explicit constants; the underlying analytic inequality does not rely on Monte Carlo.
+
+### One dimensional threshold test [COMPUTED CERTIFICATE]
+
+Use selected integer denominators (found by a cheap exploratory Q scan over 30..3999, NOT proved globally optimal). High precision exact-constant evaluation:
+
+| k | Q | certified uniform TV lower bound | exceeds 2^-128? |
+|---|---:|---:|---|
+| 5 | 889 | 5.28405156104e-13 | YES |
+| 6 | 642 | 1.593464226914e-24 | YES |
+| **7** | **508** | **6.98341203170453e-39** | **YES** |
+| 8 | 426 | 2.87778654572910e-55 | NO CERTIFICATE |
+
+For the decisive k=7, Q=508 witness:
+- `v_7=16π³/105`;
+- `r_(7,508)=0.32893341809271527<1/2`;
+- `4r²=0.43278877415262810<0.43279`;
+- `L(7,508)=1.6175091334061144e-38`;
+- `U(508)=2.2082672706520839e-39`;
+- `(L−U)/2=6.98341203170453008e-39 > 2^-128=2.93873587705571877e-39`, by a factor 2.3763319753.
+
+This improves CGS-04's Q=338 test (which does not reach a 128-bit exclusion at k=7) simply by selecting a better Fourier character denominator, without changing the one-hypothesis mathematical test. The q-scan was only a way to find **explicit valid certificates**, not an assumption of optimality.
+
+### Scientific interpretation / scope
+
+**[NEGATIVE, PROVED]** For this **fixed scalar M and σ0** and exact model of **independent identically distributed `D_(Z,8)` integer-linear components**, NO factor using k≤7 nonzero terms can yield padding TV≤2^-128: if k<7, append zero coefficients and apply the k=7 theorem. Thus, **k≥8 nonzero independent Gaussian draws is a necessary arithmetic condition** for this proposed direct convolution architecture at these parameters.
+
+**[NO POSITIVE CLAIM]** The row k=8 has lower bound <2^-128, so the evaluated spherical-volume proof **does not exclude** 8-term constructions; it does NOT prove an 8-term construction exists, has small TV, or preserves privacy. Other Q values, geometric inequalities, or Fourier characters could still obstruct k=8. Do not convert a lack of certificate into a feasibility proof.
+
+**[COST FLOOR / NOT A PROTOCOL BENCHMARK]** Any direct sampler of this exact form targeting TV≤2^-128 needs at least 8 independent base-width discrete Gaussian draws per scalar padding (and corresponding coefficient-weighted summation). Relative to the CGS-04 five-draw architecture, the *random draw count alone* is at least 8/5=1.6×, but this is NOT a fair latency comparison with native variable-width discrete Gaussian sampling, and says nothing about the much greater distributed multiplication/interaction/secret-sharing costs. This does NOT eliminate original O(LDec) storage, does not implement fresh noninteractive sessions, and does not give an MLWE sampler.
+
+**[PRIOR ART]** Torus volume/pigeonhole, Poisson summation, and original Lemma 3.7 Gaussian convolution are familiar, not established as original results. NOVELTY NOT VERIFIED. No claim of a flaw or attack on the Okada–Takagi source scheme.
+
+### Reproduction and scope of saved artifacts
+
+Local deterministic Python script: `/mnt/data/thfhe_cgs05_dimension_packing_gate.py`, SHA256 `1b894a174ad784a2294a35eb62950f3aa02b8307af00f319b1dde29c06100063`.
+Local JSON results: `/mnt/data/thfhe_cgs05_dimension_packing_results.json`, SHA256 `f2854472f6921d12ff82ee6ff3bb543091ee9b12a3724e364627eec2a0c0f8ed`.
+Both exist in the working container, not silently promoted to GitHub Notes.
+
+### End CGS-05
+
+**STATUS:** **FAIL** H-CGS05 that six/seven terms escape the fixed 128-bit quantitative Fourier obstruction; **PASS** uniform torus-volume lower bound for all k≤7; **HUMAN_REVIEW / UNCLEAR** at k≥8 and at the actual Threshold FHE protocol level.
+**RESULT:** Generalized the five-term obstruction; a specific Q=508 certificate forces `TV≥6.98341203e-39>2^-128` for every norm-constrained seven-term integer-Gaussian convolution. At least eight independent Gaussian terms are NECESSARY at this fixed parameter regime, not proven sufficient.
+**NEXT_ACTION (CGS-06, requires PI continuation):** For the **same M=114243, σ0=8, k=8**, select ONE explicitly specified primitive 8-square integer factor using a stated criterion minimizing low-frequency torus/Fourier concentrations, then run a **single source-independent decisive Fourier-frequency falsifier** (a certified >2^-128 gap), or if that fails, produce a legitimate tighter closeness upper-bound plan. Do NOT interpret absence of a small-frequency distinguisher as success. Before any FHE build, still require hidden secret-conditioned sampling, Shamir all-subset reconstruction, nonlinear threshold sharing/security and end-to-end cost.
+**STATE_UPDATE:** NO to global/vFHE STATE.md; **CGS TOPIC_RECORD_UPDATE:** YES, append this section only.

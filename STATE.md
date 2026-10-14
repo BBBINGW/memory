@@ -5,11 +5,11 @@
 
 ## CURRENT PI-SELECTED WORKSTREAM (SEPARATE COUNTER)
 
-**vFHE cross-CRT scalar digit/index consistency**, independent round **V12 COMPLETED**, next **V13 NOT STARTED**.
+**vFHE cross-CRT scalar digit/index consistency**, independent round **V13 COMPLETED**, next **V14 NOT STARTED**.
 
 **Authoritative separate round state:** `findings/vfhe-cross-crt-state.md`.
 **Technical evidence + research story:** `findings/vfhe-cross-crt-consistency-research.md`.
-**Current status:** Structural lookup/soundness question remains OPEN/HUMAN_REVIEW; integer-code bridge is a candidate, not a working PCS/SNARK repair. V12 refutes automatic cross-CRT common digit inference from one unrelated-prime hidden commitment plus independent native proofs: missing knowledge-sound per-field links make binding irrelevant, and group-order alias appears if canonical digit range exceeds commitment scalar order. A sufficient conditional relation uses injectively bound canonical integer digits/bits, source p_i>β, and knowledge-sound explicit links to every native field. No concrete ZK proof, native PCS extraction, 128-bit error or cost benefit established.
+**Current status:** Structural lookup/soundness question remains OPEN/HUMAN_REVIEW; integer-code bridge is a candidate, not a working PCS/SNARK repair. V13 disproves 128-bit single-check soundness from one globally shared 128-bit INTEGER Fiat–Shamir challenge merely reduced modulo each ≈49-bit CRT prime and embedded in F_(p^4): valid mismatched Boolean vectors yield a 1−alpha batch equation with false acceptance ≈1/p≈2^−48, not 2^−128. Truly uniform full-extension challenges could increase native identity-test soundness but still require an explicit cross-characteristic knowledge-sound link to the hidden common integer commitment; full protocol/security/cost OPEN.
 
 ### Legacy numbering mapping — provenance only
 

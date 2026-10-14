@@ -397,3 +397,71 @@ Source-sized sufficient determinant caps from the same formula:
 **Limitations / remaining primary obstacle.** Submatrices of order≥4 are NOT protected by this inequality for all 49-bit p. An adversarial low-weight input with support≥4 may exist, and there is **no proof of constant relative global distance** for unweighted repeat2/accumulate2. Existence of a shared integer Merkle codeword PCS with extraction, ZK/hiding, Fiat–Shamir, and compelling total protocol savings remains entirely open. Algebraic invariance of low-support rows is not a cross-CRT consistency proof.
 
 **END V5.** STATUS=PASS strictly scoped low-support cross-prime invariance and exact recheck; RESULT=explicit determinant bound p>384m³ for input support≤3; NEXT_TEST (only on PI continuation)=investigate support≥4 short-codeword obstructions, preferably a minimal support-4 integer dependency that differs across source-form primes, or a rigorous global distance argument; STATE_UPDATE=YES in *independent vFHE state only*, not global iteration numbering.
+
+
+## 15. vFHE V6 — monotone parity minors certify cross-prime four-support distance (2026-10-14)
+
+**ONE primary hypothesis / one decisive exact test.**
+V5 left open whether a **message support-4** codeword can appear or disappear merely by selecting a different legitimate native ≈49-bit CRT prime, because naive generic determinant bound 4!(4m)^4 > 2^48. Specific falsifier: exhibit a nonzero 4×4 minor of the SAME integer repeat2/double-independent-interleaver/double-positive-prefix generator matrix that becomes zero modulo a source-form p>2^48; or give a rigorous *structural* upper bound excluding such an effect.
+
+**RESULT: PASS stronger structural exclusion for m≤1024.** No 49-bit-prime-specific rank change is possible in ANY submatrix of at most four input rows for the described encoder, under p>2^48. Global distance/support≥5 remains UNCLEAR. This is not a completed vFHE proof system or novel coding-theory claim.
+
+### Original-source anchor [FACT]
+
+Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO2025, ePrint 2025/286 (https://eprint.iacr.org/2025/286). Research MCP cached 52-physical-page GitHub mirror SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, official latest VERSION_UNVERIFIED. §3.1 physical p10: native p has format p=1+(2N/d)a for ODD integer a; §6 physical p27: benchmarks with 49-bit primes, including ring N=2^13 and 2^14 and d=2/4 (p27–29). Code input *m* below is the putative code-message length, NOT the original ring N. Claims about source scale are CONDITIONAL on p_i>2^48.
+
+### Structural monotone-minor lemma [DERIVED, exact]
+
+Let P∈Z_{\ge0}^{m×n} have every ROW weakly increasing in COLUMN order, with max entry at most B≥1. Let G=[I_m | P]. For any k≥1 and any k×k submatrix H of G,
+
+    |det H| ≤ B^k.
+
+**Proof:** Expanding along s selected unit columns of I_m reduces H to a (k−s)×(k−s) minor M of P (possibly zero). Sort parity columns, which changes determinant only by a sign. Each row of M has nonnegative increasing entries M_{i,1}≤⋯≤M_{i,r}≤B. Define nonnegative row differences D_{i,1}=M_{i,1}, D_{i,j}=M_{i,j}−M_{i,j−1} for j≥2. With the standard upper-triangular prefix matrix U (unit diagonal), M=D U and det U=1. Expand det D and use triangle inequality / nonnegative entries:
+
+    |det D| ≤ Σ_{σ∈S_r} ∏_i D_{i,σ(i)}
+            ≤ ∏_i (Σ_j D_{i,j})
+             =∏_i M_{i,r}≤B^r.
+
+Since r≤k and B≥1, ≤B^k. No probability assumptions, no hidden generic Hadamard or field-specific randomness.
+
+**Distance corollary:** If p>B^t, every square minor of order ≤t in integer G has zero/nonzero status unchanged under mod p. Consequently every rank of every submatrix from ≤t selected input rows is unchanged between Q and F_p. By the rank characterization
+
+    d_{≤t}(G;F) = nG − max_{S, J; 1≤|S|≤t, rank(G_{S,J})<|S|}|J|,
+
+where J ranges columns and S input row supports, the minimum nonzero output weight for input support≤t is IDENTICAL over Q and F_p. V4's extension-field basis lemma gives same value over F_(p^d). Distances need NOT match across fields in the unrestricted (support>t) code.
+
+### Application to unweighted true 2-interleaver double-prefix integer RAA
+
+For x∈F^m, define Rep2(x) (each input repeated twice), independent permutations π1,π2 on 2m coordinates, and positive prefix operator U. Encoder:
+
+    Enc(x)=(x, U(P2 U(P1 Rep2(x)))) ∈F^{3m}.
+
+The parity-generator row for a unit input e_i is the second positive cumulative sum of a vector with exactly two 1s, so it is nonnegative, weakly increasing across output positions, and every entry is ≤4m (since its first accumulator values are each ≤2 and there are 2m prefix steps). Therefore the lemma applies with B=4m.
+
+For k≤4, all relevant minors have magnitude ≤(4m)^4, **without the factor 4!** in the generic V5 bound. When m≤1024, (4m)^4≤2^48. All primes p>2^48 preserve them, including source-form choices; distinct qualifying CRT primes and their extensions have identical restricted Hamming distance d_{≤4} for fixed integer G.
+
+Thresholds:
+- m256: (4m)^4 =2^40.
+- m512: 2^44.
+- m1024: 2^48.
+- m2048: 2^52; no unconditional promise for 49-bit primes using this lemma.
+- m8192: 2^60; no unconditional promise for 49-bit primes using this lemma.
+
+Important: p>(4m)^4 is a **sufficient** guarantee, not a necessary condition. Its failure for m≥2048 is not evidence of an actual CRT-induced codeword.
+
+### Exact independent verification [EXPERIMENT]
+
+Local reproducer `/mnt/data/vfhe_v6_monotone_minor_gate.py`, SHA256 `aa98b19c0783e33e9997c9d4bc26f18017bc42633ea3bd6e931154d3a71193f3`; JSON results `/mnt/data/vfhe_v6_monotone_minor_gate_results.json`, SHA256 `e1d0182f1c3758622cdf347ffc2e6161bfea37c5201531dc02922e6770e48557`. Local artifacts are NOT GitHub repository files.
+
+- Generate two actual source-compatible 49-bit primes for N=8192,d=4 with p=1+4096a, a ODD:
+  p1=281474976829441, p2=281474976894977; both verified prime, both >2^48, p mod8192=4097.
+- Independently random π1/π2 seed20261014, m8, G shape8×24. EXACT integer computation of ALL binom(8,4)·binom(24,4)=743820 4×4 minors; all zero/nonzero flags agree over Z, Fp1, Fp2. Max observed |det|=128, while B^4=32^4=1048576.
+- Source-scale random (not exhaustive) parity-only four-minor checks: m256 500 tests max |det|346630, m1024 500 max9710256, m2048 100 max29228634; no modular mismatch. For m≤1024 the proof certifies EVERY minor, independent of sampling; for m2048 no such proof, the 100 clean samples imply nothing universal.
+
+**Scientific status:** This is standard elementary integer linear algebra plus positive-prefix monotonicity; its use for this exact candidate is a valid narrow result, NOT new coding-theory novelty and NOT a cross-CRT PCS soundness repair.
+
+**V6 conclusion:** PASS preserve cross-prime/Fp→F_(p^d) message-support≤4 restricted distance at m≤1024,p>2^48. FAIL the *suspicion* that generic 4!B^4 crossing p must entail a 4-support mismatch. The actual unrestricted prime-field minimum distance, shared canonical Merkle commitment, zero knowledge, Fiat–Shamir, 128bit bound and end-to-end cost still OPEN.
+
+**NEXT_ACTION (V7 only with PI continuation):** cheapest falsification of prime-specific rank/distance effects at support 5 (since B^5 can exceed 49-bit p even for m1024); test one concrete bounded-integer minor structure or short-codeword family, not random-only confidence or a whole PCS build.
+
+**End V6:** STATUS=PASS scoped structural minor theorem and source-form exact arithmetic, NEXT_TEST=message support5, STATE_UPDATE=YES independent V-series only. No global I-series iteration advanced.

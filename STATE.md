@@ -1,23 +1,47 @@
-# FHE Research State — After Iteration 192
+# FHE Research State — Session Handoff after Iteration 192
 
-**I192 COMPLETED; I193 NOT STARTED.** Protocol: START_RESEARCH_SESSION.md → RESEARCH_PHILOSOPHY.md → AGENT.md → STATE.md. One narrow falsifiable technical claim + cheapest decisive test, document source provenance, read-before-write. Human PI controls final research priorities/contribution/pivots.
+**Checkpoint date:** 2026-10-14 (Asia/Tokyo)  
+**LAST COMPLETED ITERATION:** **I192 COMPLETED**. **I193 NOT STARTED.**  
+**STATUS:** **NO ACTIVE TECHNICAL HYPOTHESIS** / `HUMAN_REVIEW`. Current AKU audit `PARKED — SOURCE_VERSION_GATED` until missing primary material is verified. No new parent target has been selected by the human PI.
 
-## CURRENT TARGET / REVIEW
+## CURRENT TARGET
 
-**FHEW Adaptive Key Update, ePrint 2025/381 — SOURCE_VERSION_GATED / recommend PARK specific correctness-error allegation pending author-version evidence.** Qi Zhang, Mingqiang Wang, Xiaopeng Cheng, *Faster FHEW Bootstrapping with Adaptive Key Update*, CANS2025 LNCS16351 pp292–312, DOI https://doi.org/10.1007/978-981-95-4434-9_14. The official Springer chapter preview confirms published metadata (online Nov13 2025) but full §5.1 and Table3 are paywalled/not independently accessible. Public ePrint 27pp text available, Research MCP GitHub-mirror PDF SHA256 `bbc507b8323f4a65dea806bb663c9eea8ef2954e41259cad3b9db11256a03faf`, 707942 bytes, latest official PDF VERSION_UNVERIFIED. Web PDF screenshot physical p19 has repeatedly failed cache miss, so precise glyph rendering and publisher-ePrint formula equivalence have NOT been visually verified.
+Last investigated: Qi Zhang, Mingqiang Wang, Xiaopeng Cheng, *Faster FHEW Bootstrapping with Adaptive Key Update*, **CANS 2025**, IACR ePrint **2025/381**, https://eprint.iacr.org/2025/381. This is the **most recent PARKED audit**, not an active construction or confirmed paper vulnerability.
 
-**I190 CONDITIONAL MODEL AUDIT:** Extracted ePrint §5.1 n447, Gaussian σ3.19, q1024, Qks16384, variance model `β²=(q²/Qks²)((Qks²/Q²)σacc²+σms1²+σks²)+σms2²`, `σms2²=(||s||²+1)/12`, author substitute `||s||²≈nσ²`; extracted `DFR=erfc((q/8)/(2β))`. Consequently the final ModSwitch term alone gives β≥19.4716 and *model* DFR≥3.346946e-6≈2^-18.19, versus Algorithm6 Table3 2^-36 (Alg5 2^-37, goal <2^-32). This is a strong INTERNAL inconsistency **conditioned on extracted equations/parameter conventions**, NOT actual measured failure or invalid 128-bit cryptographic security. Source archive `findings/fhew-aku-gaussian-dfr-consistency-iteration190.md`.
+## CURRENT QUESTION
 
-**I191 CURRENT UPSTREAM CODE AUDIT:** GitHub openfheorg/openfhe-development HEAD `src/binfhe/lib/lwe-pke.cpp` blob `68dc58e1cbea0ceedb014b6c9d6de81c32df3bcb`, `src/binfhe/lib/binfhecontext.cpp` blob `d67c6d366ef81e36ef1ab6202112fe21e5267878`; Gaussian small-key generator dgg(3.19) and final qKS→q RoundqQ coefficientwise floor-half-up. At ratio16 exact single rounding-error mean +1/32, variance255/3072, giving source-like β_MS2≈19.4335 and model DFR floor≈3.2023e-6. Tested 24k integer-noise trials and 500 full zero-message integer ciphertext ModSwitch phase equalities; **NOT author AKU implementation or empirical gate failure**. Archive `findings/fhew-aku-ms2-rounding-code-gate-iteration191.md`.
+Can the §5.1 Gaussian-key theoretical failure model and reported Table 3 Algorithm 6 DFR `2^-36` be reconciled using the **actual author-edition paper equation and experiment code**? Source verification remains blocked, so do not treat this question as an active hypothesis test without new material.
 
-**I192 ONE hypothesis:** Authenticated original experiment source/commit OR fully rendered final publisher §5.1 available publicly for independent reproduction of Table3 and adjudication of above potential mismatch. **FAIL available-evidence sufficiency / PASS provenance gate**: targeted official Springer, ePrint, public/web+GitHub repository/code and source text searches found no readable publisher full chapter, no authenticated author AKU code/commit, and PDF screenshot remained unavailable. Absence in search is not evidence author source doesn't exist privately. Full finding `findings/fhew-aku-author-repro-source-gate-iteration192.md` blob `7565fba566fa08107fdd915e162a4e3f6aeda2a7`, commit `0a0884c858fdc43529f337710790a7a729ee1f70`. **No new Gaussian toy or numerical security analysis I192.** No contact to authors.
+## PRIMARY HYPOTHESIS
 
-**End I192:** **STATUS** FAIL existence of adequate *accessible verified* original-evidence chain; PASS source/version reproducibility check; UNCLEAR paper's final printed formula, full β calculation, actual DFR, effect on 20.7% reported timing. **STATE_UPDATE YES**.
+**NONE ACTIVE.** The last tested hypothesis (I192)—that authenticated publisher equations or original author experiment artifacts were publicly available and sufficient for an exact DFR reproduction—was **FAIL** for the evidence then accessible. Conditional question for any future authorized reopening: whether the author-version complete `β` calculation yields its reported `2^-36` DFR.
 
-## NEXT_ACTION — I193 NOT STARTED
+## CURRENT EVIDENCE
 
-**HUMAN_REVIEW: recommend PARK the suspected paper correctness-error allegation until source available.** Register missing: full official Springer pp292–312 §5.1/Table3 and/or verifiable author AKU implementation with commit, parameters and DFR estimator in `MISSING_SOURCES.md`. If user PI supplies authenticated chapter/code, first do one complete β-term reproduction and reconcile claimed DFR; if unavailable, next approved "继续" should pivot to a DIFFERENT source-accessible, nontrivial FHE research target. No repeat of qKS/q toy or speculative published-bug claim. PI decides whether to access article via institution/contact authors; do not claim ability to fetch gated access.
+- **[FACT/source]** Public 27-page ePrint version, Research MCP GitHub-mirror PDF SHA256 `bbc507b8323f4a65dea806bb663c9eea8ef2954e41259cad3b9db11256a03faf`, **VERSION_UNVERIFIED** against CANS publisher edition. Springer DOI: https://doi.org/10.1007/978-981-95-4434-9_14 (CANS 2025 LNCS 16351, pp. 292–312).
+- **[DERIVED, I190]** Under the **extracted** §5.1 model (not an experimentally verified failure distribution), parameters `n=447, σ=3.19, q=1024, Qks=16384`, `σ_ms2²=(||s||²+1)/12`, `||s||²≈nσ²` imply `β≥19.4716` from final ModSwitch alone; extracted `DFR=erfc((q/8)/(2β))` gives a **modeled** lower estimate `≈3.347×10^-6≈2^-18.19`, conflicting with Table 3's `2^-36`. This is **conditional model/table inconsistency**, NOT proof of actual ciphertext failure, flawed cryptographic security, or inaccurate latency.
+- **[FACT+DERIVED, I191]** Present-day upstream OpenFHE uses Gaussian small-key `dgg(3.19)` and coefficientwise final `qKS→q` round. At ratio 16, exact scalar rounding residual has **mean +1/32** (ties upward), variance `255/3072`; source-style `β_MS2≈19.4335`. Integer-level ModSwitch verification passed, but this is **NOT** the author's fixed 2025 implementation, nor full FHE bootstrapping or DFR replication.
+- **[NEGATIVE, I192]** Verified final CANS chapter existence, but full rendered §5.1 is restricted; original author AKU source/commit/DFR estimator not authenticated or accessed; rendered ePrint equation screenshot unavailable. No author contacted. The source-availability hypothesis **FAIL**; alleged actual correctness error **UNCLEAR**.
 
-## PREVIOUS ARCHIVES / DO NOT REPEAT
+## MAIN OBSTRUCTION
 
-I188–189 LFBS PRCA B−1 count and naive hoisting PARK; I184–187 simple PRF/PRSS Gaussian padding approaches PARK (unbounded standard-(M)LWE threshold-FHE decryption parent remains OPEN); I183 GBFV known invalid ordinary Auto scaling; I182 GBFV-CKKS no-wrap safe; I178–181 naive dBFV-BGV migration PARK; I175–176 Park key-jump prior LLKN23, I171–174 SHIP trivial compression PARK. vFHE ePrint2025/286 latest edition SOURCE-GATED. Complete history in `findings/OPEN_RESEARCH_BRANCHES.md`.
+Missing **authenticated primary evidence**: the full final CANS §5.1 with rendered formulas and/or the author's exact AKU implementation/commit, Gaussian-key parameters, full `β` worksheet and Table 3 DFR estimation code. Current OpenFHE HEAD is not evidence of what authors ran. Registered in `MISSING_SOURCES.md` as `Zhang–Wang–Cheng AKU DFR author-edition source (I192)`.
+
+## OPEN UNCERTAINTY
+
+Publisher/ePrint formula equivalence; possible normalization/typographic/implementation differences; complete `σ_acc,σ_ms1,σ_ks,σ_ms2` contributions and dependence; actual Gaussian-key decryption tail and DFR; any impact on 20.7% source-reported speedup under matched DFR, key size and >=128-bit lattice security. **No confirmed paper error, attack, or new FHE algorithm.**
+
+## NEXT_ACTION — new session, not an authorized research iteration
+
+**ONE minimal source-availability/legibility gate:** Check the AKU entry in `MISSING_SOURCES.md` for **NEW** authenticated publisher §5.1 pages or author-pinned implementation/DFR script supplied since I192. If present, verify actual identity/commit/SHA and that the exact formula or estimator is readable; report whether `SOURCE_VERSION_GATED` can be lifted, then await PI authorization for the next single hypothesis. **If none is present, STOP the AKU audit, report PARKED, and ask PI to select the next research target. Do not autonomously select one or begin I193 on handoff.** Do not repeat the previous Gaussian/ModSwitch toy checks.
+
+## RELEVANT FILES
+
+Read in order: `START_RESEARCH_SESSION.md`, `RESEARCH_PHILOSOPHY.md`, `AGENT.md`, `STATE.md`. Then read:
+- `findings/fhew-aku-gaussian-dfr-consistency-iteration190.md`
+- `findings/fhew-aku-ms2-rounding-code-gate-iteration191.md`
+- `findings/fhew-aku-author-repro-source-gate-iteration192.md`
+- `MISSING_SOURCES.md` (AKU section)
+- `findings/OPEN_RESEARCH_BRANCHES.md` (P18, I190–I192) for other direction statuses only when needed.
+
+**OTHER BRANCHES:** LFBS PRCA I188–189 naive hoisting/bookkeeping PARKED; threshold FHE PRSS I184–187 simple repairs PARKED (broader unbounded-`LDec` open); GBFV I182–183, direct dBFV→BGV I178–181 and earlier unsuccessful ideas archived in corresponding findings/failures and branch index. Preserve all. Research principle: one smallest falsifiable hypothesis + one cheapest decisive test; the human PI controls target, pivots and final scientific judgment.

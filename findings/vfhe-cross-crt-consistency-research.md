@@ -1626,9 +1626,9 @@ with arbitrary finitely many polynomials P_i ∈ R[x,w] factors **exactly** as `
 **JSON:** `/mnt/data/vfhe_v23_crt_polynomial_repair_nogo_results.json` SHA256 `7b807f210bd5d2be2ded6c4d31381ec36aa647246d656a07ed4b469b174fb774`.
 
 
-## 32. vFHE V23 — scalar-polynomial-only patch fails across distinct CRT primes (2026-10-14)
+### V23 companion falsifier — X-constant digits still fail across distinct CRT primes (2026-10-14)
 
-**ONE primary falsifiable hypothesis [FAIL]:** Can we fix the 52-page MIRROR's Pi_beta_range / Pi_range diagonal CRT gap with ONE extra condition that every lookup digit h(i) is CONSTANT in the ring polynomial variable X (i.e. coefficients of X^1,...,X^(N−1) vanish), while leaving the original per-CRT-field digit table lookup alone? V20 nonconstant idempotent e=7+4X² would be excluded by this scalarity constraint. V23 tests whether it suffices for coefficient range soundness across multiple source-form CRT primes.
+**Companion refinement to the existing V23 no-go [FAIL for this separate concrete shortcut]:** Can we fix the 52-page MIRROR's Pi_beta_range / Pi_range diagonal CRT gap with ONE extra condition that every lookup digit h(i) is CONSTANT in the ring polynomial variable X (i.e. coefficients of X^1,...,X^(N−1) vanish), while leaving the original per-CRT-field digit table lookup alone? V20 nonconstant idempotent e=7+4X² would be excluded by this scalarity constraint. V23 tests whether it suffices for coefficient range soundness across multiple source-form CRT primes.
 
 **STATUS: FAIL this natural degree-zero shortcut; PASS exact independent two-native-prime false-range algebraic witness plus deterministic GP identities.** We do NOT falsify all joint integer range/commit-and-prove repairs; we do NOT claim a new flaw in a verified current published version or a fully compiled SNARK exploit. The original V17–V21 mirror-scoped claim is unchanged.
 

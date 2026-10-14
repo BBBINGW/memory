@@ -1,6 +1,6 @@
-# vFHE V30 — Native CRT-Factor Isomorphism and Frobenius Scalarity Gate
+# vFHE V30 Companion — Exhaustive Native CRT Alignment Census and F.2 Cost Gate
 
-**Date:** 2026-10-15. **Independent vFHE V30**; GLOBAL I192 FROZEN.
+**Date:** 2026-10-15. **COMPANION to already-completed AUTHORITATIVE V30** `findings/vfhe-v30-native-frobenius-prime-local-link.md` (recorded by a parallel research pass). This standalone note is an independent EXHAUSTIVE p13² census and unbatched F.2 raw-vector communication estimate for the SAME hypothesis, **NOT a new iteration**, not V31, and does not replace the main V30 status. GLOBAL I192 FROZEN.
 
 **ONE PRIMARY HYPOTHESIS [PASS CONDITIONAL]:** Can verifier check **prime-local scalarity of every Boolean digit** without using vFHE Remark4.1's potentially circular claimed scalar coefficient decompositions, by one F.1 native-field isomorphism-aligned polynomial evaluation per prime and an independently authenticated Frobenius reference evaluation? **YES mathematical / ideal PCS**, NOT cheap end-to-end canonical RNS integer repair.
 

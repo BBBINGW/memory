@@ -83,3 +83,18 @@ Human Action: Supply author's exact Table4 Set I r5 fitting script and polynomia
 Repository Path: **PENDING/NONE** (missing original code/artifact, not a PDF to fabricate under papers/supplied/). Once provided, record actual verified repo or uploaded archive path, hash, library commit and reproduction command; do not predeclare a file path.
 Readability Verification: **PENDING for source and coefficient artifact**. Original 19-page PDF is already legible via Research MCP pp6–10, 15–17; author's code and exact coefficient vectors NOT accessed/verified.
 Evidence: `findings/ckks-generalized-composite-source-artifact-gate-iteration163.md`.
+
+## Zhang–Wang–Cheng AKU DFR author-edition source (I192)
+
+Status: **MISSING** (final rendered proof/experiment artifact, NOT the publicly readable ePrint text)
+Authors: Qi Zhang, Mingqiang Wang, Xiaopeng Cheng
+Venue / Year: CANS 2025, LNCS 16351, pp292–312, Springer online publication 2025-11-13
+Identifier: IACR ePrint 2025/381; https://doi.org/10.1007/978-981-95-4434-9_14
+Needed For: I190–I192 Gaussian-parameter model/Table3 DFR self-consistency audit and independent original experiment reproduction
+Missing Evidence: **(a)** official rendered CANS §5.1 formulas, Table2/Table3 and version comparison to ePrint, **or (b)** exact author AKU OpenFHE fork/commit, Gaussian LWE key parameter initializer, end ModSwitch code and complete DFR estimator/noise worksheet for Algorithm6 (n447, σ3.19, q1024, Qks2^14, reported DFR2^-36).
+Why Public Retrieval Failed: Springer publisher page https://link.springer.com/chapter/10.1007/978-981-95-4434-9_14 exposes abstract/metadata but requires institution login for full text; ePrint original 27pp parses with formulas but mandatory visual PDF screenshot on physical p19 fails cache miss and author-edition PDF parity remains VERSION_UNVERIFIED. EPrint MCP GitHub mirror SHA256 bbc507b8323f4a65dea806bb663c9eea8ef2954e41259cad3b9db11256a03faf, 707942 bytes, 27pp, is AVAILABLE text but not a publisher-version/code substitute. Targeted web and connected GitHub title/author/AKU/128_OURS repo/code searches found no verified author AKU source; not a proof private code is nonexistent. OpenFHE HEAD is not known to be the paper's tested commit.
+Impact: I190–I191 extracted-model result remains: its final ModSwitch term alone implies modeled DFR around 2^-18.19 versus printed Table3 2^-36; **actual** author DFR, publisher-equation identity, 128-bit security and reported runtime advantage NOT independently adjudicated. Label SOURCE_VERSION_GATED and PARK specific correctness-error allegation, not a confirmed paper flaw.
+Human Action: If authorized, obtain relevant Springer chapter pp292–312 via institution and/or authenticated author AKU experiment repository or archive and exact DFR estimator; user/PI decides any contact. No unverified file path assumed.
+Repository Path: **PENDING/NONE** (ePrint paper text available from MCP cache; missing source is publisher chapter or exact author experiment artifacts).
+Readability Verification: **PENDING** for publisher §5.1 and author code. ePrint original PDF was parsed/read by Research MCP and web text, not visually verified rendered p19. Once supplied, read exact required source, verify SHA/commit and record method.
+Evidence: `findings/fhew-aku-gaussian-dfr-consistency-iteration190.md`; `findings/fhew-aku-ms2-rounding-code-gate-iteration191.md`; `findings/fhew-aku-author-repro-source-gate-iteration192.md`.

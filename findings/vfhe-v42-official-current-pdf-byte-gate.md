@@ -30,3 +30,8 @@ The original **mirror** p48 AppendixE.2 diagonal scalar-digit inference has a pr
 **NEXT_ACTION (HUMAN_REVIEW, no V43 automatically):** The PI can download `https://eprint.iacr.org/2025/286.pdf` in a browser and supply original unmodified file with URL/date, then use offline checker; if SHA matches mirror, byte identity is established *relative to that authenticated download*; if differs, compare full Theorem4.8, Remark4.9, AppendixE.2 and native F.2 relation before any claim. Alternatively PI explicitly authorizes switch to a source-complete FHE project target. No generic repair branches until this source gate clears.
 
 **STATUS:** SOURCE_BLOCKED / HUMAN_REVIEW; **RESULT:** official current PDF SHA unavailable, executable SHA gate prepared, strong V41 indirect provenance retained; **NEXT_TEST:** authenticated official PDF comparison or PI source-complete pivot; **STATE_UPDATE:** YES V42 complete source-gated, V43 NOT STARTED/NO AUTO continuation. Global I192 frozen, unrelated SHIP I226 untouched.
+
+
+## Publisher edition check (supplement, not a new iteration; 2026-10-15)
+
+Verified Springer DOI 10.1007/978-3-032-01907-3_21 has first-online date 2025-08-17, pages 643–677. Its public HTML provides abstract/notes but the full chapter text is subscription-only; no Theorem 4.8 proof is accessible there. The independently confirmed IACR revision is 2026-02-16. Thus Springer 2025 cannot establish exact 2026 IACR revised text or PDF byte identity. Author and project publication pages link to Springer and/or IACR rather than an independently verifiable 2026 PDF. No new source bytes acquired, so retain SOURCE_BLOCKED and HUMAN_REVIEW; V43 NOT STARTED, global I192 frozen. User-supplied official 2026 PDF or explicit source-complete pivot remains necessary.

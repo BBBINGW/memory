@@ -156,3 +156,91 @@ The lower bound is a **provable inequality**, not an FFT/Monte-Carlo estimate. E
 **RESULT:** Explicit primitive source-shaped M114243 root gives `TV>0.82845188194` at `σ0=8`; existing source Lemma 3.7 already supplies the relevant convolution bound, highlighting an enormous possible gap between source's base σ0 and a sufficient coefficient-sensitive σ0. Selecting Gram roots only by `AA^T=Σ` and gcd is not enough; kernel-lattice smoothing / modular mixing must enter selection.
 **NEXT_ACTION (CGS-03; one hypothesis/test only):** For the **SAME** `M=114243, σ0=8`, choose one deliberately **balanced primitive 5-square factorization** (not the prior `(1,239,239,0,0)`), derive a *certified* upper bound on kernel-lattice smoothing error (or one decisive modular-residue lower bound) with a fixed ε target. This distinguishes an inherent five-square/source-width obstruction from an avoidable *bad-root-selection* artifact before spending resources on MPC/PCF integration. First check whether source Lemma 3.7 or a tighter kernel argument already applies. No FHE implementation yet.
 **STATE_UPDATE:** NO to independent vFHE `STATE.md`; **CGS TOPIC_RECORD_UPDATE:** YES (this append only).
+
+---
+
+## 7. CGS-03 — a balanced, distinct, primitive 5-square root still has a 6.13% Fourier defect (2026-10-14)
+
+**Independent track:** CGS-03; NOT an I-series / vFHE iteration. One primary hypothesis and one decisive harmonic-distribution test. This record is append-only to the topic home.
+
+### Source / prior-state verification
+
+[FACT: repository] Read existing CGS-01/02, AGENT.md, RESEARCH_PHILOSOPHY.md and the unchanged vFHE STATE.md (at beginning of CGS-03 blob `fe796ef9aa9a193415db8575dfb04cf885491856`; it reports I196). I184–I187 and the CGS-02 bad-root certificate remain archived, not repeated or reinterpreted.
+
+[FACT: original] Okada–Takagi, *Low Communication Threshold FHE from Standard (Module-)LWE*, ePrint 2025/409, Research MCP 40pp mirrored PDF SHA256 `98993522b80695ab415cc5d8c28dddc1dbe8b78ac3550d2063140ce718c6a301` (latest official binary `VERSION_UNVERIFIED`), §3.3 p13 Lemma 3.4 (smoothing upper bound), p14 **Lemma 3.7** (MP13 Theorem 3.3, Gaussian linear combination), Algorithm 6 p26 and Lemma 6.1 pp26–27 (secret-dependent scalar padding and `σ0≥sqrt(2)η_ε(Z)`). Direct original pages were re-read through Research MCP. Ducas–Galbraith–Prest–Yu EUROCRYPT 2020, *Integral Matrix Gram Root and Lattice Gaussian Sampling without Floats* (ePrint 2019/320), is relevant **known prior art** on integral decompositions and perturbation sampling, NOT a privacy-preserving threshold sampler.
+
+### ONE primary hypothesis / ONE falsifier
+
+[HYPOTHESIS] At the **same scalar source-shaped instance** `M=114243, σ0=8` used in CGS-02, deliberately balancing and making all five integer Gram-root coefficients distinct might eliminate the gross discrete-distribution obstruction of `(1,239,239,0,0)` and yield negligible-error Gaussian convolution without increasing σ0.
+
+[FALSIFIER / one minimum test] Construct one such balanced primitive 5-square vector and evaluate the single bounded Fourier character `f(z)=cos(2πz/Q)` at a suitably chosen integer period Q. If its expectation differs from the target Gaussian by a constant, total variation is bounded below by half that difference. This avoids any cryptographic implementation or Monte Carlo.
+
+### Specified parameter instance and chosen factor [DERIVED + exact integer checks]
+
+At `κ=128, ε=2^-128, n=128, Blwe=1`, conditional secret `s=(1,0,...,0)`, `||s||²=1`, `Bpub=338, σ0=8`:
+- `M=Bpub²−||s||²=338²−1=114243`; `Bpub²=114244≥n Blwe²+1=129`.
+- Lemma 3.4: `η_ε(Z)≤sqrt(ln(2(1+1/ε))/π)≈5.33497820236` and so `sqrt(2)η_ε(Z)≤7.54479852875<σ0=8`.
+- These are **only the relevant padding-shape restrictions**, NOT a complete cryptographically secure FHE/ThFHE parameter set and NOT a high-probability sample of the author's secret distribution.
+
+Choose `a=(143,144,151,156,161)`. Exact checks:
+- `||a||²=143²+144²+151²+156²+161²=114243=M`;
+- `gcd(a)=1`, all five entries are nonzero and pairwise distinct;
+- `max(a)/min(a)=161/143≈1.125874`, compared with extremely imbalanced CGS-02 coefficients.
+
+Define `G_i iid D_(Z,8)`, `W=Σ_i a_i G_i`, and `T∼D_(Z,S)` with `S=8 sqrt(M)`.
+
+### Rigorous single-character lower bound [DERIVED]
+
+Set `Q=151`, `f(z)=cos(2πz/Q)`. The residues are
+`r_i=a_i−Q=(-8,-7,0,5,10)` and `Σ r_i²=238`.
+
+The characteristic function of a centered discrete Gaussian, by Poisson summation, is
+`
+ φ_σ(t)=E[exp(2πitG)]
+       = [Σ_{k∈Z}exp(-πσ²(k-t)²)]/[Σ_{k∈Z}exp(-πσ² k²)]
+`
+(real and nonnegative). At `t=a_i/Q`, use integer periodicity to replace it by `r_i/Q`. The `k=0` term and a geometric upper bound on the denominator give
+`
+ E[f(W)] = Π_i φ_8(a_i/Q)
+ ≥ exp(-π·64·238/Q²) / D_upper^5,
+ D_upper = 1 + 2u/(1-u³),  u=exp(-π·64).
+`
+This lower bound is `0.122614216174631953209771851045...`. A separate high-precision direct finite-series evaluation of all five characteristic functions (each `G_i` truncated at ±90, tails negligible) agrees to the printed precision; the formal claim uses Poisson/geometric inequalities, not truncation.
+
+For the target, `S²=64M=7,311,552`, and at `t=1/Q`, the Poisson expression (denominator at least one) gives
+`
+ E[f(T)]
+ ≤ exp(-π S² / Q²)
+   + 2 exp(-π S²(1−1/Q)²) / (1−exp(-π S²))
+ < 3.077·10^-438.
+`
+The second term bounds both nonzero dual indices by a geometric series; thus no approximation/sampling assumption is needed.
+
+Because `|f|≤1` and `TV(P,Q)≥|E_Pf−E_Qf|/2`, conclude the quantitative **distribution** certificate
+`
+ TV(Law(W),D_(Z,8 sqrt(114243)))
+ > 0.0613071080873159 > 6.13%.
+`
+This is far from `2^-128`. It does not establish the true TV or prove the balanced example is better/worse than CGS-02; both numbers are LOWER bounds of different strength.
+
+### Mechanistic significance, published theorem cross-check and boundaries
+
+[NEGATIVE] Balancing the coefficients, choosing gcd 1, and matching Gram shape **still do not guarantee discrete-Gaussian statistical closeness at the original allowed σ0**. Unlike CGS-02's `(1,239,239,0,0)` where modulo 239 deletes all large-factor noise, the new vector has distinct comparable entries, but their near-equality modulo 151 creates a nonnegligible Fourier mode. This exposes **short dual arithmetic frequencies / kernel smoothing**, not a full ThFHE scheme flaw.
+
+[PRIOR ART / SOURCE TEST] Original p14 Lemma 3.7 already requires `σ0≥2||a||∞ η_ε(Z)` as a conservative **sufficient** condition for Gaussian linear-sum closeness. At `||a||∞=161`, applying Lemma 3.4's explicit upper estimate yields the safe (but not necessary) setting `σ0≥1717.863`, versus 8 here. No originality claim for Fourier characters or the theorem, and no proof that every 5-square factorization fails.
+
+[OPEN] Other factorizations, a larger number of smaller coefficients, alternative conditional Gaussian samplers, improved smoothing estimates, and nonlinear secret-correlated PRSS/PCF remain unresolved. The original source's independent flooding and rounding may mask a padding-only distribution discrepancy; this test is NOT an attack on the original scheme nor an adversary on its complete joint transcript. No privacy, all-qualified-subset Shamir correctness, unlimited fresh sid, or full cost model established. **NOVELTY NOT VERIFIED**.
+
+### Reproducibility
+
+One deterministic mpmath script created and executed in this session:
+`/mnt/data/thfhe_cgs03_balanced_root_fourier_gate.py`,
+SHA256 `3b5e8eadf12245c61f2c39810e4d09a5ad73521c096b2e5bb0932b84e87e8152`.
+Output records exact generator/shape/gcd/source width gates, `E f(W)` certified lower bound, `E f(T)` certified upper bound, and the TV inequality. Local work is NOT silently treated as a GitHub file.
+
+### End of CGS-03
+
+**STATUS:** **FAIL** balanced-five-square-is-sufficient hypothesis on one specified instance; **PASS** rigorous Fourier-character `TV>0.061307108...` counterexample. General sampler and complete ThFHE repair **UNCLEAR**.
+**RESULT:** Near-common-modulus harmonic defects persist even for distinct primitive balanced integer Gram factors. Shape/coprimality/low max/min ratio are inadequate selection criteria; any next root design must control nonzero dual Fourier modes at source σ0 and its security error budget.
+**NEXT_ACTION (CGS-04; PI continuation):** ONE precise hypothesis / one cheapest decisive test: for **the fixed scalar instance M=114243, σ0=8 and exactly 5 independent integer-Gaussian inputs**, determine whether **every** primitive integer factor `a∈Z^5` with `||a||²=M` has a Fourier-character distinguisher `cos(2π t z)` with advantage exceeding `2^-128`; seek a rigorous covering/Diophantine bound or one counterexample factor, **not** another arbitrary handpicked balanced vector. If universal obstruction survives, retire the naive fixed-five-square convolution route and ask PI before changing sampler architecture. Continue to separate mathematical output-distribution tests from corrupted-party simulation / MPC security.
+**STATE_UPDATE:** NO to existing vFHE `STATE.md`; **CGS TOPIC_RECORD_UPDATE:** YES, appended CGS-03 only.

@@ -1169,3 +1169,81 @@ There are exactly L=4F linear-form CLAIMS and 4F quotient witness variables in t
 **NEXT V16 (PI continuation only):** ONE exact falsifier for additional batching across the k=N/d native extension factors sharing the SAME base prime p. Can a postcommit random Fp-linear combination of their 4k native quotient/equality residuals reduce group-based functional openings to O(1) per prime (rather than 4k), while preserving a concrete error bound (about 1/p per independent round), and what base-field arithmetic / native extraction is still required? If cannot prove a sound shared-integer binding interface even under ideal native extractors, return UNCLEAR and recommend human review. No more generic count tables without a new decisive mechanism.
 
 **End V15:** STATUS=FAIL sublinear-verifier-work claim for A/B; PASS algebra/rank and exact operation-count model; UNCLEAR total efficiency / actual protocol. STATE_UPDATE=YES independent vFHE; global general counter I192 unchanged.
+
+
+## 25. vFHE V16 — batch native extension-factor link residuals once per CRT prime
+
+Date: 2026-10-14. Independent vFHE V16, general I192 FROZEN.
+
+**ONE PRIMARY HYPOTHESIS:** Assuming one canonical bounded integer witness vector a is already knowledge-soundly bound to a THIRD-FIELD hiding commitment and all native field witnesses/results are independently bound BEFORE the fold challenge, can the d*k=4*(N/4)=N separate native-base coefficient-link statements for ALL k extension factors of ONE CRT prime be collapsed into ONE third-field/group linear-functional opening per challenge round, with a precise false-witness probability and a real reduction in GROUP-work relative to V15's separately proven forms?
+
+**STATUS: PASS EXACT ALGEBRA and conditional MSM-term reduction; no complete CP-SNARK or ZK proof constructed; end-to-end performance UNCLEAR and a large field-arithmetic cost remains.** Probability 1/p PER independent random-vector round for any fixed nonzero residual; one-shot 49bit insufficient for 128-bit; 3 independent rounds give conditional ~142bit union bound for four source-style p>2^48. No per-factor O(1) complete proof claim without ideal-binding premises.
+
+### Source anchors and scope [FACT]
+
+Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO2025, IACR ePrint 2025/286, §3.1 physical p10 gives k=N/d extension factors per CRT prime p_i, each F_(p_i^d). Appendix F.2 physical pp50–51 uses field-native Merkle/Brakedown matrix commitment and random field-linear checks; no cross-characteristic integer Pedersen/IPA batching is present in the source. Research MCP inspected 52pp cached GitHub mirror SHA256 29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19; official latest version parity VERSION_UNVERIFIED.
+
+Existing randomized constraint batching is prior art (Schwartz–Zippel/random linear combination); see e.g. Halo2 Book proving system/vanishing argument https://zcash.github.io/halo2/design/proving-system/vanishing.html and linear IOP treatment https://link.springer.com/article/10.1007/s00145-022-09424-4. Standard IPA short functional opening: https://zcash.github.io/halo2/background/pc-ipa.html. V16 is NOT a claim of novelty.
+
+### Exact folding statement [DERIVED AND PROVED]
+
+Fix ONE native prime p. Suppose its k extension factors provide L=d*k base-coordinate claims:
+
+    z_l = sum_(j=0)^(m-1) c_(l,j)*a_j    in F_p,   l=0,...,L−1.
+
+Here c_l ∈ F_p^m are derived from separately sampled genuine native extension challenges, the SAME canonical integer digit vector a∈[0,beta−1]^m applies to ALL these rows, and the native z_l and the field witness vectors were committed and knowledge-soundly bound BEFORE the fold randomness. This shared-a premise is a MODEL ASSUMPTION; it must be separately mapped and validated for any actual source ring polynomial/digit indexing. The hidden a is already knowledge-soundly bound by the third-prime-group commitment C. Merkle roots/native commitments and all alpha values are transcript-bound before lambda.
+
+Pick vector lambda=(lambda_0,...,lambda_(L−1)) uniformly and independently from F_p^L AFTER the above commitments. Define public folded native coefficient and folded native value:
+
+    cbar_j = sum_l lambda_l c_(l,j) mod p;
+    zbar = sum_l lambda_l z_l mod p.
+
+Then the entirety of the L congruences reduces to ONE congruence per lambda:
+
+    <cbar,a> = zbar   mod p.
+
+For fixed nonzero residual vector e_l=<c_l,a>−z_l∈F_p, dot(lambda,e) is uniform in F_p: choose any e_t≠0 and condition on every lambda_l except lambda_t; unique lambda_t makes dot zero. Hence false-acceptance EXACTLY 1/p, regardless of L and m. With s independently sampled fold vectors and unchanged, pre-bound residuals, probability p^−s.
+
+**Strict prerequisite:** If the prover may choose or change even one original z_l, native u_l, or its meaning AFTER seeing lambda, the fixed-residual argument fails; native field proof/extraction must authenticate *every* original z_l and its relation to u, not merely the aggregated zbar. Similarly if common a is not soundly bound to C before lambda, the prover may adapt a. A prover-generated zbar not proved equal to the bound native linear combination is useless; a compact third-field functional proof without such native validation is not sound.
+
+### Preserve V14 cross-characteristic quotient correctness [DERIVED]
+
+All fold operations above MUST be in F_p, **before** converting to the commitment scalar field. Choose canonical 0≤ctildebar_j<p and 0≤ztildebar<p. Define
+
+    Sbar=sum_j ctildebar_j*a_j ∈ Z,
+    Sbar=ztildebar+p*kbar,
+    0≤kbar≤floor[m(p−1)(beta−1)/p].
+
+A correct cross-characteristic CP linking relation must prove the joint statement: the third-field commitment C binds THIS a; the group linear-functional opening binds Sbar mod r with injective/canonical integer range so group r > m(p−1)(beta−1); the native previously bound z_l fold to zbar; ztildebar is its canonical lift and kbar is bounded; equality Sbar=ztildebar+p*kbar holds. Group-scalar calculation is NOT automatically a field-Fp homomorphism. This gives ONE modular quotient instance per fold round, not L separate quotient instances.
+
+### Operation count: conditional but decisive in V15 direct baseline
+
+For m=1024,N=8192,d=4, k=2048, L=8192 PER PRIME and mu=4 primes, s=3 independent fold rounds:
+- V15 separate direct linear-functional openings: L*m=8,388,608 MSM scalar-base input TERMS per prime; all four primes 33,554,432.
+- V16 folded direct baseline: s*m=3,072 MSM terms per prime; all four primes 12,288. This is factor 8192/3=2730.666... fewer MSM input pairs in these explicit approaches, NOT a runtime speedup bound or cryptographic lower bound.
+- Field coefficient folding by an UNOPTIMIZED DENSE implementation still costs s*L*m=25,165,824 Fp multiply/add terms per prime; four primes 100,663,296. The verifier must compute/verify this coefficient vector, or rely on a separately sound protocol that does it. Native z folds add sL scalar mul-adds and native exact-value extraction still costs something.
+- Standard separate IPA L/R folding group elements for m1024 ~2log2(m)*L=163,840 per prime; folded s*20=60 per prime, excluding modEq/range/native proofs. Different aggregation, preprocessing, structured FFT/coding, and recursion may change counts.
+- With source-like p=281474976829441, beta=2^20, the REDUCED folded coefficient's canonical lifts stay below p. Sbar≤m(p−1)(beta−1)=302231166800824369152000 (78 bits), kbar≤1073740799 (30 bits), independent of L. This is why one quotient per fold can be safely bounded; combining lifted coefficients without first reducing mod p would require a different quotient bound.
+
+**CONCRETE SOUNDNESS ACCOUNTING:** For mu=4 and every p_i>2^48, s=3 full independent Fp-vector folds per prime give union upper bound sum_i p_i^(−3) <4*2^(−144)=2^(−142). This is ONLY the folding error, conditional on fixed native/code/committed integers, independent Fiat–Shamir challenges, no other soundness errors, and honest canonical cbar computations. The complete protocol's 128-bit proof-security level is NOT certified. Hash-expanding a small Fiat–Shamir seed into many Fp elements needs a defined domain-separated hash-to-field/PRG and its computational assumption; treating 8192 coordinates as automatically uniform under a short deterministic seed is not an information-theoretic statement.
+
+### Exact independent toy verification [EXPERIMENT]
+
+Toy K=F_29[theta]/(theta^4+theta+5) irreducible (verified in V14/V15), m5, beta16, 3 genuinely distinct toy extension challenges alpha=(28+theta),(5+theta+2theta²),(13+2theta+theta³), providing L=3*4=12 base-coordinate coefficient claims. Canonical a=(2,3,5,7,11), source third-field example modulus r=10007 and honest z_l=S_l mod29.
+
+Reconstruct all 12 coefficient vectors by exact extension multiplication, and verify their honest quotients. For 75 independently seeded lambda∈F29^12, compute cbar, zbar, Sbar and kbar; all 75 EXACTLY satisfy Sbar=zbar+29*kbar, Sbar<10007, and native folded values equal <cbar,a> mod29.
+
+Tamper ONE bound native z coordinate by +1 mod29. Residual e has one nonzero coordinate; exhaustive one, two, three independent fold rounds yield false accept counts exactly 1/29, 1/841, 1/24389. Additional nonzero dense error vector has exactly one accepting value among 29 for any fixed other coefficients, confirming the uniform-dot lemma without Monte Carlo. NO actual Pedersen, IPA, native Brakedown extractor, ZK or security implementation, so the toy verifies ARITHMETIC only.
+
+Local script: /mnt/data/vfhe_v16_cross_factor_folding_gate.py SHA256 8f196a439ff50037ad69b0c5d4a8d53ceb967d129649b2f4b4a84f587be78d1e.
+Local JSON: /mnt/data/vfhe_v16_cross_factor_folding_gate_results.json SHA256 1011e1368c0d8e7bbb1330dd74fae21f41c04217f57da707cba2d7658e988e8b.
+Artifacts in runtime, NOT Git repository bytes.
+
+### Research decision / V17 next one gate
+
+**PASS:** cross-factor folding of many base-p linear link claims into one modular relation per independent challenge (ideal binding premises) is both algebraically complete and exactly 1/p-sound per round; it can radically reduce number of expensive per-linear-form GROUP MSM openings in V15's direct implementation model. Unlike V15, this is a concrete potentially helpful architecture under a sharply stated model.
+
+**UNCLEAR:** It is not a completed knowledge-sound shared integer PCS. Explicit dense Fp coefficient folding remains O(km) per round, original Appendix F.2 native extraction unproved, source k factor digit linkage must be mapped, actual IPA and modular quotient CP proof not implemented, transcript/ZK/blinding/cost unmeasured. This technique resembles existing batched constraints/IPA; novelty is not established.
+
+**NEXT_ACTION V17 (PI continuation only):** One decisive REAL INTERFACE feasibility check, not another synthetic error probability: read original ePrint 2025/286 Appendix F.1/F.2 and §3.1 encoding-to-CRT maps, and ascertain whether all k extension-factor digit vectors can be expressed as reductions/embeddings of THE SAME compact canonical integer vector a of length m. If different factors require distinct canonical message vectors of total dimension km, the V16 single length-m commitment assumption breaks and cost model must be revised. Alternatively if source mapping really identifies the same scalar digit in all factors, identify exact occurrence/equation in source and needed extractor (without claiming published exploit).
+**End V16:** STATUS=PASS scoped batching algebra + quantified group-term saving; UNCLEAR real PCS and overall performance; STATE_UPDATE=YES independent vFHE only, global I192 frozen.

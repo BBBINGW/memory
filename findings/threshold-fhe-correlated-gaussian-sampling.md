@@ -635,3 +635,58 @@ The certified omitted Gaussian tail for width 16 using |z|<=128 is <4.263e-89, f
 **RESULT:** Correct target is likely combined decryption-transcript simulation, not raw full-pad-vector correlation sampling. Original source Theorem6.3 already proves an s-free aggregate-noise hybrid for the baseline.
 **NEXT_ACTION (CGS-13, PI continuation):** Read Algorithm5 pp23–24, Lemma6.1 pp26–27 and Theorem6.3 p28 in source 2025/409. Define ONE exact transcript-only correlation interface and test whether fresh nonce-derived padding shares could use the existing aggregate-noise hybrid while preserving all corrupted-party views and adaptive qualified active sets; seek ONE cheapest falsifier, not further width-factor enumeration or toy PKE.
 **STATE_UPDATE:** NO to global/vFHE STATE.md; CGS topic append only.
+
+
+---
+
+## CGS-13 — adaptive decryption transcript freshness is an independent obligation (2026-10-14)
+
+**Independent CGS track; ONE hypothesis / ONE decisive two-session test.** Read START_RESEARCH_SESSION.md, RESEARCH_PHILOSOPHY.md, AGENT.md, STATE.md (start blob `81afc8e0eec830370b19756824cab07e576f5435`) and CGS-12 before testing. No updates to frozen global I or independent vFHE V states.
+
+### Primary source verification [FACT]
+
+Okada–Takagi, *Low Communication Threshold FHE from Standard (Module-)LWE*, ePrint 2025/409, mirror PDF 40 physical pp SHA256 `98993522b80695ab415cc5d8c28dddc1dbe8b78ac3550d2063140ce718c6a301`, VERSION_UNVERIFIED; re-read directly: Lemma5.1 physical pp20–21 Eq.(13) (unpadded residual `e`); Algorithm5 p23 (ODec reveals `ctdec` AND all active partial shares to adversary); Algorithm6 p26 line9 (Shamir-shared `ζ^(sid)`, PRF masks); Theorem6.2 p27 Eq.(24) (sum of partial shares); Theorem6.3 p28 (aggregate-noise simulation using Lemma6.1). Important non-collusion of original server with parties does not prevent the **Algorithm5 adversarial oracle** from returning the all-active partial-share transcript.
+
+### Primary hypothesis and cheapest falsifier
+
+**H-CGS13 [HYPOTHESIS]:** If a compact seeded generator delivers individually correct `D_(Z,σ(s))` Gaussian padding marginals for each `sid` and preserves all-qualified-set Shamir reconstruction, the existing Theorem6.3 proof can be reused without a further *joint/multi-sid security condition*.
+
+**[DERIVED public observable from exact source algebra]:** For `ctdec=(a,b)`, known chosen plaintext `µ`, and all active partial-decryption shares, Eq.(13)+Eq.(24) give the efficiently observable
+`
+R_sid = b−Σ_(i∈act) pd_i−floor(q/2)µ
+      = e_sid−ζ^(sid) mod q.
+`
+Secret terms `a^T s` and all honest/corrupt PRF masks cancel. This holds for every qualified `act`. Thus source-visible *aggregate transcript* can expose cross-session padding correlations even though raw honest pad shares are hidden.
+
+**ONE exact two-session test [DERIVED / analytic, explicit idealized noise model]:** Compare two worlds with `e1,e2 iid D_(Z,σ)`, `σ²=64*114243=7311552`, prime `q=1000003`; this is a **Gaussianized toy source-residual model**, NOT the exact original rounded/flooded e. For two sessions, the **Fresh** world samples independent `ζ1,ζ2∼D_(Z,σ)` and outputs `R_j=e_j−ζ_j modq`; the **Reused** world uses a single `ζ∼D_(Z,σ)` and outputs `R_j=e_j−ζ modq`. Both worlds have EXACTLY equal one-session residual marginals and correctly reconstructable Shamir padding secrets. Choose the field character
+`F(R1,R2)=cos(2π*185*(R1−R2)/1000003)`.
+Using centered discrete Gaussian characteristic `φ_σ(t)` (Poisson summation) with `t=185/1000003`, obtain
+`
+E_Fresh F = φ_σ(t)^4 ≈ 0.04308575212909598,
+E_Reused F = φ_σ(t)^2 ≈ 0.20757107729425114.
+`
+Analytic dual Gaussian-series upper/lower bounds (NOT Monte Carlo) certify
+`
+TV(Fresh_joint, Reused_joint)
+≥ [φ_σ(t)^2*(1−φ_σ(t)^2)]/2
+> 0.08224.
+`
+Since `t=185/q`, the Fourier character is well-defined on residues mod q, with NO wraparound assumption. The gap is between TWO TOY JOINT TRANSCRIPT DISTRIBUTIONS, not a claimed source-protocol attack or a verified source-parameter instantiation.
+
+**[COMPUTED exact sanity]:** At q=1000003, for 2-of-4 Shamir `f_s(X)=23+13X`, `f_ζ(X)=17+19X`, a=71, e=29, µ=0, arbitrary masks `m_i=100+7i`, all three qualified active sets `{1,2}`, `{2,4}`, `{1,2,3}` recover observable `R=12=e−ζ` exactly. This is a deterministic algebra check, not security evidence.
+
+### Scientific boundary and next protocol interface
+
+**FAIL:** One-session marginal Gaussian distribution correctness + qualified-subset Shamir correctness DO NOT imply multi-query transcript security. At least a **joint cross-sid** guarantee must be proved. This is a known general correlation/freshness pitfall, not a new ThFHE attack or novel primitive.
+
+**CONDITIONAL COMPOSITION [DERIVED, not construction]:** A suitable replacement property must be defined for the complete adaptive observable transcript, conditioning on corrupted parties' *FHE secret shares, PCF evaluation keys/seeds, and all past responses*, including public FHE pk, nonces and varying qualified act. If the seeded real transcript and original independent-pad transcript satisfy computational indistinguishability with advantage `Adv_replace`, then the source Theorem6.3 gives `Adv_ThFHE(seeded) ≤ Adv_replace+Adv_ThFHE(original)` via triangle inequality. This does NOT provide a PCF satisfying `Adv_replace`. Actual source `e` is rounded/flooded with a potentially different width and joint dependence, and has NOT been instantiated by the Gaussianized toy; a full source security proof remains OPEN.
+
+**Reproducibility:** Local full report `/mnt/data/CGS-13_threshold_FHE_joint_transcript_freshness_gate.md`, SHA256 `1337682a55d0dcdb4db30ddc1f753709af5debf19c5b59020a8d18b742d004a1`; deterministic analytical-check script `/mnt/data/thfhe_cgs13_joint_transcript_fourier_gate.py`, SHA256 `4f298bce25dd8b63ab6797bf2ba1e8c35a2a430a93c13d85594de7acb2045779`; JSON results `/mnt/data/thfhe_cgs13_joint_transcript_fourier_results.json`, SHA256 `7e6ec091312c36561ca552cfed1682efb2bbe766c677ce8e06b7895c1be18913`. Local files, not silently stored in GitHub.
+
+**STATUS:** **FAIL** H-CGS13 marginal-sufficiency claim; **PASS** explicit source public-residual formula and certified two-query Gaussianized-model Fourier gap; **UNCLEAR/HUMAN_REVIEW** actual seed-conditioned ThFHE PCF transcript composition.
+
+**RESULT:** Exact per-session distribution and Shamir reconstruction are insufficient; an independent adaptive joint-transcript indistinguishability condition is required before applying source multi-query Theorem6.3. No proof gap or vulnerability of original source established.
+
+**NEXT_ACTION (CGS-14; only after PI next continuation):** Select ONE named published PCF/PRSS construction with a precise adaptive multi-nonce security game, and test its security definitions against the **source-visible transcript replacement** property with pre-existing public FHE pk, corrupted FHE secret shares and PCF keys. Identify ONE concrete missing condition or prove one smallest compatible hybrid lemma. Do not repeat trivial reuse examples, coefficient enumeration or old Shamir-square attacks.
+
+**STATE_UPDATE:** NO to global/vFHE STATE.md; CGS topic append only.

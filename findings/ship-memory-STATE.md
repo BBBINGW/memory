@@ -2,8 +2,8 @@
 
 **Checkpoint:** 2026-10-14 (Asia/Tokyo).
 **PI-selected target:** SHIP prepared evaluation-key selector memory, Cheon–Hanrot–Kim–Stehlé, EUROCRYPT 2025, ePrint 2025/784.
-**LAST COMPLETED:** **I201 COMPLETED** (independent SHIP numbering); prior I197–I200 and SHIP-M01–M04 preserved. **No compiled Poulpy variant run.**
-**STATUS:** I201 **PASS narrow derived-key public-postprocessing security-transfer lemma** relative to any original *joint* evaluation-key indistinguishability guarantee. NOT an independent proof of original security, correctness or novelty. Real CKKS execution remains **UNCLEAR / IMPLEMENTATION BLOCKED / HUMAN_REVIEW**; I198 memory savings conditional. **NOVELTY NOT VERIFIED**.
+**LAST COMPLETED:** **I202 COMPLETED** (independent SHIP numbering); all prior SHIP-M01–M04 and I197–I201 findings preserved. **No compiled Poulpy variant run.**
+**STATUS:** I202 **FAIL** public-affine conjugation-free recovery of complex-packed real SHIP masks, via source-legal exact four-state contradiction. This rules out the naive latency-neutral leaf rewrite, NOT all cross-leaf/fused alternatives or the original M01 early-Galois candidate. Real CKKS implementation **UNCLEAR / IMPLEMENTATION BLOCKED / HUMAN_REVIEW**. **NOVELTY NOT VERIFIED**.
 **Isolation:** SHIP-M01..M04 each in own `findings/ship-memory-MNN-*.md`; global `STATE.md` is actively used by another vFHE I-series conversation. **Do not overwrite or join histories.**
 
 ## Main candidate
@@ -30,6 +30,8 @@ In actual Poulpy SHIP, additional ~h high-precision conjugations plus two maskin
 - `findings/ship-memory-I200-drop-in-interface-gate.md`: pinned Poulpy keyset `validate_material` enforces `masks.len()==4*theta`, bootstrap enforces `pi.len()==4*theta`, and single masking accumulator enforces `masks.len()==pis.len()`; direct swap to `2*theta` packed ciphertexts fails. Internal masking/keyset fields are `pub(crate)`; exact benchmark needs an in-crate test-only dual-accumulator kernel and corresponding U,V transformed plaintexts. **This is implementation work, not a crypto impossibility**, and no binary has been run.
 
 - `findings/ship-memory-I201-public-derivation-security-gate.md`: a **newly defined derived** packed key generator can publicly transform the original same-secret mask ciphertext pair `(C1,C2)` to `C1 + X^(N/2) C2` via pinned source `ckks_mul_i_assign` and `ckks_add`, then discard originals. Joint packed key is `T(K_old)`, so distinguishability attacks simulate against the original complete key bundle without a **new** KDM assumption **conditional on original joint-key security**. Not proven for a separately sampled fresh packed encryption; extra selector noise `e1+X^(N/2)e2`, temporary full keygen and online added Galois/IDFT remain. No compiler run.
+
+- `findings/ship-memory-I202-terminal-conjugation-affine-no-go.md`: one legal Poulpy source-mask instance N16,h2,theta1,window1, bottom public phases (1,1,-1,-1) yields four legal onehot secret states with packed (C_A,C_B)=(1,0),(i,0),(0,1),(0,i), desired F=(1,1,-1,-1). No public affine complex-linear F=gamma+alpha*C_A+beta*C_B exists (exact rank 3 vs augmented 4). Thus free no-conjugation **leaf recovery** fails; naive moving conjugation after tree also omits mixed conjugate terms. Does NOT rule out nonlinear/fused methods; original early-Galois M01 survives. Symbolic script/JSON local, real Rust benchmark remains unavailable.
 
 ## NEXT_ACTION — HUMAN_REVIEW (one PI decision)
 

@@ -1312,3 +1312,92 @@ The original source combines these two object levels: TB imposes canonical COEFF
 **NEXT_ACTION V18 only if PI continues:** one focused **source-accurate IDEAL-PIOP transcript test** for the e=(1,0) CRT idempotent, targeting Π_beta_range Fig.1 §4.3 and Appendix E.2: instantiate fieldwise honest memory-counter and grand-product oracles for each factor, glue with CRT, and check every ring verifier identity for an INVALID scalar-ring lookup instance. Include β<p_min and 2^ell*<p_min, and distinguish ideal oracle from PCS/F-S; if actual scheme has an explicit diagonal check, identify it and revise attack. If the invalid transcript passes, separate theorem/protocol soundness finding from contribution decision, then evaluate minimal source-specific fix. No implementation of unrelated PCS architectures in this iteration.
 
 **END V17:** STATUS=FAIL automatic source interface / PASS exact p13 source-form idempotent and counterexample to Appendix E.2 implication. STATE_UPDATE=YES independent V-series, general I192 unchanged.
+
+
+## 27. vFHE V18 — source Figure-1 beta-range IDEAL PIOP accepts a non-diagonal CRT idempotent
+
+Date: 2026-10-14. Independent vFHE V18. Global/general FHE iteration I192 remains FROZEN. Human PI controls publication/security-disclosure decisions.
+
+**Primary falsifiable hypothesis:** V17's incorrect proof implication in Appendix E.2 is a harmless proof gap because, despite fieldwise-valid digit projections, the published Figure 1 Pi_beta_range ideal verifier's REAL memory counters, grand-product tree or two sum-check identities necessarily reject the ring-INVALID non-diagonal idempotent e=(1,0). ONE minimal decisive test: source-faithfully commit native factorwise honest counters BEFORE sigma/tau, CRT-glue oracles, construct the four product-tree oracles AFTER sigma/tau and BEFORE chi/rho/xi, explicitly perform both degree-3 sumchecks, and check every Figure-1 verifier identity on an invalid ring-valued beta lookup.
+
+**STATUS: FAIL the "harmless proof gap" hypothesis. PASS a complete minimal Figure-1 IDEAL Pi_beta_range adversarial transcript passing for EVERY allowed challenge, with an exact algebraic identity and two 1-round sumchecks tested. The source statement is FALSE, so this is a scoped ideal-PIOP SOUNDNESS COUNTEREXAMPLE. Not a real compiled PCS/Fiat–Shamir SNARK exploit, nor yet a full Pi_range+Pi_decomp/CKKS computation transcript. Security relevance is material but official latest PDF revision remains VERSION_UNVERIFIED. Novelty relative to known CRT rectangular-vs-diagonal observations is NOT established.**
+
+### Paper facts/provenance [FACT]
+
+Cascudo, Costache, Cozzo, Fiore, Guimarães, Soria-Vazquez, *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO2025, ePrint2025/286, https://eprint.iacr.org/2025/286. Read via Research MCP cached full 52-physical-page github-mirror PDF, SHA256 29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19, version_status VERSION_UNVERIFIED.
+
+- §3.1 physical PDF p10 ring CRT and p=1+(2N/d) a for odd a.
+- §4.3 physical p22 Lemma4.6 constructs read_ts and final_cts counters per table value, Eqs24–26 define WSt/WSh/RS/S.
+- §4.3 physical p23 Figure1 specifies first oracle commit (read_ts/final_cts), THEN sigma,tau, THEN four product-tree oracle polynomials f^(1), THEN chi/rho/xi, THEN two sumcheck PIOPs and final grand-root check. Theorem4.8 p23 states beta<p_min and 2^ellstar<p_min and PIOP knowledge error O((2^ellstar+2^(b/c))/|S|).
+- Appendix E.2 pp46–49, esp. p48, contains the false inference "if ring h is not in scalar table, one CRT projection must not be in scalar table"; it also defines the two virtual sumcheck oracles g_{chi,rho} and the grand-product invariant.
+- F.1/F.2 pp50–51 compiles field projections to per-field PCs; no evidence yet of concrete Fiat–Shamir success.
+- A separate public web PDF cache sometimes resolves to a 50-physical-page older revision, so physical page labels and theorem text must NOT be silently mixed. This V18 proof specifically targets the 52-page SHA256 above. Mathematical expressions were checked against text extraction; complex glyph transcription still warrants independent visual/source-authenticated validation before author notification.
+
+### Malicious statement and theorem side conditions [DERIVED]
+
+Use N=4, d=2, p=13=1+(2N/d)*3 (odd 3), k=2. R=F13[X]/(X^4+1)≅F_(13²)×F_(13²) since X⁴+1=(X²−5)(X²+5), both quadratic factors irreducible mod13. Let
+
+    e(X)=7+4X²,  e²=e, e≠0,1, and Phi(e)=(1,0).
+
+Take beta=2 (t_beta={0,1}), ellstar=1, b/c=1. Conditions beta=2<p_min13 and 2^ellstar=2<13 are satisfied. Commit to ring multilinear htilde(T)=e with two Boolean values h(0)=h(1)=e, BOTH outside scalar table t_2. Thus the verifier's lookup statement is FALSE.
+
+### Prover round 1, BEFORE sigma/tau: genuine per-field counters CRT-glued [DERIVED]
+
+Fixed ring oracle Boolean evaluation arrays:
+
+    read_ts(0)=0,  read_ts(1)=1,
+    final_cts(0)=2(1−e), final_cts(1)=2e,
+    t_beta(0)=0, t_beta(1)=1.
+
+Extend read_ts(T)=T and final_cts(T)=2(1−e)(1−T)+2e T as ring multilinear polynomials, COMMITTED BEFORE challenge selection. In factor R1 where e=1, honest reads from table DIGIT1 twice: read counters (0,1), final counters (table0:0, table1:2). In factor R2 where e=0, honest reads table DIGIT0 twice: reads (0,1), finals (table0:2,table1:0). CRT-glued final_cts are NOT globally ordinary integer counters, but Figure1 checks only ring algebra and never constrains these to diagonal scalar integers. This is the missing invariant; source prose "constructs counters" is not a verifier check.
+
+### Prover round 2, AFTER sigma/tau: exact ring grand products [DERIVED]
+
+Using exactly source Eqs24–26 and h(i)=e:
+
+    WSt=(-tau)(1−tau),
+    WSh=(e+sigma−tau)(e+2 sigma−tau),
+    RS=(e−tau)(e+sigma−tau),
+    S=(2 sigma(1−e)−tau)(1+2 sigma e−tau).
+
+In free commutative polynomial ring, direct symbolic expansion yields
+
+    WSt*WSh−RS*S
+      = 2e sigma(e−1)(e+sigma−tau)(2e sigma−2 sigma tau+1).
+
+Because e(e−1)=0 in R, identity WSt*WSh=RS*S holds for EVERY sigma,tau in R, even zero divisors and non-base-field challenges. No Schwartz–Zippel hit or hash collision is required.
+
+Construct FOUR source Figure1 product-tree oracle f_alpha^(1) for alpha in {WSh,RS,WSt,S}. Each has two leaves v_alpha(0),v_alpha(1) from above and parent oracle Boolean table:
+
+    f_alpha^(1)(0)=v_alpha(0)*v_alpha(1), f_alpha^(1)(1)=0.
+
+For ellstar=1 the second value is unused padding. This satisfies the paper's binary product recursion for i=0 and i=1, where i=1 has zero parent and zero right child; multilinearly interpolate each table. Each f_alpha^(1) is fixed after sigma/tau and before later challenges.
+
+### Prover round 3, AFTER chi/rho/xi: exact two degree-3 sum-checks [DERIVED / COMPUTED]
+
+Source Figure1 virtual oracles h*(T) and t*(T) sum weighted binary product-gate discrepancies, with equality-polynomial factors eq(rho,T),eq(xi,T) and independent chi. The constructed four binary product-tree relations hold at both T=0,1, hence
+
+    h*(0)=h*(1)=0,   t*(0)=t*(1)=0
+
+for ALL chi,rho,xi in the ring. For ellstar=b/c=1 each is a polynomial in T of degree≤3. Honest univariate sumcheck prover sends the exact coefficient polynomial g(T)=h*(T) or t*(T); verifier checks g(0)+g(1)=0, samples r, checks g(r) against final virtual-oracle evaluation from authenticated ring oracle evaluations. Both pass for ANY choice of challenges. The grand-root equality already holds identically. The transcript is malicious only about the scalar-table witness, not about satisfying Figure1 algebraic checks.
+
+**NUMERICAL INDEPENDENT TEST:** Implemented actual ring R=F13[X]/(X⁴+1), modular polynomial arithmetic with X⁴=−1, exact factor projection, full fixed ring oracle arrays, 4 Figure1 leaf formulas, 4 root products, full two-layer polynomial tree f^(0),f^(1), two virtual g polynomials, direct degree3 Lagrange/Vandermonde interpolation, exact one-round sumcheck identities and randomly sampled final oracle evaluations. Tested 100 deterministically seeded transcripts with full ring-valued sigma,tau,chi,rho,xi,sumcheck_r (not only scalar subfield), ALL PASS. Reexecuted twice; SHA256 of script/results stable. Tests are sample evidence; the universal acceptance follows from algebraic source-protocol construction.
+
+Local script:
+    /mnt/data/vfhe_v18_ideal_piop_transcript_gate.py
+    SHA256 c4af962733eb50856d4ec45147eb5e56edf63a21316ed5ea26267dba989d13d1
+
+JSON:
+    /mnt/data/vfhe_v18_ideal_piop_transcript_results.json
+    SHA256 06fce2710687bf53018b2b30ae158589bd9aa70900b7dd341ba7db66708b67b8
+
+No PDF or code was committed to Github; only this archived research NOTE. No actual Merkle, Brakedown, native PCS, Fiat–Shamir, zero-knowledge, knowledge-extractor or CKKS proof implementation.
+
+### Interpretation and decision
+
+**PROVEN, scoped:** Theorem4.8's stated ideal Pi_beta_range soundness is FALSE for the inspected 52-page mirror version's Rq scalar-lookup relation when the CRT product has at least two factors. An invalid oracle is accepted with probability ONE by the displayed source Figure1 algebraic protocol. Since the construction uses a nontrivial CRT idempotent, the phenomenon generalizes to larger admissible ring CRT products; p13 is only the smallest explicit source-form toy.
+
+**NOT PROVEN:** The real cryptographically compiled SNARK is exploitable; the entire outer Pi_range in §4.3 with Pi_decomp is broken under an authenticated final version; an actual end-to-end vFHE ciphertext can be forged; performance of a patch or publication novelty. The clean ideal protocol failure is nevertheless stronger than the old isolated proof-implication gap.
+
+**NEXT_ACTION V19 (on PI continuation only):** ONE source-faithful EXTENSION of this invalid Pi_beta_range witness to the full outer Pi_range (Eq22 decomposition, Figure1, Pi_decomp) for a ring value with an invalid small COEFFICIENT range, without inventing a hidden digit-to-coefficient link. If that passes, a falsified coefficient-range proof is closer to the CKKS high-level validation interface. Retain separate source PDF version warnings and privacy/soundness distinctions. After that, before contacting authors, verify exact official/version-equivalent source and independent formal transcript review, and let human PI decide disclosure.
+**END V18:** STATUS=PASS complete Figure1 ideal PIOP counterexample; STATE_UPDATE=YES; global I192 frozen.

@@ -1,52 +1,48 @@
 # vFHE Research State — Independent V-Series
 
-**Last updated:** 2026-10-14 (Asia/Tokyo)
-**LAST COMPLETED vFHE ROUND:** **V5**. **NEXT:** V6 NOT STARTED.
-**STATUS:** OPEN RESEARCH PARENT; V5 PASS a limited cross-prime ≤3-input-support rank/distance invariance; no global linear distance, valid integrated shared commitment or novelty claim.
-**Global FHE round counter:** FROZEN at historic I192. Do NOT append V-series work to I193+ or increment main global round counter. Historical vFHE notes I193–I196 are retained as legacy aliases **V1–V4**, not additional global iterations.
+**Checkpoint date:** 2026-10-14 (Asia/Tokyo).
+**LAST COMPLETED vFHE ROUND:** **V6**. **NEXT:** **V7 NOT STARTED**.
+**Status:** PASS necessary but limited coding-theory gate at input support≤4; all-support linear minimum distance and complete cross-CRT ZK repair OPEN / HUMAN_REVIEW; NOVELTY NOT VERIFIED.
 
-## Independent numbering
+**Global FHE research counter:** FROZEN at general I192. This is an independent project V-series. Legacy vFHE archive labels I193–I196 mean V1–V4 only; do not advance global I-series.
 
-| Current vFHE number | Original historical alias | Main result |
-|---|---|---|
-| V1 | archived label I193 | Small-integer systematic single-prefix toy, m8 minimum3/16 |
-| V2 | archived label I194 | All row-weight2 single-prefix choices have asymptotically vanishing distance (O(sqrt m) upper bound) |
-| V3 | archived label I195 | Fixed cyclic first expansion + any second permutation/accumulator still O(sqrt m) |
-| V4 | archived label I196 | Minimum distance same for Fp and F_(p^d) when generator entries lie in Fp; nonbinary weighted RAA theorem not directly applicable to this unweighted n2,L2 model |
-| **V5** | **V5 only** | Source-size 49-bit CRT primes do not change minimum codeword weight for input support ≤3 of fixed integer double-interleaver RAA generator |
+## Independent vFHE sequence
 
-Old audits I59–I151 predate the independent V-series and remain as historical evidence for the original vFHE gap. Their filenames/numbers should never be rewritten.
+| Round | Outcome |
+|---|---|
+| V1 (legacy I193) | Common bounded-integer single-prefix toy m8, distance3/16, finite feasibility |
+| V2 (legacy I194) | Uniform row-weight2 single-prefix family has vanishing relative distance |
+| V3 (legacy I195) | Fixed cyclic first expansion + any second interleaver and prefix also vanishing relative distance |
+| V4 (legacy I196) | Base prime→extension field distance invariant when code generator is in Fp; weighted nonbinary RAA theorem not directly applicable to unweighted n2,L2 |
+| V5 | For fixed integer true two-interleaver repeat2 double-positive-prefix generator, all codewords from input support≤3 have prime-independent minimum distance at p>384m³ |
+| **V6** | **Stronger monotone parity-minor theorem**: d_{≤4} is independent of CRT prime p>2^48 (including extension fields), for actual encoder message dimension m≤1024 |
 
-## Research target and original obstacle
+Original vFHE audits in much earlier general I59–I151 remain historical evidence unchanged. Avoid renumbering legacy files.
 
-Parent paper: Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO 2025, ePrint 2025/286 https://eprint.iacr.org/2025/286. Examined 52 physical pages, mirrored PDF SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, original official version identity VERSION_UNVERIFIED.
+## Research target
 
-Underlying gap: per-component fieldwise digit lookup can accept CRT idempotent mismatch, testing the larger rectangular relation instead of intended diagonal common scalar digit; original I59/I60 source-form ideal-oracle counterexample. **Not** verified deployed SNARK exploit, latest version exploit, author-confirmed issue, or proof of a complete repair.
+Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO 2025, ePrint 2025/286, https://eprint.iacr.org/2025/286. MIRRORED 52-page source SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, VERSION_UNVERIFIED versus latest official binary. §3.1 gives p=1+2aN/d for odd a; §6 pp27–29 benchmark with 49-bit native RNS primes.
 
-Goal: build useful correct, hiding/zero-knowledge, Fiat–Shamir-sound, cost-effective proof forcing one common bounded INTEGER table index across all CRT components, ideally by shared canonical integer codeword commitment. No construction yet proves all properties.
+Original structural gap: per-CRT-field digit table membership checks larger RECTANGULAR lookup relation instead of intended DIAGONAL common integer scalar index (earlier I59–I60 source-form ideal PIOP counterexample). Not authenticated deployed final-version SNARK attack or author-confirmed current flaw. Goal: provably cross-field-bound and hidden one canonical integer digit vector with usable cost, but no full protocol exists.
 
-## V5 — ONE PRIMARY HYPOTHESIS + MINIMAL DECISIVE TEST
+## V6 ONE PRIMARY HYPOTHESIS / DECISIVE TEST
 
-Question: Could changing native 49-bit CRT prime p_i introduce extra extremely short prime-field codewords with message support≤3 in the genuine **two independently interleaved, unweighted repeat2/two-positive-accumulator** integer generator G?
+**[HYPOTHESIS, refuted]** Since generic V5 four-minor upper bound `4!(4m)^4` exceeds p≈2^49 for source-scale m1024, distinct CRT primes could introduce new support-4 linear dependencies or extra low-weight codewords in the fixed bounded-integer generator.
 
-**[DERIVED PASS, hypothesis falsified within scope]** G∈Z^{m×3m}, entry bound B≤4m. Every k×k minor for k≤3 has |det|≤k!B^k≤6(4m)^3=384m³. For every p>384m³, the zero/nonzero status of every minor of order≤3 is identical over Q and Fp, so all submatrix ranks involving≤3 input rows agree. The minimum Hamming weight among nonzero codewords generated by ≤3 input coordinates is **identical** over Q, Fp and F_(p^d). This holds across DIFFERENT qualifying CRT primes as well, for the **same fixed integer G**. At m=1024, minor bound 412316860416<2^39<2^48; m8192 also safe under p>2^48. Original source §6 uses 49-bit benchmark primes; this is conditional on p_i>2^48 and the relevant actual row length m. This does **NOT** bound full unrestricted d_min (support≥4 remains open).
+**[DERIVATION, PASS]** The parity block P of `G=[I_m|P]` for independently permuted repeat2 / positive-prefix / independently permuted / positive-prefix is rowwise nonnegative MONOTONE IN OUTPUT POSITION and every entry ≤4m. For any nonnegative monotone row k×k integer matrix M with entries≤B, factor M=D U with nonnegative row-wise increments D and unit-upper-triangular cumulative U (det1). Hence `|det M|=|det D|≤∏_i Σ_j D_ij≤B^k`. Unit columns of systematic I_m reduce arbitrary k×k generator minors to smaller parity minors; bound `|det minor|≤(4m)^k`. For m≤1024,k≤4, upper bound≤(4096)^4=2^48. All primes p>2^48 preserve ranks of all submatrices with ≤4 selected generator rows and hence `d_{≤4}(G;Q)=d_{≤4}(G mod p;Fp)=d_{≤4}(G mod p;F_(p^d))`. This equality also holds ACROSS different qualifying CRT primes for the SAME fixed integer G. **This is only restricted input support≤4 and CONDITIONAL on the actual code input dimension m.**
 
-**[EXPERIMENT PASS]** independently sampled π1,π2 for m8, N24; enumerate all 121264 square minors of orders1/2/3 and test zero status over integers vs p=1000003,1000033 (>6B³=196608). All agree. Independently calculate restricted distance d≤3=8 in all three fields by hyperplane normal enumeration. A codeword witness uses coefficients (5,-5) on rows (3,7), equivalent binary difference for the same support. Script /mnt/data/vfhe_v5_sparse_support_prime_stability.py SHA256 d8bc466c6295fa6ad46e7f727bce328aa3d06d060862a90e221544718f02b855; JSON /mnt/data/vfhe_v5_sparse_support_prime_stability_results.json SHA256 5c21fb5d24728f3371acac224613483307336ba2e9108d573a201c9f4c421ff1. Both local-only reproducible; NOT repository bytes. This script was run twice in this turn.
+**[EXPERIMENT, PASS]** Source-form compatible 49-bit primes `281474976829441, 281474976894977` both prime, both p≡4097(mod8192), valid N8192,d4 p=1+4096a odd a. For m8 true double independent permutations, exhaustive all **743820** 4×4 minors: 0 prime-related zero-status mismatches; max integer determinant128 (<32^4). Additional independent random parity minors m256 (500), m1024 (500), m2048 (100): all same zero-status, but universal theorem only covers m≤1024 at p>2^48. Local executable `/mnt/data/vfhe_v6_monotone_minor_gate.py` SHA256 `aa98b19c0783e33e9997c9d4bc26f18017bc42633ea3bd6e931154d3a71193f3`; local result JSON SHA256 `e1d0182f1c3758622cdf347ffc2e6161bfea37c5201531dc02922e6770e48557`. LOCAL ONLY, not Git files.
 
-## Remaining open problems / main blocker
+**Source and technical details:** `findings/vfhe-cross-crt-consistency-research.md` **Section 15**. Earlier V5 §14, V4 §13, V3 §12, V2 §11.
 
-Actual complete prime-field distance for **all** input supports of unweighted n2,L2 double-interleaver RAA: UNCLEAR. Classic binary RAA or weighted nonbinary WNRMA results (Rosnes & Graell i Amat arXiv1101.5966) are NOT turnkey guarantees at native ~49-bit primes and unweighted integer coefficients. The low-support invariant is a useful elimination tool but not an improvement in the vFHE PC itself.
+## Main unsolved research problem
 
-Likewise completely OPEN: shared codeword commitment extraction/binding across each field, oracle testing proximity, integer column hiding, Fiat–Shamir order, globally 128-bit soundness, and system cost relative to original Appendix F.2/F.3 native RS commitments.
+Can unweighted repeat2/two-independent-interleaver/two-positive-prefix **integer generator code** simultaneously have **positive constant unrestricted Hamming distance** across all source CRT primes, no-wrap for honest small integer table indexes, near-linear encoding, and be used in an actually binding/hiding cross-field shared Merkle PCS? All-support distance, binding/extraction and 128-bit soundness, zero knowledge, FS transcript and total proof cost remain OPEN; these low-support lemmas are not a vFHE protocol repair or publishable contribution.
 
-## NEXT_ACTION for V6 (only after PI continues)
+## NEXT_ACTION — V7 only if PI continues
 
-Pick one precise hypothesis about **support≥4** in the fixed unweighted RAA code: for example, whether prime-specific cancellations occur when k=4, since integer 4×4 minors may exceed p≈2^49 at source scale. Seek one minimal actual rank-changing minor and a concrete low-weight codeword if it exists; alternatively, a rigorously relevant all-support distance theorem. No full SNARK implementation before clearing code-distance gate. Keep one hypothesis/test per V-round.
+ONE falsifiable question: whether support5 can have a source-prime-specific rank change/low-weight codeword at m1024 because `(4m)^5` exceeds 49-bit p. Prefer a structural argument or exact small submatrix witness; do not mistake a coarse bound's failure for existence of a discrepancy. Do NOT switch to full PCS before a satisfactory global code-distance gate or PI pivot.
 
-## File authority / archive discipline
+## Archival and workflow
 
-**Primary technical archive:** `findings/vfhe-cross-crt-consistency-research.md`, Sections1–14; V-series mapping at top.
-**This file:** independent V-series short state for rapid resume.
-**Historical evidence:** `findings/vfhe-crt-lookup-cross-component-soundness.md`, `findings/vfhe-crt-full-range-piop-and-commitment-audit.md`, `failures/vfhe-original-rs-merkle-column-crt-integer-comparison-iteration151.md`.
-**Global old state:** `STATE.md` is not a vFHE round counter.
-Human PI controls parent pivots, author contact and contribution decisions.
+Global `STATE.md`: index only and frozen I192. This file: vFHE round state. `findings/vfhe-cross-crt-consistency-research.md`: full independent subject findings. Follow `AGENT.md`: one hypothesis and one cheapest decisive test, read before write, verify commits by rereading. Human PI controls main research decisions and external disclosure.

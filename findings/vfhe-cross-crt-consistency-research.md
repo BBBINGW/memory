@@ -1839,10 +1839,10 @@ Its determinant is `Z(x)^2 Z(z)(z−x)`. Whenever `x,z∉{0,1}` and `z≠x`, thi
 **JSON:** `/mnt/data/vfhe_v27_query_aware_mask_rank_results.json` SHA256 `e9947ec2716b11f47a0c90f54e61b8a4206fa418954bc58664d45253f9771363`.
 
 
-## 36. vFHE V27 — correlated-point vanishing mask hides triple but not Boolean GP root
+### V27 companion — explicit legal-witness Boolean-root distinguisher after perfect triple masking
 
-Date: 2026-10-14. **INDEPENDENT V27; GLOBAL GENERAL I192 FROZEN.** 
-**ONE PRIMARY HYPOTHESIS [FAIL]:** A degree-aware hiding PCS combined with a source-query-compatible vanishing mask of the form (F^*(x,y)=F(x,y)+x(1-x)R(x+y)), degree(R)≤2, can hide witness-dependent Figure1 GP oracle openings while leaving the original verifier's FOUR public query locations intact: (r,(r',0),(r',1),(1,0)). We focus on the *privacy of OUR proposed repair* and do not allege that original vFHE promised/failed zero knowledge.
+Date: 2026-10-14. **COMPANION to existing V27 main proof above, NOT a second numbered research iteration; GLOBAL GENERAL I192 FROZEN.** 
+**One companion falsifiable privacy hypothesis [FAIL]:** A degree-aware hiding PCS combined with a source-query-compatible vanishing mask of the form (F^*(x,y)=F(x,y)+x(1-x)R(x+y)), degree(R)≤2, can hide witness-dependent Figure1 GP oracle openings while leaving the original verifier's FOUR public query locations intact: (r,(r',0),(r',1),(1,0)). We focus on the *privacy of OUR proposed repair* and do not allege that original vFHE promised/failed zero knowledge.
 
 **[FACT — SOURCE]** In inspected 52pp ePrint2025/286 GitHub mirror SHA256 29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19, Appendix E.2 physical p49 lists all four GP (f^{(1)}) oracle openings (r,(r',0),(r',1),(1,0)), and Figure1 p23 compares four separately opened ((1,0)) root values in (WSt·WSh=RS·S). Appendix F.2 p51 only binds STRICT MULTILINEAR native MLE through Boolean-table Merkle/RS encoding; no degree-aware support for offcube high-degree masks. Current official Feb2026 ePrint PDF remains VERSION_UNVERIFIED.
 

@@ -1,0 +1,47 @@
+# SHIP I210 — Affine KDM does NOT automatically cover the joint SHIP + rotation-key evaluation bundle
+
+**Checkpoint** 2026-10-14 (Asia/Tokyo). **Workstream** independent SHIP evaluation-key prepared-memory HMux branch; PI said “好的，请继续” after I209. This I210 numbering is NOT the frozen global general I192 nor concurrent vFHE series. Read-before-write: `START_RESEARCH_SESSION.md`, `RESEARCH_PHILOSOPHY.md`, `AGENT.md`, global vFHE `STATE.md` V13 (read only), independent `findings/ship-memory-STATE.md` SHA `852bd85182b086683d2c9601cc4de50ef7cf9537` I209, and `findings/ship-memory-I209-joint-security-beta-gadget-public-extraction.md`. No upstream Poulpy changes.
+
+## ONE primary hypothesis and one decisive falsifier
+
+**H210 [TO FALSIFY]:** Existing standard IND-CPA secrecy of CKKS ciphertexts together with only **affine/linear KDM security** for ordinary rotation and switching keys can be invoked **directly**, by independent per-key hybrids, as a complete unconditional proof of indistinguishability for the full augmented `K_old^+` from I209 (original SHIP mask ciphertexts, beta-gated HMux keys, tensor/relinearization and conjugation keys, dense-to-sparse switching keys, *plus* 15 extra standard rotation keys). No additional argument for key-material correlations, higher-degree key-dependent messages or related secret-key domains is needed.
+
+**One minimal test:** Inventory *one unavoidable HMux encrypted message* in the pinned source, regarding dense secret `s` and hidden sparse-support selector bit `beta` as joint hidden variables. Check if `f(s,beta)=beta*s` is an affine function of the joint secret pair. If not, H210's straight affine-only hybrid justification is invalid. Corroborate that a frequently cited primary polynomial-KDM paper's theorem is restricted to its specific changed encryption scheme and key distributions rather than applying generically to original CKKS GGLWE.
+
+## Primary sources / provenance
+
+1. Cheon–Hanrot–Kim–Stehlé, *SHIP: A Shallow and Highly Parallelizable CKKS Bootstrapping Algorithm*, EUROCRYPT 2025, IACR ePrint **2025/784**. Full text previously acquired via Research MCP 33 physical pages, SHA256 `3e8deccd8bd5f3845a82baa56c90fbe03fbbe8a7e96844092d4d0f57cba80742`, GitHub mirror, **VERSION_UNVERIFIED** vs latest official. Physical p19 (§4.2, Definition 1) and p23 (§5.1, Algorithm 5): HMux key encrypts the beta-gated secret term and beta control term. Physical pp10–11 discuss ordinary CKKS key switching/rotations. The text is a correctness/algorithm discussion, not a standalone proof of our augmented key-security game.
+2. Fixed **independent third-party Poulpy (NOT HEaaN)** `poulpy-fhe/poulpy@250d4392656cd313f92ca66d96d8865702d39ddf`, `poulpy-ckks/src/layouts/ship/keyset.rs` blob `8be6ab92846168330100efeabe9fa19dbd9720e4`. `hmux_rot_key_encrypt_sk` ~351–411 creates GGLWE input **`(beta*s,beta)`** encrypted under `t_g=sigma_(g^-1)(s)`. `generate` ~488–559 deterministically computes beta from secret support `spec.offset(plan,slot)`, masks from the same `spec`, a dense→sparse switching key `s_dense→s_sparse(spec)`, tensor key, and conjugation key. `poulpy-ckks/src/layouts/ship/secret.rs` establishes hidden sparse-support sampling and deterministic beta position structure.
+3. Same source `poulpy-core/src/oep/derived/encryption.rs` ~340–379: tensor key encrypts `glwe_secret_tensor_prepare(... sk ...)` (the rank1 s² term in usual CKKS relinearization); another secret-dependent function already in baseline.
+4. Brakerski and Vaikuntanathan, **“Fully Homomorphic Encryption from Ring-LWE and Security for Key Dependent Messages,” CRYPTO 2011**, original PDF `https://www.iacr.org/archive/crypto2011/68410501/68410501.pdf`, §4 physical pages **16–18** (web PDF zero-index pages 15–17). Primary text §4: basic *their scheme* proves KDM against linear functions, while general degree-d polynomial KDM uses a **modified KDM.Enc creating (d+1)-component ciphertexts**; their Theorems 4 and 5 concern their particular PLWE construction and related sampled-key distributions, not arbitrary Poulpy/CKKS ciphertext rows or an SHIP sparse support-spec correlated joint bundle. PDF text available (web screenshot retriever cache miss, so high-complexity formula rendering not visually independently verified; only clear theorem descriptions relied on). These results do NOT imply a general transfer to unrelated encryptors at different key distributions and ciphertext layout. DO NOT overclaim the 2011 results as broken/incorrect.
+5. Related community context: OpenFHE discussion in Nov 2022 acknowledges practical CKKS bootstrapping commonly assumes circular security; such practice is NOT itself a proof of I209's complete augmented key bundle.
+
+## Exact smallest falsifier [DERIVATION, EXECUTED]
+
+In a single secret polynomial coefficient dimension (choose admissible constant terms `s=−1,1` and one-hot beta 0/1; supported by source's ternary dense secret and legal secret-support choices), HMux encrypted input message component `f(s,beta)=beta*s`.
+
+| beta | s | f |
+|---|---|---|
+| 0 | −1 | 0 |
+| 0 | 1 | 0 |
+| 1 | −1 | −1 |
+| 1 | 1 | 1 |
+
+If affine in joint variables, `f(s,beta)=a*s+b*beta+c`, the first two states force `a=c=0`, third `b=−1`, fourth `b=+1`, contradiction (over characteristic != 2). Equivalent cross-difference `f(1,1)-f(1,−1)-f(0,1)+f(0,−1)=2`, whereas any joint affine map has cross-difference0. Exact `sympy` check rank of affine design matrix3, augmented matrix4, successful.
+- Local verifier: `/mnt/data/ship_i210_affine_kdm_joint_gate.py` SHA256 `ccd03a6831d97cb830445dac849f75b3873e6790380ca5224969aee3b936f2a3`
+- JSON: `/mnt/data/ship_i210_affine_kdm_joint_gate.json` SHA256 `471a94e14fab9c01566c491ac2782d0d288702f3001a31c392451c5f52763077`.
+- This rank test is **NOT an attack**, not an empirical indistinguishability experiment, and not a proof that `K_old^+` is insecure. It only falsifies *the proposed direct affine-only function-class justification*.
+
+**Scope and subtlety:** Given fixed beta, `beta*s` is linear in `s`. Conditional-on-beta security proofs might exist using specialized RLWE hybrids, additional original auxiliary-material assumptions, or KDM security covering more general joint function classes. The source beta depends on a separately generated hidden sparse support; treating beta as part of a joint key/function input reveals the nonlinearity. The tensor key's s² and D2S s under secret sparse key add further related-secret function/distribution questions, but are NOT a second primary test here. Conversely, **the newly added ordinary rotation-key plaintexts are linear automorphisms of s**, so I210 does NOT establish that adding them raises the *highest polynomial degree* beyond what original SHIP already needs. A proof might conditionally extend preexisting sufficiently strong and quantitatively joint auxiliary-key security assumptions. A per-key or marginal IND-CPA statement is not the same as a full joint-output indistinguishability theorem.
+
+**The minimum missing theorem/assumption:** specify *one joint security game* for `K_old^+` generated with the same correlated dense secret, sparse support, all HMux beta-gated gadget rows, encrypted selectors, D2S, tensor, conjugation and added automorphism keys, including correct ciphertext/guard widths at k624, encryption randomness correlations, adversarial public observations, and chosen support indistinguishability. Then either state this as an explicit expanded FHE evaluation-key-security assumption (conditional protocol security), OR find a primary-source theorem for this exact distribution / a concrete hybrid reduction under explicit RLWE/KDM assumptions. None has been established by BV2011 or original SHIP source in this I210 gate. **Novelty unverified.**
+
+## Verdict
+
+**STATUS: FAIL H210** “standard IND-CPA + off-the-shelf affine-only KDM suffice via straightforward independent hybrid”; **PASS exact source-message nonaffinity witness**, **UNCLEAR actual augmented joint-key security** and whether a more specialized conditional proof suffices. Does NOT imply SHIP bug or cryptographic attack. **NOVELTY NOT VERIFIED**.
+
+**RESULT:** Already the original SHIP HMux key contains a beta*s message, which is bilinear in dense s and hidden support-derived beta. Published CRYPTO 2011 polynomial-KDM security changes its own encryption format and does not automatically certify the original Poulpy GGLWE key distribution. Standard Galois keys are structurally ordinary and do not alone constitute exotic KDM, but the *joint* bundle proof obligation remains unresolved.
+
+**NEXT_ACTION:** **HUMAN_REVIEW / conditional PARK recommendation**: Do not do further generic security-hybrid paperwork without a concrete proof theorem/assumption that applies to the full enlarged bundle. PI choice is to (A) accept a clearly stated **joint auxiliary-key/KDM assumption** (not claimed to follow merely from IND-CPA), then prioritize ONE exact gadget-to-40-bit-CKKS-control conversion/noise budget gate for the I209 derived format, or (B) PARK this branch given ~480 added CT×CT operations, four extra depth levels and no measured runtime. If PI asks to continue without choosing, the next cheapest decisive check can test the I209 gadget-row scaling directly, explicitly labeling it conditional on the above joint-key assumption. No unapproved external resource provisioning.
+
+**STATE_UPDATE: YES** topic-specific SHIP I210 checkpoint only, not concurrent global vFHE `STATE.md`. No upstream source modifications.

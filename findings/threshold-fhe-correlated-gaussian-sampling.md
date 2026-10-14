@@ -543,3 +543,15 @@ Both have been run, hash-verified and left as **local reproducibility files**, n
 **RESULT:** Rigorous near-Gaussian convolution using 19 ones and 7139 fours.
 **NEXT_ACTION:** Do not continue a coefficient-compression treadmill. Revisit the original Algorithm 6 O(LDec) storage obstacle and test one source-compatible seeded/secret-conditioned Shamir correlation-generation mechanism, with the corrupted-party joint view as the primary gate. Only extend Gaussian sum dimensions if this protocol interface becomes plausible.
 **STATE_UPDATE:** NO to global/vFHE state. CGS-topic update only.
+
+
+---
+## Historical recovery: CGS-07 and CGS-08 (original local records, earlier GitHub append failures)
+
+This is a **backfill of two already completed earlier rounds**, not new research and not a renumbering.
+
+**CGS-07** — all-unit factor with exactly M=114243 independent D_Z,8 draws. Kernel root lattice A_114242: explicit dual theta excess <7.393e-61 <2^-180; PKC 2020 ePrint 2020/337 Theorem 3.1 gives output TV <1.306e-54 against D_Z,8sqrt(M). **PASS padding law**, but 114243 draws/sample and no Shamir correlation/secret-conditioning protocol. Complete original record in local `CGS-07_threshold_FHE_root_lattice_smoothing.md`; source SHA256 ePrint 2020/337 `cc7866d675863eea9f2d05c476a865bcead6c9eacb297fea0dde8dd25067737a`.
+
+**CGS-08** — factor containing 3 ones and 28560 twos (norm squared 3+4*28560=M). Using smoothing of A_2, A_28559 and the pairwise convolution kernel on Z x 2Z yields three dual excesses <3.671e-58, <1.849e-61, <6.497e-66, all below 2^-180. Hence TV <3.916e-54 with 28563 independent D_Z,8 draws. **PASS padding law**, no FHE protocol improvement. Complete original local record in `CGS-08_threshold_FHE_two_scale_gaussian_smoothing.md`.
+
+Both results use established lattice Gaussian linear-image/convolution tools, not novel threshold sampling. Both local full records predate the GH commit for CGS-09; the earlier GH writes were blocked and are not falsely claimed to have succeeded. CGS-09 is the next completed round and already separately recorded above. The original O(LDec) storage and corrupted-party simulation problem is OPEN.

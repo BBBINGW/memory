@@ -960,3 +960,73 @@ Script executes with zero external libs, rebuilds both interleavers + full matri
 **V12 next test (PI continuation only):** Stop toy one-root sampling variants. Assess ONE concrete *noncircular and zero-knowledge-compatible* primitive for jointly proving the relation R_diag: there exists a single bounded integer vector a with native component vectors equal to a mod all p_i, WITHOUT disclosing digit values. First cheapest falsifier: whether using a field-native Pedersen/vector commitment with a single arithmetic-field commitment can claim binding simultaneously into different CRT characteristic fields **without explicit cross-field encoding/reduction proof**. If not, KILL that shortcut and identify minimal enforceable constraint. Do not implement full PCS until these statements are precise.
 
 **Status: FAIL naive systematic-only extraction gate, PASS exact minimax probability/one-root counterexample. STATE_UPDATE=YES independent vFHE V11; global I192 unchanged. Novelty unverified, no attack on original protocol.
+
+
+## 21. vFHE V12 — commitment equality across CRT fields requires explicit knowledge-sound linking and injective canonical integer range (2026-10-14)
+
+**Exactly one primary hypothesis:** Having ONE hiding vector commitment C over a third, unrelated prime-order message group (or a third arithmetic prime field) and having independently valid native CRT-field bounded-digit/range proofs is ALREADY enough, by the binding property of C alone, to ensure all native field digit values denote one shared integer witness, WITHOUT an explicit cross-domain linking/encoding-and-range proof.
+
+**Result:** **FAIL the shortcut**, with two independently checkable logic/arithmetic countercases. **PASS a strictly CONDITIONAL sufficient linking relation** with a proof by contradiction from commitment binding; does NOT construct or benchmark a cross-field ZK/knowledge-sound protocol. **Novelty: existing commit-and-prove/modular equality and range proof techniques are direct prior art, so the logic statement itself is not new.**
+
+### Grounded primary original proof interface [FACT]
+
+Cascudo et al., *Verifiable Computation for Approximate Homomorphic Encryption Schemes*, CRYPTO 2025, ePrint 2025/286, Appendix F.2 physical pp50–51, Research MCP cached GitHub mirror SHA256 `29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19`, latest official parity VERSION_UNVERIFIED. F.2 commits individual native FIELD-coded rows as Merkle columns, checks arbitrary r·U_f and q_1·U_f relations, **not** shared canonical bounded-integer commitment openings across distinct characteristics. Proposed C and auxiliary link proofs in V12 are NOT part of the source system.
+
+### Failed shortcut #1: unlinked commitment [DERIVED]
+
+Take distinct native primes p1,p2>β, digit domain D=[0,β−1], β=9. Let native extracted valid digit values be a1=1 in Fp1 and a2=8 in Fp2. Both satisfy all their **independent** digit range and native codeword consistency relations. Choose an arbitrary separately valid hiding commitment C to 1 in a third group/message field whose scalar order r>β. If neither native proof has any predicate linking the extracted a_i to the message OPENING of C, the conjunction
+
+    Exists a1,a2: nativeValid_p1(a1) ∧ nativeValid_p2(a2) ∧ CommitWellFormed(C)
+
+does NOT imply a1=a2, even assuming perfect binding of C. Counterexample has no hash collision or cryptographic failure. Replacing CommitWellFormed with an actually KNOWLEDGE-SOUND opening/equality relation is necessary.
+
+### Failed shortcut #2: modulus alias even when native values are "opened" into ONE group commitment [DERIVED]
+
+Let a commitment have cyclic scalar message group order r. For any blinding rho, the algebraic Pedersen expression is
+
+    Com_r(a;rho)=g^a h^rho = Com_r(a+r;rho).
+
+Take β=9, r=7 and legal digit values 1 and 8 (<β). Both native fields p1,p2>β can separately prove/know openings (1,rho) and (8,rho) for SAME C, with the exact SAME blinding, without discrete-log attack. But a1≠a2 over integers. Thus even a value-link that proves equality MOD r (not a canonical range-injective encoding) does not necessarily prove equality in Z.
+
+**Important practical scope:** Modern prime-order commitment group may have r≈2^255 and source digits β≈2^20, so this toy r<β collision is NOT applicable once β≤r is explicitly established. In the toy group h=g^3 and discrete logs are knowingly trivial; the experiment is ONLY a reproducible modular-identity test, NOT a secure instantiation or a cryptographic soundness claim. The alias identity holds algebraically in EVERY order-r group regardless of the discrete log relationship. Scalar vector/group commitments may require additional coordinate-binding assumptions and safe encodings.
+
+### Conditional sufficiency theorem: the actual noncircular statement to prove [DERIVED]
+
+Let D=[0,β−1] with β≤r and β≤min_i p_i. Let Com_r be a computationally MESSAGE-BINDING commitment to a canonical integer vector in D^m via an injective vector encoding into the commitment message space; *not* merely a same-looking public group element. Suppose every native CRT proof is simultaneously (i) knowledge sound for a native field digit vector u_i∈F_(p_i^d)^m and (ii) knowledge sound for the **link** that C opens to the corresponding canonical integer vector a_i∈D^m satisfying
+
+    C = Com_r(a_i;rho_i),
+    u_{i,j} = embed_F_(p_i^d)(a_{i,j}) for ALL j.
+
+Binding says if a_i≠a_l, the collected valid proofs/extracted witnesses would induce two openings of the SAME C to two different canonical messages, violating computational binding. Thus except with binding/knowledge-soundness errors, ALL a_i=a*, and their native field digit vectors are reductions/embeddings of the SAME bounded integer a*.
+
+For EACH digit in [0,2^k) with 2^k≤min(r,p_i), the integer can be expressed as k canonical Boolean bits
+
+    a_j=Σ_{b=0}^{k−1} 2^b v_{j,b},   v_{j,b}∈{0,1}.
+
+When a_j< p_i, this integer equals its image in F_(p_i) AND extension F_(p_i^d); for THIS digit-equality constraint no quotient/carry gadget for reduction mod p_i is logically necessary. HOWEVER proving in ZK that EACH native committed field value u_{i,j} equals that SAME canonical digit (or bit decomposition) is absolutely necessary. A separate SNARK/CP-SNARK proof tied to C could enforce this; none is provided or verified here. If β is not a power of two, add explicit a_j<β rather than only k-bitness. For packed vector encodings avoid alias from carries / group-order reductions; safest statement is a sound vector commitment with explicitly proven coordinate messages.
+
+There is **no unital ring homomorphism** F_p→F_q for different primes p≠q: if a unital hom existed, mapping p·1=0 would force p·1=0 in F_q, impossible when q≠p. Common INTEGER canonicalization, not a field homomorphism, is the correct interface.
+
+**This theorem is purely compositional conditional cryptographic reasoning; it is NOT proof of a specific commitment's DL binding/PCS knowledge extraction/ZK or error accounting.** If field-native proofs merely reference C as unused public input, shortcut #1 returns. If group order insufficient or packing noninjective, shortcut #2 returns.
+
+### Exact minimal executable gate [EXPERIMENT]
+
+Local Python: `/mnt/data/vfhe_v12_cross_field_binding_gate.py`; SHA256 `3f8127d432f737c475a23463dd70a796fd8bd68fc4df11eba26d06c1fbfd4ed7`.
+JSON: `/mnt/data/vfhe_v12_cross_field_binding_gate_results.json`; SHA256 `5e7b0db8e5693dff82f2e2c81dd59d4a7ed5e6f06abca2c8b9822834517268db`.
+Files LOCAL ONLY; not GitHub repository bytes.
+
+Native p1=281474976829441, p2=353581838970881 are previously verified source-form 49-bit CRT primes N8192,d4. Toy β=9, a=1, b=8. (1) Shared C over toy r=101 message subgroup, valid independent bounded native digit statements both TRUE but NO link, so a≠b. (2) In order-7 subgroup of F_29^*, with g=16, h=g^3, rho=4, exact Pedersen-form modular evaluation satisfies Com(1;rho)=Com(8;rho); both native values legal; there is NO single integer in D mapping to 1 and 8 in their native large prime fields. Group toy is intentionally INSECURE, only demonstrates algebraic modular alias. (3) When r=101≥β=9, brute enumeration of all 9 canonical digits proves unique integer representation modulo r; with the SAME knowledge-sound commitment-link openings and range, equality can be inferred, conditional on actual commitment binding. Bit reconstruction for both digit values checked exactly. The tests are symbolic/algebraic only: NO actual NIZK, Pedersen security reduction, field-native PC test, or performance results.
+
+### Close prior art and novelty gate [FACT, external]
+
+Benarroch, Campanelli, Fiore, Gurkan, Kolonelos, *Zero-knowledge proofs for set membership: efficient, succinct, modular*, Designs, Codes and Cryptography 91 (2023), DOI https://doi.org/10.1007/s10623-023-01245-1, Sections 4.2.8 (modEq) and 4.3 (range), directly formalizes ZK **same value modulo group order between commitment types** and uses INTEGER range constraints to exclude modular collision ambiguities. Its commit-and-prove composition mechanism also explicitly links independently proven predicates on one committed hidden value. This is genuine PRE-EXISTING technology; V12's observation must NOT be presented as novelty or named a completed cross-field vFHE bridge. Assess whether specific source-native PCS context admits a lower-cost special-purpose link; no such advantage tested yet.
+
+### Research decision and V13 gate
+
+**KILL:** "Use just ONE third-field commitment with independent CRT-native lookup/PCS proofs; commitment's binding automatically forces diagonal common witness" (no link).
+**KILL:** "Same linked commitment openings imply SAME integers" absent canonical injective range constraints when β>r or vector packing wraps modulo r.
+**KEEP, CONDITIONAL:** One shared canonical bounded integer vector/bit commitment; provably binding and ZK; each native CRT-field witness/extracted codeword linked KNOWLEDGE-SOUNDLY to its corresponding canonical coordinate/bit decomposition, with β≤min_i p_i and injective commitment encoding β≤r; proof errors budgeted.
+
+**Next V13 if PI continues:** ONE cheapest **amortized/batched cross-domain LINK proof** test: can we replace m·μ individual scalar links by a common random linear-combination check while preserving extraction and commit-before-challenge soundness over different CRT primes? Demand explicit false-witness soundness probability, no-wrap or proof-system-link to committed vector, and per-field computational cost. Do NOT yet claim repair, privacy, or fast PCS.
+
+**End V12:** STATUS=FAIL automatic cross-characteristic commitment binding; PASS exact necessary-modEq+range+link conditions and toy verification; NOVELTY NOT VERIFIED; STATE_UPDATE=YES independent vFHE V-series only, global general FHE I192 remains frozen.

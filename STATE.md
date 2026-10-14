@@ -5,11 +5,11 @@
 
 ## CURRENT PI-SELECTED WORKSTREAM (SEPARATE COUNTER)
 
-**vFHE cross-CRT scalar digit/index consistency**, independent round **V11 COMPLETED**, next **V12 NOT STARTED**.
+**vFHE cross-CRT scalar digit/index consistency**, independent round **V12 COMPLETED**, next **V13 NOT STARTED**.
 
 **Authoritative separate round state:** `findings/vfhe-cross-crt-state.md`.
 **Technical evidence + research story:** `findings/vfhe-cross-crt-consistency-research.md`.
-**Current status:** Structural lookup/soundness question remains OPEN/HUMAN_REVIEW; integer-code bridge is a candidate, not a working PCS/SNARK repair. V11 shows even ideal perfect per-field bounded-codeword extraction + one shared CRT-integer Merkle root, with only t randomly opened SYSTEMATIC integer-range positions, cannot soundly force a common digit witness: a one-digit cross-field mismatch passes with exact probability 1−t/m. Checking encoded parity columns could use the code distance only after non-circular exact native bounded-codeword extraction is established. Shared hidden witness binding / full PCS soundness remain OPEN.
+**Current status:** Structural lookup/soundness question remains OPEN/HUMAN_REVIEW; integer-code bridge is a candidate, not a working PCS/SNARK repair. V12 refutes automatic cross-CRT common digit inference from one unrelated-prime hidden commitment plus independent native proofs: missing knowledge-sound per-field links make binding irrelevant, and group-order alias appears if canonical digit range exceeds commitment scalar order. A sufficient conditional relation uses injectively bound canonical integer digits/bits, source p_i>β, and knowledge-sound explicit links to every native field. No concrete ZK proof, native PCS extraction, 128-bit error or cost benefit established.
 
 ### Legacy numbering mapping — provenance only
 

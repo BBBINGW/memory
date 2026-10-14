@@ -39,9 +39,18 @@ Use `poulpy-ckks/src/test_suite/ship.rs` or an in-crate test module so `pub(crat
 5. Call `ckks_prepare_right` and inspect prepared width (expected `N*2*12*16 = 6 MiB` in pinned IFMA CnvPVecR) and `log_delta=40`/effective k624; check prepare-layout errors separately. If all pass, check **one** actual CKKS prepared multiplication with an independently encrypted plaintext-controlled test operand using widened tensor key; compare with expected beta*x. Only after this would full mux pipeline / timing be warranted.
 6. If this actual source test cannot run, status remains **IMPLEMENTATION BLOCKED**, not hypothetical PASS. Full security of augmented SHIP + general rotation-key joint bundle (I210) is independently OPEN. Candidate I207 8.263GiB/81.45% prepared memory is model-only; I206 ~480 added ct×ct and 4 serial levels, peak keygen memory and latency unmeasured. Original SHIP not attacked.
 
+## Additional integration obstruction — ShipPlan cannot express k624 for the original output target [FACT/DERIVED]
+
+The **original**, unmodified `ShipPlan::raised_k(base2k)` in pinned `poulpy-ckks/src/layouts/ship/plan.rs` is defined as
+`round_up_52((tree_depth+2)*ld+log_budget_out)`. With `tree_depth=6,ld=40,log_budget_out=104`, it remains `round_up_52(424)=468`, while I206's extra four serial 40-bit selector multiplications require `k>=624` (52-bit limb aligned) to retain ≥104 at the root. The actual `ShipKeySet::generate`, `prepare`, and `bootstrap` derive key layout, mask width and pipeline scratch from **`plan.raised_k`**, so merely allocating a k624 output/selector ciphertext does NOT turn the original source plan into the widened candidate.
+
+A superficial workaround would raise `log_budget_out` to `264`, since `round_up_52(320+264)=624`; but that field semantically means **desired final output budget**, while the new candidate's modeled root is only `144` after the four extra multiply levels, so this silently misstates the plan's output-budget contract. A valid integration should add an explicit extra-mux-multiplication depth or widened-modulus field that preserves `log_budget_out=104`, or construct a clearly isolated test fixture with direct `hmux_rot_key_encrypt_sk(k_ct=624)` independent of the ordinary SHIP plan. The full pipeline needs coherent widened key shapes, masking layouts, tensor keys, checks and a controlled baseline comparison. This is a **source-level non-drop-in implementation obstacle**, not a proof that the proposed design is impossible or insecure.
+
+Note `poulpy-ckks/src/reference/ship/bootstrap.rs` checks output capacity ≥plan.raised_k but uses the same `kk` for intermediate leaf allocation and product tree, so changing only an output buffer does not suffice.
+
 ## End of iteration
 
 **STATUS: FAIL H214** hypothesis that IFMA out-of-place positive-offset normalization cannot accept the needed size/radix/offset, based on pinned source. **PASS source-contract compatibility only. HUMAN_REVIEW/IMPLEMENTATION BLOCKED** for an authentic compilation, source-generated ciphertext/noise check and CKKS prepared multiplication. **NOVELTY NOT VERIFIED**.
-**RESULT:** One lower-level API blocker ruled out. Larger cryptographic/cost problem unchanged.
+**RESULT:** One lower-level IFMA API blocker ruled out, but the original SHIP plan's k468 construction is a separate verified **non-drop-in parameter/interface obstruction** for the widened k624 candidate. Larger cryptographic/cost problem unchanged.
 **NEXT_ACTION:** Do NOT fabricate another toy round. Run the above one actual pinned-Rust test when a runner/checkout is available (PI must approve any GitHub infrastructure or implementation changes), or PARK the HMux branch for now. No global vFHE STATE edit.
 **STATE_UPDATE: YES** independent SHIP source-contract checkpoint only.

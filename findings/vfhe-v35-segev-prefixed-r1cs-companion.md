@@ -1,0 +1,37 @@
+# vFHE V35 companion: Segev 2025 prefixed R1CS* authentic source gate
+
+**Date 2026-10-15.** This is a COMPANION to authoritative V35 Yang et al. ePrint2024/827 AoKagg geometric-weight-only finding, NOT a second V35 iteration. Preserve V35 main and V36 NEXT. Global I192 frozen.
+
+## One hypothesis [PASS conditional published primitive, UNCLEAR practical composition]
+
+A SINGLE globally precommitted canonical vector x=a in a vector commitment T published BEFORE native F.2 randomness can be knowledge-bound to a later general R1CS witness z=(x||w) where auxiliary w (integer quotients, bit decomposition, etc.) depends on the source full-extension native evaluation challenges. The R1CS can express arbitrary canonical-lifted native MLE coefficients, unlike Yang AoKagg geometric-only coefficients. This is existing published technology and does NOT constitute a new protocol or original vFHE patch.
+
+## Primary paper evidence, precise statement
+
+**Benedikt Bünz**, Stanford 2023 thesis, Chapter2 §2.6, original https://cs.nyu.edu/~bb/papers/thesis.pdf (247-page PDF, around physical pp61–63): original Bulletproofs argument for R1CS with commitment T to a prefix of witness z. This 2023 protocol's completeness-soundness gap must NOT be ignored.
+
+**Gil Segev**, Bulletproofs for R1CS: Bridging the Completeness-Soundness Gap and a ZK Extension, IACR Communications in Cryptology 2(1):16 (2025), DOI 10.62056/A6QJ893Y6, ePrint2025/327. Fully read source via Research MCP 31pp public GitHub mirror SHA256 029c913fbd6b4f9e1146b9ccdad4e2c0f5b5af860645cc2272603970cd0331c6, VERSION_UNVERIFIED vs official. §3 physical pp7–8 defines refined R_R1CS*, §4 pp9–10 argument, Theorem4.1 physical p10 proves perfect completeness, perfect special honest-verifier ZK, computational witness-extended emulation under DL, and body communication 2log2(n+m)+3 GROUP elements +3 SCALARS (n+m power of 2). Its T relation allows x'=y'=0 and blinder η, giving canonical T=<((x||0^(n-r))||0^m),G>+ηH, while late R1CS auxiliary y is still allowed. Theorem has a REFINED R1CS* relation and computational extraction; NOT proof for arbitrary unrelated global commitments or automatic full vFHE FS security. Prefix uniqueness under an independently generated basis and honest fixed original opening follows from DL-binding; group toy is insecure.
+
+**Native source** Cascudo et al. CRYPTO2025/ePrint2025/286, inspected 52pp public GitHub mirror SHA256 29b6b2e99308fff0e06ca1950764653faa660a9d40e08a394404947a9e3b1f19, newest official 2026-02-16 binary VERSION_UNVERIFIED. Appendix F.1–F.2 original native Merkle/RS matrix-column PCS PUBLICLY authenticates y before external proof. Use exact y as public R1CS input, native commitments and T both prechallenge. This is OUR hypothetical composition, not original authors' claim.
+
+## Application relation
+
+Set precommitted prefix x=a∈{0,...,β−1}^H. Choose independent per-coordinate commitment generators; do NOT pack as a single scalar exponent sum_j β^j a_j mod proof-group order, which has trivially computed bounded digit collisions whenever β^H exceeds the group order. For R1CS after native challenges, introduce (a) bit decomposition b_j,t and b(b−1)=0, (b) dynamic native coordinate quotient k_i,t in explicit proven range, (c) public canonical lifts cbar_i,j,t of native MLE coefficients and source-authenticated ybar_i,t. Prove exact integer S_i,t=Σ_j cbar_i,j,t a_j = ybar_i,t+p_i k_i,t, with S/RHS strictly below external scalar order. Use T as the SAME R1CS* public committed-prefix relation. A/B/C circuit coefficients and y are challenge dependent; auxiliary witness may be chosen postchallenge; prefix x MUST NOT change. An actual joint knowledge soundness, FS challenge ordering, native PCS extractor, zero knowledge and 128bit implementation are NOT proved by the standalone R1CS* theorem.
+
+## Cheapest exact native/R1CS arithmetic test
+
+Reproduced original-source-form N4,d2,p13=1+4*3,p29=1+4*7, β4,H8, true F13²/F29² extension arithmetic and V32 original SHA256-Merkle over FULL RS-encoded native matrix columns; native testing/evaluation both pass.
+
+Honest prebound digit prefix a=(0,1,2,3,0,1,2,3) and challenge r=(2+3u,4+5u,6+7u) yields native p13 y=(10,0), S=(88,104), k=(6,8); p29 y=(10,13), S=(242,187), k=(8,6). All 16 bitness multiplication, 8 digit-reconstruction and 4 canonical-lift quotient rows PASS, k in[0,23]. Side no-wrap max S672 and bounded RHS695 are both below toy external scalar order1009.
+
+V34 malicious original native h13≡1, h29≡0 stays source-PC committed BEFORE challenges. Late postchallenge a'=(0,2,2,0,0,1,2,1) SATISFIES both native public y and all external bounded quotient constraints (p13 S=(66,26)=y(1,0)+13(5,2); p29 S=(87,87)=y(0,0)+29(3,3)). But fixed prebound prefix is x=0. A knowledge-sound prefixed R1CS* cannot substitute a' for x under DL binding. Toy fixed-same-randomizer group commitments differ T_zero=7596 and T_late=4439, NOT a secure binding experiment: tiny group order1009 lets an adversary easily calculate alternative openings.
+
+**Critical independent falsifier even with T prefix bound:** If integer quotient range is forgotten, fixed a=0 and native y13=1 admit modular fake k=388 because 1+13*388≡0 mod1009; R1CS field equation alone passes. Requiring 0≤k≤23 rejects exactly that row in toy. Original V14/V16 identified need for integer quotient bounds. No actual Segev IPA/Proof transcript was generated; this is exact R1CS statement arithmetic and published theorem application, NOT a completed composed proof.
+
+## Direct cost and next
+
+Illustrative H2^24, β4 means 2H=33,554,432 Boolean multiplication constraints and H linear digit rows before 8 coordinate links/quotient ranges. Toy direct layout n≈3H,m≈3H, padded n+m=2^27, Segev Theorem4.1 proof body ≈57 group elements+3 scalars =1,920B at32B each and ONE public vector T. BUT scheme has 2(n+m)+2 independent group bases: 268,435,458 generators, about 8GiB if fully materialized at32B; computation remains linear/large. These figures are a chosen direct representation, NOT a deployed benchmark nor a universal minimum; seed-derived generators might reduce storage but not arithmetic. The original native F.2 cost still exists. It is prior art, not novel contribution.
+
+Full local exact report /mnt/data/VFHE_V35_Segev_Prefixed_R1CS_Bound_Witness_Gate_2026_10_15.md SHA256 cb3a4282c416f07bc3ef5463fa94a1674d605c216e94ead2b935514ac94d8549. Script /mnt/data/vfhe_v35_prefixed_r1cs_exact_gate.py SHA256 e37ad76f84dee444b96dc998dea3b6714dc4a507e387614977b2d5b7dd9c0d4f. JSON /mnt/data/vfhe_v35_prefixed_r1cs_exact_results.json SHA256 fcbd116eef33baa277345242e776bb494a2ed1a0a193811263589921cc2da06d. Two runs byte-identical, toy group INSECURE, original V32 script dependency. Source files NOT checked into Git as binary.
+
+**END companion** PASS published candidate precommitted-prefix general R1CS* and source-shaped toy, UNCLEAR full vFHE native/FS compositional security and cost. Canonical V35 main Yang AoKagg geometric mismatch remains unaltered. **NEXT V36** source-authenticated general linear opening on shared prebound commitment and real native y/quotient costs (Segev is candidate); possible HUMAN_REVIEW. No author contact; global I192 FROZEN.

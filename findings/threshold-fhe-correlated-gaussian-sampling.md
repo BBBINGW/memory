@@ -244,3 +244,105 @@ Output records exact generator/shape/gcd/source width gates, `E f(W)` certified 
 **RESULT:** Near-common-modulus harmonic defects persist even for distinct primitive balanced integer Gram factors. Shape/coprimality/low max/min ratio are inadequate selection criteria; any next root design must control nonzero dual Fourier modes at source σ0 and its security error budget.
 **NEXT_ACTION (CGS-04; PI continuation):** ONE precise hypothesis / one cheapest decisive test: for **the fixed scalar instance M=114243, σ0=8 and exactly 5 independent integer-Gaussian inputs**, determine whether **every** primitive integer factor `a∈Z^5` with `||a||²=M` has a Fourier-character distinguisher `cos(2π t z)` with advantage exceeding `2^-128`; seek a rigorous covering/Diophantine bound or one counterexample factor, **not** another arbitrary handpicked balanced vector. If universal obstruction survives, retire the naive fixed-five-square convolution route and ask PI before changing sampler architecture. Continue to separate mathematical output-distribution tests from corrupted-party simulation / MPC security.
 **STATE_UPDATE:** NO to existing vFHE `STATE.md`; **CGS TOPIC_RECORD_UPDATE:** YES, appended CGS-03 only.
+
+---
+
+## 8. CGS-04 — universal 5-term independent-integer-Gaussian Fourier obstruction at the fixed source-shaped parameters (2026-10-14)
+
+**Standalone CGS record** (not the frozen general FHE I counter, and not the independent vFHE V counter). This completes **one primary hypothesis plus one decisive general mathematical test**. No vFHE or global `STATE.md` update.
+
+### Read-before-write / primary source anchors
+
+[FACT — repository] Read previous CGS-01/02/03 sections in this topic file, `AGENT.md`, and `STATE.md`. At beginning of CGS-04 the existing `STATE.md` blob was `db4175bdc29b0fb256a6f4d73d7722a559d749fb`, stating **vFHE V5 COMPLETED** and the old general `I192` counter frozen. This CGS subtrack is explicitly separate; existing I184–I187 negative integration evidence is preserved.
+
+[FACT — original] Re-read ePrint 2025/409, Okada–Takagi, *Low Communication Threshold FHE from Standard (Module-)LWE*, 40 physical pages, Research MCP original mirrored PDF SHA256 `98993522b80695ab415cc5d8c28dddc1dbe8b78ac3550d2063140ce718c6a301`, `VERSION_UNVERIFIED`: §3.3 physical p13 Lemma 3.4 (smoothing parameter bound), p14 Lemma 3.7 (linear combinations of lattice Gaussians, citing MP13), Algorithm 6 p26 (the fresh secret-conditioned padding). Paper extraction flags formula/table-layout caveats. The Gaussian distribution is specified by `ρ_s(z)=exp(-πz²/s²)`; all formulas below use this same parameter convention.
+
+### Exactly ONE primary hypothesis / falsification test
+
+**[HYPOTHESIS H-CGS04]** For the fixed source-shaped scalar test regime `κ=128, M=Bpub²−||s||²=114243, σ0=8`, it might still be possible to choose **some** primitive integer root `a∈Z^5` with `Σa_i²=M` so that the five-independent-Gaussian convolution `W_a=Σa_i G_i`, `G_i iid D_(Z,8)`, approximates `T∼D_(Z,8 sqrt(M))` within total variation `2^-128`.
+
+**[MINIMAL DECISIVE TEST]** Prove a **uniform** Fourier-character gap for every such `a`, by a single torus-packing/pigeonhole argument plus Poisson summation; no enumeration of roots, no implementation of Gaussian MPC, and no full FHE security experiment.
+
+### Source-shaped fixed instance
+
+As in CGS-02/03, `Bpub=338`, `||s||²=1`, `M=338²−1=114243`, `σ0=8`; conditional scalar LWE secret with `n=128, Blwe=1` meets the subset of source inequalities `Bpub²≥n Blwe²+1` and `σ0≥sqrt(2)η_(2^-128)(Z)` via p13 Lemma 3.4. These are NOT a full, demonstrated 128-bit LWE parameter set; no lower bound is claimed for all source parameters or MLWE. Five independent terms have identical spherical discrete Gaussian width 8 and integer linear coefficients. The theorem actually holds for **all** `a∈Z^5`, regardless of primitiveness, and therefore in particular for the norm-constrained 5-square factors.
+
+### Universal torus packing lemma [DERIVED / exact]
+
+Let `B=338`. For arbitrary `a=(a_1,...,a_5)∈Z^5`, consider the 195 points on the flat torus `T^5=(R/Z)^5`:
+
+`x_j=(j/B)a mod Z^5, j=0,...,194.`
+
+A geodesic radius-1/4 ball on this flat torus is embedded and has the exact Euclidean volume
+
+`V_5(1/4) = (8π²/15)·(1/4)^5=π²/1920.`
+
+The sum of volumes of 195 such balls is
+
+`195 π²/1920 = 13π²/128 = 1.0023816969856379847... >1 = Vol(T^5).`
+
+Hence not all these balls can be pairwise disjoint. Two centers have torus Euclidean distance **strictly below 1/2**, and subtracting their indices gives `d∈{1,...,194}` such that
+
+`Σ_(i=1)^5 ||d a_i/338||_(R/Z)^2 < 1/4,`
+
+where `||x||_(R/Z)=min_(k∈Z)|x−k|`. This is a **constructive existential bound**: scan 194 integer frequencies and select one satisfying the inequality; no dependence on knowing a special 5-square decomposition, on randomness, or on an asymptotic approximation theorem. If centers coincide, their distance is zero, so the conclusion also holds.
+
+### Exact Fourier-law bound [DERIVED]
+
+For independent `G_i∼D_(Z,σ0)`, define `φ_σ(t)=E[exp(2π i tG)]`. Poisson summation yields the **nonnegative real-valued** characteristic function
+
+`φ_σ(t)= [Σ_(k∈Z) exp(-πσ²(k−t)²)]/[Σ_(k∈Z)exp(-πσ² k²)]`.
+
+For `t=d/338` given by the torus lemma, use the nearest integer dual term in each numerator. With
+`u=exp(-π64)` and `D_up=1+2u/(1−u³)`,
+`
+ E[cos(2πt W_a)]
+ = Π_i φ_8(ta_i)
+ ≥ exp(-π·64·Σ_i||ta_i||_(R/Z)^2) / D_up^5
+ > exp(-16π)/D_up^5
+ = 1.4790346159617856525...×10^-22.
+`
+
+The target has `S²=64 M=7,311,552`. Since `d∈{1,...,194}`, the distance from `t=d/338` to the nearest integer obeys `dist(t,Z)≥1/338`. Center `t` modulo 1 in `[-1/2,1/2]`. Its Poisson numerator's nearest term is at most `exp(-πS²/338²)`; all nonzero dual terms can be bounded by `2 exp(-πS²/4)/(1−exp(-2πS²))`. The denominator is at least 1, so
+
+`
+ 0 ≤ E[cos(2πt T)] ≤ exp(-π S²/338²)
+      + 2 exp(-π S²/4)/(1−exp(-2πS²))
+   = 4.7937754158483940682...×10^-88 + negligible.
+`
+
+For `f(z)=cos(2πtz)`, `|f|≤1`, hence `TV(P,Q)≥|E_P f−E_Q f|/2`. Uniformly for **every** `a∈Z^5` with `Σ a_i²=M`,
+
+`
+  TV(Law(W_a),D_(Z,8 sqrt(114243)))
+  > [ exp(-16π)/D_up^5 − target_upper ] /2
+  = 7.3951730798089282627...×10^-23
+  > 2^-128 = 2.9387358770557187699...×10^-39.
+`
+
+**Theorem is rigorous** under the exact independent integer-Gaussian + five-term model. The decimals are high-precision evaluations of explicitly proved positive bounds, not sampled estimates. The torus argument is classical metric packing; the Gaussian Fourier transform/Poisson formula is standard. **No originality claim has been made or verified**.
+
+### Constructive example sanity checks [COMPUTED]
+
+A local independent script scans `d=1,...,194` and identifies matching low-frequency certificate:
+- CGS-02 `a=(1,239,239,0,0)`: `d=17`, centered residues `(17,7,7,0,0)`, squared residual sum `387/338²<1/4`; numerical Fourier witness gives `TV≥0.25303138667...` (not tight versus CGS-02's separate `TV>0.82845` event witness).
+- CGS-03 `a=(143,144,151,156,161)`: `d=2`, centered residues `(-52,-50,-36,-26,-16)`, squared residual sum `7432/338²<1/4`; numerical Fourier witness gives `TV≥1.043449×10^-6` (not tight versus CGS-03's previous `>0.061307` certificate).
+
+These are consistency checks for **the same torus-Fourier mechanism**, not separate hypothesis tests or exact TV computations.
+
+**Local, deterministic reproducer**: `/mnt/data/thfhe_cgs04_universal_five_term_fourier.py` SHA256 `4045025f2c321efd5f900c2584413a02c5efce8fa94acbbb64d8cf98b868ee03`. Results JSON `/mnt/data/thfhe_cgs04_universal_five_term_fourier_results.json` SHA256 `e51105e275019fad409483d0f63fa5c7f625087f0ea7f9182e9923d79f138e68`. Both were actually generated and executed in the current container, not GitHub Notes repository files.
+
+### Scope, limits and connection to the ORIGINAL parent gap
+
+**[NEGATIVE] KILL / archive** the **entire exactly-five-term independent `D_(Z,8)` integer Gram-root sum** as a statistically `2^-128`-close direct replacement to the required scalar `D_(Z,8 sqrt(114243))`. This excludes any optimized/balanced/primitive five-square choice **in this fixed source-shaped test regime**, not merely the two prior choices.
+
+**[FACT PRIOR ART]** Source Lemma 3.7 already links Gaussian linear-sum correctness to coefficient-sensitive smoothing; this theorem is a new direct exercise/application of standard torus packing and Poisson tools to our exact question, **NOVELTY NOT VERIFIED**, not a publishable ThFHE improvement.
+
+**[OPEN]** The result does **NOT** rule out: k>5 independent terms, variable widths, affine/correlated/nonlinear samplers, rejection correction, secure interactive MPC, cryptographic PRSS/PCF approaches, or a different σ0/Bpub/security regime. It says nothing about maintaining Shamir-degree-(T−1) shared outputs, hidden innovations, simulation security against corrupt-party views, multi-query statistical accumulation, noise flooding/rounding, or total communication/latency. Gaussian padding **alone** can be far in TV even where total published decrypt-residual is smoothed by additional independent flooding; NO original-paper proof gap or deployed attack is established. The Fourier d depends on the selected root a, so even the concrete distinguisher might not be available to a party who does not know the secret-conditioned factor; a *distribution* lower bound is distinct from an efficient view-based adversary.
+
+### End CGS-04
+
+**STATUS:** **FAIL** existence of any statistically 2^-128-close **five independent base-width-8 integer-Gaussian** factor for this fixed M; **PASS** universal quantitative harmonic obstruction proof; **HUMAN_REVIEW** recommended for choice of next sub-architecture.
+**RESULT:** For any integer 5-square Gram root with norm²=114243, proved `TV>7.3951730798e-23>2^-128` via a single dimension-five torus packing and Poisson-character argument. This **decisively closes exactly this mathematical sampler family at these parameters**, with precisely stated boundaries; does not fix original secret-conditioned threshold Gaussian generation.
+**NEXT_ACTION:** PI chooses whether to test **ONE** broadened integer-Gaussian sampler family with more than five terms (define k and concrete cost budget first) **or** investigate one named, previously published nonlinear Gaussian correlation / threshold sampling mechanism with a source-compatible security interface; do not automatically pivot, do not repeat roots or run full ThFHE implementation. If choosing a dimension-scaling branch, a smallest next test is a quantitative torus-volume necessary-condition calculation for `k>5` at the same M, σ0 and 2^-128 goal.
+**STATE_UPDATE:** NO to global/vFHE `STATE.md`; **CGS TOPIC_RECORD_UPDATE:** YES (this section appended only).

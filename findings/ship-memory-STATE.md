@@ -1,5 +1,8 @@
 # SHIP Evaluation-Key Memory — Independent Research State
 
+> **TRACK_ID: SHIP — independently locked research state (2026-10-15).** Authoritative for SHIP-I226 onward ONLY; do not infer target from global `STATE.md`. Bare “继续” stays SHIP. Ordinary writes: this state plus `findings/ship-memory-*.md`, `failures/ship-memory-*.md` only. Reading other tracks is allowed as prior art; no writing to VFHE/CGS, global protocols or shared source registry. I226 ends HUMAN_REVIEW; don't silently pivot or reopen a failed candidate. See `findings/TRACK_ISOLATION_POLICY.md`. These are soft rules until MCP server enforcement.
+
+
 **Checkpoint:** 2026-10-14 (Asia/Tokyo).
 **PI-selected parent:** SHIP evaluation-key prepared memory (Cheon–Hanrot–Kim–Stehlé, EUROCRYPT 2025, ePrint 2025/784). **Active subtarget:** dominant HMux GGLWE keys following I203's selector-only low-impact result; selector packing retained as conditional archived candidate, not the main effort.
 **LAST COMPLETED:** **I226 COMPLETED (NEGATIVE ZERO-HMUX-KEY BYTE-REUSE FINGERPRINT LEAKAGE GATE)** (independent SHIP numbering); I222–I225 systems findings preserved. No compiled Poulpy variant run.

@@ -675,3 +675,27 @@ Gap
 → Concrete gain
 → New understanding
 ```
+
+
+---
+
+## 2026-10-15 PI-approved strategic priority — composition-first, not trivial bugs
+
+**Priority (human PI-approved):** Future primary research targets should preferentially investigate **structural obstacles to composing existing FHE optimizations**, especially CKKS/FHEW/TFHE bootstrapping, linear transforms, packing, matrix operations and their noise, precision, key-switching, modulus, key-material and security/parameter compatibility. The desired contribution shape is:
+
+```text
+A and B independently work under documented assumptions
+→ A ∘ B encounters a source-demonstrated structural obstruction O
+→ propose genuinely new algebraic/representation/algorithmic technique R
+→ prove correctness + noise/precision + parameter/security compatibility
+→ quantify end-to-end latency/throughput/key-size/memory Pareto improvement
+→ compare exact prior art and assess novelty.
+```
+
+**Early novelty/importance gate (BEFORE prolonged investigation):** Check original source and recent prior work for an already-acknowledged condition or obvious one-line repair. Deprioritize routine overflow, off-by-one, indexing/notation, unimportant parameter corners, source-edition/implementation-blocked claims and generic union bounds, unless the issue demonstrably requires a nontrivial FHE or cryptographic technique and matters in actual workloads. An algebraic counterexample is *not* by itself a publishable paper or a deployed vulnerability.
+
+**One-iteration falsification remains mandatory:** ONE precise hypothesis and ONE cheapest decisive test. Require the original paper/source and explicit operator types, representation domains, moduli/scales, key lineage, ordering of rotations/rescales/relinearizations, correctness invariant, noise and precision budgets. Track hidden costs: evaluation/rotation keys, NTTs, external products, RNS conversion, memory, batching, compiler integration. In a composition question, test the likely obstruction before optimizing the combination.
+
+**Stopping rules:** (i) Missing critical current primary source or compiler -> SOURCE_BLOCKED/HUMAN_REVIEW, log in MISSING_SOURCES, no invented theorem/forgery; (ii) already known in literature -> FAIL novelty/PARK; (iii) trivial repair with no meaningful FHE mechanism -> PARK; (iv) repeatedly negative minimal tests -> close that particular mechanism rather than cycling toy examples. PI decides contribution, major pivot, reopening and any disclosure.
+
+**Cumulative provenance:** The global I1–I192 history is frozen. Later V (vFHE), PVFHE P01–P27, TFHE-ISA T01–T02 and the separate opportunity Pxx notes are **independent namespaces**, not I193+. Integrate by thematic cross-reference and status; never silently renumber, overwrite, or relabel existing source findings. See `findings/RESEARCH_PROGRAM_INTEGRATION_2026-10-15.md` and `findings/OPEN_RESEARCH_BRANCHES.md`.

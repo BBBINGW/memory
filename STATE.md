@@ -3,7 +3,19 @@
 **Checkpoint:** 2026-10-15 (Asia/Tokyo)
 **GLOBAL GENERAL FHE ITERATION COUNTER:** **I192 is the last completed global round. This counter is FROZEN** while the human PI directs independent vFHE work. Do not start I193+ as a continuation of the old general sequence merely because the vFHE project continues.
 
-## CURRENT PI-SELECTED WORKSTREAM (SEPARATE COUNTER)
+## CURRENT PI STRATEGIC DECISION — 2026-10-15
+
+**Active strategic theme (PI approved): NONTRIVIAL FHE OPTIMIZATION COMPOSITION OBSTRUCTIONS.** Seek a source-verified A+B incompatibility in CKKS/TFHE/FHEW bootstrapping, linear transforms, packing, matrix operations, moduli/scales, key-switch/rotation-key interfaces, noise/precision or security, then develop and verify a new technical repair R with formal and end-to-end cost evidence. Prioritize new structural understanding and clear baseline/novelty over minor paper bugs, simple overflow, known trade-offs, repetitive toy audits and missing-source conjectures.
+
+**Historical integration:** findings/RESEARCH_PROGRAM_INTEGRATION_2026-10-15.md (read after core protocols); linked backlog findings/OPEN_RESEARCH_BRANCHES.md. Global I1–I192 FROZEN; V1–V42 independent; PVFHE P01–P27 independent; TFHE-ISA T01–T02 independent. Do not renumber P/T/V as I193+, do not conflate legacy backlog P1–P22 with PVFHE P01–P22. Existing findings/failures remain authoritative.
+
+**Completed independent strands:** PVFHE P27 SOURCE_BLOCKED/HUMAN_REVIEW (author 2024/1764 compiler & Coeff helper-bit mapping missing); PVFHE PCS/FS P05–P22 PARK; TFHE-ISA T01 and T02 LOW NOVELTY/PARK. vFHE V42 remains SOURCE_BLOCKED/HUMAN_REVIEW; current official 2025/286 PDF still missing. No source-blocked branch auto-reopened and no full SNARG attack claimed.
+
+**NEXT_ACTION:** PI-approved research *selection* stage. Identify ONE genuinely new, full-primary-source-accessible FHE composition obstacle after checking historical findings, author discussions and prior art; write ONE smallest falsifiable technical hypothesis and decisive test. Do not automatically start any blocked legacy branch. PI retains ultimate target/contribution/pivot decision.
+
+---
+
+## HISTORICAL PI-SELECTED vFHE WORKSTREAM (SEPARATE COUNTER; NOW SOURCE_BLOCKED)
 
 **vFHE cross-CRT scalar digit/index consistency**, independent round **V42 COMPLETED (SOURCE_BLOCKED)**, next **V43 NOT STARTED (HUMAN_REVIEW / NO AUTO CONTINUATION)**.
 

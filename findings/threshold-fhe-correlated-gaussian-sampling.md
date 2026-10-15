@@ -1,6 +1,6 @@
 # Threshold FHE — Correlated / Secret-Conditioned Gaussian Sampling
 
-> **TRACK_ID: CGS — independently locked research state (2026-10-15).** **LAST COMPLETED: CGS-18; CGS-19 NOT STARTED. STATUS: HUMAN_REVIEW; modified-interactive masked-rounding alternative passes a narrow arithmetic gate, but exact original O(LDec) one-message Gaussian-padding problem remains OPEN.** The initial CGS-01 lines below are historical, not current state. Bare “继续” stays CGS, never VFHE/SHIP. Ordinary writes: this state plus new `findings/cgs-*.md`, `failures/cgs-*.md` only. Do not edit root/global files. Human PI authorizes any pivot or gate reopening; see `findings/TRACK_ISOLATION_POLICY.md`. Current MCP restrictions are policy-only pending backend enforcement.
+> **TRACK_ID: CGS — independently locked research state (2026-10-15).** **LAST COMPLETED: CGS-19; CGS-20 NOT STARTED. STATUS: HUMAN_REVIEW; direct published MPC-rounding substitution FAILS the joint one-message low-communication + no-O(LDec)-prestorage target; original secret-conditioned Gaussian-padding question remains OPEN.** The initial CGS-01 lines below are historical, not current state. Bare “继续” stays CGS, never VFHE/SHIP. Ordinary writes: this state plus new `findings/cgs-*.md`, `failures/cgs-*.md` only. Do not edit root/global files. Human PI authorizes any pivot or gate reopening; see `findings/TRACK_ISOLATION_POLICY.md`. Current MCP restrictions are policy-only pending backend enforcement.
 
 
 **Standalone research track:** `CGS`, independent of the existing numbered I1–I194 / vFHE `STATE.md` sequence.
@@ -771,3 +771,17 @@ Full local CGS-15 report: /mnt/data/CGS-15_ideal_pcf_public_circuit_secret_bindi
 **STATUS:** narrow algebraic PASS; novelty of standalone mechanism FAIL (known prior art); full candidate UNCLEAR / HUMAN_REVIEW.
 **NEXT_ACTION (only PI continuation):** ONE cost/security interface test of source Algo6 against (a) CCS2025 preprocessed rounder and (b) on-demand comparator, with exact user-selected T,N and threat model; no further generic PRSS/PCF substitutions or automatic research-track pivot.
 **STATE_UPDATE:** YES CGS topic only; no edits to SHIP/VFHE/global.
+---
+## CGS-19 — Source-fixed secure rounding online/offline storage gate (2026-10-15)
+
+**H-CGS19 (FALSIFIED direct-port dual objective):** Published CCS 2025 UC MPC rounding, optionally moved on demand, can directly replace the original Gaussian padding while preserving Okada–Takagi Algorithm 6's one-local-share/party PartDec and eliminating all per-decryption O(LDec) preprocessing. Fixed N=4,T=2 with at most one corrupt active party and a noncolluding semi-trusted Server (no claim CCS shares same setting).
+
+**MINIMAL DECISIVE SOURCE/COST TEST:** Exact CCS2025 §3.4 published k64,m1,b8,d8,s64 equations give 2432 consumed gate-table entries and 346880 bits=43360 bytes authenticated preprocessed gate material per party per decryption. Original Algo6 stores one q-element Gaussian share per session per party and sends one q-element PartDec reply; CCS published online has THREE sequential ABB opens and 656 bits/party excluding commitments, not a one-reply protocol. At LDec=10^6, full precomputed CCS gate payload is 43.36 GB/party; original Gaussian shares at illustrative qbit64/128/256 are 8/16/32 MB respectively. These cross-paper q widths are ILLUSTRATIVE, and NOT same security parameters, threat model, or proof systems. On-demand regeneration removes permanent preproc tables only by adding new live interactive MPC/OT steps in the named source method, with online cost not demonstrated to match original.
+
+**REFERENCES:** Okada–Takagi ePrint2025/409 Algo6 p26 and Def4.2; Zyskind et al. ePrint2025/1781 §§3.3–3.4 pp7–8 Eq5; Ajax ePrint2025/1834 §§2.2,4.3 pp5–6,16–18. Newer Okada–Takagi ePrint2026/957 published at ACISP 2026, but ORIGINAL FULL TEXT SOURCE_BLOCKED, so novelty cannot be certified.
+
+**STATUS:** FAIL for *named literal port preserving both claimed properties*; PASS verified formula/data-flow gate; no impossibility theorem for novel PCFs or on-demand MPC, no end-to-end implementation/simulator and no fresh cryptographic primitive. **PARK this direct integration**, but original O(LDec) research question OPEN.
+
+**FULL EVIDENCE:** `findings/cgs-19-interactive-rounding-online-offline-cost-gate.md`; local exact formula script `/mnt/data/cgs19_gate_check.py` SHA256 7e2fa46ed69778601cfa59b5a69bbffcd4fa4345a1ec0e7e3d56a84a58849340; JSON `/mnt/data/cgs19_cost_gate.json` SHA256 5b993bd1c4baea6146917eb15720cd3e52293370f2e38bd02df3fb1e5da3012f.
+
+**NEXT_ACTION CGS-20 (PI continuation only):** one genuinely new compact reusable-key conditional-correlation or other nontrivial construction within ONE-response interface, exact source transcript simulator/active-set and two-secret/two-session falsification; alternatively first secure original full 2026/957 source to gate novelty. Do not repeat prior-art Ajax/CCS MPC rounding with no new mechanism; never switch SHIP/VFHE. **STATE_UPDATE:** YES CGS only.

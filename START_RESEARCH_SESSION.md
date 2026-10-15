@@ -7,7 +7,7 @@
 From (a) the human PI's explicit instruction, else (b) the current conversation's already locked research target, else (c) an explicit track ID in a saved handoff, resolve:
 
 ```text
-TRACK_ID: SHIP | CGS | VFHE | (other PI-named track)
+TRACK_ID: SHIP | CGS | VFHE | EXPLORE | (other PI-named track)
 TRACK_STATE: exact authoritative track-state path from registry
 LAST_ITERATION: last completed round in THAT track
 TARGET: named active scientific problem
@@ -43,7 +43,7 @@ Keep [FACT], [DERIVED], [HYPOTHESIS], [NEGATIVE] distinct. Check relevant origin
 
 Ordinary track research iterations MAY write only this track's exact state and the approved `findings/`/`failures/` filename prefixes from `findings/TRACK_ISOLATION_POLICY.md`.
 
-Normal SHIP/CGS/VFHE iterations MUST NOT modify:
+Normal SHIP/CGS/VFHE/EXPLORE iterations MUST NOT modify:
 - root `STATE.md`, `AGENT.md`, `RESEARCH_PHILOSOPHY.md`, or this startup file
 - another track's state/findings/failures
 - `MISSING_SOURCES.md`, shared research indexes, or `papers/supplied/`

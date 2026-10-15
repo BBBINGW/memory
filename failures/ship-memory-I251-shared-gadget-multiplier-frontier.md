@@ -1,0 +1,36 @@
+# SHIP-I251 — Cross-support shared gadget multiplier: correct beta*s reconstruction, no online Pareto
+
+**Date:** 2026-10-16. PI continued SHIP ONLY; no other research tracks written. Read RESEARCH_PHILOSOPHY.md, AGENT.md, START_RESEARCH_SESSION.md, STATE.md, findings/ship-memory-STATE.md, I250, I227, M18/M19, I205/I207/I208/I209/I210, seeded key precedents before test. Original SHIP author ePrint2025/784; concrete implementation is **independent third-party Poulpy** @250d4392656cd313f92ca66d96d8865702d39ddf, not original HEaaN/security-matched h31.
+
+## ONE falsifiable H251, one cheapest decisive test
+
+H251: Store only the beta-scalar column of each original rank2 HMux GGLWE; a shared-per-Galois secret multiplier GGSW reconstructs the first beta*s column under correct output secret and yields a worthwhile SAME-STREAMING resident RAM / online runtime Pareto without heavy new online external products or per-support large evaluation keys. Cheapest falsifier: read source key output domain, read known scheme-switching prior art, derive testable exact gadget product identity, execute small negacyclic RLWE/GGSW example, count distinct public rotation secrets and additional product calls using pinned source arithmetic. No Rust IFMA/Sage security claim.
+
+## Papers, source [FACT]
+
+- Wang et al., "Circuit Bootstrapping: Faster and Smaller", EUROCRYPT 2024, ePrint **2024/323** §3.2 physical pp14–15 Algorithm 2: scheme switching produces gadget RLWE'(sk*m) from RLWE'(m) using SSK=RLWE'(sk²). Cites De Micheli–Kim–Micciancio–Suhl (2023) for this **already known** primitive. Original PDF via Research MCP mirror, 40pp SHA256 f25f122bf38f105d29907d7eea7085fc7ab1af13a27b223b75c073b8a66640e4, VERSION_UNVERIFIED.
+- Poulpy source keyset.rs blob 8be6ab92846168330100efeabe9fa19dbd9720e4: at support j, candidate d, output secret t_g=sigma_(g^-1)(s), source input rank2 gadget plaintext columns (beta_jd*s,beta_jd). g depends on candidate public rotation only, not j. At original independent source-example h32, theta4, window256, mixed radix [4,4,4,3], public rotation weights [4,16,64,256] in m8192; 15 candidate positions/group but 12 DISTINCT rotations g (zero repeated four times). Poulpy-core has public GLWE external product/GGSW API, but this NEW key compression/generation has NOT been implemented.
+- Prior I205/I207 shared beta-independent KSK moves hidden-beta gating to new ONLINE ct×ct, ~480 expensive products and widened modulus. I246 omits only 128 beta-scalar columns using public onehot completion; I251 instead omits ALL first beta*s columns via shared related-secret multiplier. No duplicate of either old hypothesis.
+- Wang 2024 uses same multiplier sk as ciphertext decrypting secret. SHIP needs s while output is t_g=sigma_(g^-1)(s); for nontrivial g the existing original tensor key s² under s is not a compatible shared key.
+
+## Correct mathematical interface [DERIVATION]
+
+Use torus-RLWE convention Dec_t(a,b)=b+a*t. Source scalar beta gadget row (a,b) decrypts to G_i*beta_jd+e_i under t=t_g. Define ONE shared rank1 GGSW_t(s), gadget-column plaintext sources (t*s,s) under t. Then
+  C'_(j,d,i) := C^(beta)_(j,d,i) external_product GGSW_(t_g)(s).
+Its decryption under t_g is s*(b+a*t_g)=G_i beta_jd s + s e_i, plus GGSW encryption/decomposition errors. This constructs the missing rank2 HMux FIRST gadget column with the correct output-key domain. The K_g is shared across all h supports of the same g, but adds high-modulus encryptions of s and s*t_g, a correlated degree2 **joint KDM security obligation** absent from original source proof; no lambda128 certification. Resulting rows are no longer independently generated and have higher, correlated noise; actual k520/IFMA numeric correctness unverified.
+
+## Actually executed minimum exact GLWE/GGSW experiment [PASS algebra]
+
+Local Python test file /mnt/data/ship_i251_shared_secret_multiplier_gate.py SHA256 **735c80dff57b313103ccb7bcdd28e64ccc3085c95c4ac3d53acf6466f67da644**; JSON /mnt/data/ship_i251_shared_secret_multiplier_gate.json SHA256 **e742089e930f86d33d9bf958a35707c94e4035adf60dad943f3d683e3f831bb0**. Exact R=Z_(2^40)[X]/(X^8+1), gadget base2^8 with 5 rows, dense ternary s, independently randomized RLWE masks, errors ±2, Galois [1,5,9,13], 4 onehot selected values ×3 supports ×4 public key domains ×5 levels: **240/240** output GLWE rows decrypt to G_i beta s under target t_g within loose conservative noise bound **40806**; max observed abs noise **5899**. NOT actual Poulpy 16384-degree IFMA, CKKS precision/noise, wall time, attack cost or actual security certification.
+
+## Source-shaped exact memory and the decisive work falsifier
+
+Fixed independent Poulpy N16384/h32/radix[4,4,4,3]/base52/dnum9, prepared full rank2 HMux90MiB, one scalar beta input column45MiB, other prepared2404MiB. Old 480 complete HMux keys ⇒ total named eager prepared (480×90+2404)/1024=**44.53515625GiB**.
+
+Hypothetical persistent prepared-format candidate stores **480 beta scalar columns** (480×45=21600MiB) + **12 shared full rank1 GGSW_t_g(s)** (12×90=1080MiB) + other 2404MiB ⇒ **(21600+1080+2404)/1024=24.49609375GiB**; nominal at-rest reduction **20.0390625GiB/44.99605%**. This is IFMA size arithmetic contingent on exactly those new key sizes; NOT actual RSS, original author parameters or implemented bytes.
+
+**FATAL same-objective cost**: Each of 480 HMux keys has NINE first-column gadget rows. Rehydrating one missing first-column GLWE row costs a full gadget external product, so **480×9=4320 EXTRA external products per full keyset traversal**, while existing original HMux performs **480 candidate VMP product calls**. This is 9× AS MANY *additional product calls* (not measured 9× latency). Pre-rebuilding/cache full 480 keys restores baseline complete prepared RAM plus 12 new multiplier keys, eliminating resident-RAM saving. Rebuilding just in time could retain smaller STORAGE but recomputes these products whenever original HMux calls them, without showing a fair resident-RAM advantage over source group streaming. Also using the retained beta *prepared-column* as GLWE external-product input may require inverse DFT / raw input storage; stock keyset/ship_mux_rotate does not support this layout. Noise is amplified and joint KDM unproven.
+
+## End of I251
+
+**STATUS:** PASS algebraic shared key/GGSW conversion; **FAIL** H251 no-heavy-extra-online-work and meaningful demonstrated fair resident RAM; **UNCLEAR** real numerical correctness/security/novelty. **RESULT:** A genuine support-independent 12-key sharing identity gives nominal 45% persistent payload reduction, but 4320 extra key-row products or restored full resident keys dominate, with stronger related-secret key exposure. The primitive is inspired by already published scheme switching; no new standalone novelty established. This is NOT a cryptanalytic attack on original SHIP. **NEXT_TEST:** PARK this exact first-column key-rehydration branch absent a new multirow amortized conversion with independently justified joint KDM/precision and actual IFMA backend, or explicit PI target change to disk/transport. I245 author h31 security remains SOURCE_BLOCKED; other tracks untouched. **STATE_UPDATE:** YES finding+topic/root, read-back verify.

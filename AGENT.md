@@ -608,3 +608,18 @@ If `STATUS = FAIL`, record the concrete reason and do not continue developing th
 If `STATUS = UNCLEAR`, refine or replace the current test rather than expanding the idea.
 
 If `STATUS = HUMAN_REVIEW`, present the minimum decision package required by Section 12, and `NEXT_ACTION` should be the specific decision required from the human.
+
+
+---
+
+## PI directive (2026-10-15): composition-first FHE research and evidence-aware consolidation
+
+**Default research priority:** Seek a **nontrivial, source-verifiable composition obstruction** between useful FHE optimizations (especially CKKS linear transforms/bootstrapping/matrix arithmetic and TFHE/FHEW), not a stream of isolated notation, overflow or implementation-missing audits. Identify exact baseline A/B, failing interface and assumptions (algebraic/slot/coefficient domain, scale/rescale, modulus/RNS, noise/precision, keyswitch/rotation keys, memory/security), then seek one new technique R with concrete provable benefit.
+
+**Novelty pre-screen mandatory:** Before starting substantial testing, check the original paper's own limits/conclusion and prior art. A simple union bound, fixed-width overflow, low-probability toy anomaly or already acknowledged tradeoff normally goes to failures/PARK unless a genuinely new FHE-specific repair and important parameter regime is specified. Avoid mixing plaintext correctness, ciphertext exact equality, public-verification soundness and security vulnerabilities.
+
+**Per-iteration discipline unchanged:** One smallest falsifiable hypothesis and one decisive test; if source is unavailable, record provenance and stop dependent verification. Require explicit correctness, assumption/security, noise/precision and end-to-end key/runtime cost gates before labeling a strong contribution. Do not claim a publishable idea on novelty intuition alone.
+
+**Integration & numbering:** Keep global general I1–I192 **FROZEN**, independent V1–V42, PVFHE P01–P27, TFHE-ISA T01–T02 and historical opportunity-backlog Pxx separate. Different P prefixes are NOT the same sequence. Consolidate in `findings/RESEARCH_PROGRAM_INTEGRATION_2026-10-15.md` and cross-link evidence to `findings/OPEN_RESEARCH_BRANCHES.md`. Original files and commit history remain authoritative, no rewriting old work; cross-reference rather than deduplicate by destruction. Current PI-selected strategic theme supersedes any old automatic NEXT_ACTION for parked branches, but does NOT reopen V42 or PVFHE P27 absent their specified missing evidence.
+
+**After strategic updates:** verify each GitHub write by reread and preserve parent state. Human PI still chooses a specific next primary technical target; a strategic research theme alone does not authorize unbounded autonomous exploration.

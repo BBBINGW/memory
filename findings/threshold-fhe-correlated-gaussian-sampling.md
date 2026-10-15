@@ -1,6 +1,6 @@
 # Threshold FHE — Correlated / Secret-Conditioned Gaussian Sampling
 
-> **TRACK_ID: CGS — independently locked research state (2026-10-15).** **LAST COMPLETED: CGS-17; CGS-18 NOT STARTED. STATUS: HUMAN_REVIEW; original O(LDec) secret-conditioned Gaussian-padding question remains OPEN.** The initial CGS-01 lines below are historical, not current state. Bare “继续” stays CGS, never VFHE/SHIP. Ordinary writes: this state plus new `findings/cgs-*.md`, `failures/cgs-*.md` only. Do not edit root/global files. Human PI authorizes any pivot or gate reopening; see `findings/TRACK_ISOLATION_POLICY.md`. Current MCP restrictions are policy-only pending backend enforcement.
+> **TRACK_ID: CGS — independently locked research state (2026-10-15).** **LAST COMPLETED: CGS-18; CGS-19 NOT STARTED. STATUS: HUMAN_REVIEW; modified-interactive masked-rounding alternative passes a narrow arithmetic gate, but exact original O(LDec) one-message Gaussian-padding problem remains OPEN.** The initial CGS-01 lines below are historical, not current state. Bare “继续” stays CGS, never VFHE/SHIP. Ordinary writes: this state plus new `findings/cgs-*.md`, `failures/cgs-*.md` only. Do not edit root/global files. Human PI authorizes any pivot or gate reopening; see `findings/TRACK_ISOLATION_POLICY.md`. Current MCP restrictions are policy-only pending backend enforcement.
 
 
 **Standalone research track:** `CGS`, independent of the existing numbered I1–I194 / vFHE `STATE.md` sequence.
@@ -758,3 +758,16 @@ Full local CGS-15 report: /mnt/data/CGS-15_ideal_pcf_public_circuit_secret_bindi
 **STATE_UPDATE:** Only independent CGS topic append; DO NOT alter global/vFHE STATE.md or auto-archive without PI decision.
 
 **Local proof artifacts (all exact hashes):** /mnt/data/CGS-17_threshold_FHE_PRSS_combinatorial_cost_gate.md SHA256 5486c8a1d273828f048c75b619148fe368d98c181d4878aec8dcda572983061e; /mnt/data/thfhe_cgs17_noahs_ark_subset_gate.py SHA256 55eed74d3aff6bfb85296c9536807eab0da931d311fcb94c824fd45d92ec7478; /mnt/data/thfhe_cgs17_noahs_ark_subset_results.json SHA256 475bc696272806d11d1d6849f396fb9b7221a3f0eabc25b47cf55d554ccdfab7.
+
+
+---
+## CGS-18 — Masked rounding alternative, authors' prior art, exact carry arithmetic (2026-10-15)
+
+**PRIMARY HYPOTHESIS:** With interactive secure comparison and consistently double-shared fresh uniform masks, a divisible-modulus decryption residual can be unmasked and corrected exactly without a secret-conditioned Gaussian pad. The masked opened residue remains perfectly uniform.
+
+**RESULT:** PASS the narrowly specified exact identity and 960/960 exhaustive toy (0 corrected errors, 224 naive no-carry mismatches, all opened masked-value distributions uniform). The comparison and underlying protocol are **ALREADY PUBLISHED**: Ajax ePrint2025/1834 (USENIX Security2026) double sharing/mask-then-open; Zyskind et al. ePrint2025/1781 (CCS2025) private comparator/UC MPC rounding. No new primitive or complete source Algo6 repair claimed. Published protocols consume per-decryption offline correlations/gates; using online MPC instead changes rounds/communication and remains unproven in original arbitrary T-of-N, sanitizing ServerDec, prime-q interface. Gaussian sampling problem under original constraints remains OPEN.
+
+**EVIDENCE:** `findings/cgs-18-masked-carry-no-gaussian-alternative-gate.md` (source locations, exhaustive script SHA, correctness/privacy scope and novelty gate).
+**STATUS:** narrow algebraic PASS; novelty of standalone mechanism FAIL (known prior art); full candidate UNCLEAR / HUMAN_REVIEW.
+**NEXT_ACTION (only PI continuation):** ONE cost/security interface test of source Algo6 against (a) CCS2025 preprocessed rounder and (b) on-demand comparator, with exact user-selected T,N and threat model; no further generic PRSS/PCF substitutions or automatic research-track pivot.
+**STATE_UPDATE:** YES CGS topic only; no edits to SHIP/VFHE/global.

@@ -439,21 +439,13 @@ Do not bundle unrelated research changes into the same commit.
 
 ---
 
-## 11. State isolation and per-track recovery
+## 11. Single active research state and recovery
 
-Root `STATE.md` is the **global, read-only-to-normal-sessions index**, not a current research log, active target, or universal NEXT_ACTION. Resolve and retain the session's `TRACK_ID` **before** reading any track state, according to `START_RESEARCH_SESSION.md`.
+The PI now uses **ONE active research task at a time**, with ONE GitHub Notes/Research MCP and `STATE.md` as the canonical current target/checkpoint/NEXT_ACTION. **Former SHIP/CGS/VFHE/EXPLORE access-control isolation is RETIRED** (PI decision 2026-10-15). No independent endpoints, track locks, special OAuth scopes, per-prefix write restrictions, or separate GLOBAL_MAINTENANCE role are needed.
 
-Authoritative independent states (see `findings/RESEARCH_TRACK_INDEX.md`):
-- SHIP: `findings/ship-memory-STATE.md` (independent SHIP I-series)
-- CGS: `findings/threshold-fhe-correlated-gaussian-sampling.md` (CGS-series)
-- VFHE: `findings/vfhe-cross-crt-state.md` (V-series)
-- GENERAL: old I192 FROZEN / historical; no automatic I193 from other tracks
+Topic-history files retain their original names and labels (e.g. `findings/threshold-fhe-correlated-gaussian-sampling.md`, `findings/ship-memory-STATE.md`, `findings/vfhe-cross-crt-state.md`), but they are **research archives and detailed checkpoints**, not authorization partitions. Use them as prior evidence. When PI explicitly switches focus, checkpoint the old target and update `STATE.md` to the newly selected target; preserve all historical hypotheses/results and numbering. A bare "继续" follows the active target; do not arbitrarily switch merely due to another topic's file timestamp.
 
-Update only the current track's authoritative state for material scientific changes. Keep detailed findings in its dedicated `findings/` and `failures/` files. Do not overwrite other tracks' state merely because root GitHub commits are more recent.
-
-Ordinary research sessions cannot edit global `STATE.md`, other protocols, shared indexes or `MISSING_SOURCES.md` without a separate PI-authorized global-maintenance instruction. Access to a shared GitHub repository is NOT permission to switch track or write across them. See `findings/TRACK_ISOLATION_POLICY.md`.
-
-**Important limitation:** these are behavioral scope restrictions only until the Research MCP backend enforces authenticated track-specific write authorization, path normalization and expected-SHA conditional updates. Do not claim hard enforcement based on prompts alone.
+The previous `findings/TRACK_ISOLATION_POLICY.md`, `findings/RESEARCH_TRACK_INDEX.md` and `findings/MCP_TRACK_GUARD_CODEX_SPEC.md` are retired references, not normative research instructions. Keep read-before-write, one logical commit per update, re-read verification and single-writer discipline. The existing GitHub Notes tool does not expose caller-supplied atomic expected_sha, so do not claim compare-and-swap enforcement or run concurrent same-file writers.
 
 ---
 

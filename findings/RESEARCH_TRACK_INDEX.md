@@ -11,6 +11,7 @@
 | SHIP | SHIP evaluation-key memory and HMux/selector keys | `findings/ship-memory-STATE.md` | SHIP-I226 | HUMAN_REVIEW; memory bottleneck audited, zero-HMux ciphertext-byte reuse candidate rejected | `failures/ship-memory-I226-reused-zero-hmux-key-fingerprint-leak.md` |
 | CGS | Threshold FHE secret-conditioned correlated Gaussian sampling | `findings/threshold-fhe-correlated-gaussian-sampling.md` | CGS-17 | HUMAN_REVIEW; original O(LDec) storage problem OPEN, direct PRSS/PCF/Noah subset migration not solved | Final `CGS-17` section in track state |
 | VFHE | vFHE CRT integer-digit consistency | `findings/vfhe-cross-crt-state.md` | V43 | HUMAN_REVIEW / PARK recommended; October 2026 protocol blocks archived CRT witness | `findings/vfhe-v43-oct2026-range-repair-gate.md` |
+| EXPLORE | PI-selected exploratory FHE research | `findings/explore-STATE.md` | NONE | READY; no active hypothesis selected | — |
 | GENERAL | Older independent FHE research program | `findings/RESEARCH_PROGRAM_INTEGRATION_2026-10-15.md` + archived findings | I192 (FROZEN) | HISTORY / PI decision only; do not auto-start I193 | `findings/OPEN_RESEARCH_BRANCHES.md` |
 
 Other independent namespaces (PVFHE P01–P27, TFHE-ISA T01–T02, and backlog P01–P22) keep their original identities; this table is not an exhaustive full research directory.
@@ -29,7 +30,8 @@ Other independent namespaces (PVFHE P01–P27, TFHE-ISA T01–T02, and backlog P
 - SHIP: state `findings/ship-memory-STATE.md`, future `findings/ship-memory-*.md` and `failures/ship-memory-*.md` (existing `failures/ship-i*.md` retained as historical).
 - CGS: state `findings/threshold-fhe-correlated-gaussian-sampling.md`; new results should use `findings/cgs-*.md` and `failures/cgs-*.md` (older `threshold-fhe-*` / `thfhe-*` files remain historical references).
 - VFHE: state `findings/vfhe-cross-crt-state.md`; future `findings/vfhe-*.md` and `failures/vfhe-*.md`.
-- Shared `STATE.md`, `START_RESEARCH_SESSION.md`, `AGENT.md`, `MISSING_SOURCES.md`, integrated index and track policy are **global metadata**; ordinary SHIP/CGS/VFHE iterations must not rewrite them.
+- EXPLORE: state `findings/explore-STATE.md`; future `findings/explore-*.md` and `failures/explore-*.md`.
+- Shared `STATE.md`, `START_RESEARCH_SESSION.md`, `AGENT.md`, `MISSING_SOURCES.md`, integrated index and track policy are **global metadata**; ordinary SHIP/CGS/VFHE/EXPLORE iterations must not rewrite them.
 
 Prior root state: `findings/legacy-global-STATE-before-track-isolation-2026-10-15.md` (historical snapshot). The Git repository/commit history contains the complete original results; no previous evidence has been deleted or renumbered.
 

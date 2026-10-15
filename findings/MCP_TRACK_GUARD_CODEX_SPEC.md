@@ -1,5 +1,8 @@
 # Codex Task — Enforce Three-Layer Research Track Isolation in Research MCP
 
+> **RETIRED / DO NOT IMPLEMENT OR DEPLOY FOR CURRENT WORKFLOW (PI decision 2026-10-15).** Separate per-track MCP write authorization is paused. Keep this document only as historical technical design; continue with the existing single MCP and centralized `STATE.md`. The experimental local feature commit must be reverted/abandoned by Codex if the user wishes; this note does not change local code.
+
+
 **Repository to modify:** The actual implementation repository of the PI's Research MCP server, not merely the connected GitHub Notes data repository. Inspect its real layout first; do not assume Python/FastAPI/Node or a particular deployment path.
 
 **Current client-facing research repository:** GitHub Notes fixed notes repo on branch `main`. Soft policies ALREADY IMPLEMENTED on 2026-10-15:

@@ -6,7 +6,7 @@
 
 - AGENT.md：用户确认的协作与操作规则。
 - RESEARCH_PHILOSOPHY.md：用户确认的研究原则。
-- STATE.md：下一次会话恢复工作所需的最小状态。
+- STATE.md：仅全局战略和各研究线索引；不包含可执行的 NEXT_ACTION。
 - TODO.md：待办与下一步。
 - inbox/：临时材料和未分类文字。
 - papers/notes/：论文阅读笔记、引用和原文链接。
@@ -18,7 +18,7 @@
 
 选择 GitHub Notes 插件，然后指定目标路径，例如：
 
-- “读取 AGENT.md、RESEARCH_PHILOSOPHY.md 和 STATE.md。”
+- “先按 START_RESEARCH_SESSION.md 锁定 TRACK_ID，再读取对应研究线的状态文件。”
 - “把这段文字保存到 inbox/2026-10-07-idea.md，提交信息 docs: save idea。”
 - “把论文笔记保存到 papers/notes/author-year-topic.md。”
 - “把今天的进展追加到 logs/2026-10-07.md；如果文件不存在，先创建。”
@@ -40,3 +40,20 @@ PDF 写入、OCR 或图像解读。使用方法与质量限制见 `papers/suppli
 服务端已放行上述研究文档和 `papers/`。MCP 生产 HTTPS 测试已通过；
 ChatGPT 中可能需要刷新工具列表
 以发现新增的 `read_repo_pdf`。
+
+
+## 多研究线隔离（2026-10-15）
+
+并行研究 **SHIP / CGS / VFHE** 时，先遵守
+[START_RESEARCH_SESSION.md](START_RESEARCH_SESSION.md)，并读取
+[研究线索引](findings/RESEARCH_TRACK_INDEX.md) 与
+[隔离规则](findings/TRACK_ISOLATION_POLICY.md)。
+
+- SHIP 的唯一权威状态：`findings/ship-memory-STATE.md`（I226）
+- CGS 的唯一权威状态：`findings/threshold-fhe-correlated-gaussian-sampling.md`（CGS-17）
+- VFHE 的唯一权威状态：`findings/vfhe-cross-crt-state.md`（V43）
+
+各对话的“继续”只能继续各自锁定的研究线，不能由根 `STATE.md` 自动切换。
+正常科研回合不可编辑其他研究线的文件或全局元数据。
+**目前属于文档约束；Research MCP 服务端权限硬隔离仍待实现**：Codex
+实施说明位于 [MCP_TRACK_GUARD_CODEX_SPEC.md](findings/MCP_TRACK_GUARD_CODEX_SPEC.md)。

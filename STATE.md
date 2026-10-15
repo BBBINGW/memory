@@ -5,11 +5,11 @@
 ## Current PI-selected active research
 
 **TARGET:** CGS — Okada–Takagi threshold-FHE secret-conditioned correlated Gaussian padding and the O(LDec) preprocessing/storage open problem.
-**LATEST COMPLETED:** CGS-20. **NEXT ITERATION:** CGS-21 (not started).
-**STATUS:** HUMAN_REVIEW / ongoing theoretical investigation; no complete usable padding primitive or secure end-to-end protocol.
+**LATEST COMPLETED:** CGS-21. **NEXT ITERATION:** CGS-22 (not started).
+**STATUS:** HUMAN_REVIEW / ongoing theoretical investigation; no complete usable secret-conditioned Gaussian-sharing primitive or secure end-to-end protocol.
 **FULL WORKING HISTORY:** `findings/threshold-fhe-correlated-gaussian-sampling.md`.
-**LATEST RESULT:** `findings/cgs-20-exact-scalar-key-homomorphic-prf-no-go.md`: exactly scalar-field key-linear PRF with compact F_q^d key has a public d+1-query linear distinguisher. This does NOT rule out real group-/approximately-homomorphic DPRFs.
-**NEXT_ACTION (when PI says "继续"):** Review one actual published distributed/approximately key-homomorphic PRF construction and test ONE concrete conversion to a common, Gaussian Shamir sharing, with exact active-set, two-session joint-view/security and cost gates. Check relevant up-to-date original sources before claiming novelty. ONE primary hypothesis + ONE cheapest decisive test.
+**LATEST RESULT:** `findings/cgs-21-dprf-local-rounding-shamir-interface-gate.md`: actual LST18/TCC2018 DPRF uses INTEGER LISS and only runs nonlinear extractor AFTER Combine. A proposed local nonlinear rounding map of Shamir shares already fails two-active-set consistency in a 2-of-3, two-sid exact toy; this does NOT attack the published DPRF. For any odd prime F_q, a fixed same-field pointwise map preserving all degree-one Shamir triples must be affine. PRIOR: `findings/cgs-20-exact-scalar-key-homomorphic-prf-no-go.md`.
+**NEXT_ACTION (when PI says "继续"):** Select ONE actual **hidden-output** threshold PRF/PCF mechanism and test whether it can produce shared secret-conditioned Gaussian padding without public seed reconstruction, on-demand setup growing independent of LDec, and without losing qualified-set consistency/simulator security. Perform ONE decisive minimal joint-view/privacy or active-set/cost test; if no distinct viable primitive, recommend PARK DPRF-postprocessing and seek PI's next target. Read original latest papers before novelty assertions.
 
 ## Other research files — archives, not access-control partitions
 

@@ -1,46 +1,38 @@
-# Global FHE Research State — Independent vFHE Track
+# Global FHE Research State — Track Index Only
 
 **Checkpoint:** 2026-10-15 (Asia/Tokyo)
-**GLOBAL GENERAL FHE ITERATION COUNTER:** **I192 is the last completed global round. This counter is FROZEN** while the human PI directs independent vFHE work. Do not start I193+ as a continuation of the old general sequence merely because the vFHE project continues.
+**Role:** GLOBAL STRATEGY + TRACK REGISTRY POINTERS ONLY. **NOT AN EXECUTABLE RESEARCH NEXT_ACTION.**
 
-## CURRENT PI STRATEGIC DECISION — 2026-10-15
+## Research management
 
-**Active strategic theme (PI approved): NONTRIVIAL FHE OPTIMIZATION COMPOSITION OBSTRUCTIONS.** Seek a source-verified A+B incompatibility in CKKS/TFHE/FHEW bootstrapping, linear transforms, packing, matrix operations, moduli/scales, key-switch/rotation-key interfaces, noise/precision or security, then develop and verify a new technical repair R with formal and end-to-end cost evidence. Prioritize new structural understanding and clear baseline/novelty over minor paper bugs, simple overflow, known trade-offs, repetitive toy audits and missing-source conjectures.
+- **Human PI** decides research targets, prioritization, pivots and contribution acceptance.
+- Global research philosophy: `RESEARCH_PHILOSOPHY.md`; agent rules: `AGENT.md`.
+- Mandatory multi-session target and write policy: `findings/TRACK_ISOLATION_POLICY.md`.
+- Canonical track identities and individual authoritative states: `findings/RESEARCH_TRACK_INDEX.md`.
+- Per-session startup: `START_RESEARCH_SESSION.md`. Resolve the current session's TRACK_ID **BEFORE** selecting a research state. Never treat this index or its modification time as the target.
 
-**Historical integration:** findings/RESEARCH_PROGRAM_INTEGRATION_2026-10-15.md (read after core protocols); linked backlog findings/OPEN_RESEARCH_BRANCHES.md. Global I1–I192 FROZEN; V1–V43 independent; PVFHE P01–P27 independent; TFHE-ISA T01–T02 independent. Do not renumber P/T/V as I193+, do not conflate legacy backlog P1–P22 with PVFHE P01–P22. Existing findings/failures remain authoritative.
+## Independent research tracks (read the named STATE for any Next Action)
 
-**Completed independent strands:** PVFHE P27 SOURCE_BLOCKED/HUMAN_REVIEW (author 2024/1764 compiler & Coeff helper-bit mapping missing); PVFHE PCS/FS P05–P22 PARK; TFHE-ISA T01 and T02 LOW NOVELTY/PARK. vFHE V43 source-text gate PASSED and historical CRT flaw author-acknowledged/repaired in Oct 2026; the old attack does not pass the new Figure 2. V44 not started/HUMAN_REVIEW; no full compiled-SNARG exploit claimed. Other source-blocked branches remain parked.
+| TRACK_ID | Authoritative state | Last completed | Current disposition |
+| --- | --- | --- | --- |
+| SHIP | `findings/ship-memory-STATE.md` | **SHIP-I226** | HUMAN_REVIEW: HMux prepared-key memory dominant; repeated identical zero-key ciphertext reuse is unsafe, no security-matched benchmarked large memory compression |
+| CGS | `findings/threshold-fhe-correlated-gaussian-sampling.md` | **CGS-17** | HUMAN_REVIEW: Okada–Takagi correlated secret-conditioned Gaussian padding/storage problem OPEN; direct seeded integration attempts did not solve it |
+| VFHE | `findings/vfhe-cross-crt-state.md` | **V43** | HUMAN_REVIEW / PARK recommended: older CRT scalar-digit soundness flaw acknowledged; new Oct-2026 protocol blocks original witness |
+| GENERAL (archived) | `findings/RESEARCH_PROGRAM_INTEGRATION_2026-10-15.md` | **I192 FROZEN** | Historical general FHE research, no automatic I193 |
+| Other independent work | `findings/RESEARCH_PROGRAM_INTEGRATION_2026-10-15.md` | PVFHE P27, TFHE-ISA T02 etc. | Historical/parked: see index; do not merge numbering with backlog P1–P22 |
 
-**NEXT_ACTION:** PI-approved research *selection* stage. Identify ONE genuinely new, full-primary-source-accessible FHE composition obstacle after checking historical findings, author discussions and prior art; write ONE smallest falsifiable technical hypothesis and decisive test. Do not automatically start any blocked legacy branch. PI retains ultimate target/contribution/pivot decision.
+## Global strategy — not a cross-track instruction
 
----
+PI-approved preference (2026-10-15): pursue **nontrivial, primary-source-grounded FHE optimization composition obstructions** with a meaningful corrective technique, formal correctness/security/noise or precision and concrete end-to-end costs. This informs **PI target selection** only; it never causes a SHIP, CGS or VFHE session to switch tracks on "继续".
 
-## HISTORICAL PI-SELECTED vFHE WORKSTREAM (SEPARATE COUNTER; OCT 2026 REVISION AUDITED)
+## No global executable next task
 
-**vFHE cross-CRT scalar digit/index consistency**, independent **V43 COMPLETED**; **V44 NOT STARTED — HUMAN_REVIEW / PARK RECOMMENDED**.
+There is **intentionally no global NEXT_ACTION**. Each independent track state contains its own `NEXT_ACTION` and HUMAN_REVIEW/PARK gate. A track-specific "continue" may act only within its already locked track and only as authorized by PI; it cannot read a global action as a fallback.
 
-**Authoritative separate state:** `findings/vfhe-cross-crt-state.md`.
-**Current one-round evidence:** `findings/vfhe-v43-oct2026-range-repair-gate.md`.
-**Historical evidence:** `findings/vfhe-cross-crt-consistency-research.md` and `findings/vfhe-v42-official-current-pdf-byte-gate.md`.
+**Ordinary track writes:** track-owned state, findings and failures only. Changes to this global file, policy, research integration or shared MISSING_SOURCES are separate PI-authorized **GLOBAL_MAINTENANCE** tasks.
 
-**Current source status:** PI/user uploaded `papers/supplied/eprint-2025-286-official-2026-revision.pdf` (Git blob `3431dd8acbac7141cad2592d45eb13c38510b1e4`, 902276 bytes, **58 pages**); Research MCP read the actual new §§4.3/E.2. Live IACR landing reports **2026-10-01** second revision and a fixed **range-check protocol**. Author Remark4.12 p26 explicitly recognizes previous native CRT-component membership does NOT entail one globally bounded integer digit, and cites GlueLUT (ePrint2026/494). Revised Figure2 p26 + Theorem4.11 add an auxiliary F_p scalar-digit oracle and a native-prime integer congruence link. The precise older counterexample `e=7+4X²` (CRT `(1,0)`) cannot satisfy the new consistency check against scalar digits `0` or `1`; H-V43 old-attack transfer **FAIL**. No live-version flaw or compiled-security exploit proven. **Source TEXT is supplied/readable; raw official-origin PDF byte equivalence was not independently established** (public official PDF returned HTTP403); this provenance qualifier remains. `MISSING_SOURCES.md` updated to SUPPLIED_READABLE with caveat. Historical V42 blockage and 52pp mirror remain archived, not a current next action.
+## Provenance / preservation
 
-**NEXT_ACTION:** Human PI decides whether to close the historical vFHE cross-CRT bug-hunt and select one source-complete FHE optimization composition target (existing strategic preference), or explicitly authorizes a *new* sharply framed revised Figure2 cost/security optimization against GlueLUT. **Never jump from independent SHIP I226 or CGS-17 dialogues to this vFHE state on a generic “continue”.** General I192 frozen; other track files unchanged. No unsolicited author contact/disclosure.
+The former long vFHE-focused root state is preserved verbatim at `findings/legacy-global-STATE-before-track-isolation-2026-10-15.md` and in Git history. Detailed research remains in original track documents; no research evidence was removed or renumbered by this restructuring.
 
-### Legacy numbering mapping — provenance only
-
-An earlier short run of vFHE exploration was inadvertently recorded as global I193–I196. Reinterpret only those *vFHE-specific* records as independent **V1, V2, V3, V4** in that order. This is a bookkeeping correction, not an erasure, renumbering of file paths, or change to the earlier *general* FHE I1–I192 history. Subsequent vFHE research begins at **V5**, and increments V6, V7, ... only. Existing vFHE theory/audit files from much older global iterations (e.g. I59–I151) remain historical evidence under their original filenames.
-
-## GLOBAL GENERAL FHE WORKSTREAM — PARKED AT I192
-
-**Last global audited topic (I190–I192):** Qi Zhang, Mingqiang Wang, Xiaopeng Cheng, *Faster FHEW Bootstrapping with Adaptive Key Update*, CANS 2025, ePrint 2025/381, https://eprint.iacr.org/2025/381.
-
-**Status:** PARKED — SOURCE_VERSION_GATED / HUMAN_REVIEW. Original author-edition §5.1 equations and exact DFR estimation/experimental artifact not authenticated. Existing discrepancy is conditional model/table comparison, **NOT** established published erratum, cryptographic exploit, or true DFR. For a future *PI-authorized* resumption, see archived I190–I192 evidence and `MISSING_SOURCES.md`. Do not conflate this with the currently active vFHE V-series.
-
-Other branches including LFBS PRCA, threshold FHE PRSS, GBFV, dBFV→BGV and GL generic BigSwitch retain their prior parked/archived status in `findings/OPEN_RESEARCH_BRANCHES.md`.
-
-## RESEARCH PROCESS
-
-- Human PI chooses targets, major pivots, claims of contribution, and any disclosure.
-- Agent follows `AGENT.md` and `RESEARCH_PHILOSOPHY.md`: read before write, one smallest falsifiable claim + one decisive test, rigorously distinguish FACT / DERIVATION / SPECULATION, verify every GitHub write by rereading.
-- When working on vFHE, read its **separate state** and independent research file; do NOT use/increment the old 190+ global round sequence.
+**Server-enforcement caveat:** Currently GitHub Notes path policy is documented but not proven enforced per track. Hard-scoped write authorization and compare-and-swap require a backend upgrade; see `findings/MCP_TRACK_GUARD_CODEX_SPEC.md`.

@@ -1,5 +1,8 @@
 # Threshold FHE — Correlated / Secret-Conditioned Gaussian Sampling
 
+> **TRACK_ID: CGS — independently locked research state (2026-10-15).** **LAST COMPLETED: CGS-17; CGS-18 NOT STARTED. STATUS: HUMAN_REVIEW; original O(LDec) secret-conditioned Gaussian-padding question remains OPEN.** The initial CGS-01 lines below are historical, not current state. Bare “继续” stays CGS, never VFHE/SHIP. Ordinary writes: this state plus new `findings/cgs-*.md`, `failures/cgs-*.md` only. Do not edit root/global files. Human PI authorizes any pivot or gate reopening; see `findings/TRACK_ISOLATION_POLICY.md`. Current MCP restrictions are policy-only pending backend enforcement.
+
+
 **Standalone research track:** `CGS`, independent of the existing numbered I1–I194 / vFHE `STATE.md` sequence.
 **Created:** 2026-10-14.
 **Human PI decision:** explicitly reopen the Threshold FHE correlated-Gaussian problem; keep the previously active vFHE I194 checkpoint untouched.

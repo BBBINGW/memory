@@ -1,5 +1,8 @@
 # FHE Research Track Registry
 
+> **RETIRED AS A TRACK AUTHORITY (PI decision 2026-10-15).** This table and all restrictions below are retained solely as a **historical research-topic catalog**; they no longer select research targets, grant/deny writes or require multiple MCP endpoints. The authoritative live target is `STATE.md`; CGS latest completed CGS-20 (not the older CGS-17 recorded below). SHIP-I226 and vFHE V43 are archived knowledge. EXPLORE remains a draft, not a mandatory separate track.
+
+
 **Status:** TRACK REGISTRY, NOT A TASK QUEUE.
 **Created:** 2026-10-15. Human PI controls research target selection and cross-track pivot.
 **Source of authority:** `RESEARCH_PHILOSOPHY.md`, `AGENT.md`, `START_RESEARCH_SESSION.md`, and `findings/TRACK_ISOLATION_POLICY.md`.

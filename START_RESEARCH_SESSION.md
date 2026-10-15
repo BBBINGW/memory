@@ -19,3 +19,8 @@ If no active question exists, ask the human to choose it; do not invent one.
 
 For missing critical primary evidence, update `MISSING_SOURCES.md`, report
 MISSING CRITICAL SOURCE, and stop the dependent verification. Do not fake completion.
+
+
+## Strategic resumption gate (PI approved 2026-10-15)
+
+Before proposing a new independent target, also read `findings/RESEARCH_PROGRAM_INTEGRATION_2026-10-15.md` and the pertinent `findings/OPEN_RESEARCH_BRANCHES.md` entries. Prefer a FHE optimization **composition obstacle** with a genuinely new mechanism and verified current primary source. Screen for prior-art acknowledgment/trivial repair first. Preserve I192 frozen and all separate namespaces (V, PVFHE, TFHE-ISA). Missing-source branches are not next actions; request human PI direction when no specific active question is set. Do not infer that a user saying “continue” authorizes reopening an explicitly parked source-blocked line.

@@ -1,5 +1,8 @@
 # FHE Research: Track Isolation Policy
 
+> **RETIRED / HISTORICAL ONLY (PI decision 2026-10-15).** No track isolation is currently requested. This document describes an abandoned multi-instance/multi-writer design; its Layer 1/2/3 restrictions, write scopes, OAuth scopes, and deployment tasks are **NOT ACTIVE**. Use one existing MCP, `STATE.md` as the sole current research entrypoint and `START_RESEARCH_SESSION.md` for startup. Keep previous scientific notes intact. The user's local feature-branch backend implementation was reported NOT pushed/deployed; rollback of that local branch must be performed by Codex, not by this repository file.
+
+
 Effective: 2026-10-15. This policy applies to concurrent ChatGPT research sessions using the SAME GitHub Notes repository. Human PI authorizes targets and major pivots.
 
 ## Three layers

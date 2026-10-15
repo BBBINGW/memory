@@ -1,6 +1,6 @@
 # vFHE Research State — Independent V-Series
 
-> **TRACK_ID: VFHE — independently locked research state (2026-10-15).** V43 COMPLETED; V44 NOT STARTED/HUMAN_REVIEW. Bare “继续” stays VFHE and must respect PARK gate; it cannot update SHIP or CGS. Ordinary writes: this state plus `findings/vfhe-*.md`, `failures/vfhe-*.md` only. Global/other-track content is read-only. See `findings/TRACK_ISOLATION_POLICY.md`. Backend enforcement remains pending.
+> **TOPIC ARCHIVE (single-session mode, PI decision 2026-10-15):** V43 is the latest vFHE result; the earlier CRT flaw was acknowledged and repaired by the authors' Oct-2026 protocol. This file is a detailed historical source and future optional resume point, not an independently locked track or write-permission namespace. The live research target is root `STATE.md`; old isolation rules in later historical sections are retired while all scientific caveats remain in force.
 
 
 **Checkpoint:** 2026-10-15 (Asia/Tokyo).

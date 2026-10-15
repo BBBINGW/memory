@@ -390,3 +390,21 @@ Consequently `r_j(k+S)/4 < P/2`; Theorem 2 implies `|x'_j|<P/2`, so `center_P(x'
 **RESULT:** Generic radius by |e| alone is insufficient when p∤N; sufficiency restored by |delta_m+e| guard. Actual p=4,8,16 with N=2048 unaffected by this particular obstruction.
 **NEXT_ACTION:** PARK P22, return to PI-selected vFHE V18 or a new primary-source-backed FHE gap upon direction. Do not re-open missing final version opportunistically without clear research value.
 **STATE_UPDATE:** Append P22 closure only to findings/OPEN_RESEARCH_BRANCHES.md; STATE.md global I192 and independent vFHE V17 are unchanged.
+
+---
+
+## Cross-series integration and PI strategy — 2026-10-15 (not a new numbered backlog round)
+
+**Integration index:** findings/RESEARCH_PROGRAM_INTEGRATION_2026-10-15.md cross-references global I1–I192, vFHE V1–V42, PVFHE P01–P27, and TFHE-ISA T01–T02. Original record IDs, file paths, claims and evidence remain unchanged. The historical backlog P1–P22 is NOT the same namespace as PVFHE P01–P22.
+
+**PI strategic pivot: FHE composition-first.** Prioritize structural obstructions at the interface of existing optimizations (CKKS bootstrapping/CtS–StC/packing/matrix computation, key switches/rotation keys, scale/rescale/RNS and noise/precision; TFHE/FHEW PBS when a new mechanism is plausible). Seek A+B obstruction O, genuinely new remedy R, formal correctness/security/precision, and end-to-end operation, key, memory and performance improvements. Run original-paper novelty/known-limitation checks first. Avoid routine indexing/overflow, known DFR tradeoffs, endless toys, and claims blocked by missing current compiler/PDF.
+
+**PVFHE ePrint2024/1764 Ring-R1CS correctness:** findings/pvfhe-P01...P04 and findings/pvfhe-P23...P27. Self-XOR produces zero ACC mask; the source-shaped 755-row terminal circuit allows two separate output statements, but source Coeff ell/ell+1 width mismatch and missing actual helper-wire/compiler mapping prevent a proven full R1CS/SNARG exploit. Status SOURCE_BLOCKED/HUMAN_REVIEW; reopen only on original FHE.EvalGate compiler/authoritative source. Missing evidence registered in MISSING_SOURCES.md.
+
+**PVFHE PCS/FS repair:** findings/pvfhe-P05...P22. P21 proves exponential t_Gamma lower bound for original coordinate-wise star; P22 shows rank/integer-generation broadenings need not produce bounded integer inverse. Status PARK; reopen on genuinely new efficient short-integer-opening extractor with soundness, RO and SIS.
+
+**TFHE-ISA:** failures/tfhe-isa-T01-radix16-program-reliability-scope-gate.md (authors already flagged DFR/radix tradeoff), and findings/tfhe-isa-T02-average-accumulator-overflow-gate.md (mod256 Average wrap: true but trivial carry/width issue). Both LOW NOVELTY/PARK, not FHE primitive insecurity.
+
+**Legacy integration:** Prior CKKS LCR+AKS, GL/CKL/MRFHE W-axis, GBFV/BGV, Nested RNS, Carousel, FHEW AKU, and vFHE cross-CRT records remain under original archived status. Read the exact original finding/failure before opening a new composition hypothesis. Global I192 remains frozen; vFHE V42 remains independent and SOURCE_BLOCKED. No retroactive renumbering.
+
+**Current next action:** Human-approved strategy, not yet a particular active technical hypothesis. Select one source-complete FHE composition obstruction with a meaningful novelty case; apply one hypothesis + one decisive test. See integrated index.

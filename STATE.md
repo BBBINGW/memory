@@ -1,38 +1,34 @@
-# Global FHE Research State — Track Index Only
+# FHE Research State — Single Active Session
 
-**Checkpoint:** 2026-10-15 (Asia/Tokyo)
-**Role:** GLOBAL STRATEGY + TRACK REGISTRY POINTERS ONLY. **NOT AN EXECUTABLE RESEARCH NEXT_ACTION.**
+**Checkpoint:** 2026-10-15. **Operating mode:** ONE research conversation/task at a time, ONE existing GitHub Notes/Research MCP, NO enforced separate research-track identities, permissions, instances, OAuth scopes or dedicated endpoints. This supersedes the retired track isolation policy.
 
-## Research management
+## Current PI-selected active research
 
-- **Human PI** decides research targets, prioritization, pivots and contribution acceptance.
-- Global research philosophy: `RESEARCH_PHILOSOPHY.md`; agent rules: `AGENT.md`.
-- Mandatory multi-session target and write policy: `findings/TRACK_ISOLATION_POLICY.md`.
-- Canonical track identities and individual authoritative states: `findings/RESEARCH_TRACK_INDEX.md`.
-- Per-session startup: `START_RESEARCH_SESSION.md`. Resolve the current session's TRACK_ID **BEFORE** selecting a research state. Never treat this index or its modification time as the target.
+**TARGET:** CGS — Okada–Takagi threshold-FHE secret-conditioned correlated Gaussian padding and the O(LDec) preprocessing/storage open problem.
+**LATEST COMPLETED:** CGS-20. **NEXT ITERATION:** CGS-21 (not started).
+**STATUS:** HUMAN_REVIEW / ongoing theoretical investigation; no complete usable padding primitive or secure end-to-end protocol.
+**FULL WORKING HISTORY:** `findings/threshold-fhe-correlated-gaussian-sampling.md`.
+**LATEST RESULT:** `findings/cgs-20-exact-scalar-key-homomorphic-prf-no-go.md`: exactly scalar-field key-linear PRF with compact F_q^d key has a public d+1-query linear distinguisher. This does NOT rule out real group-/approximately-homomorphic DPRFs.
+**NEXT_ACTION (when PI says "继续"):** Review one actual published distributed/approximately key-homomorphic PRF construction and test ONE concrete conversion to a common, Gaussian Shamir sharing, with exact active-set, two-session joint-view/security and cost gates. Check relevant up-to-date original sources before claiming novelty. ONE primary hypothesis + ONE cheapest decisive test.
 
-## Independent research tracks (read the named STATE for any Next Action)
+## Other research files — archives, not access-control partitions
 
-| TRACK_ID | Authoritative state | Last completed | Current disposition |
-| --- | --- | --- | --- |
-| SHIP | `findings/ship-memory-STATE.md` | **SHIP-I226** | HUMAN_REVIEW: HMux prepared-key memory dominant; repeated identical zero-key ciphertext reuse is unsafe, no security-matched benchmarked large memory compression |
-| CGS | `findings/threshold-fhe-correlated-gaussian-sampling.md` | **CGS-17** | HUMAN_REVIEW: Okada–Takagi correlated secret-conditioned Gaussian padding/storage problem OPEN; direct seeded integration attempts did not solve it |
-| VFHE | `findings/vfhe-cross-crt-state.md` | **V43** | HUMAN_REVIEW / PARK recommended: older CRT scalar-digit soundness flaw acknowledged; new Oct-2026 protocol blocks original witness |
-| GENERAL (archived) | `findings/RESEARCH_PROGRAM_INTEGRATION_2026-10-15.md` | **I192 FROZEN** | Historical general FHE research, no automatic I193 |
-| Other independent work | `findings/RESEARCH_PROGRAM_INTEGRATION_2026-10-15.md` | PVFHE P27, TFHE-ISA T02 etc. | Historical/parked: see index; do not merge numbering with backlog P1–P22 |
+The following research progress is preserved as historical knowledge and can be resumed **only when the PI requests a topic switch**. The older series names/numbers are retained solely for provenance; do not rename, re-number or erase existing work.
 
-## Global strategy — not a cross-track instruction
+- **SHIP**: `findings/ship-memory-STATE.md`; SHIP-I226 last completed, memory-compression candidates and negative fingerprint result archived.
+- **vFHE**: `findings/vfhe-cross-crt-state.md`; V43 last completed, author's October 2026 range-PIoP revision resolves the historical CRT counterexample.
+- **General historical series**: `findings/RESEARCH_PROGRAM_INTEGRATION_2026-10-15.md`, `findings/OPEN_RESEARCH_BRANCHES.md`; original global I1–I192 retained as history.
+- **EXPLORE**: `findings/explore-STATE.md` is a dormant draft, not a required separate role, MCP instance or isolation policy.
+- **Old isolation registry/spec**: `findings/RESEARCH_TRACK_INDEX.md`, `findings/TRACK_ISOLATION_POLICY.md`, `findings/MCP_TRACK_GUARD_CODEX_SPEC.md` are **historical/retired** and are not startup requirements.
 
-PI-approved preference (2026-10-15): pursue **nontrivial, primary-source-grounded FHE optimization composition obstructions** with a meaningful corrective technique, formal correctness/security/noise or precision and concrete end-to-end costs. This informs **PI target selection** only; it never causes a SHIP, CGS or VFHE session to switch tracks on "继续".
+## Simple workflow
 
-## No global executable next task
+1. Read `RESEARCH_PHILOSOPHY.md`, `AGENT.md`, `START_RESEARCH_SESSION.md`, then THIS `STATE.md` and the relevant topic findings/failures.
+2. Work only on the current PI-selected subject. "继续" retains it; an explicit PI request can switch to another existing topic or initiate new research. Save a proper checkpoint and update THIS state when switching.
+3. Store important paper evidence, derivations and falsified hypotheses in topical `findings/` and `failures/`; update topic progress AND `STATE.md` as appropriate. No requirement for track-prefix-only write authorization.
+4. Follow read-before-write and verification. Current legacy GitHub Notes writer has no caller-supplied atomic expected_sha; do not run concurrent writers. Never claim a server-side write lock.
+5. Human PI makes contribution/pivot decisions. Preserve source provenance and the constructive-synthesis lesson; do not automatically continue parked mechanisms.
 
-There is **intentionally no global NEXT_ACTION**. Each independent track state contains its own `NEXT_ACTION` and HUMAN_REVIEW/PARK gate. A track-specific "continue" may act only within its already locked track and only as authorized by PI; it cannot read a global action as a fallback.
+## Preservation
 
-**Ordinary track writes:** track-owned state, findings and failures only. Changes to this global file, policy, research integration or shared MISSING_SOURCES are separate PI-authorized **GLOBAL_MAINTENANCE** tasks.
-
-## Provenance / preservation
-
-The former long vFHE-focused root state is preserved verbatim at `findings/legacy-global-STATE-before-track-isolation-2026-10-15.md` and in Git history. Detailed research remains in original track documents; no research evidence was removed or renumbered by this restructuring.
-
-**Server-enforcement caveat:** Currently GitHub Notes path policy is documented but not proven enforced per track. Hard-scoped write authorization and compare-and-swap require a backend upgrade; see `findings/MCP_TRACK_GUARD_CODEX_SPEC.md`.
+The previous long root state is archived at `findings/legacy-global-STATE-before-track-isolation-2026-10-15.md`. All prior CGS, SHIP, vFHE, EXPLORE, and other findings/failures and commits remain intact. No local Codex branch/source code was modified by this GitHub note change.

@@ -1,6 +1,6 @@
 # SHIP Evaluation-Key Memory — Independent Research State
 
-> **TRACK_ID: SHIP — independently locked research state (2026-10-15).** Authoritative for SHIP-I226 onward ONLY; do not infer target from global `STATE.md`. Bare “继续” stays SHIP. Ordinary writes: this state plus `findings/ship-memory-*.md`, `failures/ship-memory-*.md` only. Reading other tracks is allowed as prior art; no writing to VFHE/CGS, global protocols or shared source registry. I226 ends HUMAN_REVIEW; don't silently pivot or reopen a failed candidate. See `findings/TRACK_ISOLATION_POLICY.md`. These are soft rules until MCP server enforcement.
+> **TOPIC ARCHIVE (single-session mode, PI decision 2026-10-15):** SHIP-I226 is the latest documented SHIP research result. This file is preserved to resume SHIP if the PI chooses it; it is not an independently locked track or write-permission namespace. The live selected research target is in root `STATE.md`. Old isolation-only instructions in the historical body are retired; the scientific FAIL/HUMAN_REVIEW gates remain valid.
 
 
 **Checkpoint:** 2026-10-14 (Asia/Tokyo).

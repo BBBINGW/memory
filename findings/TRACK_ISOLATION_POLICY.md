@@ -15,7 +15,7 @@ Effective: 2026-10-15. This policy applies to concurrent ChatGPT research sessio
 At the beginning of each conversation or session handoff, resolve and retain:
 
 ```text
-TRACK_ID = SHIP | CGS | VFHE | (explicit PI-selected other track)
+TRACK_ID = SHIP | CGS | VFHE | EXPLORE | (explicit PI-selected other track)
 TRACK_STATE = authoritative file from registry
 LAST_ITERATION = from that state
 ACTIVE_TARGET = named technical problem in that state/conversation
@@ -32,6 +32,7 @@ A bare "continue" preserves TRACK_ID and can run only a non-parked, PI-authorize
 - SHIP: `findings/ship-memory-STATE.md`, new `findings/ship-memory-*.md`, new `failures/ship-memory-*.md`.
 - CGS: `findings/threshold-fhe-correlated-gaussian-sampling.md`, new `findings/cgs-*.md`, new `failures/cgs-*.md`.
 - VFHE: `findings/vfhe-cross-crt-state.md`, new `findings/vfhe-*.md`, new `failures/vfhe-*.md`.
+- EXPLORE: `findings/explore-STATE.md`, new `findings/explore-*.md`, new `failures/explore-*.md`.
 
 Everything else, including other tracks' states, root `STATE.md`, `MISSING_SOURCES.md`, the integration files, protocols, and `papers/supplied/`, is **read-only during a normal track iteration**. To update shared metadata or supply a paper, run a separate PI-authorized GLOBAL_MAINTENANCE action. Human-uploaded PDFs are handled as explicit source supply, not as an implicit track switch.
 
@@ -39,7 +40,7 @@ A historical filename from the old mixed I-series is reference material, not a n
 
 ### Commit/concurrency discipline
 
-- One logical update per commit, with `track(SHIP): ...`, `track(CGS): ...`, `track(VFHE): ...`, or `meta: ...` in the commit message.
+- One logical update per commit, with `track(SHIP): ...`, `track(CGS): ...`, `track(VFHE): ...`, `track(EXPLORE): ...`, or `meta: ...` in the commit message.
 - Before every write: resolve active identity, validate exact normalized target path, read target content/SHA and check expected current version. After writing, re-read and verify.
 - **The current GitHub Notes `write_repo_file` does NOT expose a caller-provided expected SHA.** Therefore this is NOT an atomic compare-and-swap safeguard. Do not run concurrent writes to the same file through this tool. For guaranteed optimistic concurrency, extend the Research MCP backend with `expected_sha` / conditional update and fail closed on mismatch.
 - If the current connected tool does not enforce track restrictions on the server, never label Layer 3 "enforced". A prompt or a client-supplied `track_id` is insufficient authorization.
@@ -54,6 +55,7 @@ A historical filename from the old mixed I-series is reference material, not a n
 6. Two writes with the same old `expected_sha` -> exactly one succeeds; one raises conflict, without auto-overwriting.
 7. Path traversal `../`, encoded traversal, absolute paths, symlinks, alternate slash, case/Unicode alias, and basename prefix tricks -> MUST be normalized/rejected before path authorization.
 8. A read-only cross-track citation is allowed and must not alter target selection.
+9. EXPLORE writes `findings/explore-STATE.md` successfully, but attempts against another track or root `STATE.md` are denied.
 
 ### Scope of this change
 

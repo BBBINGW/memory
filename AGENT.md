@@ -429,51 +429,21 @@ Do not bundle unrelated research changes into the same commit.
 
 ---
 
-## 11. STATE.md
+## 11. State isolation and per-track recovery
 
-`STATE.md` is the **minimum recovery state**, not a research log.
+Root `STATE.md` is the **global, read-only-to-normal-sessions index**, not a current research log, active target, or universal NEXT_ACTION. Resolve and retain the session's `TRACK_ID` **before** reading any track state, according to `START_RESEARCH_SESSION.md`.
 
-It should contain only the minimum information needed for the next agent or session to resume the research.
+Authoritative independent states (see `findings/RESEARCH_TRACK_INDEX.md`):
+- SHIP: `findings/ship-memory-STATE.md` (independent SHIP I-series)
+- CGS: `findings/threshold-fhe-correlated-gaussian-sampling.md` (CGS-series)
+- VFHE: `findings/vfhe-cross-crt-state.md` (V-series)
+- GENERAL: old I192 FROZEN / historical; no automatic I193 from other tracks
 
-Update it only when something materially changes.
+Update only the current track's authoritative state for material scientific changes. Keep detailed findings in its dedicated `findings/` and `failures/` files. Do not overwrite other tracks' state merely because root GitHub commits are more recent.
 
-Examples:
+Ordinary research sessions cannot edit global `STATE.md`, other protocols, shared indexes or `MISSING_SOURCES.md` without a separate PI-authorized global-maintenance instruction. Access to a shared GitHub repository is NOT permission to switch track or write across them. See `findings/TRACK_ISOLATION_POLICY.md`.
 
-- a hypothesis is created;
-- a hypothesis is falsified;
-- a meaningful new fact or obstruction is found;
-- the main baseline changes;
-- the active direction changes;
-- a result is archived;
-- human review changes the research decision.
-
-Do not update `STATE.md` for every search query or minor thought.
-
-A useful state entry should record only:
-
-```text
-Current question
-Primary hypothesis
-Current evidence
-Main uncertainty
-Next minimal test
-Status
-```
-
-Detailed derivations, paper notes, long evidence chains, and historical discussion should not be stored in `STATE.md`.
-
-They belong in:
-
-```text
-findings/
-failures/
-papers/
-other dedicated research notes
-```
-
-`STATE.md` should remain compact.
-
-The next agent should be able to resume the research from `STATE.md` without reconstructing the entire history.
+**Important limitation:** these are behavioral scope restrictions only until the Research MCP backend enforces authenticated track-specific write authorization, path normalization and expected-SHA conditional updates. Do not claim hard enforcement based on prompts alone.
 
 ---
 

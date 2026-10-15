@@ -5,11 +5,11 @@
 ## Current PI-selected active research
 
 **TARGET:** CGS — Okada–Takagi threshold-FHE secret-conditioned correlated Gaussian padding and the O(LDec) preprocessing/storage open problem.
-**LATEST COMPLETED:** CGS-21. **NEXT ITERATION:** CGS-22 (not started).
-**STATUS:** HUMAN_REVIEW / ongoing theoretical investigation; no complete usable secret-conditioned Gaussian-sharing primitive or secure end-to-end protocol.
+**LATEST COMPLETED:** CGS-22. **NEXT ITERATION:** CGS-23 (not started).
+**STATUS:** HUMAN_REVIEW / original secret-conditioned Gaussian and O(LDec) preprocessing problem OPEN; no complete secure efficient replacement.
 **FULL WORKING HISTORY:** `findings/threshold-fhe-correlated-gaussian-sampling.md`.
-**LATEST RESULT:** `findings/cgs-21-dprf-local-rounding-shamir-interface-gate.md`: actual LST18/TCC2018 DPRF uses INTEGER LISS and only runs nonlinear extractor AFTER Combine. A proposed local nonlinear rounding map of Shamir shares already fails two-active-set consistency in a 2-of-3, two-sid exact toy; this does NOT attack the published DPRF. For any odd prime F_q, a fixed same-field pointwise map preserving all degree-one Shamir triples must be affine. PRIOR: `findings/cgs-20-exact-scalar-key-homomorphic-prf-no-go.md`.
-**NEXT_ACTION (when PI says "继续"):** Select ONE actual **hidden-output** threshold PRF/PCF mechanism and test whether it can produce shared secret-conditioned Gaussian padding without public seed reconstruction, on-demand setup growing independent of LDec, and without losing qualified-set consistency/simulator security. Perform ONE decisive minimal joint-view/privacy or active-set/cost test; if no distinct viable primitive, recommend PARK DPRF-postprocessing and seek PI's next target. Read original latest papers before novelty assertions.
+**LATEST RESULT:** `findings/cgs-22-signed-monomial-public-covariance-security-interface.md`: for binary negacyclic RLWE secret s(X)=Σs_jX^j, lifted n-component secret S_j=(2s_j−1)X^j has publicly fixed Gram covariance nI, every component signed-permutation invertible. However the direct ciphertext-preserving lift A'_j=a/2 has all coordinates equal and is publicly distinguishable from *standard independent-uniform MLWE* public vectors with advantage 1−q^{-n(n−1)}. This does NOT show structured RLWE is insecure or yield end-to-end FHE; rank inflates 1→n. One exact n4 q17 toy verified all 16 secrets and 1000 ciphertext identities. PRIOR: CGS-21 DPRF local nonlinear Shamir obstruction, CGS-20 scalar-linear PRF distinguisher.
+**NEXT_ACTION (when PI says "继续"):** CGS-23: test ONE concrete small-constant-module-rank k=O(1) fixed-public-covariance secret family, checking whether its keyspace retains enough entropy and credible standard MLWE hardness. Consult complementary-sequence/Golay prior art and try ONE minimum case. If it cannot avoid entropy/security/overhead pitfalls, PARK covariance-detour, retaining parent CGS's O(LDec) open problem. Do not claim any new ThFHE before proof of KeyGen/Enc/Eval/security/rounding/noise and competitive costs.
 
 ## Other research files — archives, not access-control partitions
 

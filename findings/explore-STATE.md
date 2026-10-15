@@ -1,5 +1,8 @@
 # EXPLORE Research Track State
 
+> **DORMANT DRAFT / NO TRACK ISOLATION (PI decision 2026-10-15).** Retained for history only. There is now ONE shared research workflow, one MCP, and active target in root `STATE.md`. The independent permissions and restrictions below are inactive and must not be followed unless PI explicitly re-enables isolation.
+
+
 **TRACK_ID:** EXPLORE
 **Status:** READY — no active hypothesis selected
 **Created:** 2026-10-15

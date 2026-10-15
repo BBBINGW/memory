@@ -465,3 +465,12 @@ with average conditional collision CPbar(V|H)=Σ_h Pr(h)Σ_v Pr(v|h)². Proof sp
 **Reproducibility:** local exact `/mnt/data/ship_i237_subring_obstruction.py` SHA256 `d127a7248337c90decf76eed518ba07545ff6ae5e553a0eccd3548362d1e1208`, results `/mnt/data/ship_i237_subring_obstruction.json` SHA256 `627962f5b6e0f787e837649a608a9ddfbc461f5bf3522da6e65333c7c36137c6`. Toy confirms only conditional algebra; full-N signed-orbit proof confirms fatal HW/entropy boundary. Existing invariant-subring/automorphism literature e.g. Carousel ePrint2024/2032 gives prior art for underlying concept; no novelty claim.
 
 **STATUS:** FAIL H237 secure-HW192 gate; PASS math/orbit and conditional toy/cost; HIGH-confidence PARK of this exact candidate. **NEXT_ACTION:** NO automatic I238 θ/radix/subgroup sweep. PI HUMAN_REVIEW: recommend **PARK SHIP cryptographic HMux key-memory compression parent** unless a specific new fusion mechanism with secret-independent security, source-matched online work and genuine compressed eval-key memory is available. Human chooses whether to keep/pivot topic; do not switch to CGS/VFHE/EXPLORE without instruction. **STATE_UPDATE YES**.
+
+
+---
+
+## Latest SHIP checkpoint — SHIP-I238 (2026-10-15)
+
+Active subject: SHIP evaluation-key memory and its security-matched baseline. I238 COMPLETED; I239 NOT STARTED. Finding: `findings/ship-memory-I238-original-hmux-onehot-public-rlwe-closure.md` (commit `49e7f53ea5105870b6d4edced6c379c0d158ce1e`). The original third-party Poulpy HMux one-hot gadget rows can be publicly Galois-aligned and combined into known-zero-message RLWE samples under the original dense secret. Exact 1536/1536 toy equations passed. Illustrative N16384/h32/dnum9/source modulus 520 bits yields 1152 such samples with combined error standard deviations approximately 5.54–6.4. This is not a demonstrated security break or an attack on the SHIP authors' parameter choices. The published 128-bit reference table at sigma3.2 cannot directly evaluate the combined-noise samples; Sage/fpylll was unavailable.
+
+STATUS: PASS public extraction algebra; UNCLEAR concrete matched-noise lattice security. NEXT_TEST: Reproduce a matched-sigma sparse-secret estimator with explicit sample assumptions before making any 128-bit claim. Continue SHIP only; other lines untouched. STATE_UPDATE: YES.

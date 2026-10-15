@@ -1,6 +1,6 @@
 # Threshold FHE — Correlated / Secret-Conditioned Gaussian Sampling
 
-> **TRACK_ID: CGS — independently locked research state (2026-10-15).** **LAST COMPLETED: CGS-20; CGS-21 NOT STARTED. STATUS: HUMAN_REVIEW; exact scalar-output, field-linear key-homomorphic PRF for local Shamir shares is broken by a public d+1-query linear distinguisher; original secret-conditioned Gaussian-padding question remains OPEN.** The initial CGS-01 lines below are historical, not current state. Bare “继续” stays CGS, never VFHE/SHIP. Ordinary writes: this state plus new `findings/cgs-*.md`, `failures/cgs-*.md` only. Do not edit root/global files. Human PI authorizes any pivot or gate reopening; see `findings/TRACK_ISOLATION_POLICY.md`. Current MCP restrictions are policy-only pending backend enforcement.
+> **TOPIC ARCHIVE + CURRENT DETAILED CGS CHECKPOINT (single-session mode, PI decision 2026-10-15):** CGS-20 completed; CGS-21 not started. This is the complete CGS technical history and next-test detail, NOT a separate write-permission namespace or session lock. The one active research task is selected in root `STATE.md`. Prior track-isolation restrictions in historical sections below are retired; preserve all prior technical findings and numbering. Current Gaussian-padding problem remains OPEN / HUMAN_REVIEW.
 
 
 **Standalone research track:** `CGS`, independent of the existing numbered I1–I194 / vFHE `STATE.md` sequence.

@@ -1,6 +1,6 @@
 # Threshold FHE — Correlated / Secret-Conditioned Gaussian Sampling
 
-> **TOPIC ARCHIVE + CURRENT DETAILED CGS CHECKPOINT (single-session mode, PI decision 2026-10-15):** CGS-21 completed; CGS-22 not started. This is the complete CGS technical history and next-test detail, NOT a separate write-permission namespace or session lock. The one active research task is selected in root `STATE.md`. Prior track-isolation restrictions in historical sections below are retired; preserve all prior technical findings and numbering. Current Gaussian-padding problem remains OPEN / HUMAN_REVIEW.
+> **TOPIC ARCHIVE + CURRENT DETAILED CGS CHECKPOINT (single-session mode, PI decision 2026-10-15):** CGS-22 completed; CGS-23 not started. This is the complete CGS technical history and next-test detail, NOT a separate write-permission namespace or session lock. The one active research task is selected in root `STATE.md`. Prior track-isolation restrictions in historical sections below are retired; preserve all prior technical findings and numbering. Current Gaussian-padding problem remains OPEN / HUMAN_REVIEW.
 
 
 **Standalone research track:** `CGS`, independent of the existing numbered I1–I194 / vFHE `STATE.md` sequence.
@@ -812,3 +812,15 @@ Full local CGS-15 report: /mnt/data/CGS-15_ideal_pcf_public_circuit_secret_bindi
 **STATUS:** FAIL naive local nonlinear DPRF-output adaptation; PASS full original paper interface audit, same-plaintext/two-session/two-subset toy and conditional same-field lemma; **GENERAL CGS OPEN / HUMAN_REVIEW**, no novelty asserted.
 
 **NEXT_ACTION (CGS-22, PI continuation only):** Select ONE explicit hidden-output threshold PRF/PCF functionality; design a secret-conditioned Gaussian *shared* output interface that keeps final random seed hidden, then perform a minimal corrupt-view simulation/test with honest active-set consistency and online/setup cost. If concrete special mechanism cannot be identified, PARK this DPRF-based subbranch rather than repeating generic degree/correctness failures. Validate author's 2026/957 primary text before novelty. **STATE_UPDATE: YES, CGS topic + single global STATE.**
+---
+## CGS-22 — Signed-monomial covariance flattening and native MLWE interface test (2026-10-15)
+
+**H-CGS22 [FAIL as a complete direct bridge]:** Encode binary polynomial secret `s(X)=Σ_j s_j X^j` as `n` ring-secret components `S_j=(2s_j−1)X^j`, so covariance `Σ_S=nI` is known and every component has min singular value 1; hypothesize a direct old-RLWE-to-standard-uniform-MLWE ciphertext embedding with cheap overhead, avoiding all O(LDec) conditional padding.
+
+**POSITIVE ALGEBRA:** Signed monomial multiplication matrices are orthogonal signed permutations, `Σ_j mat(S_j)mat(S_j)^T=nI`. For public H=ΣX^j, `s=(H+Σ_j S_j)/2`; each original RLWE sample `(a,b=a*s+e)` maps to `A'_j=a/2` for all j and `b'=b−aH/2=Σ_j A'_j*S_j+e`. No decryption-noise algebra is lost.
+
+**DECISIVE NEGATIVE INTERFACE:** Transformed `A'_0=...=A'_(n−1)` with probability 1. A standard `U(R_q^n)` MLWE public vector has this property with probability `q^{-n(n-1)}`; simple public distinguisher advantage `1−q^{-n(n−1)}`. This refutes the **specific direct uniform-MLWE embedding**, not underlying RLWE or all variants. Naive native module rank rises from 1 to n; inherited source FHE/Eval security and efficiency are NOT proved. A NEW independent-uniform `A_j` construction is exactly coefficientwise binary **vector LWE** for the sign secret; possibly useful under different assumptions, but not standard small-rank MLWE nor yet an end-to-end FHE.
+
+**ONE exact test:** n4,q17, all 16 binary secrets satisfy `Σ_S=4I`; 1000 random ciphertext identities PASS; transformed A public-vector equality ALWAYS; uniform MLWE A matching event `17^-12≈1.71638e−15`. Reproducer `/mnt/data/cgs22_sign_monomial_covariance_gate.py` SHA256 `4505f6fcd17814f366a8b3c46696133dae13fea668a8e6f5a9c2483a8ae2bbee`, results JSON SHA256 `77132adc377d3df3593bf1df09c228c8546c9329ed2500e7238a60b19e1a6023`. Detailed derivation and original Okada–Takagi p29–30 refs in `findings/cgs-22-signed-monomial-public-covariance-security-interface.md`.
+
+**STATUS:** PASS necessary covariance ingredient / FAIL direct complete secure standard-MLWE embedding / UNKNOWN native full-FHE security and efficiency, HUMAN_REVIEW original CGS. **NEXT_ACTION CGS-23 (next PI continue):** ONE bounded-small-module-rank fixed-covariance secret family with min-entropy/security test (check complementary sequences/Golay prior art), or park if no credible strong contribution. Original hidden-output Gaussian PCF remains OPEN, not magically solved by this observation. **STATE_UPDATE:** YES single global + CGS detail.

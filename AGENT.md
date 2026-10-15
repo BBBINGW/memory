@@ -229,6 +229,16 @@ unless a cheaper test cannot answer the key question.
 
 ---
 
+### Constructive Synthesis Gate (applies to every research track)
+
+When a real obstruction survives the cheapest falsifier, **do not stop at necessary conditions or disconnected conditional lemmas**. Ask for the smallest **complete** composition of the pieces: one representation/interface, the exact linking invariant and challenge order, a correctness/soundness/security argument, and a feasible cost/precision/noise budget. When relevant, screen changing the representation or auxiliary algebraic domain, partial evaluation/decomposition, bounded integer lifts and reorganized checks **before** defaulting to a heavy generic cryptographic proof or implementation wrapper.
+
+**V43 retrospective:** Our V24 small-integer evaluation and V31+ common-integer-link ideas were partial; the revised ePrint 2025/286 §4.3 Figure 2 / Theorem 4.11 made a complete range-bridge with prime-field lookup + random-prefix/Boolean-suffix partial evaluations + no-wrap lifting and explicit soundness/traffic bounds. This is the **authors' repair / prior art**, not our invention. Record why earlier partial attempts failed to combine and compare current source/prior art before claiming novelty.
+
+Keep the existing **ONE primary hypothesis + ONE cheapest decisive test** per iteration; make the *next* decisive test target the missing composition or its dominant cost, rather than accumulating more isolated lemmas.
+
+---
+
 ## 7. Progressive Verification
 
 Verification should expand only as the idea survives.

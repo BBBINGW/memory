@@ -32,3 +32,14 @@ The following research progress is preserved as historical knowledge and can be 
 ## Preservation
 
 The previous long root state is archived at `findings/legacy-global-STATE-before-track-isolation-2026-10-15.md`. All prior CGS, SHIP, vFHE, EXPLORE, and other findings/failures and commits remain intact. No local Codex branch/source code was modified by this GitHub note change.
+
+
+---
+
+## Latest overriding checkpoint: CGS-36 (2026-10-15)
+
+**This section supersedes the older CGS-35 checkpoint in the Current PI-selected active research heading above.** Latest completed: CGS-36. Next: CGS-37 (not yet begun). Current target remains original Okada-Takagi 2025/409 O(LDec) correlated Gaussian padding storage problem; still OPEN. The direct linear Shamir factor/public Gaussian candidate is rejected only as an EXACT integer discrete-Gaussian sampler, while threshold interpolation is correct.
+
+Full finding: findings/cgs-36-public-gaussian-shamir-linear-factor-discrete-support-gate.md. Short result: share one secret-conditioned Gaussian matrix factor once; for any qualified T-of-N active set, local multiplication by one common public integer random value interpolates correctly. However with factor 2 and input G from D_Z,2 the output 2G is always even, whereas the required D_Z,4 gives odd values with probability 0.499996512657643791; total variation is exactly that value. Precise finite-grid verification and all T2-of-N3 subsets PASS. Public input randomness also raises joint-view leakage concerns; secret-sharing it instead incurs local multiplication degree growth. No full source algorithm attack or completed alternative ThFHE is claimed.
+
+**Next CGS-37:** ONE named threshold protocol addressing the exact discrete-Gaussian support problem, testing any-T correctness, public-view privacy and memory/round costs before claiming feasibility; avoid repeating CGS-21 local nonlinear rounding. User remains PI for research pivot decisions. STATUS: PASS algebra and test; FAIL exact output Gaussian; HUMAN_REVIEW for parent target.

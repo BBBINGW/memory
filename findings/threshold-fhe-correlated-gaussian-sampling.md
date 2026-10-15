@@ -1,6 +1,6 @@
 # Threshold FHE — Correlated / Secret-Conditioned Gaussian Sampling
 
-> **TOPIC ARCHIVE + CURRENT DETAILED CGS CHECKPOINT (single-session mode, PI decision 2026-10-15):** CGS-23 completed; CGS-24 not started. This is the complete CGS technical history and next-test detail, NOT a separate write-permission namespace or session lock. The one active research task is selected in root `STATE.md`. Prior track-isolation restrictions in historical sections below are retired; preserve all prior technical findings and numbering. Current Gaussian-padding problem remains OPEN / HUMAN_REVIEW.
+> **TOPIC ARCHIVE + CURRENT DETAILED CGS CHECKPOINT (single-session mode, PI decision 2026-10-15):** CGS-24 completed; CGS-25 not started. This is the complete CGS technical history and next-test detail, NOT a separate write-permission namespace or session lock. The one active research task is selected in root `STATE.md`. Prior track-isolation restrictions in historical sections below are retired; preserve all prior technical findings and numbering. Current Gaussian-padding problem remains OPEN / HUMAN_REVIEW.
 
 
 **Standalone research track:** `CGS`, independent of the existing numbered I1–I194 / vFHE `STATE.md` sequence.
@@ -838,3 +838,22 @@ Full local CGS-15 report: /mnt/data/CGS-15_ideal_pcf_public_circuit_secret_bindi
 **FULL EVIDENCE:** `findings/cgs-23-golay-fixed-covariance-low-entropy-gate.md`; runnable `/mnt/data/cgs23_golay_entropy_gate.py` SHA256 15fcd9f4f046e90edc868b028adcc2defb36767812833d891afb19cd484d5f26, results `/mnt/data/cgs23_golay_entropy_gate.json` SHA256 033223fa2640c0360fb7cfb1af4dd5bb8358b516952e582474cd2b7f039ee851. Sources Davis–Jedwab (IEEE Trans IT 1999), Fiedler–Jedwab–Parker JCTA 2008, original Okada–Takagi 2025/409 Algorithm7/Lemma7.1. Real FHE KeyGen/Eval/MLWE proof and source `σ_min(mat(s_i))` lower bounds remain unproved.
 
 **STATUS:** PASS covariance/constant module-rank mathematics; FAIL security of direct Davis–Jedwab key choice; original CGS O(LDec) problem OPEN / HUMAN_REVIEW. **NEXT_ACTION CGS-24 (PI continuation):** search ONE explicit genuinely larger-entropy k≤3 complementary secret family and immediately test support size, independent native-public MLWE security interface and individual singular values; if none viable, PARK this covariance-detour rather than further small-entropy examples. Do not infer a lower bound for all complementary pairs. **STATE_UPDATE:** YES, root and CGS detailed state.
+
+---
+
+## CGS-24 — Negaperiodic complementary secrets: proper covariance family (2026-10-15)
+
+**H-CGS24 [PASS finite-scope]:** The appropriate fixed-Gram rank-2 ±1 negacyclic secret family is the **negaperiodic Golay pairs (NGPs)**, which properly contain the ordinary/aperiodic Golay pairs used in CGS-23. At n=16 they provide >100× more choices and some pairs with both individual minimum singular values ≥1. *No practical 128-bit/high-n hardness or complete FHE result is asserted.*
+
+**PRIMARY SOURCE [FACT]:** Balonin–Đoković, *Negaperiodic Golay pairs and Hadamard matrices*, arXiv1508.00640 §3 equations (6),(8),(10), Definitions 2–3: `NAF_a(d)=AF_a(d)−AF_a(n−d)`; `mat(a)mat(a)^T=Σ_d NAF_a(d)N^d`; ordinary Golay pair = periodic ∩ negaperiodic. Actual Okada–Takagi ePrint2025/409 Algo7 p29/Lemma7.1 p30 requires `Σ_s=Σ_i Gram(s_i)` and an individual spectral lower bound. Ordinary Golay was **sufficient but unnecessarily restrictive**.
+
+**ONE EXACT COMPLETE ENUMERATION:** All `2^(2n)` ordered signed coefficient pairs via exact NAF signature counts, for n2,4,8,16:
+`NG=(16,128,4096,557056)` vs ordinary `=(8,32,192,1536)`, at n16 362.67× more NG candidates; `log2(557056)=19.08746` bits. `n16` numerical negacyclic spectral test retained **425984** pairs whose BOTH individual min singular values ≥1 (18.70044 bits). Integer matrix checks done for all n≤8 representative complement classes, identities for all pairs proven by NAF. This is finite enumeration, not a growth estimate at n1024. The n16 557056 count is also known in Egan 2017 Table2 (not a new mathematical count).
+
+**EXTRA IMPLICATION SAME SIGNED-BINARY MODEL:** If `4|n`, the negaperiodic lag1 of *every* signed-binary polynomial satisfies `NAF(1)≡2 (mod4)` because product of signed consecutive terms is −1. Therefore exact covariance-flat `k=3` (or any odd rank) is **impossible** for dense ±1 secrets when `4|n`. This says nothing about ternary/wider integer coefficients or approximate flattening.
+
+**LIMITS/SECURITY:** Original MLWE secret distribution is independently coefficient-sampled, whereas NGP keys have strong global algebraic correlations. No reduction from source's standard MLWE, no full FHE evaluation-key security, no efficient high-min-entropy sampler, no useful large-n guaranteed individual `σ_min` bound, no proof that O(LDec) is eliminated securely while retaining the low-communication scheme. Do not interpret this as a new construction, paper bug or published contribution.
+
+**FULL EVIDENCE:** `findings/cgs-24-negaperiodic-golay-covariance-keyspace-gate.md` including published original §3 math and proof; exact enumerator `/mnt/data/cgs24_ngpair_gate.py` SHA256 `ecf4b698e77b2230d77fc136d3b5e69cb96501eee365c657d03f47ceab4e1f38`; results `/mnt/data/cgs24_ngpair_gate.json` SHA256 `243f7a7960baf45c13f1d06b704498b31fb068208c0b19b30051fdce6f810f14`.
+
+**STATUS:** PASS more accurate necessary sufficient source ring condition and larger finite candidate family; UNKNOWN cryptographic-scale security, user-facing ThFHE open. **NEXT_ACTION CGS-25 (PI continuation):** seek ONE **explicit efficiently samplable NGP subfamily at n≈1024** with **provable minimum entropy ≥128 bits**, individually usable spectral margins, and credible standard LWE/MLWE key-distribution argument, then one decisive attack or constructive bound. If unavailable, PARK covariance-detour and return to true secret-conditioned Gaussian padding. **STATE_UPDATE:** YES root/state plus new finding.

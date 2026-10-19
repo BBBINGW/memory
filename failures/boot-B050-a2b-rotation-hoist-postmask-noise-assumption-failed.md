@@ -1,0 +1,19 @@
+# BOOT-B050 failure archive — Hoisting A2B rotations before scaled public masks cannot inherit CKKS DFR
+
+TRACK_ID: BOOT
+ITERATION: B050
+DATE: 2026-10-20
+STATUS: PASS_EXACT_SLOT_COMMUTATION / FAIL_UNCHANGED_KEYSWITCH_NOISE / NO_PUBLISHABLE_ALGORITHM
+STATE_UPDATE: YES. BOOT only, SHIP paused.
+
+[FACT] Gao–Zheng CRYPTO 2026 ePrint 2026/233 original full PDF title verified 43 physical pp SHA256 f16f4004d76450fb2264e6a5b36c3eceac2f87586148b96073c76ca7775f0f92, VERSION_UNVERIFIED. Author code tsinghua-ideal/fhe-simd-alu file src/pke/lib/scheme/ckksrns/z-fhe.cpp BLOB SHA 8ac367867f9928f6f5712ff5e8c9cb6f8a18ca02 lines692–732 repeats identical EvalRotate across index j after EvalMult(lut0/lut1, public mask_j), before ModReduce. z-fhe-precompute.cpp BLOB SHA 7412caec6bb755ee43eb08785158159983c37e92 lines817–853 defines mask amplitude scaleDown=2^((iter-nextIter)w) e.g. 1/16,1/256,1/4096 at w4, encoded at current ciphertext plaintext scale, not p1. Prior art hoisted automorphisms Halevi–Shoup ePrint2018/244; PKC2026 Yan et al. ePrint2025/1403 LCR+AKS covers key-switch/rescale ordering for CKKS linear maps.
+
+Primary simplest candidate: change Rot_r(x * P_j) to Rot_r(x) * Rot_r(P_j) by hoisting one rotation per (iter,nextIter) and LUT half across all j. Message equality mathematically exact because rotations are ring automorphisms: 10000/10000 deterministic randomized slot tests PASS across 16/32/64/128 slots. For zN64,w4,cutoff−16 (d16, R42 iteration pairs, j8, 2 LUT halves): source672 rotations, candidate84. zN128: 2880→180; zN256:11904→372, *only this low-bit correction loop*. Still same masked products, LUT evaluations and ModReduce.
+
+Decisive mathematical flaw in the claimed FREE optimization: Original order EvalMult at scale Δ² → Rotate with added raw KS error κ_post → rescale /Δ gives output error κ_post/Δ. Candidate Rotate at scale Δ with raw KS error κ_pre → multiply by public mask encoded at scale Δ, slot amplitude p_j → rescale /Δ gives output error p_j κ_pre. Assuming same fixed-modulus raw KSK noise distribution, variance ratio=Δ²|p_j|². Example Δ65536,p=1/16, κ16: baseline error0.000244 vs candidate1 (4096x). 100000 toy samples κ uniform[-16,16], mean squared 2.108596e-8 vs0.3537637 (factor16777216). The real library's key switching distribution and modulus may change with level/scale; this is a local counterexample to automatically inheriting the noise theorem, NOT a measured secure CKKS DFR failure or proof no parameter choice can work. Shared early error is correlated across j; actual source A2B-lowbit cutoff/DFR may be more sensitive. Underlying mathematical operation types are correct, yet full precision/security/speed gap unproven. No source executable compilation or native tests this iteration.
+
+Result: Conditional source-code optimization only, cannot claim publishable BOOT scheme or noise-neutral acceleration. Need a genuine post-mask aggregated KS/precision-safe rescale mechanism to preserve original source error without O(j) late key switches. If not, archive. This is a stricter application of full dataflow+noise gate from BOOT B029 and B038.
+
+FINDINGS findings/boot-B050-simd-a2b-public-mask-rotation-hoist-noise-gate.md
+NEXT_TEST B051 (not started): inspect actual low-modulus late-key-switch aggregated methods such as Yan et al. PKC26 AKS, derive ONE noise-safe source-compatible hoist or refute it by decomposition/key-level cost; avoid primitive rediscovery, compare live performance only if correctness/DFR viable. BOOT-only.
+READ LIMITATION: GitHub Notes list confirmed B049 as latest previous record; read_repo_file returned empty {} for B049 and STATE so no assertion to have read their body.

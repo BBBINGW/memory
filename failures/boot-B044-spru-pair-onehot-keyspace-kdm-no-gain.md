@@ -1,0 +1,12 @@
+# BOOT B044 canonical failure — SPRU pair-onehot table depth-memory/KDM barrier
+TRACK_ID BOOT
+ITERATION B044
+DATE 2026-10-20
+STATUS FAIL_DIRECT_KEY_COMPACTNESS / FAIL_FREE_LINEAR_REKEY / PASS_LOCAL_EXACT_PHASE_IDENTITY
+STATE_UPDATE YES
+Source: Coron–Köstler SPRU ePrint2025/651 original cached 42pp title verified PDF SHA256 2882eebc04de278055f413fc639534717539efe110baf66832e1c648751d01d6 VERSION_UNVERIFIED. Authors C++ github coron/spru_boot master SHA ad00b57ad15e5a32d227e36c713253c5667cfe3e single_slot.cpp blob38d9fda8023ca0a06c5f4c9632802c83e4762c22 generates 2 CKKS packed BSK ciphertexts over h blocks of B=N/h secret positions, and online computes h selected complex roots then balanced h-product tree.
+Hypothesis: encrypt joint pairs of onehot positions P_ij=s_i*t_j offline, then one public phase lookup replaces one online encrypted product; h64 tree depth6→5.
+Result: algebra exact: Σ_ij P_ij(u_i v_j)=(Σ s_i u_i)(Σt_j v_j); 6000/6000 deterministic q64 toy tests PASS max float discrepancy5.66e−16. Full public feature vectors u_i v_j span B² independent characters (toy B2/3/4 rank B²). Direct key slot representation needs (h/2)*B² positions, max N/2 CKKS slots per ciphertext => at least B packed BSK ciphertexts, vs original2. Real paper N32768,h64,B512 => ≥512 ciphertexts vs2 (×256 key-object count), excluding extra rotations, keygen, communication and noise. Moreover P_ij is quadratic secret function: mixed secret-position difference nonzero whereas any public affine homomorphic transform of original separate encrypted selectors yields zero; new degree2 encrypted-key transcript/KDM-security proof required unless online multiply restores saved level. Source separability is efficient; dense precomputed tensor not a credible new algorithm or parameter improvement. Not universal impossibility for fresh compressed encrypted bilinear primitives. No native FHE precision/DFR/performance testing.
+COMPLETE CANONICAL FINDING findings/boot-B044-spru-pair-onehot-canonical-depth-memory-kdm-gate.md.
+NUMBERING NOTE: prior SPRU documents accidentally saved as B041 while another distinct preexisting B041 LFBS already existed; B042 and B043 also existed, discovered on final list. B044 is the canonical label for this SAME experiment, not another separate test. Preserve legacy B041 duplicate for provenance; never double-count the experiment.
+NEXT B045 not started; BOOT-only source-first research, no SHIP resumption.

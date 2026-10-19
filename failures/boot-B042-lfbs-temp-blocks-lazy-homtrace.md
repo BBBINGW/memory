@@ -1,0 +1,18 @@
+# BOOT B042 failure archive — LFBS PRCA HomTrace does not commute with public replication polynomial
+TRACK_ID: BOOT
+ITERATION: B042
+DATE: 2026-10-20
+STATUS: FAIL_NAIVE_TRACE_DEFERRAL / PASS_SUBRING_LINEARITY_CRITERION / NO_NEW_ALGO
+STATE_UPDATE YES. BOOT-only, SHIP PAUSED_BY_PI after I407.
+
+Primary hypothesis: Li et al. Leveled Functional Bootstrapping via External Product Tree, ePrint2025/022 Alg5 (full paper https://eprint.iacr.org/2025/022.pdf): postpone normalized trace P_d=Tr_(K_N/K_(N/d)) through subsequent public replication temp(X)=1+...+X^(d−1) and encrypted selector external-product tree, to amortize the log2d HomTrace Galois key switches across intermediate PRCA groups (source per packing costs B−1+log2(N/B) automorphism switches, d=N/B). Intended to preserve general multi-input LUT ciphertext type and exact function semantics.
+
+DECISIVE NOISELESS COUNTEREXAMPLE: R=F_q[X]/(X^8+1), d2, x=X, temp=1+X. P_2(x)=0 but P_2(temp*x)=X²≠0. Even if a final projection is applied, P_2(temp P_2 x)=0≠P_2(temp x). Source-sized N2048,B16,d128: x=1+X^127, true projected repack= P_d(temp*P_d(x))=1, lazy projected temp*x=1+X^128 (wrong). Exact 12 parameter toy tests N8/16/32/64 d2/4/8: N−N/d monomial inputs in each cause wrong posttrace output. Source public temp(X) contains off-subring exponents, so generic trace deferral is algebraically incorrect BEFORE considering noise, DFR or key assumptions.
+
+THEOREM: In R=F_q[X]/(X^N+1) with odd q (d invertible), normalized trace P_d is projection onto subring R'=F_q[X^d]/((X^d)^(N/d)+1). P_d(Ax)=A P_d(x) for every x iff A∈R': sufficiency subring module linearity, necessity choose x=1. Even if an encrypted selector is a subring monomial in some encoding, source temp is NOT in subring for d>1 and cannot be freely reordered. No claim that all original encrypted selectors are outside the target subring.
+
+RESCUE REPRESENTATION: To support arbitrary follow-up monomial shifts X^k for all k0..d−1 while deferring trace, one must retain off-subring coset data. The map x→(P_d(X^k x))_k is an exact signed permutation of N coefficients, rank N. Verified 12/12 matrices over test N/d choices, M^TM=I. This is only an information-rank bound for unrestricted residue-class shift sets and linear subring representations: actual LFBS shift family may be smaller, and one RLWE_N already stores all N coefficients. Not a proof no alternate packed/tensor FHE scheme can save online trace cost, but no such efficient secure construction supplied.
+
+Original ePrint 2025/022 canonical PDF web text read pages Alg5/6/Appendix Alg9; research Notes get_eprint_paper metadata path 2025/22 returned404, and web screenshot PDF cache-missed; mark source visual quality limitation. Han Xia 2026 CIC Algebraic Analysis of Homomorphic Trace Evaluation and Its Applications DOI 10.62056/a69n5txl7s already gives more precise coefficient-level trace/packing noise, so generic noise refinement is prior art. No authors native code acquired, no secure parameter/performance benchmark. This is NOT a vulnerability in published LFBS; it falsifies OUR lazy-trace optimization.
+FINDINGS: findings/boot-B042-lfbs-lazy-trace-polyphase-obstruction.md
+NEXT B043: Continue problem-first BOOT audit different contemporary full source/original code with one substantive structurally new algorithmic improvement; do not loop again on already B041/B042-exhausted HomTrace timing. SHIP remains paused. B043 NOT STARTED.

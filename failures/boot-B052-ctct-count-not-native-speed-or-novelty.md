@@ -1,0 +1,20 @@
+# BOOT-B052 limitation archive — Large symbolic CMT ct-ct saving is not a proven FHE speedup or new primitive
+
+TRACK_ID: BOOT
+ITERATION: B052
+DATE: 2026-10-20
+STATUS: FAIL_INTERPRETING_CT_CT_COUNT_AS_END_TO_END_GAIN / UNCLEAR_NATIVE_IMPLEMENTATION_NOVELTY
+STATE_UPDATE: YES
+SHIP_PAUSED_BY_PI.
+
+SOURCE: Jules Dumezy et al., "Evaluating Larger Lookup Tables using CKKS", TCHES2026(1):559–591, ePrint 2025/1301; title-verified full original 35 physical pp mirror SHA256 048ba3ae4fe97eae0417138b816572b1c79b503727db54ce76576a4d38190b19 VERSION_UNVERIFIED. Physical p13 Algorithm2, p15 Algorithm3, p19 Algorithm6, p20 Algorithm7, p24 source optimizations, p26 Table3. PDF first-page footnote says original implementation available from authors upon request; NO original native OpenFHE code accessed/compiled this iteration.
+
+POSITIVE CORE: Under exact onehot plaintext semantics p16 and P2^18, the effective 5-digit widths [4,4,4,4,2] yield identical LUT evaluation under LSD/MSD splits at three digits (source pseudocode) and two digits (candidate). All 262144 possible indices checked with a nontrivial fixed 16bit output LUT: 262144/262144 both algorithms same. Kronecker KProduct order and public LUT reshape can be altered without encrypted secret access, keys or extra ideal multiply depth. The source fixed split KProduct 4416 + final 4096=8512 ct-ct. Candidate index split2 with short-digit-first KProduct 1344 + final256=1600, both depth3, nominal81.203% of THIS CT-CT OPERATIONS ONLY. If all last-digit selectors are materialized as full vectors of length p16 (not pruned) the more conservative count is source8704 vs candidate4864, reduction44.118%. Further widths17,19,20 in detailed finding.
+
+DECISIVE LIMITATION: The source CMT also performs P=262144 INTEGER/PLAINTEXT-CIPHERTEXT scalar multiplications plus additions, FDD/MVB and necessary cleaning/coefftoSlot, which are unchanged and the authors say can dominate at large P. Therefore the nominal81% or44% count drop CANNOT BE RELABELED as 81%/44% total PBS latency improvement. The 81% version depends on dropping 12 nominal last-digit near-zero encrypted delta outputs (the last digit has only4 true values), altering intermediate error distribution; no full error/DFR bound. Reassociation changes key-switch error and rescaling schedule although ideal depth remains3. No native secure-parameter bootstrap, actual memory RSS, RNS limbs, or network/CPU timing.
+AUTHOR PRIOR ART: Tensor contraction-order optimization, choosing unbalanced sides to reduce final multiplications, and public matrix reindexing are classical methods; the original paper already advocates minimizing depth and balancing KProduct. Their actual private OpenFHE code may ALREADY reorder these factors or prune zero selector outputs. Thus neither originality nor competitive system advantage shown. This is not a bug or security flaw in published algorithms; its pseudocode is mathematically correct.
+RESULT: Local algorithmic cost hypothesis PASS, but publicity/security/performance/numeric advantage UNCLEAR. A paper claim at this point fails minimal novelty and end-to-end evidence. Do not spend many further BOOT iterations optimizing this ordinary compiler rearrangement without source benchmarking.
+FULL FINDINGS: findings/boot-B052-asymmetric-cmt-kronecker-contract-gate.md
+REPRODUCER: verify_b052.py SHA256 5f139bfc0cf4296b491351924665f5fe656cbd20e4c4ba7e45e9133f6cd86326 (local /mnt/data/boot_b052/verify_b052.py).
+NEXT_TEST B053: one decisive author-source/native CKKS check for 18/20bits, grouped ciphertext operands and memory/DFR/security parameter differences. If unavailable or already implemented/low gain, archive and inspect another fundamentally different bootstrapping bottleneck.
+BOOT B051 completion exists in Library, GitHub prior state only to B049; do not claim full B050/B051 state synchronized. SHIP remains paused.

@@ -1,0 +1,70 @@
+# BOOT-B034 — Certified CMS selection with body/mask rounding dependence: worst-case envelope vs a-only subgaussian tail
+
+TRACK_ID: BOOT
+ITERATION: B034
+DATE: 2026-10-19
+STATUS: PASS_EXACT_BINARY_WORST_CASE_ENVELOPE / PASS_A_ONLY_HONEST_KEY_TAIL_CERTIFICATE / FAIL_B_CONDITIONED_IID_SHORTCUT / UNCLEAR_PUBLICATION_NOVELTY_AND_ONLINE_SOLVER
+STATE_UPDATE: YES
+NO SHIP RESTART / NO SHIP WRITES
+
+## One falsifiable primary hypothesis
+B033 exposed that selecting CMS opposite floor/ceil on public mask coefficients using only their local noise variance need not improve COMPLETE LWE modulus-switching error tails once the public body b=〈a,s〉+mΔ+e (mod qin) is rounded. The B034 question: Can an *input-specific CMS selection procedure* jointly account for body and mask rounding, provide a rigorous secret-independent worst-case or honest-key probabilistic noise certificate, and nevertheless save strictly more CMUX than a simple fixed-order CMS comparator at equal bound without new BSK? If it succeeds only in a toy but is already admitted by the paper's arbitrary d positions and requires expensive combinatorial online selection, do not promote to a new algorithm.
+
+## Source facts and prior-art limits
+[FACT] Bergerat–Orfila–Roux-Langlois–Tap "Accelerating TFHE with Sorted Bootstrapping Techniques", ASIACRYPT 2025, ePrint 2025/2214. Research Notes title-verified 48pp full text mirror PDF SHA256 8e342f162db953a4c26d2103f66406b5148b6fa798c7775478342900d9850d84, VERSION_UNVERIFIED. §4.2 Algorithm3 physical pp21-22: sort public modulus-switched mask elements by 2-adic divisibility, compute η/µ_k CMUX for each class, each CMUX GGSW selector as usual. §5 Lemma8 physical p24–27: CMS flips selected floor/ceil rounding mask coefficients to cheaper class and derives global noise mean/variance, allowing *ANY* d mask positions (last d adopted for mathematical convenience). §7 + Appendix physical pp39–40 Table5/Table6 empirical SBS vs SBS+CMS. Therefore per-input index selection and error-variance budgeting are not by themselves new primitives, and "adaptive beats last d" is NOT "beats paper best allowed strategy".
+[PRIOR ART] Traditional LWE modulus switching error identity and bounded coefficient rounding are standard textbook FHE; a Bernoulli sum Chernoff/Hoeffding bound is also elementary. See FHE textbook https://fhetextbook.github.io/LWEModulusSwitching.html. No claim this is first bias/correlation-aware modulus switching method. There is no source-verified author's native public CMS code, only original paper and exact independent toy.
+
+## Exact LWE phase identity
+Let qin/qout=alpha ∈positive integers for tested case, input LWE ciphertext (a,b), secret s∈{0,1}^n, canonical public representatives 0≤a_i,b<qin, and qout-scaled selected values y_i∈{floor(a_i/alpha),ceil(a_i/alpha)}, y_b=nearest(b/alpha). Legal CMS flips have y'_i≠y_i; if a_i/alpha integer, floor=ceil so NO flip. Define public real rounding residuals r_i=y_i−a_i/alpha, r_b=y_b−b/alpha. Optional body adjustment t∈Z can be calculated publicly, adding t to y_b.
+Then in modular phase:
+    (y_b+t)−Σ_i y_i s_i ≡ (b−Σ_i a_i s_i)/alpha + r_b+t−Σ_i r_i s_i  (mod qout).
+As usual, the right side must be interpreted with a consistent integer lift of plaintext/error; qin wrap contributes multiples of qout so equality of residues holds. For input plaintext encoding Δm and signed e_in, centered output error relative to (Δ/alpha)m is bounded via e_in/alpha and the bracket term if it remains within the output centered range. The formula is exact algebra, not a source-security proof.
+
+## [POSITIVE] Exact worst-case public bound against ANY binary secret
+Define S=Σ_i r_i, A=Σ_i|r_i|. Over all 2^n binary vectors,
+    sup_s | r_b+t−Σ_i r_i s_i | = |r_b+t−S/2| + A/2 =: R_worst.
+Proof: Σr_i s_i spans [Σmin(r_i,0), Σmax(r_i,0)] in its min/max; taking the worst absolute deviation at an endpoint yields midpoint S/2, half-width A/2. Endpoints are attained by selecting all positive or all negative r_i. It is a TRUE exact sup over unconstrained s given numerical public (a,b), though a fixed honest small-noise ciphertext only admits a subset of these secret vectors. This makes the bound safe (possibly very pessimistic), not necessarily tight for secret configurations consistent with the actual b.
+With known |e_in|≤E, the corresponding sufficient correctness bound in centered output interval is E/alpha+R_worst. If an arbitrary CMS candidate sets t via public a,b, this worst-case certification does NOT require conditional iid-secret assumptions.
+[INDEPENDENT EXACT TEST] qin1024,qout64,alpha16,eta8,n12, 100 randomized a,b from honest binary-key inputs with small e, compare both fixed comparator and robust-optimized CMS. For each (a,b,selection) brute force all 4096 binary s and directly evaluate exact *unwrapped* phase rounding residual with integer numerator k_b−Σk_i s_i. The formula R_worst numerator (|2k_b−Σk_i|+Σ|k_i|)/32 matches the exhaustive maximum value in 200/200 configurations. No real TFHE native test.
+
+## [NEGATIVE] Conditioning on both public a AND body b destroys iid keys
+Even when secret s_i are independent Bernoulli bits at key generation, the ciphertext body is *not* independent: b=Σa_i s_i +mΔ +e mod qin. Given (a,b), secret posterior is generally correlated/nonuniform (take trivial noiseless n1, a1, m0, b=s: conditioning on b1 forces s1=1). A CMS selector that uses b to decide its rounding subset is correlated with s. Thus E[Σr_i s_i|a,b] =Σr_i/2 and Var=(1/4)Σr_i² do NOT follow simply from the original key prior if r_i selection depends b. Naively using Bernoulli independent concentration AFTER conditioning (a,b) can invalidate a 2^-128/IND-CPA-D tail claim. Worst-case R_worst remains valid against any s regardless.
+[TEST robust b-aware] For 3000 independent fixed-seed (20261019034) examples qin1024,qout64,n12, uniformly random a and uniform secret, e_in uniform{-1,0,1}, b=Σa_i s_i+e_in modqin, select last min(3, #eligible) beneficial flips as comparator, then exhaustive subset selection under R_worst(candidate)≤R_worst(comparator), t=0. 2221/3000 gain strictly more CMUX while no larger bound in all cases, baseline average bound2.85748 vs candidate2.67702 qout-units, mean actual abs centered output errors0.83467→0.70533. At threshold |eout|≥2, counts496→306 of3000; for |eout|≥3,68→27. But some individual honest inputs worsen (concrete a=[290,170,1003,3,93,769,223,45,937,765,481,849], b582, s=[1,1,1,1,0,1,0,0,1,0,1,0], comparator abs error0, candidate abs error2 despite R bound78/32→62/32), so the optimized public bound does NOT guarantee instancewise noise monotonicity. Input b-aware selection has no probabilistic key independence, and its strongest validity is pessimistic worst-case.
+
+## [POSITIVE WITH SCOPE] a-only CMS selection and explicit honest-key concentration bound
+CONSTRUCTION: Restrict ALL CMS subset choices to PUBLIC MASK a only, NOT body b, and choose public body centering t(a)=nearest(Σ_i r_i/2) for a chosen candidate. Condition on a (which is independent of freshly random secret s for honest encryption), and take s_i iid Bernoulli(1/2). The mask random variable
+   Z=−Σ_i r_i(s_i−1/2)
+is centered, independent sum, and is subgaussian with variance proxy v=Σ_i r_i²/4 because E exp(λr_i(s_i−1/2))=cosh(λr_i/2)≤exp(λ²r_i²/8). Even though r_b depends on s, we never assume it independent: use the DETERMINISTIC |r_b|≤1/2 (valid fixed nearest integer scaling), and let |e_in|≤E.
+For every u>0, honest-key conditional-on-a tail satisfies:
+ Pr( |eout|≥ E/alpha + 1/2 + |t(a)−S/2| + u | a, |e_in|≤E )
+ ≤ 2 exp(−2u²/Σr_i²)
+(with the exact conditioning on e bounds interpreted carefully: if noise e is independent secret and supported |e|≤E, the bound is valid; if Gaussian unbounded, union bound its violation event).
+For epsilon>0 define the CERTIFIED half-width
+  R_eps(a,choice) = E/alpha + 1/2 + |t−S/2| + sqrt( (Σr_i²)/2 * ln(2/epsilon)).
+The body may depend on secret arbitrarily and its rounding has been safely bounded. This is a valid *honest key/input-distribution* inequality, NOT an IND-CPA-D for adaptive adversarial ciphertexts whose a may depend on side information about secret. The code used E=0 for exact noiseless LWE tests, epsilon=2^-24; any claim at 2^-128 needs new real noise/source param budget and potentially a much larger radius.
+Use this R_eps as full-public a-only CMS selection budget (max Σ CMUX reductions among legal floor/ceil masks subject R_eps<=a fixed comparator). All candidates use the same target epsilon and honest-key assumptions. This is not a new security theorem, only a well-scoped application of Hoeffding. The t(a) shifted body adds only the intended public small constant; correctness remains contingent on total error fitting lookup/message margin.
+
+## Exact small-parameter certificate and combinatorial test
+qin1024,qout64,alpha16,eta8,n12; key prior iid Bernoulli. Deterministic RNG seed 20261019, 500 public a arrays. All legal beneficial flips only where noninteger a/alpha and c(yalt)<c(ynearest), with c(y)=eta/gcd(y,eta). Each variant may adjust t=round(S/2). Comparator: last min(3,#eligible) beneficial positions (ONE simple permitted reference, NOT author's optimal original CMS). Candidate: exhaustive 0–1 subset (at most 2^12=4096) maximizing total saved CMUX under R_(2^-24) no larger than comparator, tie smaller R.
+RESULT (EXACT choice enumeration, no floating budget issue because |r| etc rational but sqrt used numerically with high precision; near-tie checked by tolerance):
+- 499/500 had at least 2 eligible modifications; across all 500, 330 show STRICT higher CMUX gain, 170 equal; all500 certified radius ≤ comparator.
+- Mean CMUX per 12-mask input: standard nearest no CMS64.354; comparator48.768; candidate44.544. Relative candidate vs simple comparator (48.768−44.544)/48.768=8.6614% local CMUX count saving; NOT runtime.
+- Mean R_(2^-24) without original input noise E: comparator5.2801855 vs candidate5.1192521 qout coefficient units.
+- EXACT full-LWE correctness sanity: enumerate all 2^12=4096 secret vectors for all500 a arrays, form valid noiseless b=Σa_i s_i mod1024, nearest-rounded body and candidate/comp t(a). Total 2,048,000 valid honest binary-key input ciphertexts per variant; max radius violations 0 under both certificates (no statement on epsilon tail by mere zero observed). At illustrative |eout|≥2: comparator139,552/2,048,000=6.8141%, candidate114,680/2,048,000=5.5996%. At threshold≥3: comparator1762/2,048,000=.08604%, candidate985/2,048,000=.04810%. Per-public-a threshold2 tail candidate better287, equal175, WORSE38 out of500; hence candidate's certified radius and average performance do NOT imply pointwise conditional tail monotonicity.
+- The ε=2^-24 bound is loose for n12 in this example: max finite error < its typical radius; achieving meaningful 2^-128 correctness at real TFHE sizes requires actual margin and full noise, not supplied.
+
+## Critical full-system and novelty blockers
+1) The modified subset is chosen from the positions the original paper already explicitly permits. "Dynamic public coeff choice" is NOT a novel FHE primitive, and sorting by cost/risk is generic constrained combinatorial optimization.
+2) Exact subset optimizer is exponential O(2^n n) on toy n12. Published TFHE dimensions hundreds to thousands, so this cannot be an online algorithm without developing a fast heuristic / DP using quantized α+noise budgets, and checking selection overhead against the 2025/2214 measured full PBS latency (Table5/T6 pp39–40).
+3) The honest-key bound depends on public a independent of s. Adversarial ciphertext or security conditioning on b, evaluator's public-key information, multi-ciphertext reuse and different secret distributions are unproved; cannot advertise IND-CPA-D.
+4) It only certifies the modulus-switching phase under a bounded input error; real SBS+CMS adds GGSW/KS/FFT error, component distribution changes with sorting, and modulus-message margins must be included with correlation/tail analysis. No end-to-end FHE DFR or speed result, and no native implementation.
+5) Worst-case R_worst tends to scale as O(n) for generic coefficient residuals, while honest-key subgaussian standard deviations scale O(√n); this can be too conservative to compete at DFR≈2^-128. No claim large-parameter bounds match paper.
+6) If adapt CMS based on body b, the Bernoulli conditional independence bound breaks, so only the deterministic R_worst is immediately safe.
+7) No proven uniqueness or theorem beyond known modulus-switching identity and Hoeffding; currently low novelty and no secure parameter/implementation.
+8) SHIP remains PAUSED_BY_PI as of 2026-10-19 I407; no investigation/write/iteration on SHIP in B034.
+
+## End of iteration
+STATUS: PASS_PUBLIC_WORST_CASE_FORMULA / PASS_A_ONLY_HONEST_KEY_SUBGAUSSIAN_CERT / FAIL_B_DEPENDENT_IID_ASSUMPTION / UNCLEAR_NOVELTY_LATENCY_AND_REAL_DFR.
+RESULT: Corrected B033's missing body correlation by either exact worst-case bounded formula (works with arbitrary a,b selection but loose) or honest-key Hoeffding certificate with choice restricted to a-only, and demonstrated potential reduction of a subset of CMUX counts vs a weak comparator. This is NOT a novel bootstrapping algorithm; source already allows free choice of d positions, optimization requires efficient online solver, and no IND-CPA-D/native proof.
+NEXT_TEST B035: STOP the current CMS selection microbranch unless one genuinely nontrivial, efficiently implementable, **source-benchmark-beating** end-to-end noise/security optimization emerges. Prioritize a DIFFERENT recent FHE BOOTSTRAPPING paper with verifiable full original PDF AND original code, locate a structural correctness/cost/secret assumption problem, and formulate ONE minimally falsifiable complete repair, rather than continuing to optimize an elementary rounding-knapsack. Candidate discovery should compare current 2026 BatchBoot, 2025/696 INTT and 2025/2214 SBS. No shift to SHIP while paused. B035 NOT STARTED.
+STATE_UPDATE YES. ONLY BOOT files.

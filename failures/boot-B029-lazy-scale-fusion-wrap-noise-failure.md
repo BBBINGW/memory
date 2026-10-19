@@ -1,0 +1,22 @@
+# BOOT-B029 failure archive — Two stage scale Mat-MGSW cannot skip intermediate normalization naively
+
+TRACK_ID: BOOT
+ITERATION: B029
+DATE: 2026-10-19
+STATUS: FAIL_LAZY_ROUND_SAME_MODULUS / FAIL_BALANCED_SCALE_KEY_NOISE
+
+Original 2025/1711 Mat-MGSW external product C⊡c=round((Q/T)(Cc modT)) modQ returns a centered Q-range Vec-MLWE ciphertext. It is NOT merely a redundant rounding; it ensures later key error is multiplied by small Q-sized ciphertext coefficients. B029 tried composing two encrypted selectors under one T modulus without intermediate normalization to save inverse NTT/roundtrip transforms and applying heterogeneous scale allocation (2025/1892) / amortized MPmul (2025/686).
+
+First fatal exact zero-noise scalar submodel: C1=C2=T/Q, with Q²|T and T>Q². Two proper E_C stages preserve c=1. Direct unrounded product C2 C1 modT vanishes because (T/Q)²≡0 modT, so no final rescale can recover the plaintext. Specific Q16,T4096,C256: normal 1→1→1 vs raw product0. Q8/T1024, Q16/T4096, Q32/T8192 exhaustive centered inputs: respectively 7/8,15/16,31/32 fail vs proper two-step for both selector bits1; across all selector bits m1,m2∈{0,1}, failures7/32,15/64,31/128. Not an attack on published scheme, only refutation of the proposed lazy algorithm.
+
+Repair1: hold FULL integer C2 C1 c without reducing moduloT, then rescale by (Q/T)²; in noiseless scalar toy this exactly recovers all tested inputs. But need intermediate modulus T'>T²/Q to prevent centered wrap already at scalar plaintext: Q16,T4096 => T'>1,048,576, min power2 2,097,152 (21bit vs original12); actual encrypted matrix components have uniform T masks and need larger widths, noise and security rewrites, so no free savings.
+
+Repair2: scale-factor split alpha1*alpha2=T/Q, e.g Q256,T2^24, alpha1=alpha2=256 vs original alpha_std65536. Noiseless scalar correctness is recovered with same T. But with actual encrypted 2x2 key matrices sk=(1,−1), C_i=[[A0+alpha_i+e0,A1−alpha_i+e1],[A0,A1]] modT, random T-sized A0,A1 and small e0,e1∈{−1,0,1}, intermediate C1*c is T-sized. Exact key noise identity:
+ sk*C2*C1*c = alpha2*alpha1 sk*c + alpha2 E1*c + E2*(C1*c) (modT).
+After final factor Q/T, second-key error becomes order Q*σkey rather than small Q²σkey/T. Fixed seed 20261019, 5000 PAIRED trials using same masks/errors for both baseline keys and candidate: standard stage-by-stage rescaling phase err max1 and 0/5000 abs error≥Q/8=32; balanced delayed phase err median abs33, max128 and 2545/5000=50.9% abs error≥32; balanced with zero encryption-key noise max1,0 failures. This is an intentionally INSECURE scalar N1 model and threshold only illustrative; NOT real TFHE DFR or a security proof. It isolates critical noise source and kills simple balanced delayed construction.
+
+Correctness interface and cost: 2025/1711 §3.1/3.2 pp11–14 original Vec-MLWE outputs Q-sized centered coefficients, original EP costs 2(k+r) transforms and (k+r)^2 ring pointwise products (paper §3.3 p15-16). Neither proposed variant retains native intermediate format with low key error. Approximate gadget 2025/1892 is already prior art and cannot suppress E2*(C1*c) for arbitrary public high-entropy masks without genuinely new key representation/security. Prior art TCHES2024 Li et al. composite NTT integrates modulus raising + gadget decomposition within ONE external product (DOI 10.46586/tches.v2024.i1.563-591). Standard one-key/multi-bit FHEW combinations and BatchBoot2026 mean offline composited selectors are not novel merely by description.
+
+DETAILED: findings/boot-B029-scale-based-lazy-rounding-balanced-scale-noise-gate.md; paper mirror 2025/1711 SHA256 0f003b5e91dfb6acd4bb48103e03127e0da94394544aa24eda1b636676ca57ff VERSION_UNVERIFIED.
+CONCLUSION: FAIL exact shortcut; conditional noiseless scale factor repair PASS but FAIL FHE key-error gate, NO evidence of new full bootstrapping algorithm. Not universal lower bound for tensor/modulus-ladder/new securely structured ciphertext.
+NEXT B030: Return to original BOOT optimization source family, one primary source-faithful mixed precision/operation-schedule idea; check FBS1 approximate gadget level1 means no cheap selective digit skipping. Avoid repeated no-gain local fixes. If no substantial source-verified new whole scheme, prepare HUMAN_REVIEW candidate pivot to more broadly auditing bootstrapping papers for repairable algorithm gaps per PI's agreed order. Only BOOT files.

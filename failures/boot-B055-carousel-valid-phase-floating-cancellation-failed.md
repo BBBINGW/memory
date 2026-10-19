@@ -1,0 +1,15 @@
+# BOOT-B055 archive — Carousel Float64 ModSwitch full-phase noncancellation, low novelty
+TRACK_ID: BOOT
+ITERATION: B055
+DATE: 2026-10-20
+STATUS: FAIL_PHASE_CANCELLATION_ASSUMPTION / PASS_EXACT_INTEGER_REPAIR / NO_NEW_PUBLISHABLE_BOOTSTRAP_ALGORITHM
+
+Original Park et al. Carousel ePrint2024/2032 and authors Go source SNUCP/carousel, Git tree 21d5800462920d63afcc58873446455642588297, carousel/bootstrap.go BLOB53111c68a004cfb36c5f6f368e38a2ccffd6cfae lines35–37 uses int(math.Round(modSwitchConstant*float64(x)))%lookUpTableSize. Source presets PolyDegree=2048, lookUpTableSize=PolyDegree (params.go BLOB 05fbbc8edf0a08e52e28d06ad5ecfa3cb1a0513b). BlindRotate calls it on both initial body and all mask entries.
+
+Primary question: Are Float64 errors in individual torus→LUT rounding automatically canceled when b and a masks obey a VALID noiseless LWE phase? NO. q=2^64,L=2048, key s=(1,1), m=e=0, a1=9227875636482146303, a2=18444492273895866368, b=(a1+a2) mod2^64=9225623836668461055. FLOAT switched [b,a1,a2]=[1024,1025,0], final phase -1=2047; exact nearest integer switched [1024,1024,0], final phase0. A 2048-member constructed valid family obtained by changing j threshold has 2047/2048 float-phase deviations. This is NOT a random-sample FHE DFR estimate, nor proof of actual decoded LUT failure (depends on error margins/LUT).
+
+Repair standard fixed-point arithmetic: hi,lo=bits.Mul64(x,L); result=(hi + 1_[lo≥2^63]) modL. For supported power-of-two L2048, q=x>>53; if (x&((1<<53)-1))≥2^52 then q++; result=q&2047. Exact no float rounding. Go native source /mnt/data/boot_B055_carousel_phase.go SHA256 f307c55aceb509d031374afda74518a8830ab40c12a447c9999c0a11f43f2c60: 2048 threshold comparisons PASS, 255000 independent random arbitrary modulus exact Mul64 vs big.Int PASS, one zero-noise whole-phase counterexample verified. B054 prior mounted /mnt/data/boot_b054_carousel_modswitch.go verified 8,603,648 threshold-neighborhood inputs and exactly1,398,101 raw inputs of2^64 mismatch float/correct; for independent uniform single index p7.5791207077707812e-14, not DFR. Local Go microbench EPYC9V74 3x run Float≈9–11 ns/op, exact shift≈1.02–1.05 ns/op, constant-Mul64≈1.03–1.11 ns/op. No end-to-end Bootstrapping profiling.
+SCIENTIFIC DECISION: Valid source-level numerics bugfix, known integer arithmetic, weak standalone publication novelty; no security vulnerability/e2e speedup/DFR evidence. Archive source issue; no more cheap index fixes unless actual algorithmic bottleneck/new primitive emerges.
+FINDINGS findings/boot-B055-carousel-valid-lwe-modswitch-phase-exact-repair.md
+NEXT B056 seek substantially new full-source FHE BOOT algorithmic bottleneck/construction with one smallest falsifiable hypothesis, not further Carousel float fixes. SHIP PAUSED_BY_PI, no SHIP writes.
+STATE_UPDATE YES. BOOT only.

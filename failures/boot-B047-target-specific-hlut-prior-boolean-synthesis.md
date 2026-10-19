@@ -1,0 +1,18 @@
+# BOOT B047 failure — Target-specific undercomplete LUT gain is ordinary Boolean circuit synthesis
+TRACK_ID BOOT
+ITERATION B047
+DATE 2026-10-20
+STATUS FAIL_STANDALONE_ALGORITHMIC_NOVELTY / PASS_EXACT_SPECIAL_TARGET_CORRECTNESS
+STATE_UPDATE YES
+
+Paper: Belaid–Bon–Rivain TCHES2026(3) "Decomposition of Large Look-Up Tables for Fast Homomorphic Evaluation", ePrint2026/724, full 32pp version-unverified Notes mirror SHA256 cc45b49e20958f5c3fc1e327d84d1549d7fef08bdb4ba973dac75fd3a67efeb4, original author artifact github.com/CryptoExperts/artifact-HLUT-TCHES. Source decomposition.py Git blob ce5d25df0ec2296c56a75c24e158f6cbe15f90f1 rejects A with rows>cols by assert lines239–241. gauss.py blob84d4c8b9889720cf4a8207b7bedc054cbbae6863 lines71–95 already implements a limited encoding-switching rank drop, so DO NOT falsely say the authors ignored all rank deficiency. Universal arbitrary-target construction desires rank(A)=number truth-table rows; known-target solvability only requires y∈Col(A).
+
+Construct valid single-output f=(x0 AND x1) XOR (x2 AND x3) on {0,1}^4, field F3. u=psiAND(x0+x1), v=psiAND(x2+x3), w=psiXOR(u+v) where psiAND LUT (0,0,1), psiXOR (0,1,0). Each native p3 atomic PBS once, total 3 PBS (two parallel + one sequential); exact 16/16 input correctness. U columns [x0,x1,x2,x3,u,v,w] gives 16x7 rank7 and rank augmented [U|f]=7. Source's generic first-output shape in its s2,p3,n4,m4 S-box Table1 has λ2,t0=2, costing 6 PBS FOR THE FIRST OUTPUT, while table TOTAL 12 PBS IS FOR FOUR OUTPUTS and must NEVER be directly compared to our single-output3. The earlier user-visible initial table inadvertently juxtaposed12 and3; corrected immediately and explicitly in subsequent update. No native encrypted secure-param comparison.
+
+Exact unique Boolean multilinear polynomial in F3: f=x0x1 + x2x3 + x0x1x2x3, degree4. With two native p3 atom PBS and only linear free ops, output Boolean degree≤3: every p3 unary LUT is degree≤2, square of first atom is still a LUT of its ONE original linear argument, so nested second can create mixed terms only degree≤3. Thus three native atom PBS are optimal within this exact model; not universal lower bound against different larger-modulus PBS or FHE techniques. Exhaust all 3^7=2187 combinations of U columns: only32 of the2^16=65536 Boolean LUTs represented. Strong NO-GENERIC-GAIN gate; paper's universal full rank is justified for arbitrary outputs.
+
+CRITICAL NOVELTY: Ordinary Boolean AND/XOR circuit mapped to programmable gate PBS is long known (TFHE gate bootstrapping interface https://tfhe.github.io/tfhe/gate-bootstrapping-api.html and existing work https://github.com/ssmiler/tfhe_fbs_map, DOI10.1007/s00145-025-09563-4). General public linear solves for a known target LUT are elementary. The result is a correct specialized LUT implementation, NOT a new primitive/protocol, full noise/DFR/security algorithm or general S-box optimizer. Don't claim paper authors' scheme is incorrect or a publication breakthrough.
+
+FULL FINDING: findings/boot-B047-hlut-target-undercomplete-boolean-synthesis-gate.md, commit e685a44659f3de1384a60a33b952544a72a03651.
+NEXT B048: stop this simple gate-synthesis microbranch, source-first audit a DIFFERENT recent full-paper+author-code ordinary FHE BOOTSTRAPPING algorithm with genuinely new arithmetic/dataflow limitation and smallest decisive proof/test; avoid existing B040–B046 CMT/SignBoot/LFBS/SPRU archived and do not restart SHIP. B048 NOT STARTED.
+SHIP PAUSED_BY_PI. Only BOOT writes.

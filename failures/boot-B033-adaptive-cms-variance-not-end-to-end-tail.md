@@ -1,0 +1,18 @@
+# BOOT-B033 failure archive — Input-aware CMS mask-variance budget does not certify whole-LWE tail/DFR
+
+TRACK_ID: BOOT
+ITERATION: B033
+DATE: 2026-10-19
+STATUS: FAIL_MASK_VARIANCE_BUDGET_AS_MONOTONE_LWE_DFR_PROOF / PASS_LOCAL_PARETO
+
+Source Bergerat et al. "Accelerating TFHE with Sorted Bootstrapping Techniques" ASIACRYPT2025, ePrint2025/2214, title-verified full 48pp version-unverified source SHA256 8e342f162db953a4c26d2103f66406b5148b6fa798c7775478342900d9850d84; §5 explicitly permits any chosen d mask positions (using last d only for simplified analysis), provides Lemma8 noise mean/variance and Lemma9 average/best CMux count.
+
+Primary construction attempts to select, for each actual PUBLIC LWE mask, the subset of LEGAL opposite-floor/ceil rounding flips that maximizes the sorted-CMux saving g_i=η/gcd(y_i,η)−η/gcd(y_i',η) with positive g_i, under an increased conditional IID binary key mask-rounding variance budget W. For nearest fractional distance f_i∈[0,1/2], added squared residual and absolute residual each equal w_i=1−2f_i (EXACT). This proves local expected Var(mask rounding) increment w_i/4 and conservative ∑|r_i| envelope increment w_i. At scaled integers, floor==ceil so NO CMS flip permitted; invalid artificial +1 excluded. 500 deterministic random public arrays with n12, qin1024, qout64, η8, α16; 499 eligible. Relative to LAST min(3,#eligible) beneficial-index comparator, exhaustive valid subset optimization yields more CMUX saved 323/499 inputs, same strict budget 499/499, mean CMUX48.7996→44.6313 (~8.54% toy mask portion). This does NOT prove improvement over the published Algorithm3 with BEST permitted CMS subsets; input-index choice is ALREADY allowed, and generic knapsack is known.
+
+Critical full-LWE falsifier: for each of 499 public input arrays, exhaust all 2^12 binary s and form EXACT valid noiseless LWE message0 ciphertext b=Σa_i s_i mod1024. Apply actual nearest body rounding, the candidate CMS mask choices and, for a fair optional B032 centering treatment in both comparators, t=round(Σδ_i/2). At illustrative threshold |output error centered mod64|≥2, adaptive has HIGHER failure frequency on 80/499 public masks, despite no greater conditional mask variance. Example A=[149,329,393,491,202,435,623,224,460,544,707,351]; fixed last3 mask-CMUX62 and mask-variance0.71484375, absolute mask-residue sum4.625; adaptive picks 6 flips, CMUX43 and EXACT same variance0.71484375 and abs-sum4.625. Yet actual valid-LWE tail is 316/4096 (7.7148%) vs 612/4096 (14.9414%) with both public body centered. Without body centering candidate tail worse on 130/499 arrays at threshold2. Correlated body residual r_b depends on s and valid encryption b; marginal mask-rounding variance alone cannot certify total DFR. The conservative worst-case envelope with NO public body correction is no worse, but too coarse for real IND-CPA-D and no concrete 2^-128 certificate, no GGSW/KS noise.
+
+No native implementation, no secure parameters, no qin modulo error noise, no optimization overhead or original full best-case tail comparison; NONE of these toy frequencies should be called real FHE failure probability or performance. This kills any unqualified claim “input-aware CMS knapsack necessarily improves DFR”. Optional next research only upon BOOT continuation: full adversarially safe and input/ciphertext-condition-aware noise tail proof or move to structurally new bootstrapping problem; avoid endless elementary knapsack tuning.
+
+FULL FINDING: findings/boot-B033-cms-input-adaptive-knapsack-noise-tail-gate.md
+NEXT: B034 not started.
+STATE_UPDATE YES. No SHIP or other research line files changed; SHIP is currently paused by PI.

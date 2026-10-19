@@ -1,0 +1,43 @@
+# BOOT B047 — Target-only undercomplete LUT decomposition versus Boolean-circuit prior art
+TRACK_ID: BOOT
+ITERATION: B047
+DATE: 2026-10-20
+STATUS: PASS_EXACT_TARGET_UNDERCOMPLETE_SPAN / FAIL_NOVEL_CRYPTO_ALGORITHM / FAIL_GENERIC_UNIVERSALITY
+STATE_UPDATE: YES
+
+## Recovery and one hypothesis
+The complete research Notes findings directory already contains completed B040, B041 (two files each) and B042–B046. Latest confirmed prior record: findings/boot-B046-post-cmt-output-hermite-cleaning-amplification-gate.md, SHA 5d738ba6fc5e50b8b9625ab435665e42c3a6d4c0. Read_repo_file returned {} for the older notes; do not claim full body was restored, only filenames/SHAs. No B047 file existed before this work. PI requests continued FHE BOOTSTRAPPING source-first research, no other track writes; SHIP paused after I407.
+
+PRIMARY CLAIM: In a decomposition of a FIXED target LUT f, full row rank rank(A)=s^n is unnecessarily strong; all that is necessary for correctness is y_f in Col(A). Could a target-specific UNDERCOMPLETE feature matrix A, with fewer columns than truth-table rows, enable fewer p-ary PBS without modifying keys or violating the full algorithm? Is it genuinely a novel bootstrapping technique, rather than ordinary Boolean circuit synthesis? Cheapest test: inspect original paper/source, construct exact tiny finite-field LUT, prove rank membership and minimum PBS within the specified atomic model, and enforce prior-art and generalization tests.
+
+## Original source facts and provenance
+Sonia Belaid, Nicolas Bon, Matthieu Rivain, Decomposition of Large Look-Up Tables for Fast Homomorphic Evaluation, TCHES 2026(3):247–278, DOI 10.46586/tches.v2026.i3.247-278, ePrint 2026/724, https://eprint.iacr.org/2026/724. Notes acquired full 32-page PDF title-verified GitHub-mirror SHA256 cc45b49e20958f5c3fc1e327d84d1549d7fef08bdb4ba973dac75fd3a67efeb4, VERSION_UNVERIFIED, author published copy https://www.nicolasbon.com/assets/pdf/26HLUT.pdf. Paper physical pp8–9 gives atomic phi(x)=psi(sum_i alpha_i*x_i) over F_p, cost one small-p PBS. Physical pp9–15 Eq1 and its A-matrix search use rank(A)=s^n as SUFFICIENT to support every target LUT, with s^n <= (t+1)*(n+lambda) necessary to attain full row rank. The paper's Table1 at physical p21 has s2,p3,n4, 4 OUTPUTS, lambda2, t0=2, t1=t2=t3=1, #PBS 12 TOTAL for four outputs. The FIRST output generic shape costs lambda+2*t0=2+4=6 PBS; DO NOT compare 12 four-output PBS directly to our 3 single-output PBS.
+
+Authors' original reproducible artifact https://github.com/CryptoExperts/artifact-HLUT-TCHES default tree SHA 088029cb4cd3a6b33ac10e0c78ea193b1835216d:
+* decomposer/src/decomposer/decomposition.py blob ce5d25df0ec2296c56a75c24e158f6cbe15f90f1, lines225–250: checks A.shape[0]<=A.shape[1] before solve. This excludes UNDERCOMPLETE A when a particular target y is nonetheless in Col(A).
+* decomposer/src/decomposer/gauss.py blob 84d4c8b9889720cf4a8207b7bedc054cbbae6863, line60 asserts m<=n; lines71–95 already permit SOME rank drops by ENCODING SWITCHING after solving. Important correction: author has not universally ignored rank deficiency, the narrower undercomplete dimension case is not covered.
+* decomposer/src/decomposer/atomic_function.py blob 8599ee4cd39e318b68ca6be9ee03a2d7ef68fb9e: p-entry psi LUT + public linear coefficients, exactly native atomic gate.
+* decomposer/src/decomposer/chain.py blob 5434a5917c9dc413204f0250391c6936d9706bff: successive native atomic gate chain.
+Explicit Boolean circuit mapping is prior art, e.g. original TFHE gate API https://tfhe.github.io/tfhe/gate-bootstrapping-api.html, heuristic mapping Boolean circuits to functional bootstrapping https://github.com/ssmiler/tfhe_fbs_map, DOI 10.1007/s00145-025-09563-4 (2025 circuit optimization). Known Boolean AND/XOR one-PBS gates are NOT new cryptographic primitives.
+
+## Source-compatible exact small-field construction
+Take four binary inputs and one binary output f=(x0 AND x1) XOR (x2 AND x3), using s2,p3 field embedding. Define p3 LUT psiAND=(0,0,1) indexed by z=0,1,2 and psiXOR=(0,1,0). Construct u=psiAND(x0+x1), v=psiAND(x2+x3), w=psiXOR(u+v). Each of u,v,w requires ONE F3 PBS, all sums are public coefficient homomorphic additions; u and v can be done in parallel. Thus 3 native small-p PBS, 2 sequential PBS layers. This is a special binary circuit, not arbitrary 4-bit S-box.
+Construct U over the 16 binary inputs with 7 columns [x0,x1,x2,x3,u,v,w]; U is 16x7 over F3 and rank(U)=7, rank([U|f])=7, so target y=U e7 despite row rank 7<16. That directly falsifies the claim that all correct SINGLE-TARGET decompositions need at least 16 feature columns. It does not falsify author's UNIVERSAL decomposition algorithm: full rank remains needed to solve for any y.
+Precise source cost comparison: source generic FIRST output of 4-input S-box from Table1 has lambda2,t0=2, costing 6 PBS; target-specific circuit uses 3 PBS for THIS one output. Source four-output aggregate 12 is NOT a matched baseline. No real hardware benchmark or same-security implementation was run; real PBS speed/DFR may differ with live ciphertexts.
+
+## Exact deterministic tests
+Used Python integer arithmetic modulo3, no OCR or floating point:
+(1) Enumerated all 2^4=16 binary inputs and checked u, v, w vs independently evaluated reference bitwise ((x0 & x1) ^ (x2 & x3)): 16/16 PASS.
+(2) Exact modular Gaussian elimination: rank(U)=7, rank([U|f])=7: PASS.
+(3) Mobius inversion on binary cube over F3 produces UNIQUE multilinear polynomial f=x0*x1+x2*x3+x0*x1*x2*x3 (mod3), degree4.
+(4) Restricted two-PBS lower bound: any unary psi:F3->F3 is a polynomial of degree<=2 in its field input. First atomic u=psi1(alpha.x) has multilinear degree<=2 over Boolean variables. A second atomic psi2(beta.x+gamma*u) is quadratic in its argument. The u^2 term is again a function of alpha.x alone (degree<=2); cross u*x_i terms have degree<=3; free linear output combinations cannot create degree4. Two independent atoms and linear output also degree<=2; a native multiplication via two PBS on linear expressions yields at most degree2. Therefore the chosen degree4 f needs at least 3 such native PBS in the restricted atomic-chain/linear-plus-two-PBS-product model, and our 3-PBS construction is optimal WITHIN THIS MODEL. Not a lower bound against arbitrary larger-modulus PBS/alternative schemes or non-native operations.
+(5) Exhaustively generated all 3^7=2187 linear combinations U beta. Exactly 32 distinct outputs are binary-valued at all16 input points, out of 2^16=65536 possible binary LUTs; coverage 32/65536=0.048828125%. Thus generic arbitrary target cannot be expected to fit this fixed short feature family. Full generic LUT paper aims at all f.
+
+## Full algorithm/noise/security/novelty gate
+Correctness in F3 exact, but no native encrypted TFHE or DFR measurement. First linear sums can increase noise before PBS; using p3 PBS and ciphertext gate security requires valid p3 parameters. No new eval key distributions, key size, RLWE secrets, or noise primitive. For structured f, source fixed generic cost template6 vs gate circuit3 is mathematically meaningful but ordinary Boolean circuit optimization and compilation prior art; source also has rank-drop encoding switching, making a global originality claim invalid. A novel competitive target-aware synthesizer for UNSTRUCTURED random S-boxes or nontrivial multioutput family would require fundamentally new search/compression, secure end-to-end benchmarking and comparison against existing Boolean circuit mappers; none is demonstrated. Do not call it a publishable new bootstrapping idea.
+
+## End of iteration
+STATUS: PASS_TARGET_MEMBERSHIP_AND_EXACT_3PBS_CONSTRUCTION / PASS_RESTRICTED_MODEL_3PBS_LOWER_BOUND / FAIL_GENERICITY_AND_NOVELTY.
+RESULT: Valid source-relevant local observation; source universal full-rank condition can exclude undercomplete correct representations of known structured f, but 4-bit XOR-of-ANDs in three native F3 PBS is classical Boolean synthesis. Prior-art gate fails. No new publishable BOOT algorithm.
+NEXT_TEST B048: Move to a DIFFERENT modern FHE BOOTSTRAPPING full-paper+author-source dataflow bottleneck, avoiding B040–B046 CMT/SignBoot/LFBS/SPRU already archived and this basic Boolean circuit synthesis. One smallest falsifiable technical hypothesis, original-source type/noise/security/cost and novelty validation. PI decides research direction. SHIP remains PAUSED_BY_PI, no writes.
+STATE_UPDATE YES; BOOT only.

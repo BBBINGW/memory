@@ -1,0 +1,18 @@
+# BOOT-B053 failure archive — FEFBS source sampled precision not a uniform approximation certificate
+
+TRACK_ID: BOOT
+ITERATION: B053
+DATE: 2026-10-20
+STATUS: FAIL_SAMPLED_AVERAGE_AS_CERTIFIED_SUP_PRECISION / PASS_SMOOTH_FINITE_SAMPLE_COUNTEREXAMPLE
+STATE_UPDATE YES
+SHIP PAUSED_BY_PI; BOOT-only.
+
+Primary hypothesis: the author Fourier-extension coefficient generator could use 300-step Simpson3/8 quadrature + 2000 fixed target nodes and its reported -log2(mean absolute sampled error) to certify requested UNIFORM high-precision functional bootstrapping accuracy for arbitrary smooth C-infinity targets. FAIL.
+
+Source: Bian et al., High-Precision Functional Bootstrapping for CKKS from Fourier Extension, ePrint2026/367 title-verified full43-page research-MCP PDF SHA256 ee2384e0a8148a0678b3fdb0e0d14eb5f988f19750a94081a378e8fb82966e7a, VERSION_UNVERIFIED; source FYHSSGSS/FEFBS fourier_extension.py git BLOB 19e9e1ca5223af0cc51f3490a0f7d2da1e41085e lines53–99 for exact transform z=64x, f_phys=.5F(64x), target half periodic interval width T/2=1/32, 2000 linspace samples, 300 Simpson intervals on each period segment, Fourier degree40 default; reported precision is sampled MEAN, not certified uniform norm. ePrint Sec3 pp11–17 Hermite bridge conditions; pp19–21 Alg1 selection. This is a failure of an unqualified **uniform-certification inference** from a numerical PREPROCESSOR, NOT a proof that authors' formal theorems/CKKS encryption are incorrect.
+
+Take target F(z)=exp(1−1/(1−((z−c)/w)^2)) for |z−c|<w, else0, c=.003,w=.00005. This is C-infinity, support(.00295,.00305), F(c)=1, ALL endpoint derivatives at ±1 zero. Under source physical map f_phys(x)=.5 F(64x), peak=.5 and Hermite bridge identically zero for ANY derivative order. NONE of the source2000 target sampling nodes or source301 first-half Simpson nodes enter the support. Consequently sample function values0, sampled Fourier coefficient integrals0, bridge integral0, so source numeric coefficients all0, reported sampled mean error0 (formal infinite precision) but TRUE peak error=.5.
+Even with EXACT Fourier integrals, |c_k|≤(w/64)/T=.0000125, any degree40 symmetric sum has magnitude≤81*.0000125=.0010125 at peak, so degree40 approximation error ≥.4989875. Entirely noise-independent, not a security flaw. Exhaustive source-node geometry, Fourier degree40 and analytic area bound reproduced by /tmp/boot_b053_compact.py SHA256 affbda292dad3fefcb718d2c259b4ed16dfacf992ea42350aa0fea8ccf6bced5, not an actual run of the author's SymPy Piecewise parser. Smooth Gaussian supplementary test yields 155bits claimed sampled mean against true .5 peak error; /tmp/boot_b053_alias.py SHA256 60d74a5cfcd099faba10ab00a8db9d00236c39db0f454281ce84d27ddbcbebcd.
+
+General reason: finite observations cannot exclude nonzero C-infinity compact bump in unseen gap. To repair TRUE uniform certificate require verified regularity norm L_f (e.g. derivative bound), coefficient quadrature-error bounds, and dense/adaptive evaluation nodes with max-on-grid+ (L_f+L_S)h/2, L_S bound from Fourier coefficients. These are classical verified numerical analysis, likely large OFFLINE overhead, and no new bootstrapping runtime/key/noise advantage shown. Paper's Theorem3 eventual n_kappa growth does NOT alone prove unimodality/first-upturn optimality; no valid strict source first-upturn counterexample found in non-source-exact polynomial scan, so do NOT claim theorem disproven.
+Prior novelty low; archive this preprocessor certification limitation and seek NEW CORE BOOTSTRAPPING computation/secret/keys/noise idea next. Full detail findings/boot-B053-fefbs-sampled-precision-cinfinity-bump-gate.md. NEXT B054 NOT STARTED. BOOT only.

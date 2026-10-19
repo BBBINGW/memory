@@ -1,0 +1,14 @@
+# BOOT-B024 — Fused seeded block keys do not beat prepared FFT key's transform count
+
+TRACK_ID: BOOT
+ITERATION: B024
+DATE: 2026-10-19
+STATUS: FAIL_UNCONDITIONAL_KEY_FFT_REDUCTION / PASS_EXACT_STREAM_FUSION
+A source-compatible fusion algorithm exists: rebuild independent-seeded coefficient RGSW keys, multiply each by public (X^ai−1), sum per one-hot block BEFORE a single transform per resulting key row. Exact negacyclic NTT and external-product linearity test N8,q97, primitive16th root8, ell4,d3: 1250/1250 random cases PASS. Native block selector algebra and single external product preserved under SAME secret/independent masks; no genuine TFHE correctness/DFR/security benchmark.
+
+Decisive cost baseline: Lee et al. 2023/958 Algorithm2 physical p11 and Sec5.1 Table2 p16 PREPARE RGSW Fourier keys ONCE, so online FFT per block =2d forward ACC+2 inverse output =2d+2. Fused on-demand seeded key requires 4d additional forward KEY FFT/block, online 6d+2, not fewer! Versus naively FULL expanding each ell seeded key separately online, cost is 4d ell+2d+2, so fusion saves4d(ell−1) FFT. Example d3,ell4: prepared8, fused20, naive seeded56. PRG reconstructs2d ell N mask torus coeff and must read2d ell N body coeff, plus O(4d ell N) weighted summation. No claim it outperforms cached/loaded Fourier key. At illustrative N1024 torus64b and packed half-complex FFT16b per coeff: prep384KiB per ell4 block, seeded bodies192KiB plus seeds and96KiB aggregate scratch. Performance requires runtime profiler showing bandwidth saving exceeds extra12 FFT+PRG+weight cost. This is memory/speed tradeoff, not pure compute gain.
+
+SOURCE/PRIOR ART: 2023/958 original paper (title verified, VERSION_UNVERIFIED, hash 0ab8c83d5aebbbf0185e200c7c3aab10150aa4e3bad0470a839246d33954e6de) already combines RGSW keys and shares FFT of ACC. Zama tfhe-rs standard seeded BSK handling tfhe/src/boolean/engine/bootstrapping.rs blob dd48b4aa07b92dd245116df48f1ef15cfe588abf constructs full expanded coefficient BSK and Fourier BSK during compressed server-key decompression; seeded_lwe_bootstrap_key_decompression.rs blob a0cab89c7839b825598f92317977ae75980a0c5d accesses compression_seed. cuFHEpp already offers fused block external-product GPU kernels. Neither seeded compression nor block-wise fusion is established novel; whether THIS stream implementation exists elsewhere is UNVERIFIED.
+
+Limitations: exact toy NTT is not approximate FFT, no floating precision/noise/DFR, same-mask attack avoided only if independent seeds with valid scheme security; public PRG seed threat model must be audited. Full findings findings/boot-B024-seeded-streaming-block-fft-cost-gate.md.
+NEXT_TEST B025: focus original source remaining pointwise scalar cost ~(4d+2)nN (paper reports ~45% blind rotation) and propose truly changed representation or structured multiplication to reduce it, with cheapest necessary-rank/source prior art gate. No shift to ZK/irrelevant lines.

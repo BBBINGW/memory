@@ -29,3 +29,9 @@ STATE_UPDATE: YES.
 
 ## Further gates
 Cross-algebra combinations (MRFHE / matrix FHE / BFV sparse packing) deferred until interfaces and conversion costs established. Compare recent prior art including 2025/1711 squared gadget and 2025/1753 module bootstrapping; no claims of novelty or speedups yet.
+
+## B002 — 2026-10-19 — Falsify direct blockwise scalar DFR transfer
+STATUS: FAIL for naive variance/erfc transfer; PASS for single-gadget-per-block structural compatibility.
+RESULT: 2023/958 Algorithm 2 combines all ell_j TRGSW keys including zero-secret keys; they contribute fresh encryption noise. Tiny N=4 exact linearized Gaussian example yields Var((X^a-1)e)_0 in {0,2,4}beta^2 depending on exponent. Mixing over public a produces non-Gaussian tails: at t=5beta exact 0.0018576303 versus mean-variance erfc estimate 0.0004069520. Exact conditional fresh-key variance equals beta_j^2 sum_{i,r} ||rho M(h_{j,r})(T_{a_i}-I)||_2^2, with conservative upper bound 8 beta_j^2 ell_j d_j N D_j^2 per output coefficient if digit norms <=D_j. This does NOT establish concrete full-bootstrapping DFR, exact approximate-gadget residual, or practical speedup. Full technical record: findings/boot-B002-block-key-noise-heterogeneous-gadget-audit.md.
+NEXT_TEST: B003 source-faithful mixed-vs-uniform block gadget parameter comparison with 2023 real parameter sizes and independent noise/DFR and security gates; kill if overhead or bounds negate advantage.
+STATE_UPDATE: YES. Other tracks unchanged.

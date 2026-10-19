@@ -1,0 +1,44 @@
+# BOOT B053 — FEFBS Fourier-extension sampled precision false certificate
+
+TRACK_ID: BOOT
+ITERATION: B053
+DATE: 2026-10-20
+STATUS: FAIL_FIXED_GRID_AS_UNIFORM_PRECISION_CERTIFICATE / PASS_EXACT_SMOOTH_BUMP_FALSIFIER / LOW_ALGORITHMIC_NOVELTY
+STATE_UPDATE: YES
+ISOLATION: BOOT writes only; SHIP PAUSED_BY_PI after I407.
+
+## Research restoration and scoped hypothesis
+GitHub Notes findings list confirms previous BOOT findings through B052: B050 SIMD A2B rotation hoisting, B051 prefix-window integer lift, B052 CMT short-axis contraction. B053 starts new source audit, not duplicate B039 affine-odd Fourier symmetry. GitHub Notes read_repo_file for BOOT STATE returned empty JSON despite live listing; prior state restored via verified files list and this chat, not claimed to have read historical markdown body.
+
+ONE PRIMARY CLAIM: Can fixed-order Fourier Extension preprocessing, estimated by public sampled mean error and Simpson 3/8 Fourier coefficients, certify uniform approximation precision for an arbitrary eligible smooth target in CKKS functional bootstrapping? If NO, smallest decisive test is one nonzero C-infinity function completely missed by all quadrature/accuracy samples, with provable true truncation error.
+
+## Source facts
+Bian, Fu, Shen, Pan, Wang, Guan, "High-Precision Functional Bootstrapping for CKKS from Fourier Extension", ePrint 2026/367, research MCP cached title verified full PDF, 43 pages, SHA256 ee2384e0a8148a0678b3fdb0e0d14eb5f988f19750a94081a378e8fb82966e7a, VERSION_UNVERIFIED; eprint mirror revision 6ac42a531dd18744cd7b5097dd93f07dd3b05c74. Physical pp11–17 Sec3 define Hermite bridge matching endpoint jets of order kappa, derive Fourier extension convergence; pp19–21 Sec4.2 Alg1 stops kappa scan at first rise in required expansion degree, pp18–22 HalfBTS+EvalSeries.
+AUTHORS' public implementation FYHSSGSS/FEFBS repo default branch FEFBS, file fourier_extension.py blob SHA-1 19e9e1ca5223af0cc51f3490a0f7d2da1e41085e. Lines53–60: period T=1/16, target half interval [-T/4,T/4], target input lower=-1 upper=1 converted to z=64*x, function scaled by 1/2. Lines62, 75–99 use exactly 2000 equally spaced target evaluation nodes and 300 Simpson3/8 segments on EACH of two half-periods, degree default40, report "precision"=-log2(MEAN sampled |S_n-f|), NOT uniform sup bound. Lines101–114 stop after eight non-improving kappa tests; that finite patience is not a global optimization proof. Auxiliary fourier_calculator.py blob 9ddf9dbe0a9ae055423fcff398356991de624178 likewise uses 300 Simpson segments. Source authors' true implementation was inspected via connected GitHub; this turn's numeric tests reproduced precise published source sample/grid/Simpson formulas independently rather than executing the full SymPy parser for Piecewise input.
+
+## Exact C-infinity counterexample: invisible compact bump
+Define a target F(z) on [-1,1], with c=0.003 and w=0.00005:
+  F(z)=exp(1-1/(1-((z-c)/w)^2)) when |z-c|<w; F(z)=0 otherwise.
+This is a standard compact-support C-infinity bump with F(c)=1; F and ALL derivatives vanish exactly at the target domain endpoints ±1. In the authors' physical variable x, f_phys(x)=0.5 F(64x), peak 0.5 at x=c/64=0.000046875 and support width w/64. Consequently every Hermite bridge polynomial, regardless of order kappa, is identically ZERO (both boundary jets 0), not approximately zero or numeric underflow. Source target accuracy grid 2000 nodes and Simpson quadrature 301 nodes on first half BOTH entirely miss the open support (0.00295,0.00305) in original z-coordinate. Second-half bridge has zero values at ALL nodes too.
+Therefore all source-calculated coefficient integrals are 0 and all 2000 sampled target values are 0; estimated mean error is EXACTLY 0, giving formal infinite reported bits if log-based score used, despite the constructed series being identically zero and the TRUE sup error at least 0.5 at bump center. This is deterministic invisible support / sampling alias, not a Gaussian underflow artifact and NOT a decryption break in the cryptographic scheme. A bare sampled-average score is never a uniform FHE precision certificate over all C-infinity targets.
+Self-contained exact node reproduction /tmp/boot_b053_compact.py, SHA256 affbda292dad3fefcb718d2c259b4ed16dfacf992ea42350aa0fea8ccf6bced5; confirms 0 hit nodes, 0 source sample/coeff, peak 0.5. Original F target amplitude1 vs physical f amplitude1/2 reconciles source scaling.
+
+## Independent exact Fourier truncation lower bound
+For physical period length T=1/16, f_phys(x) is nonnegative, height<=0.5 and supported on interval length2w/64. Its absolute integral over a period <=0.5*(2w/64)=w/64. Each EXACT true complex Fourier coefficient c_k has |c_k| <= (w/64)/T = w/4 =0.0000125. Symmetric degree40 partial sum has81 coefficients, so |S_40(c/64)| <= 81*.0000125=.0010125 and |f_phys(c/64)-S_40(c/64)| >=0.4989875, EVEN WITH PERFECT numerical integration and no encryption noise. Thus intrinsic fixed-degree Fourier truncation ALSO lacks needed resolution. This is exact analytic bound, not numerical simulation.
+
+## General finite-sampling impossibility and repair
+For any finite sample and quadrature node set, take a smooth nonzero compact bump supported in an open interval disjoint from every node and boundary; it gives identical observations to zero function at all checked nodes while attaining positive sup error. Without a separately supplied derivative/analytic modulus-of-continuity bound, no finite-node sampled error estimate can certify uniform error for all C-infinity functions. Standard numerical-analysis principle, low cryptographic novelty.
+A legitimate repair is a VERIFIED derivative bound L_f>=sup|f_phys'| and a Fourier derivative bound L_S>=sup|S_n'|, computed from coefficient magnitudes as L_S <= sum_{k=1}^n k*(2pi/T)*(|a_k|+|b_k|). For evaluation mesh spacing h:
+  sup |f_phys-S_n| <= max_sample|f_phys-S_n| +(L_f+L_S)h/2,
+PLUS separately certified Fourier coefficient integration error sum. This is a safe but possibly huge OVER-estimate. For this bump a crude rigorous |F'(z)|<=4/(e*w) implies |f_phys'(x)| <= 0.5*64*4/(e*w)≈9.4e5; source h≈1.563e-5 gives derivative mesh term>7, safely rejecting false "155-bit" precision. Might require enormous OFFLINE sampling or interval/derivative bounds. No faster native technique or new FHE parameter proof demonstrated.
+A numerical Gaussian bump experiment /tmp/boot_b053_alias.py SHA256 60d74a5cfcd099faba10ab00a8db9d00236c39db0f454281ce84d27ddbcbebcd yields source-matched sampled mean 1.99e-47 (155.1 bits) with true peak0.5; main compact-support witness stronger.
+
+## Separate suspected issue NOT proven
+Original Algorithm1 assumes stopping on first n_kappa rise; Theorem3's eventual growth alone does not imply unimodality of n_kappa. However an independent non-source-exact scan of ~880 small polynomial targets at four tolerances did NOT find a STRICT better n after first rise, so the concrete early-stop failure remains UNCLEAR, not claimed a theorem/correctness flaw. Numeric scans /tmp/boot_b053_scan.py, /tmp/boot_b053_scan_strict.py; do not extrapolate.
+The full code itself searches fixed-degree sampled precision with patience8 rather than formal n_kappa and remains susceptible to this aliasing example.
+
+## End-to-end FHE/security/noise/novelty
+Correctness: preprocessor's claimed precision on this valid smooth target does not imply true pointwise function accuracy; even exact Fourier 40 degree error >=.4989875. For real functional PBS guarantee, bound true approximation error+HalfBTS error+EvalSeries evaluation noise/rounding. This is NOT IND-CPA, KDM or encryption security break; no native OpenFHE encrypted run. No evidence of online speedup, lower key bytes, smaller degree for same TRUE correctness, or new cryptographic primitive. Standard validated spectral quadrature and smoothness-bound methods prior art; not publication-worthy on their own. Authors paper mathematical Fourier theory not disproven; only source fixed-node precision classifier shown unfit as unrestricted uniform certificate.
+RESULT: PASS concrete source-reproduced missing-support counterexample + analytic lower bound, FAIL precision claim if interpreted uniformly; archive as quality/reproducibility warning, not a publication.
+NEXT_TEST B054 (NOT STARTED): prioritize structurally new FHE bootstrapping crypto algorithm/dataflow issue rather than this offline numerical toy. Recent CRYPTO 2026 ePrint 2026/956 "Efficient Bootstrapping for Matrix Arithmetic" full PDF retrieval blocked HTTP403 and fixed mirror absent, likewise ePrint 2026/810 and /811; do NOT claim these full papers read, request authorized copy if critical. Otherwise use an accessible complete original paper and code. SHIP remains paused. BOOT only.
+STATE_UPDATE YES.

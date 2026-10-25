@@ -885,3 +885,21 @@ STATUS: PASS public extraction algebra; UNCLEAR concrete matched-noise lattice s
 **NEXT_TEST:** On one PI continuation authorize ONE B7 only: test if Algorithm3 multi-level and multiple partition-cell count errors can be composed into a finite-horizon adaptive-W1 high-probability bound through He Lemma4.2/Eq4.4 while retaining useful dimension/depth/privacy-budget dependence. Compare original precise per-cell schedule; kill if standard union bound suffices; NO model training or Codex.
 **PENDING_CODEX:** `NONE_REQUIRED_FOR_B6`. Any later discovered Codex tasks must be saved as pending and NOT performed or delivered until PI explicitly asks.
 **STATE_UPDATE:** `YES` after exact append/readback.
+
+
+---
+
+## Latest overriding checkpoint — EAI-SYNTH B7 unmodified full-tree union-bound confidence gate (2026-10-25)
+
+**CURRENT PI-selected track:** `TRACK_ID=EAI`, `ACTIVE_TOPIC=SYNTHETIC_DATA`, `ACTIVE_SUBLINE=EAI-SYNTH`. `LATEST_COMPLETED=SYNTH-B7`, `NEXT_CANDIDATE=SYNTH-B8_NOT_STARTED`. B1–B6 preserved; EAI-SYS SCOUT-S54/S55_NOT_STARTED, EAI-P/EAI-SEC and all FHE/SHIP/BOOT/CGS/VFHE/EXPLORE unchanged. PI instructed that any new Codex tasks be held `PENDING_CODEX` until they explicitly ask; none used or sent.
+
+**Source-first evidence:** `findings/eai-synth-b7-full-tree-naive-union-source-gate-2026-10-25.md` and `failures/eai-synth-b7-unmodified-full-tree-union-confidence-no-go-2026-10-25.md`; He–Vershynin–Zhu arXiv2402.08012v3 original PDF Algorithm1–3, Lemma3.2, Eq4.1 (eps_{j,i} privacy allocation), Lemma4.2, Eq4.4–4.8, Appendix A; original PDF page screenshots cross-checked. He–Vershynin–Zhu COLT2023 private synthetic data offline Theorem4.2 is also an expectation lemma, not an automatic global high-prob statement.
+
+**ONE primary H-B7 FALSIFIED:** A naive union bound over B6's unchanged original Algorithm2 threshold-good-event failures `1/H_i` certifies o(1) failure probability for all active spatial cells across time epochs, sufficient for high-confidence Wasserstein. At time layer i, `H_i=ceil(2^(i+1)/eps)-ceil(2^i/eps) ~ 2^i/eps`, active non-root cells `M_i=sum_{j=1}^i2^j=2^(i+1)-2`; direct union expression `U_i=M_i/H_i=Theta(eps)`. Sum across layers to r is `Theta(eps*r)`, which becomes vacuous for fixed eps. EXACT eps=1 example: `sum_{i<=r}M_i/H_i=2r-2(1-2^-r)`, r=5 gives 8.0625 (expression NOT probability). This is failure of the SIMPLE PROOF TACTIC, not a lower bound on actual event failures, not a demonstrated He W1 accuracy issue, and not new research novelty. Weighted sums or tighter confidence allocation might solve it using standard methods; the fixed Algorithm2 threshold `T0=9logH/eta` versus stronger uniform-envelope `2B(beta)` needs explicit audit before asserting a repair or bottleneck.
+
+**STATUS:** `FAIL_B7_NAIVE_UNMODIFIED_GLOBAL_UNION_CONFIDENCE`.
+**RESULT:** `PASS_SOURCE_WINDOW_CELL_CARDINALITY_AUDIT / FAIL_DIRECT_ORIGINAL_EVENT_UNION / FULL_ADAPTIVE_W1_UNCLEAR`.
+**NOVELTY:** `FAIL` for naive high-confidence proof composition; `NOT_ESTABLISHED` for EAI-SYNTH research problem.
+**NEXT_TEST:** On PI continuation, exactly ONE B8 source-first threshold-vs-confidence test: hold original Algorithm2 threshold constant 9, Eq4.1 epsilon budget, finite horizon r and target delta; assign a clearly defined per-cell/epoch beta and check whether the needed max threshold/test noise B(beta) can still satisfy `T0>2B(beta)` for all required cells/windows. Distinguish low-confidence/window-size effects from a nontrivial barrier; KILL if standard allocation suffices. No Codex, GPU or experiment without permission.
+**PENDING_CODEX:** `NONE_REQUIRED_FOR_B7`; future requirements must be recorded and withheld until PI asks.
+**STATE_UPDATE:** `YES` upon exact append/readback.

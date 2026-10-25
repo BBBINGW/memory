@@ -1021,3 +1021,21 @@ Thus no unconditional K<=T or blanket geometric-tail certificate follows until s
 **NEXT_TEST:** Only on PI continuation, ONE **SYNTH-C02** candidate: prior-art-first rare-support coverage-vs-real-data acquisition or verifier-information trade-off with exact finite-horizon confidence, cost and assumptions; avoid simple log(T) coupon/union folklore and previously killed moment/histogram/privacy claims. If known sampling bounds already settle it, kill promptly. Do not launch independently or run models/Codex.
 **PENDING_CODEX:** carry `OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO` (unexecuted, instructions withheld); C01 requires none.
 **STATE_UPDATE:** `YES` after exact append/readback.
+
+
+---
+
+## Latest overriding checkpoint — EAI-SYNTH C02 binary fallible-verifier rare-prevalence certification (2026-10-25)
+
+**PI-selected active line only:** `TRACK_ID=EAI`, `ACTIVE_TOPIC=SYNTHETIC_DATA`, `ACTIVE_SUBLINE=EAI-SYNTH`; **LATEST_COMPLETED=SYNTH-C02**, **NEXT_CANDIDATE=SYNTH-C03_NOT_STARTED**. Fresh C01 stays negative; old B11/B12 He Sparse Counting noise semantics is `PARK` and must not be revived via this task. EAI-SYS SCOUT-S54/S55_NOT_STARTED, EAI-P, EAI-SEC and all FHE/SHIP/BOOT/CGS/VFHE/EXPLORE unchanged. User says any Codex request to be saved PENDING and NO instructions/execution until separately asked.
+
+**One C02 strict hypothesis FALSIFIED:** With independent black-box generator candidates carrying hidden binary rare label prevalence `q`, and a known stationary fallible verifier with `s=TPR`, `f=FPR`, `0<f<s<1`, mere verifier bits can distinguish `q=0` vs `q=p` (and thereby certify `q>=p`) with `O(1/p)` samples like perfect oracle. Actual observation `Y~Bern(f+(s-f)q)`. For `n` IID calls, `KL(P1^n||P0^n)<=n(s-f)^2p²/(f(1-f))`. TV necessity `>=1-2beta` if each type of error `<=beta<1/2`; Pinsker gives `n>=2f(1-f)(1-2beta)^2/[(s-f)^2p²]=Omega(p^-2)`, contrasting perfect `f=0,s=1` certification `n=O(p^-1 log1/beta)`. Example `p=.001,f=.05,s=.90,beta=.05`: `a1=.05085`, Pinsker lower bound 106506 independent verifier calls, exact KL `~7.56478e-6`, BH strengthens to >=212755; perfect oracle needs 2995 calls to see a true positive with 95% probability. The black-box binary model excludes raw examples, metadata, active prompts, dependent outputs; NOT a universal synthetic-model or DP lower bound. Standard adjusted classify/count (ACC) with known f,s and Hoeffding attains matching `O(p^-2 log1/beta)` tests. This is elementary known two-point hypothesis testing, NOT original.
+
+**Most DIRECT prior art:** Rogan–Gladen AJE1978 imperfect-screening prevalence correction; Fernandes Vaz–Izbicki–Stern JMLR2019 quantification risk lower bounds, approximately minimax estimator and confidence; Micheli et al. Machine Learning2025 Appendix A Eq(A2) adjusted classify & count; see `findings/eai-synth-c02-noisy-verifier-rare-prevalence-testing-priorart-gate-2026-10-25.md`. Other related verified original source abstracts/full texts: Yi et al ICLR2026 fallible verifier long-term performance; Qiao et al ICML2026 arXiv2606.13732v2 full HTML biased silo tail selection; Li–Sun–Deng ICML2026 PMLR info-open synthetic generation. This C02 mechanism/constant is NOT claimed as their theorem. Negative archive `failures/eai-synth-c02-fixed-fpr-oracle-rate-novelty-no-go-2026-10-25.md`.
+
+**STATUS:** `FAIL_C02_PERFECT_ORACLE_RATE_WITH_FIXED_FALSE_POSITIVES`.
+**RESULT:** `PASS_SOURCE_FIRST_DIRECT_QUANTIFICATION_PRIOR_ART / PASS_KL_PINSKER_TWO_WORLD_BOUND / FALSE_C02_O(1/p)_CERTIFICATION`.
+**NOVELTY:** `FAIL` on the verifier-only confusion-matrix cost claim; broader EAI-SYNTH `NOT_ESTABLISHED`.
+**NEXT_TEST:** Only on PI continuation ONE C03 source-first novelty falsifier with meaningful structured verification/real-data/calibration trade-off; first demand an externally justified regime that classical ACC/minimax, calibrated quantification, 2026 verifier and selection-bias literature do NOT already cover. Do NOT run adjacent Bernoulli/toy sweeps or design unverifiable new primitive. Codex/ML GPU prohibited without separate permission.
+**PENDING_CODEX:** `OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO` retained untouched/unexecuted, no new C02 Code work, no prompt given.
+**STATE_UPDATE:** `YES` upon exact root append/readback.

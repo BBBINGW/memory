@@ -945,3 +945,21 @@ No per-counter noise envelope or independence is used at the geometry step. For 
 **NEXT_TEST:** On PI continuation exactly ONE B10 source-first investigation: inspect He2024 Lemma3.2 Appendix A sparse stopping and Lemma3.4 inhomogeneous counting, and choose one minimal adaptive-stopping expectation test to determine whether a useful joint `E[A_t]` bound can hold. Search direct prior art first, do NOT simply redo B5 toy, don't assert adaptation impossibility, no Codex/training/GPU.
 **PENDING_CODEX:** `NONE_REQUIRED_FOR_B9`; if needed later, record without execution OR prompt delivery until PI asks.
 **STATE_UPDATE:** `YES` once exact append/readback confirmed.
+
+
+---
+
+## Latest overriding checkpoint — EAI-SYNTH B10 adaptive stopping-index expectation gate (2026-10-25)
+
+**PI-SELECTED ACTIVE TRACK ONLY:** `TRACK_ID=EAI`, `ACTIVE_TOPIC=SYNTHETIC_DATA`, `ACTIVE_SUBLINE=EAI-SYNTH`. **LATEST_COMPLETED=SYNTH-B10; NEXT_CANDIDATE=SYNTH-B11_NOT_STARTED**. B1–B9 and all other EAI-SYS SCOUT-S54/S55_NOT_STARTED, EAI-P/EAI-SEC, FHE/SHIP/BOOT/CGS/VFHE/EXPLORE unchanged. PI requests all Codex requirements be held as pending and no prompts be issued or tools executed until explicitly asked. **PENDING_CODEX: NONE_REQUIRED_FOR_B10**.
+
+**Original source and detailed result:** `findings/eai-synth-b10-adaptive-stopping-index-expected-noise-source-gate-2026-10-25.md`; negative `failures/eai-synth-b10-adaptive-index-expectation-transfer-no-go-2026-10-25.md`. He–Vershynin–Zhu arXiv2402.08012v3 Algorithm2 §3.3, fixed-index Lemma3.1/3.2, Algorithm3 and Lemma3.4 §3.4, Appendix A Lemma3.2 source HTML checked. A sealed segment's noisy count feeds an independent Binary Mechanism; for FIXED deterministic inputs, segment-count stopping depends on threshold/test noise, not earlier Binary Mechanism outputs. Under FEEDBACK-selected input, future segment counts/indices may depend on prior noisy outputs, so conditional independence of the chosen index from past prefix noise does not follow for free.
+
+**ONE H-B10 falsified by minimal generic two-prefix calculation:** False inference `forall m E|Z_m|<=b => E|Z_{J}|<=b` when J is chosen from earlier released noise. For independent `Z1,Z2~Lap(0,b)`, choose causal J=1 when `|Z1|>b`, otherwise J=2. Exact `E|Z_J|=b(1+e^(-1))≈1.367879b>b`. In contrast `E max(|Z1|,|Z2|)=1.5b`. This is **NOT a realized He Algorithm2 trace** and does NOT refute He fixed-stream proof, privacy or original W1 accuracy. It shows only a generic optional-index expectation transfer is invalid. Standard prefix noise exponential tails and union/maximal inequalities give `E max_{m<=K}|Z_m|<=O(log^(3/2)K*(1+ln K)/eta)` if an actual reachable prefix cap K is justified; elementary prior math, not new primitive. Such bounds do not by themselves handle rare zero-progress threshold loops or establish weighted E[A_t].
+
+**STATUS:** `FAIL_B10_NAIVE_FIXED_INDEX_EXPECTATION_AT_ADAPTIVE_STOPPING`.
+**RESULT:** `PASS_EXACT_GENERIC_TWO_PREFIX_SELECTION_BIAS / PASS_STANDARD_MAXIMAL_EXPECTATION_REMEDY_FOR_BOUNDED_INDEX / ACTUAL_HE_ADAPTIVE_WEIGHTED_W1_UNCLEAR`.
+**NOVELTY:** `FAIL` for optional-index bias and maximal remedy / broader EAI-SYNTH `NOT_ESTABLISHED`.
+**NEXT_TEST:** If PI continues, exactly ONE B11 original-source stopping-index gate: check He Algorithm2's precise finite-time segment-index bound and whether rare zero-progress segment retries can be bounded by a standard geometric tail under causally adaptive inputs; decide if a finite deterministic K or high-prob K permits the standard maximal inequality to apply. Stop if standard source/prior art already covers it; no automatic Codex or training.
+**PENDING_CODEX:** `NONE_REQUIRED_FOR_B10`; do not disclose or execute future Codex prompts until explicit PI request.
+**STATE_UPDATE:** `YES` after exact root append readback.

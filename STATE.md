@@ -650,3 +650,27 @@ STATUS: PASS public extraction algebra; UNCLEAR concrete matched-noise lattice s
 **Decisive source-shaped cost gate:** Original full 480 rank2 HMux keys×90MiB prepared +other2404MiB =44.53515625GiB named eager payload. Candidate 480 scalar beta columns×45MiB +12 shared full GGSW_t_g(s)×90MiB +other2404MiB =**24.49609375GiB**, conditional stored-prepared reduction **20.0390625GiB/44.99605%**. NOT physical resident RSS. Every 480 candidate key has 9 missing first-column gadget rows => **4320 EXTRA full external product calls** to rehydrate one entire keyset versus original SHIP online **480 candidate VMP calls**. Rehydrate-on-demand creates enormous online work not shown affordable; eager-cache all full keys restores baseline prepared memory PLUS new shared GGSW; no fair streaming online RAM/time Pareto proven. Source prepared beta rows may require coefficient inverse transform to serve as external-product input. This conversion is old scheme-switching/GGSW math, not proven novel. No security-matched author h31 result.
 
 **STATUS:** PASS correct cross-support sharing algebra/minimal toy; **FAIL** no-extra-heavy-work/usable fair online memory hypothesis; UNCLEAR IFMA/precision/joint KDM/security/novelty. **NEXT_ACTION I252 only if PI explicitly continues:** no further per-row toy tuning of THIS conversion without new multirow amortization, source runtime, and quantified privacy/precision; otherwise recommend PARK I251 as core resident-memory. SHIP track stays current; other research lines untouched. PI retains final stop/pivot judgment. **STATE_UPDATE YES**.
+
+
+---
+
+## Latest overriding checkpoint — EAI-SYS EAGLE3 K0 archived, EAI-P selected (2026-10-25)
+
+**PI selection / precedence:** This latest checkpoint supersedes earlier `CURRENT TARGET / NEXT_ACTION` wording anywhere above **for future continuations**. It does **not** modify or nullify the earlier FHE, CGS, SHIP, VFHE or other research histories, which remain archival evidence. Following PI's explicit decision, current next research target is **EAI-P / EAI-010 read-only evidence-and-quality audit**, following closure of **EAI-SYS EAGLE3 dynamic K0 KV-only**.
+
+**EAI-SYS formal numbering:** `TRACK_ID=EAI`, `ACTIVE_SUBLINE=EAI-SYS`, `LATEST_COMPLETED=SCOUT-S54`, `NEXT_ITERATION=S55_NOT_STARTED`. The following Phase0–3 native experiments were **unnumbered post-S54 candidate gates** and **did not start S55**. EAI-P has separate existing numbering; do not merge it with SCOUT-S numbers.
+
+**Detailed findings:** `findings/eai-sys-eagle3-k0-native-phase0-phase3-2026-10-25.md`.
+**Scoped obstruction:** `failures/eai-sys-eagle3-k0-synthetic-e2e-value-gate-2026-10-25.md`.
+
+**RESULT — evidence provenance matters:** Phase0 CUDA12 native environment PASS; Phase1 exact model load PASS; Phase2 one-layer EAGLE3 native bitwise KV cache parity QL1/8/64 and K0→K>0 recovery PASS; Phase3 native K0 Draft-sync GPU time savings **63–68%** PASS. In three **synthetic** dynamic K0 schedules, largest reported E2E throughput improvement **+2.000%** (at K0 share 82.76%), below the predeclared **~3%** research-value gate; No-Spec was faster on that synthetic K0-dominant schedule. Acceptance and output matched in reported paired experiments. **NOVELTY NOT ESTABLISHED**, given prior KV-only work. All performance and native correctness numbers currently come from PI-pasted Codex reports; three original evidence ZIPs and checksums have **not** been independently inspected by the assistant, and the originals remain at risk on ephemeral `/dev/shm` until PI-authorized persistent archival.
+
+**Decision:** `PARK_EAGLE3_K0_KV_ONLY_AS_ENGINEERING_RESULT`; stop additional GPU, CUDA Graph, Q-free/fusion, synthetic sweeps and production integration. `STATUS: HUMAN_REVIEW / HOLD_WORKLOAD`, not a functional correctness FAIL.
+
+**CURRENT ONE NEXT_ACTION (read-only; no new experiment authorization):** Locate original EAI-P `EAI-010` raw evidence ZIP, metrics, scripts and fixed source/kernel baseline, then independently examine the reported **320.145 vs 254.942 tokens/s (+25.576%)** native/conversion difference and **255-position mean absolute NLL difference 0.092033 nat**, determine the source of the quality gap and closest quantized-attention prior art. Specify ONE falsifiable quality/performance claim and cheapest next test. If raw material cannot be accessed, record `EVIDENCE_MISSING`; do not invent a replication or start Codex/GPU. No new EAI-P numbered experiment was initiated by this checkpoint.
+
+**STATUS:** `HUMAN_REVIEW` (EAGLE3 parked; EAI-P evidence audit queued).
+**RESULT:** `EAGLE3_KV_NATIVE_CORRECT_CODEX_REPORTED / K0_MICRO_SPEED_PASS / SYNTHETIC_E2E_VALUE_GATE_NOT_MET / NOVELTY_NOT_ESTABLISHED`.
+**NEXT_TEST:** `NO_EAGLE3_TEST_WHILE_PARKED`.
+**NEXT_ACTION:** `READ_ONLY_EAI_P_EAI010_ARTIFACT_QUALITY_AND_PRIORART_AUDIT`.
+**STATE_UPDATE:** `YES` for this GitHub Notes checkpoint, subject to immediate read-back validation; independent raw Codex ZIP audit still PENDING.

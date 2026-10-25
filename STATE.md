@@ -746,3 +746,22 @@ STATUS: PASS public extraction algebra; UNCLEAR concrete matched-noise lattice s
 **NEXT_ACTION:** `PI_DECIDE_PARK_A1_AND_EITHER_APPROVE_B1_SYNTHETIC_DATA_SOURCE_FIRST_FINITE_SUPPORT_GATE_OR_PROPOSE_DISTINCT_AGENT_HYPOTHESIS`. Current task is HUMAN_REVIEW, **not auto-start B1**. Strategic three-direction ranking is provisional and may update.
 **NEXT_TEST:** `NONE_FOR_A1_OPAQUE_NO_GO`; if PI chooses B1, first inspect original ICML2026 biased-verifier/silo papers, then test one two-world rare-mode coverage identifiability claim before training or Codex.
 **STATE_UPDATE:** `YES` once GitHub note append and re-read verified.
+
+
+---
+
+## Latest overriding checkpoint — EAI Synthetic Data B1 exact moment-tail falsifier (2026-10-25)
+
+**PI switch authorized:** User explicitly said to proceed with **the synthetic-data AI research direction (B1)** following Agent A1 prescout. This is the current task. Preserve all historic EAI-SYS `SCOUT-S54` / `S55_NOT_STARTED`, EAI-P EAI-010, Agent A1, FHE/SHIP/BOOT/CGS/VFHE work and numbering; do not mix tracks or resume parked work. This is one bounded source/derivation iteration, not an automatically launched new model experiment.
+
+**Source-grounded findings:** `findings/eai-synth-b1-source-mechanism-and-moment-boundary-2026-10-25.md`. Negative exact result: `failures/eai-synth-b1-moment-tail-coverage-no-go-2026-10-25.md`. Qiao et al. ICML2026 arXiv2606.13732v2 §§3–4 and Appendix **C.6** already cover biased local verifier causing collapse and multi-silo Wasserstein proxies and **DP Optimal Transport**; Yi et al. ICLR2026 arXiv2510.16657 already cover fallible verifier long-run bias; FedUSD ICML2026 covers principal/residual representation and variance matching. Generic “multi-silo + verifier + barycenter / differential privacy” is NOT novel.
+
+**One H-B1 falsified by cheapest decisive exact toy:** If a verifier knows only aggregate count, `E[X]`, `E[X²]` for `X in {0,1,2,3}`, can it always correctly identify whether real tail x=3 exists? **NO**. Exact `P_A=(0.70,0.20,0.09,0.01)`, `P_B=(0.71,0.17,0.12,0)`. Both normalized, mean `0.41`, second raw moment `0.65`, variance `0.4819`, but rare-mode mass `1%` vs `0`. Difference `(0.01,-0.03,0.03,-0.01)` lies in nullspace of moment matrix for k=0,1,2. A verifier restricted to identical moment transcripts must err in at least one world; randomized worst-case error ≥1/2 on yes/no tail presence. **Classical truncated moment identifiability, NOT a new theorem, no training/GPU.** This does not challenge richer Wasserstein proxies or existing DP count/sketch mechanisms (here `W1=0.04`), and it does not prove actual recursive-model-collapse losses.
+
+**Research implication:** The narrower naive *mean+variance certificate* is PARK/FAIL. Synthetic-data topic remains interesting but only if a precise richer reporting/query model yields an important privacy-communication-statistical frontier not settled by existing DP histograms, secure aggregation or DPOT. In finite-support four-point model there is a single unconstrained degree of freedom after two moments and normalization; a single independent tail-count statistic resolves this toy but is elementary prior art, **not** a publishable contribution.
+
+**STATUS:** `FAIL_B1_MOMENT_ONLY_TAIL_IDENTIFIABILITY / PASS_EXACT_TWO_WORLD_COUNTEREXAMPLE / ORIGINAL_SOURCE_PRIORART_AUDITED / HUMAN_REVIEW`.
+**RESULT:** `LOW_ORDER_MOMENT_ONLY_CERTIFICATE_KILLED; FULL_SYNTHETIC_DATA_DIRECTION_NOT_KILLED; NOVELTY_NOT_ESTABLISHED`.
+**NEXT_ACTION:** `B2_PRIORART_FIRST_ADAPTIVE_DP_TAIL_COVERAGE_INTERFACE_GATE` **only upon PI continuation**: read original adaptive DP rare subgroup/coverage query prior art and compare directly with Qiao Appendix C.6 and FedUSD mechanics; choose ONE specific permissible query/trust/privacy/communication regime and minimal test; kill if simple DP query solves it or information-theoretic obstruction without a feasible extra interface. Do not start Codex, model training or new numbered experiment automatically.
+**NEXT_TEST:** `SOURCE_FIRST_B2_ADAPTIVE_TAIL_IDENTIFIABILITY_VS_PRIVACY_COST_SCREEN`.
+**STATE_UPDATE:** `YES` once this GitHub checkpoint is committed and reread.

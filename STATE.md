@@ -826,3 +826,23 @@ STATUS: PASS public extraction algebra; UNCLEAR concrete matched-noise lattice s
 **NOVELTY:** `FAIL` for tested narrow gap / `NOT_ESTABLISHED` for broader dynamic-feedback multi-silo topic.
 **NEXT_TEST:** If PI authorizes ONE B4 gate, inspect **He §2 Def 2.2 and Theorem 1.1 proof** against **Bun–Gaboardi–Wagaman FORC2026 adaptive-continual definition**; construct ONE 2-round feedback-chosen reference-data transcript with exact adjacency and test whether original event-level/oblivious privacy claim transfers to that specified adaptive target. No construction, Codex, GPU, training, or other line without new authorization.
 **STATE_UPDATE:** `YES` after this append is re-read and exact tail verified.
+
+
+---
+
+## Latest overriding checkpoint — EAI-SYNTH B4 feedback-adaptive pure-DP transfer source gate (2026-10-25)
+
+**Active PI-selected track stays:** `TRACK_ID=EAI`; `ACTIVE_TOPIC=SYNTHETIC_DATA`; `ACTIVE_SUBLINE=EAI-SYNTH`. Latest completed bounded falsifier **SYNTH-B4**, next candidate **SYNTH-B5_NOT_STARTED**. Preserve prior B1/B2/B3 negatives. EAI-SYS SCOUT-S54/S55_NOT_STARTED and all EAI-P/EAI-SEC/FHE/SHIP/BOOT/CGS/VFHE tracks completely untouched.
+
+**One H-B4 negative, source-backed:** Feedback-dependent second input alone does NOT imply failure of pure event-level continual DP. He–Vershynin–Zhu 2024, arXiv 2402.08012v3 §2.2 + Proposition 4.1, give `(epsilon,0)`-DP on entire infinite output stream for one changed event. Denisov–McMahan–Rush–Smith–Thakurta NeurIPS2022 §2 **Proposition2.1** already proves **every pure-epsilon-DP nonadaptive continual release mechanism remains adaptive epsilon-DP with SAME budget under matching neighbor relation**. Bun–Gaboardi–Wagaman FORC2026 §1.3, Def4–5 explicitly confirms this transfer; its Theorems7–8 isolate **task-specific adaptive ACCURACY** loss, not a pure-DP privacy failure. All three original sources inspected (He arXiv PDF with equations/page screenshot, Denisov NeurIPS original PDF with Prop2.1, FORC2026 publisher full HTML).
+
+**ONE cheapest two-round test:** Challenge round1 candidate records (0,1); second round equal candidate pair (g(Y1),g(Y1)) after observing first released synthetic Y1, preserving one-event adjacency in each challenge execution. Denisov Prop2.1 applies to He under the source definitions. Illustrative surrogate releases Z=x1+Lap(1/epsilon) and Z+g(Z), with pure epsilon density ratio bound. This is an explanatory toy and known DP theorem, NOT a new He algorithm/proof, and does not protect repeated-user trajectories or two changed events.
+
+**Detailed source note:** `findings/eai-synth-b4-adaptive-pure-dp-privacy-transfer-source-gate-2026-10-25.md`.
+**Negative archive:** `failures/eai-synth-b4-feedback-alone-pure-dp-loss-no-go-2026-10-25.md`.
+
+**STATUS:** `FAIL_B4_GENERIC_FEEDBACK_PURE_DP_PRIVACY_GAP`.
+**RESULT:** `PASS_SOURCE_ORIGINAL_PURE_DP_ADAPTIVITY_THEOREM / PASS_TWO_ROUND_COMPATIBILITY / FAIL_FEEDBACK_ALONE_PRIVACY_NOVELTY`. Feedback-adaptive utility is separate and unverified; not a new impossibility/result on recursive generator collapse.
+**NOVELTY:** `FAIL` on tested generic privacy hypothesis; `NOT_ESTABLISHED` for broader synthetic-data topic.
+**NEXT_TEST:** On PI continuation authorize exactly one B5 source-first accuracy gate: inspect He Theorem1.1 §4.2 Lemma4.2/Eq.(4.4) expected-W1 derivation under future input `x_2=g(Y_1)`; compare strongest existing feedback-adaptive W1-stream prior art; determine whether conditioning on feedback invalidates a crucial unbiased-noise/independence step in ONE minimal two-round binary-partition calculation. Do NOT assume it does. No model training, GPU, Codex, or adjacent research line.
+**STATE_UPDATE:** `YES` after root append exact-readback verification.

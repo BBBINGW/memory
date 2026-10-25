@@ -729,3 +729,20 @@ STATUS: PASS public extraction algebra; UNCLEAR concrete matched-noise lattice s
 **RESULT:** `A1_AGENT_FIRST_CHEAPEST_SCREEN / B1_SYNTHETIC_NEXT / C1_EDGE_THIRD; NOVELTY_NOT_VERIFIED`.
 **NEXT_TEST:** `A1_SOURCE_LEVEL_CONJUNCTION_FALSIFIER`.
 **STATE_UPDATE:** `YES` once this GitHub append is verified. Previous research history unchanged.
+
+
+---
+
+## Latest overriding checkpoint — Agent A1 opaque authorization/effect no-go (2026-10-25)
+
+**CURRENT EAI strategic prescout:** The one authorized read-only source-first **Agent A1** falsifier is complete. No newly numbered EAI-SYS S55, EAI-P iteration, Agent formal iteration or B1 iteration started; all previous FHE and EAI histories preserved. See `failures/eai-agent-a1-opaque-revocation-atomicity-no-go-2026-10-25.md` (single hypothesis + one two-world decisive test).
+
+**Tested hypothesis:** With an external irreversible send tool whose target does NOT atomically check authorization, and an authorization/revocation service that changes without giving the tool mediator fresh revocation information, can a controller both (S) forbid every post-revocation send and (L) complete every still-authorized send? **NO.** A's trace is identical between authorized W0 and revoked W1; if send probability is p, W1 safety error p, W0 liveness error 1-p, sum=1; max error >=1/2. This is a classical information/TOCTOU boundary under explicit assumptions, NOT a new cryptographic theorem or proven CoAgent/Cordon bug.
+
+**Source screen:** CoAgent 2606.15376 §5–6 already addresses registered concurrent agents, delayed unrecoverable external effects and notified serializability; Cordon 2606.17573 §3–4/§6.5 already stages effects and validates authority within a mediated observable boundary; DelAct IWQoS2026 publisher abstract already covers retry/idempotence/replay; DelegateGuard 2610.16005 abstract already describes revocable tool capabilities. Additional WTB 2609.08472v4 revised **2026-10-19** studies authority-sufficient observations and transactional effects. Full CoAgent/Cordon papers inspected, DelAct/DelegateGuard/WTB only abstracts due to access limitations. Thus fully mediated/target-atomic regimes have strong relevant prior art; opaque no-atomic regime is impossible. **No distinctive new feasible A1 algorithm demonstrated**.
+
+**STATUS:** `FAIL_A1_OPAQUE_REVOCATION_SAFE_AND_LIVE / PASS_TWO_WORLD_NO_GO / HUMAN_REVIEW`.
+**RESULT:** Explicit counterexample and mechanism/source boundary eliminate broad generic Agent concurrency+revocation+irreversible-effect proposal in the tested opaque regime; `NOVELTY_NOT_ESTABLISHED`. Candidate **PARK_RECOMMENDED**, pending PI strategic decision.
+**NEXT_ACTION:** `PI_DECIDE_PARK_A1_AND_EITHER_APPROVE_B1_SYNTHETIC_DATA_SOURCE_FIRST_FINITE_SUPPORT_GATE_OR_PROPOSE_DISTINCT_AGENT_HYPOTHESIS`. Current task is HUMAN_REVIEW, **not auto-start B1**. Strategic three-direction ranking is provisional and may update.
+**NEXT_TEST:** `NONE_FOR_A1_OPAQUE_NO_GO`; if PI chooses B1, first inspect original ICML2026 biased-verifier/silo papers, then test one two-world rare-mode coverage identifiability claim before training or Codex.
+**STATE_UPDATE:** `YES` once GitHub note append and re-read verified.

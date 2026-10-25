@@ -846,3 +846,22 @@ STATUS: PASS public extraction algebra; UNCLEAR concrete matched-noise lattice s
 **NOVELTY:** `FAIL` on tested generic privacy hypothesis; `NOT_ESTABLISHED` for broader synthetic-data topic.
 **NEXT_TEST:** On PI continuation authorize exactly one B5 source-first accuracy gate: inspect He Theorem1.1 §4.2 Lemma4.2/Eq.(4.4) expected-W1 derivation under future input `x_2=g(Y_1)`; compare strongest existing feedback-adaptive W1-stream prior art; determine whether conditioning on feedback invalidates a crucial unbiased-noise/independence step in ONE minimal two-round binary-partition calculation. Do NOT assume it does. No model training, GPU, Codex, or adjacent research line.
 **STATE_UPDATE:** `YES` after root append exact-readback verification.
+
+
+---
+
+## Latest overriding checkpoint — EAI-SYNTH B5 fixed-stream conditionalization falsifier (2026-10-25)
+
+**Current PI-selected target only:** `TRACK_ID=EAI`, `ACTIVE_TOPIC=SYNTHETIC_DATA`, `ACTIVE_SUBLINE=EAI-SYNTH`; `LATEST_COMPLETED=SYNTH-B5`; `NEXT_CANDIDATE=SYNTH-B6_NOT_STARTED`. Prior B1/B2/B3/B4 and EAI-SYS SCOUT-S54/S55_NOT_STARTED and all unrelated lines unchanged. No training, GPU, Codex, remote server or implementation edits.
+
+**Original-source note:** `findings/eai-synth-b5-adaptive-wasserstein-conditioning-source-gate-2026-10-25.md`; negative `failures/eai-synth-b5-fixed-stream-conditioning-novelty-no-go-2026-10-25.md`. He–Vershynin–Zhu arXiv2402.08012v3 Algorithm1–3, Lemma3.2–3.4, §4.2 Lemma4.2 Eq.(4.4)–(4.6), Appendix A proof of Lemma3.2 visually read from original. Bun–Gaboardi–Wagaman FORC2026 task-specific adaptive ACCURACY separation; Li–Wang–Ye arXiv2608.20230 relative-error task-adaptive separation already exist. These are NOT He-W1-specific lower bounds. Related streaming synthetic papers Kumar–Strohmer–Vershynin 2401.14577 / 2409.00322 checked at discovery level.
+
+**ONE B5 hypothesis, FALSIFIED:** One may always condition a fixed-stream expected counting-noise error bound on the *realized feedback-chosen stream* without changing the constant. Explicit 2-round feedback surrogate: first noisy scalar `Z=x1+eta=eta` with `x1=0`, `eta~Laplace(b)`; next binary input `x2=1{|Z|>K}`; a reused-noise prefix counter `Y2=x1+x2+eta` has noise `lambda2=eta`. For deterministic stream `E|lambda2|=b`, but conditioning on realized `x2=1` gives `E[|lambda2| | x2=1]=K+b` at probability `exp(-K/b)` (K=3b gives 4b). **Unconditional** `E|lambda2|=b` EVEN with feedback. This counterexample only kills a generic *conditional proof-transfer shortcut*. It is NOT a He implementation, algorithmic attack, DP break, claimed Eq.(4.4) error, or counterexample to He unconditional W1 accuracy.
+
+**Source boundary:** He Lemma4.2 geometry may be pathwise; Lemma3.4/Eq.(4.4) invoke expectation for the more complex sparse Algorithm2/3. Appendix A invokes a uniform `2T`-noise good event, suggesting standard pathwise tools could salvage useful adaptive accuracy. Whether exact He expected W1 rate extends remains `UNCLEAR`; no real or publishable gap established.
+
+**STATUS:** `FAIL_B5_NAIVE_FIXED_STREAM_CONDITIONALIZATION`.
+**RESULT:** `PASS_EXACT_CONDITIONAL_SELECTION_COUNTEREXAMPLE / FAIL_DIRECT_FIXED_TO_ADAPTIVE_EXPECTATION_INFERENCE / HE_ADAPTIVE_W1_ACCURACY_UNCLEAR`.
+**NOVELTY:** `FAIL` for basic conditioning observation / `NOT_ESTABLISHED` for any He-specific or synthetic-data contribution.
+**NEXT_TEST:** If PI authorizes exactly one B6 source-level gate, inspect He Appendix A's proof of Lemma3.2 and Algorithm2 sparse stopping to test whether a uniform, input-independent `2T`-noise good-event gives a rigorous **causal-adaptive** finite-horizon sparse-count bound; propagate ONLY if established into Eq.(4.4), keeping precise log/privacy cost. KILL if elementary union bounds already suffice. No automatic new B6, GPU, Codex, model training or other track.
+**STATE_UPDATE:** `YES` once this root append readback is exact.

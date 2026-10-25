@@ -1,0 +1,16 @@
+# EAI-SYNTH C03 negative — three independent unlabeled verifiers suffice for prevalence identification
+2026-10-25, TRACK_ID EAI, ACTIVE_SUBLINE EAI-SYNTH. New direction C03, B11/B12 He semantics parked. No Codex/model/GPU.
+
+[H-C03 FALSIFIED] Unknown TPR/FPR for three binary verifiers applied to the SAME unlabeled candidate items always makes hidden rare prevalence q unidentifiable even under (joint) conditional independence given true binary label and each verifier oriented s_i>f_i. FALSE.
+
+[DIRECT PRIOR ART] Allman–Matias–Rhodes, The Annals of Statistics 37(6A):3099–3132, 2009, DOI 10.1214/09-AOS689, full original https://arxiv.org/pdf/0809.5032 Section5 Theorem4/Corollary5 (original PDF physical p12 screenshot verified): mixture of r=2 product-Bernoulli latent classes with three binary observable signals is *generically identifiable* up to label swap. JMLR2016 Zhang et al https://jmlr.org/papers/volume17/14-511/14-511.pdf gives spectral + EM confusion-matrix estimation. Hui–Walter Biometrics1980 https://pubmed.ncbi.nlm.nih.gov/7370371/ uses two tests across two populations. Ratner et al NIPS2016 data programming https://proceedings.neurips.cc/paper/2016/hash/6709e8d64a5f47269ed5cea9f625f7ab-Abstract.html, CVPR2024 Juan et al correlated label functions https://openaccess.thecvf.com/content/CVPR2024/html/Juan_Molecular_Data_Programming_Towards_Molecule_Pseudo-labeling_with_Systematic_Weak_Supervision_CVPR_2024_paper.html, ICLR2025 Agrawal et al condition-independence caveats https://proceedings.iclr.cc/paper_files/paper/2025/file/e91fb65c6324a984ea9ef39a5b84af04-Paper-Conference.pdf are all direct/adjacent powerful prior art.
+
+[ONE CHEAP DERIVATION] Latent H~Bern(q), verifiers Yi|H jointly independent with f_i=P(Yi=1|H=0), s_i=P(Yi=1|H=1), Delta_i=s_i-f_i>0. Observable mu_i=f_i+qDelta_i; Cij=q(1-q)Delta_iDelta_j; M123=q(1-q)(1-2q)Delta1Delta2Delta3. Let R=M123/sqrt(C12C13C23), then R=(1-2q)/sqrt(q(1-q)) and q=(1-R/sqrt(R²+4))/2. Each Delta_i and f_i,s_i recover via pair covariances and means. Numerical q=.02, f=(.10,.05,.08), s=(.90,.80,.85), mu=(.116,.065,.0954), C12=.01176 C13=.0120736 C23=.011319 M=.008692992 recover q=.02 exactly. Standard population identifiability, not new theorem.
+[STRICT SCOPE] Positive q, nonzero oriented Delta, conditional JOINT independence, matched per-item multi-verifier output distribution. No finite-sample rare-rate bound, no label shift/DP guarantee, no result from separate silo marginals only, no resilience to residual within-label correlated errors. Prior work on correlated weak supervision and labeled calibration exists. Do not claim the old theorem covers these more general settings.
+
+STATUS: FAIL_C03_THREE_VIEW_UNLABELED_NONIDENTIFIABILITY
+RESULT: Existing three-view identifiability and explicit moment inversion overturn proposed impossibility; no new algorithm.
+NOVELTY: FAIL, broader EAI-SYNTH NOT_ESTABLISHED.
+NEXT_TEST: Only upon PI continuation, one C04 source-first matched-joint-statistics/trust/communication/privacy interface screen vs best federated weak supervision; no more elementary 3-view mixture toy scans.
+PENDING_CODEX: Carry OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO, no execution or instructions.
+STATE_UPDATE: YES after exact file readback and STATE append.

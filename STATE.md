@@ -903,3 +903,23 @@ STATUS: PASS public extraction algebra; UNCLEAR concrete matched-noise lattice s
 **NEXT_TEST:** On PI continuation, exactly ONE B8 source-first threshold-vs-confidence test: hold original Algorithm2 threshold constant 9, Eq4.1 epsilon budget, finite horizon r and target delta; assign a clearly defined per-cell/epoch beta and check whether the needed max threshold/test noise B(beta) can still satisfy `T0>2B(beta)` for all required cells/windows. Distinguish low-confidence/window-size effects from a nontrivial barrier; KILL if standard allocation suffices. No Codex, GPU or experiment without permission.
 **PENDING_CODEX:** `NONE_REQUIRED_FOR_B7`; future requirements must be recorded and withheld until PI asks.
 **STATE_UPDATE:** `YES` upon exact append/readback.
+
+
+---
+
+## Latest overriding checkpoint — EAI-SYNTH B8 fixed-threshold confidence feasibility gate (2026-10-25)
+
+**PI-selected active track only:** `TRACK_ID=EAI`, `ACTIVE_TOPIC=SYNTHETIC_DATA`, `ACTIVE_SUBLINE=EAI-SYNTH`. **LATEST_COMPLETED=SYNTH-B8; NEXT_CANDIDATE=SYNTH-B9_NOT_STARTED**. Preserve B1–B7 and all EAI-SYS SCOUT-S54/S55_NOT_STARTED, EAI-P, EAI-SEC and FHE/SHIP/BOOT/CGS/VFHE/EXPLORE histories unchanged. PI requests no Codex instructions or execution until explicitly asked; any later request must remain `PENDING_CODEX`. None needed for B8.
+
+**Source-first finding:** `findings/eai-synth-b8-fixed-threshold-confidence-source-gate-2026-10-25.md`. **Negative archive:** `failures/eai-synth-b8-fixed-threshold-uniform-confidence-no-go-2026-10-25.md`. Original He–Vershynin–Zhu arXiv2402.08012v3 Algorithm2–3, Eq4.1 and Appendix A source/PDF page screenshots checked. Also checked Dwork–Naor–Reingold–Rothblum ASIACRYPT2015 Figure1/Theorem3.1: predecessor sparse/private partition ALREADY has beta-dependent threshold and confidence-parameter accuracy; simple retuning is established prior art.
+
+**ONE B8 decisive test / fixed sufficient certificate FAIL:** Keep He Algorithm2 threshold `T0=9ln H/eta`, with `eta=epsilon_{j,i}/2` from Eq4.1. A conservative discrete Laplace tail plus union over 2H possible threshold/test noises gives `B(beta)=(2/eta) ln(4H/beta)`. To make original nonzero sealed-segment *sufficient proof condition* `T0>2B(beta)` work requires `beta>4H^(-5/4)`. At `epsilon=1,d=2,i=8,H=256,M_i=510`, each cell would require `beta>.00390625`. Total union-envelope beta budget would exceed 1.9921875, contradicting target `delta=.05`. Equal-beta example gives `beta=.05/510=.0000980392157`, `eta*T0=49.9065970 < eta*2B=64.6464592`. Eta cancels independent of depth. This is only failure of the **all-cells-good confidence envelope certificate using original fixed 9 threshold**, NOT He actual accuracy failure, an impossibility theorem, privacy breach or a novel result. The source's sharper constant does not salvage the .05 test.
+
+**Novelty gate:** Original 2015 beta-dependent partition thresholds already cover trivial confidence-based threshold retuning. PARK this specific fixed-threshold/union-envelope novelty attempt; do not spend cycles optimizing constants or nearby toy windows. Weighted spatial error concentration or reusing known alpha/beta prior art might salvage adaptive W1 with no new primitive, but no such theorem proved here.
+
+**STATUS:** `FAIL_B8_FIXED_THRESHOLD_GLOBAL_CONFIDENCE_ENVELOPE`.
+**RESULT:** `PASS_EXACT_FINITE_CONFIDENCE_VS_MARGIN_TEST / FAIL_FIXED9_ALL_CELL_ENVELOPE / ADAPTIVE_W1_UNCLEAR`.
+**NOVELTY:** `FAIL` for simple retuning and this certificate-mismatch; broader EAI-SYNTH `NOT_ESTABLISHED`.
+**NEXT_TEST:** Only upon PI continuation, ONE B9 source-first check: inspect He §4.2 Lemma4.2 and original He–Vershynin–Zhu COLT2023 consistency/stability argument and test whether controlling diameter-weighted aggregate cell errors avoids requiring ALL sparse counters' positive-progress good events; verify exact deterministic-vs-expected guarantee and whether known methods already imply a useful confidence bound. KILL if solved by textbook weighted control; no model/GPU/Codex.
+**PENDING_CODEX:** `NONE_REQUIRED_FOR_B8`; future requirements only pending, no instructions until user asks.
+**STATE_UPDATE:** `YES` on exact append/readback.

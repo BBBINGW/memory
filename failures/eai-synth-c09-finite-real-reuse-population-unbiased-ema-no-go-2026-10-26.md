@@ -1,0 +1,18 @@
+# EAI-SYNTH C09 negative — FROST population-gradient martingale assumption does not follow from fixed finite-set resampling
+Date 2026-10-26, EAI-SYNTH ONLY. Previous C08 complete; do not touch EAI-SYS, EAI-P, EAI-SEC, FHE or any other research track. No Codex/GPU/training/server/model changes.
+
+H-C09 [FALSE]: uniformly repeatedly sampling minibatches from one fixed finite real-data pool automatically satisfies conditional UNBIASEDNESS wrt true population gradient in FROST Appendix A.2 Eq18, so Eq19 can be transplanted without extra sampling/generalization term. Source: Wu et al FROST arXiv2609.29988v1 https://arxiv.org/html/2609.29988 Appendix A.2 Eq18–21, original PDF physical pp13–14 screenshots inspected. Its Eq19 is expressly CONDITIONAL on Eq18 (also bounded gradient noise, smoothness, bounded θ updates); source proof discards cross-noise terms by the martingale difference identity. Authors not claimed to omit premise or assert fixed real reuse always satisfies it.
+
+ONE exact test: fixed dataset D=(X_i)_{i=1}^n drawn once from population X∈{−1,+1} symmetric. Quadratic loss ℓ(θ,x)=.5(θ−x)^2, θ_t=0 fixed, so real population gradient g_P=0, L=1, model update bound S=0. Each step sample I_t∼Unif({1,..,n}) independently WITH replacement from same D, R_t=−X_{I_t}. With m_D= n^{-1}sum X_i, E[R_t−g_P|D,history]=−m_D≠0 generally, despite unconditional E R_t=0. Thus conditional population-unbiasedness absent if D is in training information; empirically conditional unbiasedness is E[R_t|D]=−m_D.
+Take EMA w_{t,k}=(1−β)β^{t−k}/(1−β^t), Σ_k w=1. Conditional D: E[Rhat_t]=−m_D; Var(Rhat_t)=(1−m_D²)A_t, where A_t=Σ w²=((1−β)/(1+β))((1+β^t)/(1−β^t)). Unconditional E_D m_D²=1/n gives EXACT MSE wrt true gradient zero:
+ E[Rhat_t²]=1/n+(1−1/n)A_t.
+As t→∞ and β approaches1, 1/n floor remains. n=10, β=.99, t=1000 yields true MSE≈.10452. Naively using FROST Eq19 outside Eq18 with ν_R²=1,S=0 gives bound ≈.01005; contradiction only to INVALID application, NOT the theorem.
+This is not a native FROST training trace, attack, DP claim, reported empirical failure, or demonstration of actual reused real-gradient implementation. Source original §3 training uses finite real data but paper's theoretical Eq18 is presented as an explicit ASSUMPTION, not a derived property.
+DIRECT PRIOR ART: Zhou–Karimi–Yu–Xu–Li NeurIPS2020 'Towards Better Generalization of Adaptive Gradient Methods', original https://papers.nips.cc/paper/2020/file/08fb104b0f2f838f3ce2d2b3741a12c2-Paper.pdf original p1 screenshot: ideal fresh stochastic oracle yields population-unbiased gradients vs epochs reusing finite pool, they propose SAGD stable DP method. Dwork et al 2015 https://arxiv.org/pdf/1506.02629 original p0 screenshot, and Feldman–Steinke COLT2017 https://proceedings.mlr.press/v65/feldman17a.html already adaptive data reuse/generalization with private/stable query mechanisms. Simple dataset-vs-population gradient decomposition and DP stabilization cannot be claimed as innovation.
+
+STATUS: FAIL_C09_FIXED_REAL_DATA_REUSE_AUTO_POPULATION_UNBIASEDNESS
+RESULT: Finite-pool repeated sampling creates an irreducible 1/n population-gradient MSE contribution not in a martingale EMA bound; theorem itself remains valid where its Eq18 assumption holds.
+NOVELTY: FAIL (2015, 2017, 2020 established adaptation/generic stable remedies), EAI-SYNTH NOT_ESTABLISHED.
+NEXT_TEST: No automatic adjacent FROST toy variants; PI continuation alone may approve ONE new source-first high-impact synthesis/quality-cost gate, or strategic PARK. No Code/GPU.
+PENDING_CODEX: OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO carried unexecuted and undisclosed, no new C09 Codex task.
+STATE_UPDATE: YES only after readback + root checkpoint.

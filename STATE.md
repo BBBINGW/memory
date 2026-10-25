@@ -1171,3 +1171,16 @@ for L-smooth real-task L_R(θ), synthetic g_s and η-step θ'=θ−ηg_s,
 **NEXT_TEST:** PI continuation only; ONE C09 strict early novelty/cost gate on a *different* important realistic assumption from FROST/TATC/LESS/GREATS in closed-loop synthetic selection: source-first identify their already-stated limitation and require an actual nontrivial mechanism/tradeoff, not just proxy curvature, top-score misordering or basic heldout reuse. If none credible, AGENT recommends strategic PARK/PIVOT from EAI-SYNTH subtheme; PI final decisions. NO automatic new C09, GPU/model experiment or Codex.
 **PENDING_CODEX:** Carry `OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO` unchanged/UNEXECUTED/instructions withheld. C08 requires NONE.
 **STATE_UPDATE:** `YES` after exact append readback.
+
+
+---
+
+## Latest overriding checkpoint — EAI-SYNTH C09 finite-data EMA boundary (2026-10-26)
+
+TRACK_ID=EAI; ACTIVE_TOPIC=SYNTHETIC_DATA; ACTIVE_SUBLINE=EAI-SYNTH ONLY. **LATEST_COMPLETED=SYNTH-C09; NEXT_CANDIDATE=SYNTH-C10_NOT_STARTED**; no automatic iteration, Codex, GPU, training or model work. Preserve EAI-SYS SCOUT-S54/S55_NOT_STARTED, all other EAI/FHE lines, B1–B12 and C01–C08; B11/B12 and earlier C sublines remain parked.
+
+**STATUS:** FAIL_C09_FIXED_REAL_DATA_REUSE_AUTO_POPULATION_UNBIASEDNESS. FROST (Wu et al., arXiv2609.29988v1) Appendix A.2 Eq18 EXPLICITLY ASSUMES conditional unbiasedness of minibatch gradient relative to POPULATION gradient; Eq19 tracking bound depends on it. Fixed finite real set D sampled once and repeatedly resampled with replacement need not satisfy Eq18: minibatches are conditionally unbiased for EMPIRICAL rather than population gradient. Exact one-test Rademacher/quadratic loss with frozen theta: `E[(EMA−g_population)^2]=1/n+(1−1/n)*A_t`, `A_t=((1−beta)/(1+beta))*((1+beta^t)/(1−beta^t))`. For n=10,beta=.99,t=1000 actual≈.10452 vs invalid Eq19 substitution≈.01005; NO refutation of source theorem or actual implementation. NeurIPS2020 Zhou et al. directly distinguishes fresh unbiased stochastic oracle and finite reused samples and uses DP/stability; adaptive-reuse generalization Dwork et al NeurIPS2015 and Feldman–Steinke COLT2017 prior art. **NOVELTY=FAIL**; broader EAI-SYNTH NOT_ESTABLISHED.
+
+Full source-first math/prior art: `findings/eai-synth-c09-frost-finite-reuse-conditional-gradient-source-gate-2026-10-26.md`. Negative: `failures/eai-synth-c09-finite-real-reuse-population-unbiased-ema-no-go-2026-10-26.md`. Both committed and exact-readback verified.
+
+**NEXT_TEST:** PI continuation only, ONE high-value fresh synthetic-training contribution gate, not adjacent EMA toy. Agent recommends STRATEGIC_REVIEW/PARK if no concrete new technique/cost frontier. **PENDING_CODEX:** OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO (carried, NOT_EXECUTED; no prompt released). **STATE_UPDATE:** YES after root exact readback.

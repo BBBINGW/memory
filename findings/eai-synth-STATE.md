@@ -32,3 +32,23 @@ Detailed individual evidence lives in existing findings/eai-synth-*.md and failu
 ## Strategic research interpretation / NEXT
 C01–C10 source searches produced meaningful assumptions/interfaces but NONE a substantiated NEW ALGORITHM with proof + meaningful end-to-end throughput/quality budget frontier. Repeated near-neighbor toy counterexamples are now a poor use of resources. If PI says continue, ONE C11 strategic first-party SOURCE-FIRST opportunity/novelty gate, not automatically another optimizer-gradient toy. One candidate, only if an exact new TECHNICAL claim can be framed: analyze combined fixed-budget teacher-generation cost + optimizer-aware training selection and its complete quality-cost interface, check Kessler COLM2026 and OPUS ICML2026 first. Kill if trivial composition or missing concrete advantage. Prefer a consequential system bottleneck with real benchmark and sufficiently novel algorithmic design. No GPU/Codex/training until PI permits. PI may instead PARK EAI-SYNTH and reallocate effort. Do not invent novelty.
 All EAI-SYS (SCOUT-S54 and S55_NOT_STARTED), EAI-P, EAI-SEC and all FHE/SHIP/BOOT/CGS/VFHE/EXPLORE remain untouched and do NOT inherit this NEXT.
+
+
+---
+
+## LATEST OVERRIDING CHECKPOINT — SYNTH-C11 strategic stop gate (2026-10-26)
+
+**TRACK_ID=EAI; ACTIVE_TOPIC=SYNTHETIC_DATA; ACTIVE_SUBLINE=EAI-SYNTH ONLY.**
+**LATEST_COMPLETED=SYNTH-C11. NEXT_CANDIDATE=NONE_AUTOMATIC / SYNTH-C12_NOT_STARTED.**
+**STATUS=FAIL_C11_SINGLE_FINAL_SFT_COST_EQUIVALENCE / STRATEGIC_REVIEW_RECOMMENDED.**
+**NOVELTY=FAIL (C11 naive accounting/composition) / broad EAI-SYNTH NOT_ESTABLISHED.**
+**STOP DECISION=AGENT_RECOMMENDS_PARK_C01_TO_C11; PI_REVIEW_REQUIRED, NOT UNILATERAL SWITCH.**
+
+One source-first C11 hypothesis refuted: Kessler COLM2026 Algorithm1/§5.2 repeatedly refits a reinitialized student on growing teacher-generated cumulative data, while OPUS ICML2026 overhead 4.7% is relative to its own pretraining workload. Under explicit T rounds, m equal-size teacher samples per round, E student epochs per round, final-only student work EmT differs from actual total iterative refit work EmT(T+1)/2, ratio (T+1)/2; ten rounds 5.5× illustrative count, NOT measured Kessler GPU ratio. Kessler §5.4.2 Figure5 charges TEACHER input/output tokens as budget proxy, not student SFT and scoring all-in. Direct strongest prior art Yin–Rush `Compute-Constrained Data Selection` **ICLR2025** §4 explicitly jointly budgets C_v data selection and C_T finetuning and measures FLOP-quality Pareto across model sizes; therefore 'first unified selection+training budget' false. Merely adding teacher inference term to that budget is routine accounting, not a demonstrated new algorithm. OPUS+Kessler end-to-end improvements UNKNOWN; no native evaluation, no proof, no confirmed nontrivial technique.
+
+**Detailed primary sources+single decisive computation:** `findings/eai-synth-c11-total-compute-budget-iterative-refit-strategic-gate-2026-10-26.md`.
+**Negative archive:** `failures/eai-synth-c11-repeated-student-refit-cost-equivalence-no-go-2026-10-26.md`.
+**NEXT_ACTION:** NO automatic C12 within this candidate series. Await explicit PI strategic decision to either park EAI-SYNTH current line or name a materially different source-supported synthetic-data mechanism with a smallest falsifiable new algorithmic claim and clear quality/compute advantage. If authorized, run exactly ONE gate, source-first, no GPU/Codex without separate approval. Do not launch another simple SGD/OT/verifier/EMA/budget toy. Root `STATE.md` near size limit, preserve existing file and use THIS modular state as source of truth.
+**PENDING_CODEX:** `OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO`, carried and NOT_EXECUTED, NO prompts sent. No new C11 Codex.
+**ISOLATION:** EAI-SYS latest SCOUT-S54/S55_NOT_STARTED, EAI-P, EAI-SEC, all FHE/SHIP/BOOT/CGS/VFHE/EXPLORE unchanged.
+**STATE_UPDATE:** YES after exact GitHub reread.

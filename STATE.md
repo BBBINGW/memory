@@ -865,3 +865,23 @@ STATUS: PASS public extraction algebra; UNCLEAR concrete matched-noise lattice s
 **NOVELTY:** `FAIL` for basic conditioning observation / `NOT_ESTABLISHED` for any He-specific or synthetic-data contribution.
 **NEXT_TEST:** If PI authorizes exactly one B6 source-level gate, inspect He Appendix A's proof of Lemma3.2 and Algorithm2 sparse stopping to test whether a uniform, input-independent `2T`-noise good-event gives a rigorous **causal-adaptive** finite-horizon sparse-count bound; propagate ONLY if established into Eq.(4.4), keeping precise log/privacy cost. KILL if elementary union bounds already suffice. No automatic new B6, GPU, Codex, model training or other track.
 **STATE_UPDATE:** `YES` once this root append readback is exact.
+
+
+---
+
+## Latest overriding checkpoint — EAI-SYNTH B6 causal-adaptive uniform-noise count gate (2026-10-25)
+
+**Only active line:** `TRACK_ID=EAI`, `ACTIVE_TOPIC=SYNTHETIC_DATA`, `ACTIVE_SUBLINE=EAI-SYNTH`; **LATEST_COMPLETED=SYNTH-B6**; **NEXT_CANDIDATE=SYNTH-B7_NOT_STARTED**. B1–B5 preserved; EAI-SYS SCOUT-S54/S55_NOT_STARTED and EAI-P/EAI-SEC, FHE/SHIP/BOOT/CGS/VFHE/EXPLORE all unchanged. PI explicitly requested continue research, while ALL possible Codex tasks/instructions stay PENDING until separately requested. No Codex, server, GPU, training, model or source edits authorized this round.
+
+**Source/derivation:** `findings/eai-synth-b6-uniform-noise-adaptive-sparse-count-gate-2026-10-25.md`. Original He–Vershynin–Zhu arXiv2402.08012v3 Algorithm2, Lemma3.1–3.2, Appendix A visually audited; original Chan–Shi–Song Binary Mechanism prior art identified. On threshold-good event with `T0=9log T/epsilon`, `B=2(2log T+log2)/epsilon` and `T>16`, `T0-2B>0` ensures every sealed segment has a nonzero input and `J(t)<=n_T+1`; current uncommitted mass `R_t<=T0+2B+1`. This is a pathwise fact even for causally adaptive Boolean inputs. Separately, pre-sample the Binary Mechanism noise-only prefix process and apply the original fixed-index exponential tails with summable `beta_m∝delta/(m+1)^2`, obtaining a simultaneous additive-noise event for every prefix m. Because `|error_t|<=R_t+|Z_{J(t)}|`, choosing an adaptive stopping index cannot invalidate this uniform bound.
+
+**One H-B6 verified narrowly:** Finite horizon `T>16`, any causal feedback-adaptive Boolean stream of realized nonzero count `n_T`; with probability at least `1-1/T-delta`, **all** `t<=T` count errors are
+`O((logT + log^(3/2)(n_T+2)*log((n_T+2)^2/delta))/epsilon)`
+(up to an additive unit and universal constants), using standard additive Binary Mechanism. This is a high-probability **counting-only** result with an extra log; not proof of He original `O((logT+log^1.5 n)/epsilon)` EXPECTATION or W1 bound under feedback, and not a new algorithm. Good-event presampling is consistent by induction; if threshold-good event fails, zero-progress segment attempts are not globally bounded by 2T from pseudocode alone; no bad-event expectation or security vulnerability established.
+
+**STATUS:** `PASS_B6_CAUSAL_ADAPTIVE_HIGH_PROB_COUNT_BOUND`.
+**RESULT:** `STANDARD_UNIFORM_NOISE_CERTIFICATE_ESTABLISHED / FEEDBACK_ALONE_NOT_A_COUNT_LEVEL_POLYLOG_OBSTRUCTION / HE_FULL_ADAPTIVE_W1_UNCLEAR`.
+**NOVELTY:** `FAIL` for textbook bound as contribution / `NOT_ESTABLISHED` for broader synthetic data.
+**NEXT_TEST:** On one PI continuation authorize ONE B7 only: test if Algorithm3 multi-level and multiple partition-cell count errors can be composed into a finite-horizon adaptive-W1 high-probability bound through He Lemma4.2/Eq4.4 while retaining useful dimension/depth/privacy-budget dependence. Compare original precise per-cell schedule; kill if standard union bound suffices; NO model training or Codex.
+**PENDING_CODEX:** `NONE_REQUIRED_FOR_B6`. Any later discovered Codex tasks must be saved as pending and NOT performed or delivered until PI explicitly asks.
+**STATE_UPDATE:** `YES` after exact append/readback.

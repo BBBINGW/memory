@@ -71,3 +71,22 @@ One source-first C11 hypothesis refuted: Kessler COLM2026 Algorithm1/§5.2 repea
 **PENDING_CODEX:** OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO (carried, NOT_EXECUTED, prompt NOT_SENT); C12 no new Codex task.
 **ISOLATION:** EAI-SYS SCOUT-S54/S55_NOT_STARTED, EAI-P, EAI-SEC, SHIP/BOOT/CGS/VFHE/EXPLORE all untouched. Do not write root STATE.md near size cap.
 **STATE_UPDATE:** YES after exact reread.
+
+
+---
+
+## LATEST OVERRIDING CHECKPOINT — SYNTH-C13 causal projection classical IVM+SSI novelty gate (2026-10-26)
+
+**TRACK_ID=EAI; ACTIVE_TOPIC=SYNTHETIC_DATA; ACTIVE_SUBLINE=EAI-SYNTH ONLY. LATEST_COMPLETED=SYNTH-C13; NEXT_CANDIDATE=SYNTH-C14_NOT_STARTED / NONE_AUTOMATIC.** Preserve B1–B12/C01–C12 and earlier parked sublines; EAI-SYS SCOUT-S54/S55_NOT_STARTED, EAI-P, EAI-SEC and FHE lines untouched. No Codex/GPU/training/model downloads/environment/source changes.
+
+**ONE source-first H-C13 FALSIFIED:** Given a FULLY KNOWN shared relational cross-app contract with shared key u and deterministic predicates, compact per-request relevant state with correct incremental updates and concurrent booking safety NEEDS an original causal projection primitive beyond existing DB algorithms. FALSE. Encode occupancy as query Q_u=EXISTS active reservation on shared slot u; Noria OSDI2018 partial materialization and DBToaster PVLDB2012/DBSP VLDBJ2025 already incrementally maintain parametrized views/updates. Output to simulator just u and current Boolean (constant bytes for fixed-width u; key encoding O(log|U|) bits in general), not T prior events. Atomic check-and-insert inside serializable DB transaction via Ports–Grittner PVLDB2012 SSI enforces unique booking; ordinary Noria ALONE only has EVENTUAL consistency and does not suffice for this. Query payload bound is NOT a whole-system O(1) resource bound and not an auditable provenance witness. Cheney et al `Provenance as Dependency Analysis` already formalized dependency slicing and showed exact minimum dependency in their general query language is not computable. Agent-side Gaia2 ICLR2026, StateGen, AWM ICML2026 and EnvFactory supply global dependency/state/code-driven baselines. Prior source claims have exact reference and audit depth in finding. NO novel primitive or benchmark shown.
+
+**STATUS:** FAIL_C13_NEW_CAUSAL_PROJECTION_PRIMITIVE_NECESSARY_FOR_FORMALIZED_RELATIONAL_CONTRACTS.
+**RESULT:** Existing keyed IVM+serializable transactions solve C12 shared slot in restricted schema-known model; generic query-aware causal state prompt projection NOT novel.
+**NOVELTY:** FAIL for proposed projection/basic fix; larger EAI-SYNTH NOT_ESTABLISHED.
+**OPEN:** Inference, verification and cost-bounded acquisition of UNKNOWN cross-app shared keys/temporal/transactional contracts from textual OpenAPI and incomplete traces. This is not yet a constructed algorithm, and must be checked against program synthesis, text-to-DB, Gaia2, StateGen and executable agent environment generators. Avoid asserting universal exact minimal semantic witness.
+**FINDINGS:** `findings/eai-synth-c13-causal-projection-ivm-serializable-priorart-gate-2026-10-26.md`.
+**FAILURE:** `failures/eai-synth-c13-new-causal-projection-primitive-needed-no-go-2026-10-26.md`.
+**NEXT:** No automatic C14. On explicit PI continuation, ONE truly distinct contract INFERENCE/VALIDATION gate, source-first before any Code/GPU; if only program-synthesis/DB reuse, recommend strategic PARK, not further elementary state-cache scans. PI retains decisions.
+**PENDING_CODEX:** `OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO` carried and NOT_EXECUTED/NOT_SENT; C13 NONE.
+**STATE_UPDATE:** YES if exact append readback.

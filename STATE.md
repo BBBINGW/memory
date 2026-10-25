@@ -809,3 +809,20 @@ STATUS: PASS public extraction algebra; UNCLEAR concrete matched-noise lattice s
 **NEXT_TEST:** `B3_SOURCE_FIRST_CONTINUAL_REFERENCE_PRIVATE_SYNTHETIC_GAP_FALSIFIER`.
 **NEXT_ACTION:** `READ_HANDOFF_AND_2024_CONTINUAL_SYNTHETIC_ORIGINAL_COMPARE_QIAO_DPOT_CAUSAL_AIM_THEN_ONE_TWO_TIME_FALSIFIER`.
 **STATE_UPDATE:** `YES` after this GitHub append and readback; old findings/failures not overwritten.
+
+ 
+---
+
+## Latest overriding checkpoint — EAI-SYNTH B3 metric-interface source-first gate (2026-10-25)
+
+**PI-authorized current line:** TRACK_ID=EAI, ACTIVE_TOPIC=SYNTHETIC_DATA, ACTIVE_SUBLINE=EAI-SYNTH. **LATEST_COMPLETED=SYNTH-B3** (single source-first falsification), **NEXT_CANDIDATE=SYNTH-B4_NOT_STARTED**. EAI-SYS SCOUT-S54/S55_NOT_STARTED, EAI-P/EAI-SEC, and every FHE/SHIP/BOOT/CGS/VFHE track unchanged.
+
+**Original-source findings:** `findings/eai-synth-b3-continual-dp-wasserstein-interface-source-gate-2026-10-25.md`; negative archive `failures/eai-synth-b3-bounded-wasserstein-metric-interface-no-go-2026-10-25.md`. Bun et al. 2024 has persistent-user longitudinal finite-T DP for specific queries; He–Vershynin–Zhu 2024 already gives epsilon-DP infinite append-only synthetic release with expected W1 error; Gu et al. arXiv2510.03021 §4 provides private Wasserstein coresets and private barycenters; Qiao ICML2026 §4/App C.6 already has multi-silo geometry and DPOT; Asiaee–Aryan UAI2026 reusable causal-workload release. FORC2026 Bun–Gaboardi–Wagaman separates adaptive/oblivious continual DP for a particular problem. Privacy adjacency, fresh-window vs cumulative empirical distribution, score-level vs distance-value, trust/communication are distinct.
+
+**ONE H-B3:** Claim of intrinsic inability to transfer bounded-domain W1 private-reference errors into W2/Wp *distance value* comparisons. **FALSE**: for diameter D, `Wp(P,R) <= D^(1-1/p)*W1(P,R)^(1/p)`; by triangle inequality a true two-candidate Wp distance margin larger than twice this error preserves the winner for realized W1 bound. He theorem gives **expected**, not deterministic W1, and his L-infinity metric vs Euclidean W2 introduces dimension factor. A two-time point-mass toy exhibits changing correct winner without intrinsic value-interface failure. Elementary/known, NOT original. Gu §4 is direct coreset/barycenter prior art. No per-point potential, model-collapse, user-level adaptive privacy, fresh-window or tail preservation theorem established.
+
+**STATUS:** `FAIL_B3_NAIVE_METRIC_INTERFACE_GAP`.
+**RESULT:** `PASS_SOURCE_FIRST_PRIOR_ART / PASS_CONDITIONAL_W1_TO_WP_METRIC_REDUCTION / FAIL_NOVEL_METRIC_INCOMPATIBILITY`. Broad EAI-SYNTH topic not proven impossible or novel.
+**NOVELTY:** `FAIL` for tested narrow gap / `NOT_ESTABLISHED` for broader dynamic-feedback multi-silo topic.
+**NEXT_TEST:** If PI authorizes ONE B4 gate, inspect **He §2 Def 2.2 and Theorem 1.1 proof** against **Bun–Gaboardi–Wagaman FORC2026 adaptive-continual definition**; construct ONE 2-round feedback-chosen reference-data transcript with exact adjacency and test whether original event-level/oblivious privacy claim transfers to that specified adaptive target. No construction, Codex, GPU, training, or other line without new authorization.
+**STATE_UPDATE:** `YES` after this append is re-read and exact tail verified.

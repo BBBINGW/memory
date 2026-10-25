@@ -923,3 +923,25 @@ STATUS: PASS public extraction algebra; UNCLEAR concrete matched-noise lattice s
 **NEXT_TEST:** Only upon PI continuation, ONE B9 source-first check: inspect He §4.2 Lemma4.2 and original He–Vershynin–Zhu COLT2023 consistency/stability argument and test whether controlling diameter-weighted aggregate cell errors avoids requiring ALL sparse counters' positive-progress good events; verify exact deterministic-vs-expected guarantee and whether known methods already imply a useful confidence bound. KILL if solved by textbook weighted control; no model/GPU/Codex.
 **PENDING_CODEX:** `NONE_REQUIRED_FOR_B8`; future requirements only pending, no instructions until user asks.
 **STATE_UPDATE:** `YES` on exact append/readback.
+
+
+---
+
+## Latest overriding checkpoint — EAI-SYNTH B9 weighted Wasserstein pathwise stability novelty gate (2026-10-25)
+
+**CURRENT PI-SELECTED TRACK ONLY:** `TRACK_ID=EAI`, `ACTIVE_TOPIC=SYNTHETIC_DATA`, `ACTIVE_SUBLINE=EAI-SYNTH`. **LATEST_COMPLETED=SYNTH-B9; NEXT_CANDIDATE=SYNTH-B10_NOT_STARTED**. B1–B8 and all EAI-SYS (SCOUT-S54/S55_NOT_STARTED), EAI-P, EAI-SEC and FHE/SHIP/BOOT/CGS/VFHE/EXPLORE records preserved. PI explicitly instructed any Codex requirements be kept `PENDING_CODEX` until they request them; NO Codex/remote/GPU/training used.
+
+**Exact evidence:** detailed `findings/eai-synth-b9-weighted-wasserstein-pathwise-stability-source-gate-2026-10-25.md`; negative `failures/eai-synth-b9-all-counters-good-necessary-no-go-2026-10-25.md`. Original COLT2023 He–Vershynin–Zhu `Algorithmically Effective Differentially Private Synthetic Data`, PMLR195 full PDF §4.5 Theorem10 proof/Lemmas16–18 and Eq4.2–4.4 (physical pages11–12), screen+text inspected; online He2024 arXiv2402.08012v3 Theorem1.1 / §4.2 Lemma4.2/Eq4.4–4.7 original HTML. Source numbering subtlety: COLT2023 published theorem is **Theorem10**, while online 2024 refers to [36] Theorem4.2; likely version numbering, NOT an error claim.
+
+**ONE H-B9 falsified:** It is NECESSARY for all spatial counters to pass their B6/B8 noise-good events simultaneously to obtain ANY useful fixed-time high-probability Wasserstein bound. **FALSE.** The COLT2023 §4.5 argument constructs a deterministic (BEFORE EXPECTATION) bound valid for well-defined consistent counts:
+`W1<= (|lambda_root|diam(Omega)+sum_{j<r}sum_{|theta|=j}max(|lambda_theta0|,|lambda_theta1|)diam(Omega_theta))/n + delta_r`.
+No per-counter noise envelope or independence is used at the geometry step. For the original FIXED deterministic data stream, online2024 Theorem1.1 supplies `E W1<=C log(t)(epsilon t)^(-1/d)` for d>=2 at sufficiently large t; by elementary Markov, for fixed beta∈(0,1), `Pr(W1> C log(t)(epsilon t)^(-1/d)/beta)<=beta` at a single t. E.g. beta=.05 costs multiplier20; may be vacuous short term but asymptotically nontrivial. No all-tree counter-good event needed. This is KNOWN OLD transport consistency plus textbook Markov, NOT a novel theorem or adaptive-stream guarantee.
+
+**Critical remaining boundary:** The geometric pathwise inequality is applicable when output count consistency construction is well-defined, and its general form includes a possibly noisy root count (COLT output size m can differ from n). For feedback-adaptive input the same geometry can hold, but He fixed-stream per-counter EXPECTATIONS cannot be assumed for their joint law. A full adaptive `E A_t` weighted counting-error bound, high-prob adaptive W1, recursive-generator fidelity and high-dimensional utility remain UNPROVEN. Don't relabel B8 failed full-tree union certificate as a true algorithmic obstruction.
+
+**STATUS:** `FAIL_B9_ALL_COUNTERS_GOOD_NECESSITY / PASS_ORIGINAL_PATHWISE_TRANSPORT_IDENTIFICATION`.
+**RESULT:** `FIXED_STREAM_HIGH_PROB_W1_ALREADY_FOLLOWS_FROM_OLD_EXPECTED_W1_AND_MARKOV / ADAPTIVE_WEIGHTED_COUNTER_MOMENT_UNCLEAR`.
+**NOVELTY:** `FAIL` for geometric/stability/high-confidence shortcut; EAI-SYNTH broader `NOT_ESTABLISHED`.
+**NEXT_TEST:** On PI continuation exactly ONE B10 source-first investigation: inspect He2024 Lemma3.2 Appendix A sparse stopping and Lemma3.4 inhomogeneous counting, and choose one minimal adaptive-stopping expectation test to determine whether a useful joint `E[A_t]` bound can hold. Search direct prior art first, do NOT simply redo B5 toy, don't assert adaptation impossibility, no Codex/training/GPU.
+**PENDING_CODEX:** `NONE_REQUIRED_FOR_B9`; if needed later, record without execution OR prompt delivery until PI asks.
+**STATE_UPDATE:** `YES` once exact append/readback confirmed.

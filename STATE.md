@@ -693,3 +693,21 @@ STATUS: PASS public extraction algebra; UNCLEAR concrete matched-noise lattice s
 **NEXT_ACTION:** `USER_UPLOAD_EAI010_RAW_ZIP_TO_CHAT_THEN_GPT_CHECK_SHA_MANIFEST_PAIRED_CSV_AND_NLL_BEFORE_ANY_MORE_CODEX`.
 **NEXT_TEST:** `READ_ONLY_INDEPENDENT_RAW_ARTIFACT_AUDIT`; no new native experiments or extra research iteration.
 **STATE_UPDATE:** `YES` after GitHub append readback.
+
+
+---
+
+## Latest overriding checkpoint — EAI-P/EAI-010 raw ZIP independently audited (2026-10-25)
+
+**Current PI-selected target remains EAI-P / historical EAI-010**, now after independent **uploaded raw ZIP** audit. No new EAI numbered experiment; EAI-SYS latest SCOUT-S54 and S55_NOT_STARTED; EAGLE3 K0 remains PARKED. All unrelated historical tracks untouched. **Full independent finding:** `findings/eai-p-eai010-independent-raw-audit-2026-10-25.md`; preceding Codex recovery finding retained.
+
+**Provenance upgraded:** User-uploaded `EAI-010-RAW-EVIDENCE-AUDIT-2026-10-25.zip` 44,599,217 B, independently computed SHA256 `4f695731ad080f65c8903b75fe79a82ab33555d15ad7ef82c9ef1884f4bdf6ac`; ZIP CRC PASS, package manifest **281/281**, EAI-009R original **129/129** present PASS, EAI-010 original **141/143** present PASS, with **2 sensitive-token-bearing environment logs intentionally omitted** (remote checksum attestation only). No independent GPU/model rerun; original GGUF weights not included in ZIP. Attached raw ZIP is **not** committed to GitHub.
+
+**Actual independently recomputed result:** EAI-010 3 paired, fixed RTX4090 Qwen2.5-1.5B/llama.cpp pinned 32K-class *decode-only* run: Median Conversion `254.941605844`, Native `320.145267516 tokens/s`, **+25.575920202% ratio of medians**; 6×128 real raw latency entries/JSON consistent. **SYNTHETIC CONTEXT** 32640 tokens is the short 512-token stream repeated. If also including prefill to process the full 32512-token context then 128 tokens decoded, total measured time improves only **5.14–5.68%** (128-output-token effective throughput improves 5.42–6.02%). 255 aligned Native/Conversion/F16 NLL rows: `mean(abs(pointwise delta))=0.092033067989` nat, vs `abs(diff of mean NLL)=0.002821804440` nat; 64/255 positions abs diff>0.1, max2.143831. **Strict pointwise numerical equality FAIL**, but downstream/task quality UNKNOWN; native mean NLL1.906879, conversion1.909700, F16 1.892691 on just one 512-token input. Raw Nsight CUDA traces: Native 28 q8/q4 vector FA launches at post32K decode, Conversion 28 f16 FA plus 28 q8 and 28 q4 dequant kernels; Build native only adds q8_0-q4_0 quant pair. This is specialized-existing-native-vs-fallback; related prior art llama.cpp Issue #30001 (Oct5 2026) already reports closely matching +26% optimization mechanism on a different model. **NOVELTY NOT ESTABLISHED**.
+
+**STATUS:** `PASS_INDEPENDENT_RAW_ZIP_INTEGRITY / PASS_OFFLINE_SPEED_AND_NLL_RECOMPUTATION / PASS_RETAINED_NATIVE_TRACE_DISPATCH_CONSISTENCY / FAIL_STRICT_POINTWISE_PARITY / LONG_CONTEXT_QUALITY_UNCLEAR / HUMAN_REVIEW`.
+**RESULT:** Quantized KV native specialization is a grounded engineering speed baseline with no established paper novelty; full raw source numerics recovered; exact per-layer numerical origin cannot be proven without missing intermediate KV/scale/logit captures. No new GPU/quality experiment authorized.
+**AGENT RECOMMENDATION:** `PARK_EAI010_AS_ENGINEERING_BASELINE` unless PI has a separate deployment-quality reason. Do not start further sweep or new kernels just to chase existing selective-specialization result.
+**NEXT_ACTION (HUMAN):** `PI_DECIDE_PARK_EAI_P_EAI010_AND_SELECT_NEXT_NOVEL_RESEARCH_TARGET` (recommend true structural/novel FHE or new EAI mechanism, not EAGLE3 reopening). If PI requires deployment numerical parity, explicitly authorize ONE fixed quantized-input native-vs-dequant Attention-output causality test; no automatic Codex.
+**NEXT_TEST:** `NONE_UNTIL_PI_DECISION`.
+**STATE_UPDATE:** `YES` after this commit and readback. The audit is post-EAI-010, not a newly numbered EAI-P iteration.

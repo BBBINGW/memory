@@ -1057,3 +1057,30 @@ Thus no unconditional K<=T or blanket geometric-tail certificate follows until s
 **NEXT_TEST:** Only on PI continuation choose ONE C04 precise source-first matched-joint-statistics vs marginal-only cross-silo release/communication/privacy information interface, explicitly check federated weak-supervision and correlated-labeler prior art. Avoid toy repetitions and do NOT assert novelty without source-aligned feasible nontrivial algorithm plus real cost/proof advantage. No Codex or model training without permission.
 **PENDING_CODEX:** `OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO` retained and NOT_EXECUTED, NO instructions released. C03 itself requires no Codex.
 **STATE_UPDATE:** `YES` only after exact append/readback.
+
+
+---
+
+## Latest overriding checkpoint — EAI-SYNTH C04 existing MPC for private aligned three-verifier joint moments (2026-10-25)
+
+**PI-selected research identity:** `TRACK_ID=EAI`, `ACTIVE_TOPIC=SYNTHETIC_DATA`, `ACTIVE_SUBLINE=EAI-SYNTH`; **LATEST_COMPLETED=SYNTH-C04; NEXT_CANDIDATE=SYNTH-C05_NOT_STARTED**. Preserve all B1–B12 (B11/B12 He Algorithm2 semantic ambiguity is PARKED) and C01–C03 prior negative checkpoints. Do NOT switch to EAI-SYS SCOUT-S54/S55_NOT_STARTED, EAI-P, EAI-SEC or FHE/BOOT/SHIP/CGS/VFHE/EXPLORE. No Codex/ML/GPU/remote benchmarks/model download; any Codex tasks remain parked with NO prompt delivery until explicit PI ask.
+
+**ONE H-C04 falsified in specified scenario:** Three institutions hold DIFFERENT private binary verifier bit for each of N SAME ALREADY-MATCHED candidate items; a designated receiver may learn seven joint moments but no per-sample input values, and semi-honest standard MPC is allowed. Claim this REQUIRES new cryptographic primitive. **FALSE**. Exact statistics `Si=sum Yi` for i=1,2,3, `Sij=sum YiYj` for pairs12,13,23, `S123=sum Y1Y2Y3`. A direct secret-shared arithmetic circuit computes three pair products plus one triple product each aligned item (`4N` secure multiplication gates, depth2; aggregation by local additions), then reconstructs exactly SEVEN counts (+public N). This is a circuit COST not lower bound, communication benchmark, security theorem or optimized method. Pre-existing secure multiplication and statistical cross-covariance are strong direct prior art.
+
+**Original source-first novelty killers:**
+- Karr–Lin–Sanil–Reiter, Journal of Official Statistics 25(1):125–138 (2009), `https://scholars.duke.edu/publication/707743`: same records/disjoint attributes secure matrix products for off-diagonal covariance; source institutional abstract.
+- Du–Han–Chen, SDM2004 `https://epubs.siam.org/doi/10.1137/1.9781611972740.21`: secure private multivariate statistics, publisher abstract.
+- Corrigan-Gibbs–Boneh Prio NSDI2017 original `https://www.usenix.org/system/files/conference/nsdi17/nsdi17-corrigan-gibbs.pdf`, original PDF physical page2 screenshot verified. Privacy aggregation and SNIPs; NOT automatically (epsilon,delta)-DP.
+- Buddhavarapu et al. `Private Matching for Compute` ePrint2020/599 `https://eprint.iacr.org/2020/599`; author technical account `https://engineering.fb.com/2020/07/10/open-source/private-matching/`. Existing private-ID/PS3I private record matching and additive-shared outputs for downstream MPC in TWO-PARTY regime. Full ePrint PDF browser blocked; 3-party PSI not automatically proven. Kelkar et al. USENIX Security2022 secure multiplications/correlated Beaver triples `https://www.usenix.org/conference/usenixsecurity22/presentation/kelkar`.
+- C03 Allman latent 3-view identification and modern correlated weak supervision remain conditional independence boundaries, not crypto obstacles.
+
+**CRITICAL OUTPUT PRIVACY:** Exact 7 Boolean monomial moments (plus N) determine ENTIRE 8-cell joint contingency table by standard inclusion–exclusion, e.g. `n111=S123`, `n110=S12-S123`, `n100=S1-S12-S13+S123`, `n000=N-S1-S2-S3+S12+S13+S23-S123`. An MPC protocol revealing only counts has input secrecy up to output leakage but NEVER automatically record-level DP. For fixed N and replace-one matched-record DP adjacency, normalized seven-vector has L1 sensitivity EXACTLY `7/N` (record 000 vs 111); independent scale `7/(N*epsilon)` Laplace per coordinate gives a textbook central pure-epsilon-DP baseline, NOT a novel distributed noise protocol/user-level guarantee. Low-q inversion may become unstable. A three-party common-sample alignment and malicious-input semantic soundness remain unverified; source 2020 matching covers only 2-party and specific threat models.
+
+**Documents written/readback:** `findings/eai-synth-c04-private-three-verifier-joint-moment-mpc-priorart-gate-2026-10-25.md`; `failures/eai-synth-c04-private-three-verifier-moments-new-primitive-no-go-2026-10-25.md`.
+
+**STATUS:** `FAIL_C04_NEW_PRIMITIVE_REQUIRED_FOR_PRIVATE_THREE_VIEW_MOMENTS`.
+**RESULT:** `PASS_7_MOMENT_LOW_DEGREE_MPC_CIRCUIT / PASS_2004_2009_STATISTICAL_MPC_PRIOR_ART / OUTPUT_DP_NOT_FROM_INPUT_MPC`.
+**NOVELTY:** `FAIL` for a new primitive / ordinary private joint-moment pipeline. Broader EAI-SYNTH `NOT_ESTABLISHED`.
+**NEXT_TEST:** Only if PI continues: exactly ONE C05 prior-art-first meaningful **costed DP-accuracy-conditioned weak-supervision** regime, with stringent independent literature novelty falsifier, or recommend more strategic topic pivot after repeated adjacent no-gos. Do not run another two-class toy or automated model/GPU/Codex without explicit permission.
+**PENDING_CODEX:** `OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO` unchanged, NOT EXECUTED and no prompt sent; C04 requires none.
+**STATE_UPDATE:** `YES` only after exact append + GitHub readback.

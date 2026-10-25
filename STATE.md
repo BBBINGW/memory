@@ -1184,3 +1184,9 @@ TRACK_ID=EAI; ACTIVE_TOPIC=SYNTHETIC_DATA; ACTIVE_SUBLINE=EAI-SYNTH ONLY. **LATE
 Full source-first math/prior art: `findings/eai-synth-c09-frost-finite-reuse-conditional-gradient-source-gate-2026-10-26.md`. Negative: `failures/eai-synth-c09-finite-real-reuse-population-unbiased-ema-no-go-2026-10-26.md`. Both committed and exact-readback verified.
 
 **NEXT_TEST:** PI continuation only, ONE high-value fresh synthetic-training contribution gate, not adjacent EMA toy. Agent recommends STRATEGIC_REVIEW/PARK if no concrete new technique/cost frontier. **PENDING_CODEX:** OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO (carried, NOT_EXECUTED; no prompt released). **STATE_UPDATE:** YES after root exact readback.
+
+
+---
+
+## EAI-SYNTH C10 modular state pointer (2026-10-26)
+TRACK_ID=EAI; ACTIVE_SUBLINE=EAI-SYNTH. **LATEST_COMPLETED=SYNTH-C10; NEXT=SYNTH-C11_NOT_STARTED**, no automatic launch. **STATUS=FAIL_NOVELTY**, optimizer-aware gradient ranking is prior-known OPUS ICML2026. FULL NEW STATE: `findings/eai-synth-STATE.md`; finding `findings/eai-synth-c10-optimizer-aware-synthetic-selection-priorart-gate-2026-10-26.md`; negative `failures/eai-synth-c10-optimizer-oblivious-raw-gradient-rank-no-go-2026-10-26.md`. Root historic content preserved; future EAI-SYNTH checkpoints belong in modular file. **PENDING_CODEX** B11 author-code check carried NOT_EXECUTED; other research tracks unchanged.

@@ -1,0 +1,20 @@
+# EAI-SYNTH C08 negative — An external verifier/heldout set is NOT required for online mixed-training synthetic utility proxy
+Date 2026-10-26 Asia/Singapore; EAI-SYNTH only, B11/B12 and C01–C07 parked/archived appropriately. No Codex, model, GPU, experiment, external server or environment changes.
+
+H-C08 FALSE for mixed real+synthetic supervised training: to estimate a synthetic candidate's local FIRST-ORDER contribution to current real-task training loss, separate external verifier OR labeled heldout validation is strictly necessary; labeled real TRAINING gradient is insufficient. The original Sep24 2026 arXiv preprint FROST already does exactly this.
+
+[ORIGINAL SOURCE / PRIOR ART] Wu et al. 'Let Training Guide Selection: Online Synthetic Data Filtering via Real-Anchored Utility', arXiv 2609.29988v1 original https://arxiv.org/html/2609.29988 and https://arxiv.org/pdf/2609.29988 . PDF p3 and p13 original visually screenshot inspected. §3.1 Eqs2–6 uses Taylor first-order synthetic-gradient alignment to real-training gradient EMA; §3.2–3.3 batch calibrated routing + sample IQR; Appendix A.1 Eq15–17 bounds reference-tracking error and curvature; Appendix B.2 Eq23–24 efficient head-gradient factorization, Appendix B.3 cost/throughput. Independent related preprint Ba–Mancenido–Pan arXiv2610.00814 'Training-Aware Target Coverage for Synthetic Data Selection' https://arxiv.org/abs/2610.00814 already connects marginal target-relevant utility and data-coverage benefit; abstract/article excerpt only verified (full original PDF/HTML blocked). Earlier GRAD-MATCH, LESS, GREATS, TracIn influence-based selection are also strong prior art.
+
+[ONE TEST] For L-smooth real training objective L_R(theta), candidate synthetic sample gradient g_s and hypothetical step theta'=theta−eta*g_s:
+  L_R(theta)−L_R(theta') >= eta gradL_R(theta)^T*g_s −(L eta²/2)||g_s||².
+Thus real training mini-batch reference gradient alone yields computable first-order signal. FROST implements u_{i,t}=Rhat_t^T g_{i,t}; model-state-conditioned and no external per-sample verifier or heldout dataset. Hence H-C08 FALSE. FROST source equation17 already includes `−eta||R_t−Rhat_t||*||g_s||−L eta² ||g_s||²/2`; positive/high alignment does NOT assure improvement or rank true benefits, so no novelty in pointing out curvature or gradient-proxy error.
+[AUTHOR REPORTED, NOT REPRODUCED] Spider1.0 Qwen2.5-Coder-0.5B: full syn pool EX64.8%, FROST EX65.7% (20.4% synthetic drop), matched GREATS 65.3%. CIFAR100 3 generators full syn vs FROST +0.58 to +1.14 absolute percentage points with 24–26% drop. Production ads author reports +0.211% NE worsening for full synthetic vs −0.096% improvement with FROST and 36% drop. Appendix B.3 reports image training throughput −6.8% and ads −5.7%, showing gradient-based screening has real implementation overhead. These are not verified by us.
+[BOUNDARY] Needs accessible labeled real TRAINING signal and differentiable loss, does not imply unobserved test-set unbiasedness, multi-generation stability, privacy, no-labeled-data utility, task guarantee or no scorer overhead. No claim TATC's whole proof was fully inspected.
+[SCIENCE] 'Replace verifier using real-gradient online' and 'high scalar gradient utility may misrank true risk' both directly prior-known. No invention, no publishable contribution from C08. Recommend PARK this generic gradient-oracle replacement and avoid consecutive easy near-duplicates.
+
+STATUS: FAIL_C08_EXTERNAL_VERIFIER_NECESSARY_FOR_ONLINE_SYNTHETIC_UTILITY
+RESULT: Source + single smoothness inequality show existing real-gradient first-order utility, with real preprint algorithm and reported LLM/vision/ads results.
+NOVELTY: FAIL, EAI-SYNTH broader NOT_ESTABLISHED.
+NEXT_TEST: PI continuation only; one new important source-first technical cost/assumption hole beyond FROST/TATC/LESS/GREATS, with explicit baseline and nontrivial implementation or proof advantage; no automatic C09.
+PENDING_CODEX: OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO carried unexecuted/unshared. No new Codex tasks.
+STATE_UPDATE: YES after readback and root checkpoint.

@@ -765,3 +765,24 @@ STATUS: PASS public extraction algebra; UNCLEAR concrete matched-noise lattice s
 **NEXT_ACTION:** `B2_PRIORART_FIRST_ADAPTIVE_DP_TAIL_COVERAGE_INTERFACE_GATE` **only upon PI continuation**: read original adaptive DP rare subgroup/coverage query prior art and compare directly with Qiao Appendix C.6 and FedUSD mechanics; choose ONE specific permissible query/trust/privacy/communication regime and minimal test; kill if simple DP query solves it or information-theoretic obstruction without a feasible extra interface. Do not start Codex, model training or new numbered experiment automatically.
 **NEXT_TEST:** `SOURCE_FIRST_B2_ADAPTIVE_TAIL_IDENTIFIABILITY_VS_PRIVACY_COST_SCREEN`.
 **STATE_UPDATE:** `YES` once this GitHub checkpoint is committed and reread.
+
+
+---
+
+## Latest overriding checkpoint — EAI Synthetic Data B2 one-shot DP adaptive-query falsifier (2026-10-25)
+
+**Explicit PI continuation:** B2 Synthetic Data / Adaptive private rare-group verification, following B1. No new GPU experiment, Codex, model download or FHE/SHIP/BOOT/CGS/VFHE/EAI-SYS S55 work. B1 remains `FAIL_MOMENT_ONLY_TAIL_IDENTIFIABILITY`, not global synthetic direction abandonment. B2 is one source-first technical falsification, not a novel published algorithm.
+
+**Sources and provenance:** full result `findings/eai-synth-b2-known-domain-adaptive-tail-privacy-gate-2026-10-25.md`; negative `failures/eai-synth-b2-per-query-privacy-novelty-no-go-2026-10-25.md`. Original arXiv full HTML read: Chen et al. ICML2025 `Scalable Private Partition Selection via Adaptive Weighting` `arxiv.org/html/2502.08878` §§3–6; Asiaee–Aryan UAI2026 `arxiv.org/html/2607.08122` §§4–5; Qiao et al. ICML2026 `arxiv.org/html/2606.13732` Appendix C.6. Kaplan et al. COLT2021 PMLR abstract and Braun et al. ePrint2024/469 original abstract were also checked, without pretending to read their full proofs.
+
+**Primary H-B2 falsified:** Unknown ADAPTIVE sequence of rare-category queries on a fixed, finite, public category domain does **not** need extra differential privacy budget **per subsequent query** if queries use one prior DP release. For replace-one single-atom individuals, h(D) L1 sensitivity **2**. One centralized release `Y_i=h_i+Lap(2/eps)`, independent, gives pure eps-DP; unlimited subsequent adaptively chosen queries whose answers are **only postprocessing of Y** retain the same guarantee. Under epsilon1, d1000, familywise zero-bin false positive target alpha0.05, exact singleton threshold `t=18.420680744`; empirical count c24 gives present-bin false negative <=0.05; c10 detected with probability ≈0.007420658. This is a **standard textbook construction**, not new. Privacy doesn't imply high utility for small c or arbitrary large-support subset queries. Cross-silo aggregation requires a separately specified trusted central curator or secure aggregation primitive; no malicious-party protocol provided.
+
+**Decisive prior art:** COLT2021 Sparse Vector Technique handles adaptive threshold queries; ICML2025 MAD/MAD2R optimizes private unknown/unbounded item discovery, user-level vs our single-record central DP; ePrint2024/469 covers two-server malicious-secure sparse histograms; UAI2026 Causal-AIM already supports adaptive DP workload and reusable synthetic release; Qiao Appendix C.6 includes DP OT. Hence generic “adaptive discovery + silo privacy + long tail” is **not an uncovered primitive**.
+
+**Open issue, NOT proven new:** Repeated generation/training with genuinely evolving private reference distribution, *semantic* rare-mode validation, fixed privacy budget and task-specific convergence certificates may present a different interface, but continual DP synthetic data and existing workload-specific DP inference must be screened before proposing anything. No source-backed nontrivial B3 repair or theorem claimed.
+
+**STATUS:** `PASS_EXACT_KNOWN_DOMAIN_DP_COUNTEREXAMPLE / FAIL_B2_GENERIC_ADAPTIVE_QUERY_PRIVACY_NOVELTY / HUMAN_REVIEW`.
+**RESULT:** `ADAPTIVE_TAIL_QUERY_PER_QUERY_DP_NECESSITY_FALSE; RARE_COUNT_UTILITY_LIMIT_QUANTIFIED; SYNTHETIC_B3_NOVELTY_NOT_ESTABLISHED`.
+**NEXT_ACTION:** `PI_DECIDE_CONTINUE_TO_B3_CONTINUAL_PRIVATE_REFERENCE_VS_REUSE_STALENESS_SOURCE_AUDIT_OR_PARK_SYNTHETIC_LINE`. A plain “继续” in this synthetic research context authorizes one **read-only B3 source-first gate**, not model training/GPU/Codex.
+**NEXT_TEST:** `B3_SOURCE_FIRST_CONTINUAL_PRIVATE_REFERENCE_VS_RECURSIVE_GENERATOR_GAP_SCREEN` only on PI continuation. Research lead retains decision over major pivot and publication claims.
+**STATE_UPDATE:** `YES` after GitHub append/readback. Earlier tracks and numbering unchanged.

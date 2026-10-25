@@ -963,3 +963,24 @@ No per-counter noise envelope or independence is used at the geometry step. For 
 **NEXT_TEST:** If PI continues, exactly ONE B11 original-source stopping-index gate: check He Algorithm2's precise finite-time segment-index bound and whether rare zero-progress segment retries can be bounded by a standard geometric tail under causally adaptive inputs; decide if a finite deterministic K or high-prob K permits the standard maximal inequality to apply. Stop if standard source/prior art already covers it; no automatic Codex or training.
 **PENDING_CODEX:** `NONE_REQUIRED_FOR_B10`; do not disclose or execute future Codex prompts until explicit PI request.
 **STATE_UPDATE:** `YES` after exact root append readback.
+
+
+---
+
+## Latest overriding checkpoint — EAI-SYNTH B11 sparse segment retry semantic bifurcation (2026-10-25)
+
+**Strict scope:** TRACK_ID=EAI, ACTIVE_TOPIC=SYNTHETIC_DATA, ACTIVE_SUBLINE=EAI-SYNTH. **LATEST_COMPLETED=SYNTH-B11**; **NEXT_CANDIDATE=SYNTH-B12_NOT_STARTED / HUMAN_REVIEW_B11_FIRST**. B1–B10 and unrelated EAI-SYS SCOUT-S54/S55_NOT_STARTED, EAI-P/EAI-SEC, FHE/SHIP/BOOT/CGS/VFHE/EXPLORE remain untouched. PI requests any Codex work only be parked pending (do not execute OR send instructions until they explicitly ask).
+
+**Source-first:** `findings/eai-synth-b11-sparse-segment-retry-semantics-gate-2026-10-25.md` and `failures/eai-synth-b11-unconditional-segment-index-cap-no-go-2026-10-25.md`. Original He–Vershynin–Zhu `Online Differentially Private Synthetic Data Generation` arXiv2402.08012v3 §3.3 Algorithm2 (PDF p7/index6), Appendix A Lemma3.2 (PDF p20/index19), and Dwork–Naor–Reingold–Rothblum ASIACRYPT2015 original Figure1 (PDF p8/index7) each visually checked. He's literal Algorithm2 tests `N_j+lambda'_t<=T0+lambda_j` BEFORE consuming a record; on test failure it increments segment j with unchanged t (empty segment). The original Dwork et al. mechanism instead consumes x_i before testing close. He Appendix A states unconditional `2T` Laplace variables and, on bad noise event, a trivial `T` segment bound; the printed pre-test does NOT immediately justify them. Distinguish author intent from literal pseudocode. Also printed outer `t<=T` with `t++ ; X_t` permits `X_{T+1}` read at boundary; indexing ambiguity, NOT validated deployed bug.
+
+**ONE B11 source-aligned decisive test:** Check whether the actual code has a guaranteed deterministic K<=T+O(1), or a geometric retry bound, without specifying lifetime of `lambda'_t`. Literal K deterministic bound is FALSE because empty closure has positive probability. Two plausible sampling semantics diverge sharply:
+(A) If the comparison noise `lambda'_t` is resampled on EACH condition check, fresh `lambda_j` and fresh `lambda'_t` make first check pass with conditional probability >=1/2 (iid symmetric difference). Every pass consumes >=1 input. With M=T+1 upper bound on record advancements (literal indexing), #segment openings K stochastically <= trials for M successes Ber(1/2): `E K<=2M`, `P(K>4M)<=e^(-M/4)`, `P(K>4M+16ln(1/delta))<=delta`. Standard geometric/Chernoff; not novel.
+(B) If each per-timestamp `lambda'_t` is reused on same-t retries while `lambda_j` is redrawn, write `q=e^(-eta/2), a=floor(9lnT/eta)`. For fixed Z=lambda'_t=z>=a+1, initial check pass probability `p_z=q^(z-a)/(1+q)`. The geometric number R of threshold draws has `E[R|Z=z]=1/p_z`. With discrete-Laplace `P(Z=z)=(1-q)/(1+q)*q^z`, the unconditional mean `E R>=sum_{z>=a+1}(1-q)q^a=+infinity` despite a.s. finite completion. This **conditional semantic result** does NOT prove actual author algorithm has infinite expected runtime; lifetime not explicitly fixed.
+Thus no unconditional K<=T or blanket geometric-tail certificate follows until semantics confirmed. It is an algorithm-spec/analysis audit candidate, not a novel synthetic-data primitive, DP attack, or established theorem contradiction.
+
+**STATUS:** `HUMAN_REVIEW_B11_NOISE_SAMPLING_SEMANTICS / FAIL_UNQUALIFIED_DETERMINISTIC_SEGMENT_CAP`.
+**RESULT:** `SOURCE_CONTROL_FLOW_DIFFERENCE_CONFIRMED / FRESH_NOISE_GEOMETRIC_CAP / REUSED_NOISE_CONDITIONAL_INFINITE_MEAN / AUTHOR_IMPLEMENTATION_UNVERIFIED`.
+**NOVELTY:** `NOT_ESTABLISHED`; likely prior-standard control-flow fix (2015 consumes before test). No paper-worthy primitive or validated attack.
+**NEXT_TEST:** Require an independently confirmed publisher/author version or actual source to specify whether same-t test noise is reused or redrawn, how finite Binary Mechanism horizon is handled, and off-by-one `t<=T`; if unavailable, **PARK** this subline and pivot rather than conduct repeated toy scans. No B12 launched.
+**PENDING_CODEX:** `OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO` — parked without execution or prompt delivery; higher priority is direct authoritative source clarification. PI must ask for Codex instructions before any are given.
+**STATE_UPDATE:** `YES` after exact root readback.

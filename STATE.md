@@ -711,3 +711,21 @@ STATUS: PASS public extraction algebra; UNCLEAR concrete matched-noise lattice s
 **NEXT_ACTION (HUMAN):** `PI_DECIDE_PARK_EAI_P_EAI010_AND_SELECT_NEXT_NOVEL_RESEARCH_TARGET` (recommend true structural/novel FHE or new EAI mechanism, not EAGLE3 reopening). If PI requires deployment numerical parity, explicitly authorize ONE fixed quantized-input native-vs-dequant Attention-output causality test; no automatic Codex.
 **NEXT_TEST:** `NONE_UNTIL_PI_DECISION`.
 **STATE_UPDATE:** `YES` after this commit and readback. The audit is post-EAI-010, not a newly numbered EAI-P iteration.
+
+
+---
+
+## Latest overriding checkpoint — Three AI domain strategic prescout (2026-10-25)
+
+**PI instruction:** Re-evaluate THREE original AI directions rather than default to FHE on EAI-P EAI010 closeout. PI approved this domain review. This is **cross-domain STRATEGIC PRESCOUT, NOT a newly numbered technical iteration**. Do not start EAI-SYS S55 or any unauthorized EAI/BOOT/SHIP/CGS/VFHE task.
+
+**Finding and evidence:** `findings/eai-ai-three-directions-strategic-screen-2026-10-25.md`. The next cheap-falsification priority is **(1) multi-agent tool-workflow reliability/authorization under concurrency**, then **(2) synthetic-data verifier bias and silo coverage**, then **(3) on-device AI full-stack accuracy/latency/energy/memory tradeoffs**. This is **not** a publication probability ranking.
+
+**Crucial original-source boundaries:** CoAgent arXiv2606.15376 has MTPO serializability and registered undoable tools. Cordon arXiv2606.17573 has semantic transactions, lineage, effect outbox, delegated authority; §6.5 excludes full containment for unobservable/opaque external effects. DelAct IWQoS2026 already addresses replay/idempotence/partially failed effects. DelegateGuard arXiv2610.16005 has purpose-bound revocable authority. Synthetic ICML2026 selection-bias work already develops cross-silo Wasserstein proxy references; Edge ICML2026 ParisKV and ICLR2026 PM-KVQ already demonstrate strong optimization. **No novelty or complete algorithm established**. Old EAI-P EAI010 independently audited +25.5759% synthetic-context decode-only / pointwise NLL discrepancy / existing native-kernel prior art; its PARK remains agent recommendation requiring PI judgment.
+
+**CURRENT ONE NEXT_ACTION (read-only):** `A1_SOURCE_LEVEL_CONJUNCTION_FALSIFIER`: inspect exact baseline source contracts CoAgent §§5–6, Cordon §§3–6.5, DelAct and DelegateGuard; compare inputs, outputs, concurrent state, authorization freshness, reversibility, observable tool semantics, cost. Test **one** two-agent/two-tool concurrency plus permission-change plus side-effect schedule against the strongest existing guarantee. KILL if already covered or tool semantics make the desired guarantee impossible. No Codex/GPU/framework build and no new numbered iteration automatically authorized.
+
+**STATUS:** `PASS_SOURCE_GROUNDED_STRATEGIC_SCREEN / HUMAN_REVIEW`.
+**RESULT:** `A1_AGENT_FIRST_CHEAPEST_SCREEN / B1_SYNTHETIC_NEXT / C1_EDGE_THIRD; NOVELTY_NOT_VERIFIED`.
+**NEXT_TEST:** `A1_SOURCE_LEVEL_CONJUNCTION_FALSIFIER`.
+**STATE_UPDATE:** `YES` once this GitHub append is verified. Previous research history unchanged.

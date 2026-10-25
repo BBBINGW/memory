@@ -1,0 +1,14 @@
+# EAI-SYNTH C01 negative — constant fresh real fraction does not ensure all-future rare-mode coverage
+2026-10-25 | EAI-SYNTH fresh direction C01, independent of parked B11-B12 sparse-count semantics | No Codex/GPU/train.
+
+[ONE HYPOTHESIS FALSIFIED] For any p>0, injecting 50% fresh real observations into EVERY two-record recursive training batch, and fitting each batch's empirical distribution perfectly, implies almost-sure eventual permanent presence of rare mode 1. False.
+[ONE ANALYTIC DECISIVE TEST] R_t~Bern(p) fresh real; S_t|q_t~Bern(q_t) synthetic; q_{t+1}=(R_t+S_t)/2 ∈{0,0.5,1}. Matrix M=[[1-p,p,0],[(1-p)/2,1/2,p/2],[0,1-p,p]], irreducible/aperiodic for 0<p<1. Unique stationary pi=((1-p)^2,2p(1-p),p^2). State q=0 is recurrent, so P(q_t=0 infinitely often)=1. For p=.01 stationary missing-tail rate .9801. Yet E q_{t+1}=(p+E q_t)/2 converges to p. Therefore pathwise all-generations tail coverage is STRICTLY stronger than convergence of mean or standard stability, not a consequence of positive real mixture fraction.
+[PRIOR ART] Fu et al. ICLR2025 https://proceedings.iclr.cc/paper_files/paper/2025/hash/e92e6d20f7b5db5c2a1b23964d170fe2-Abstract-Conference.html analyze mixture fraction and recursive stability in specific models, not this claimed uniform trajectory guarantee. Kazdan et al. ICML2025 https://proceedings.mlr.press/v267/kazdan25a.html and He–Xu–Cheng JRSSB2026 https://academic.oup.com/jrsssb/advance-article-abstract/doi/10.1093/jrsssb/qkag099/8722982 study stability/weighting; Qiao et al. ICML2026 full original https://arxiv.org/html/2606.13732v2 examines tail selection bias. Shumailov et al. Nature2024 https://pmc.ncbi.nlm.nih.gov/articles/PMC11269175/ already discuss finite-resampling Markov loss in no-new-real-data scenario, distinct from our fresh real irreducible chain. Elementary Markov recurrence is NOT a new theorem.
+[BOUNDARY] This is not persistent (absorbing) collapse: fresh real sampling can restore rare support, and expected q converges correctly. No private data, multi-silo, verifier, semantic rare-mode guarantee, or large-model performance proven. Do NOT misattribute this to a paper's claimed theorem or suggest every prior stability theorem promises pathwise coverage.
+
+STATUS: FAIL_C01_POSITIVE_REAL_FRACTION_IMPLIES_EVENTUAL_PATHWISE_RARE_COVERAGE.
+RESULT: Finite fresh-synthetic empirical recursion visits missing-tail state infinitely often despite convergent mean.
+NOVELTY: FAIL for elementary counterexample; EAI-SYNTH broader NOT_ESTABLISHED.
+NEXT_TEST: On PI next continuation, choose ONE genuinely source-grounded C02 claim on confidence/rare-support information vs data budget, test prior art and a cheapest decisive math bound; do not repeat another obvious Markov finite-data toy.
+PENDING_CODEX: OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO parked; NONE for C01, no prompts or runs.
+STATE_UPDATE: YES only after readback and root append verification.

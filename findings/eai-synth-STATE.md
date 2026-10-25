@@ -90,3 +90,28 @@ One source-first C11 hypothesis refuted: Kessler COLM2026 Algorithm1/§5.2 repea
 **NEXT:** No automatic C14. On explicit PI continuation, ONE truly distinct contract INFERENCE/VALIDATION gate, source-first before any Code/GPU; if only program-synthesis/DB reuse, recommend strategic PARK, not further elementary state-cache scans. PI retains decisions.
 **PENDING_CODEX:** `OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO` carried and NOT_EXECUTED/NOT_SENT; C13 NONE.
 **STATE_UPDATE:** YES if exact append readback.
+
+
+---
+
+## LATEST OVERRIDING CHECKPOINT — SYNTH-C14 execution-validated API dependency versus cross-app causal semantics (2026-10-26)
+
+**TRACK_ID=EAI | ACTIVE_TOPIC=SYNTHETIC_DATA | ACTIVE_SUBLINE=EAI-SYNTH ONLY.**
+**LATEST_COMPLETED=SYNTH-C14; NEXT_CANDIDATE=SYNTH-C15_NOT_STARTED / NONE_AUTOMATIC.**
+**STATUS=FAIL_C14_SUCCESSFUL_WORKFLOW_IMPLIES_HIDDEN_CROSS_APP_CAUSAL_DEPENDENCE.**
+**NOVELTY=FAIL** for treating API executable dependency inference as hidden causal/temporal business invariant discovery; wider SYNTH novelty `NOT_ESTABLISHED`. Historical B/C rounds preserved; EAI-SYS SCOUT-S54/S55_NOT_STARTED, EAI-P, EAI-SEC, FHE lines untouched. No Codex, GPU, model/training/remote operations.
+
+**ONE H-C14 falsification:** A chain observed as `A.calendar.reserve(u)=SUCCESS, B.rooms.book(v)=SUCCESS` with `u≠v` has identical OpenAPI/positive trace in two possible worlds: W0 independent A and B slot inventories and W1 shared slot inventory. In unobserved same-key continuation `B.rooms.book(u)`, correct outcomes are SUCCESS W0 versus CONFLICT W1. So positive-only observed workflow executability cannot certify shared state dependence. This is elementary observational indistinguishability; requires control/reset/authorized targeted intervention and/or stronger specification to disambiguate. Does not invalidate authors' claimed results.
+
+**Direct original strongest prior art and actual claim boundary:**
+- Tu Nguyen et al `APIPilot` arXiv2608.17546v2 Aug20 2026 original https://arxiv.org/pdf/2608.17546 physical PDF page0 screenshot read; §III.D explicitly states successful 2xx certifies a producer-consumer dependency EXECUTABLE UNDER CURRENT CONTEXT, NOT full business correctness. APIPilot already proposes LLM/structural edge, concretely executes, forms workflow dependency graph and refines responses. 16-service 92.3% op coverage / 88.1% workflow success are author reported, NOT cross-app invariance metrics.
+- Yang et al `LoBREST` arXiv2604.08007v1 original https://arxiv.org/pdf/2604.08007 physical p0 screenshot, §3–§4 parsed: business constraint inference from historical logs, locality slices, resource completion and fuzzing; no claim causal soundness for all hidden cross-app invariants. Formal venue unverified despite placeholder DOI.
+- Khan et al `ARMeta` arXiv2605.28321v1 full original https://arxiv.org/html/2605.28321v1 §III seed/followup metamorphic pair execution, §V plans systematic CROSS-API consistency analysis; generic 'LLM propose contrastive API tests and execute' not novel.
+- `CRUDinfer` ICSE2026 original conference https://conf.researchr.org/details/icse-2026/icse-2026-research-track/298/CRUDinfer-Automated-CRUD-Semantics-Inference-for-REST-APIs-Through-Black-box-Testing: black-box tests to refine CRUD semantics; exact published theorem not retrieved. RESTler ICSE2019 already discovered input/producer-consumer dependencies + dynamic response feedback.
+**Only possible future direction (UNCONFIRMED):** Under authorized resettable multi-app sandbox, derive/test hidden SAME-ENTITY temporal/transactional constraints with matched counterfactual probes, measured oracle/side-effect/token budgets, strong relation soundness under nondeterminism; distinguish from existing ARMeta/APIPilot/RESTler, program synthesis and causality tests. NO original algorithm or gain yet. Avoid 'first discover API dependencies' false novelty.
+
+**FINDING:** `findings/eai-synth-c14-executable-edge-vs-cross-app-causal-semantics-gate-2026-10-26.md`.
+**NEGATIVE:** `failures/eai-synth-c14-executable-success-causal-cross-app-certification-no-go-2026-10-26.md`.
+**NEXT:** NO AUTOMATIC C15. Only PI continuation permits one source-first constrained oracle/intervention-cost gate. If result just ARMeta/LoBREST composition, recommend PARK rather than more passive success toy tests.
+**PENDING_CODEX:** `OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO`, unexecuted and no prompt released. No C14 Codex.
+**STATE_UPDATE:** YES on exact append/readback. Root giant STATE.md NOT changed.

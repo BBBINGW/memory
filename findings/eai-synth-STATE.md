@@ -52,3 +52,22 @@ One source-first C11 hypothesis refuted: Kessler COLM2026 Algorithm1/§5.2 repea
 **PENDING_CODEX:** `OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO`, carried and NOT_EXECUTED, NO prompts sent. No new C11 Codex.
 **ISOLATION:** EAI-SYS latest SCOUT-S54/S55_NOT_STARTED, EAI-P, EAI-SEC, all FHE/SHIP/BOOT/CGS/VFHE/EXPLORE unchanged.
 **STATE_UPDATE:** YES after exact GitHub reread.
+
+
+---
+
+## LATEST OVERRIDING CHECKPOINT — SYNTH-C12 cross-app causal state interface (2026-10-26)
+
+**TRACK_ID=EAI | ACTIVE_TOPIC=SYNTHETIC_DATA | ACTIVE_SUBLINE=EAI-SYNTH ONLY.**
+**LATEST_COMPLETED=SYNTH-C12. NEXT_CANDIDATE=SYNTH-C13_NOT_STARTED.**
+**STATUS=FAIL_C12_APP_LOCAL_HISTORY_SUFFICIENCY / UNCLEAR_NEW_ALGORITHM.** Historical C01–C11 remain archived/PARKED (C11 strategic review recommendation not overruled). User "好的，请继续" after C11 authorized ONE fresh strategic research gate C12 within SYNTH, not an unlimited continuation or a switch to EAI-SYS/FHE. No Codex, GPU, model, environment or source code run.
+
+**ONE C12 falsification:** For cross-app shared-resource contract, simulator of app B sees only same-app history and same request/schema/task/user; world W0 shared slot free vs W1 A has invisibly reserved the slot; correct `B.rooms.book(slot)` response must be SUCCESS vs CONFLICT. Identical B input means no B-only policy can guarantee correctness in both. This is an information insufficiency result, NOT real Apple measurement or any author's theorem error. Source Apple **SimSAT** Lee et al arXiv2607.16900v3 §3.3 PDF p5 explicitly restricts simulator history to prior SAME-APP API calls (original PDF screenshots p2 and p9); its work uses LLM judge/schema checks, and reports AppWorld/OfficeBench transfer. Source Gaia2 Froger et al **ICLR2026** https://arxiv.org/pdf/2602.11964 Appendix A.3 original PDF p18 screenshot explicitly says cross-app temporal/relationship/cross-modal constraints remain partly UNSOLVED in their app dependency graph. StateGen arXiv2606.16307v1 §4 uses global shared world-state manager, §12 admits multi-record transactions/partial rollbacks are uncertain; AWM ICML2026 and EnvFactory arXiv2605.18703 have executable/shared backend and dependency graph already. Generic share history/global state/event log is **OLD** and insufficient for publication. No new optimal bounded-context causal evidence projection, proof, code or benchmark is established.
+
+**Novelty:** `FAIL` for obstruction/basic repair; `UNCLEAR / NOT_ESTABLISHED` for a narrowly costed **dynamic cross-app causal-state witness**, particularly temporal/transactional constraints at fixed simulation token/latency budget vs full global simulator. Original STS October2026 full text not yet accessible; verify before any future novelty claim. No actual SimSAT/Gaia2 training or consistency regression measured by us. A promising topic class is NOT an approved new algorithm.
+**FULL EVIDENCE:** `findings/eai-synth-c12-cross-app-causal-state-local-history-source-gate-2026-10-26.md`.
+**NEGATIVE ARCHIVE:** `failures/eai-synth-c12-app-local-history-cross-app-causality-no-go-2026-10-26.md`.
+**NEXT_TEST (PI continuation ONLY):** ONE C13 strict source-first *method novelty and cost* gate: determine if proposed provenance-indexed minimal cross-app event/state projections with temporal contracts give verifiable lower prompt cost or stronger consistency than current Gaia2 global dependency graph, StateGen shared state, AWM/EnvFactory executable databases, classic event sourcing and incremental database views. Kill if generic event log already achieves same measurable goal. Do not restart C01–C11 toy sequence, no automatic C13/Codex/GPU.
+**PENDING_CODEX:** OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO (carried, NOT_EXECUTED, prompt NOT_SENT); C12 no new Codex task.
+**ISOLATION:** EAI-SYS SCOUT-S54/S55_NOT_STARTED, EAI-P, EAI-SEC, SHIP/BOOT/CGS/VFHE/EXPLORE all untouched. Do not write root STATE.md near size cap.
+**STATE_UPDATE:** YES after exact reread.

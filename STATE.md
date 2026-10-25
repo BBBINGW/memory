@@ -786,3 +786,26 @@ STATUS: PASS public extraction algebra; UNCLEAR concrete matched-noise lattice s
 **NEXT_ACTION:** `PI_DECIDE_CONTINUE_TO_B3_CONTINUAL_PRIVATE_REFERENCE_VS_REUSE_STALENESS_SOURCE_AUDIT_OR_PARK_SYNTHETIC_LINE`. A plain “继续” in this synthetic research context authorizes one **read-only B3 source-first gate**, not model training/GPU/Codex.
 **NEXT_TEST:** `B3_SOURCE_FIRST_CONTINUAL_PRIVATE_REFERENCE_VS_RECURSIVE_GENERATOR_GAP_SCREEN` only on PI continuation. Research lead retains decision over major pivot and publication claims.
 **STATE_UPDATE:** `YES` after GitHub append/readback. Earlier tracks and numbering unchanged.
+
+
+---
+
+## Latest overriding checkpoint — EAI-SYNTH B1/B2 archive and new-session handoff (2026-10-25)
+
+**CURRENT PI-SELECTED AI RESEARCH TOPIC:** `TRACK_ID=EAI`, `ACTIVE_TOPIC=SYNTHETIC_DATA / EAI-SYNTH`. User explicitly selected synthetic data after previous AI-domain and Agent A1 screens. Last completed bounded gates: **B1** and **B2**. **NEXT CANDIDATE: B3_SOURCE_FIRST, B3_NOT_STARTED.** Do NOT inherit `EAI-SYS SCOUT-S54/S55`, EAI-P, Agent A1, EAI-SEC or FHE iteration counters. Existing history unchanged.
+
+**Authoritative cross-chat entrypoint:** `findings/eai-synth-session-handoff-2026-10-25.md` (full restore order, pinned source provenance, negative gates, hypothesis and next cheapest source-first B3 test). Companion files:
+- `findings/eai-synth-b1-source-mechanism-and-moment-boundary-2026-10-25.md`
+- `failures/eai-synth-b1-moment-tail-coverage-no-go-2026-10-25.md`
+- `findings/eai-synth-b2-known-domain-adaptive-tail-privacy-gate-2026-10-25.md`
+- `failures/eai-synth-b2-per-query-privacy-novelty-no-go-2026-10-25.md`
+
+**B1:** Exact 4-atom two-world counterexample has equal normalized first and second moments (0.41,0.65), but tail x=3 probability 1% vs0. **FAIL low-order moment sufficiency**; Qiao 2026 uses richer Wasserstein proxies/DP OT (not refuted). **B2:** Fixed known-domain one-release `epsilon`-DP histogram `h+Lap(2/eps)` under replace-one item-level neighbors supports unlimited adaptive **postprocessing of that release** at no additional privacy cost; d1000 eps1 alpha/beta.05 zero-bin threshold18.42068, rare empirical c10 detect ≈0.00742, c24 detect ≈0.9693 under this basic algorithm. **FAIL generic extra-privacy-per-query and naive novel-tail-discovery claim**. Already adjacent prior art: Sparse Vector, MAD/MAD2R, malicious sparse histograms, Causal-AIM, Qiao DP OT. These are bounded negative tests, not a claim the entire synthetic-data field is exhausted.
+
+**B3 source-first conditional candidate, NOT an established gap:** Dynamic private real-data reference `P_t` during recursive synthetic generation/retraining vs continual `(epsilon,delta)`-DP synthetic release and Wasserstein multi-silo reference proxies. Before new construction, read **original full** 2024 `Continual Release of Differentially Private Synthetic Data from Longitudinal Data Collections` (verify exact metadata/version), Qiao et al. ICML2026 arXiv2606.13732 §§3–4 AppC.6, UAI2026 Causal-AIM arXiv2607.08122, then latest genuinely matching prior art. Construct a concrete source/assumption compatibility table and test ONE nontrivial 2-time interface mismatch/obstruction using minimal derivation. A fixed proxy becoming stale is TRIVIAL, not a novel contribution. **Kill** B3 if closest prior art already handles it or mismatch is due to irreparable missing observability. No model training, Codex, GPU, downloads, external process or new numbered technical experiment automatically authorized. A new-chat `继续` explicitly permits this single **read-only B3 literature+math gate**.
+
+**STATUS:** `B1_FAIL_MOMENT_IDENTIFIABILITY / B2_FAIL_GENERIC_DP_ADAPTIVE_QUERY_NOVELTY / B3_NOT_STARTED / READY_FOR_SESSION_RESUME`.
+**RESULT:** `TWO_SOURCE_GROUNDED_NEGATIVE_GATES_PRESERVED / SYNTHETIC_DIRECTION_NOT_KILLED / NO_PUBLISHABLE_NOVELTY_VERIFIED`.
+**NEXT_TEST:** `B3_SOURCE_FIRST_CONTINUAL_REFERENCE_PRIVATE_SYNTHETIC_GAP_FALSIFIER`.
+**NEXT_ACTION:** `READ_HANDOFF_AND_2024_CONTINUAL_SYNTHETIC_ORIGINAL_COMPARE_QIAO_DPOT_CAUSAL_AIM_THEN_ONE_TWO_TIME_FALSIFIER`.
+**STATE_UPDATE:** `YES` after this GitHub append and readback; old findings/failures not overwritten.

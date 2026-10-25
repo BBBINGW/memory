@@ -984,3 +984,21 @@ Thus no unconditional K<=T or blanket geometric-tail certificate follows until s
 **NEXT_TEST:** Require an independently confirmed publisher/author version or actual source to specify whether same-t test noise is reused or redrawn, how finite Binary Mechanism horizon is handled, and off-by-one `t<=T`; if unavailable, **PARK** this subline and pivot rather than conduct repeated toy scans. No B12 launched.
 **PENDING_CODEX:** `OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO` — parked without execution or prompt delivery; higher priority is direct authoritative source clarification. PI must ask for Codex instructions before any are given.
 **STATE_UPDATE:** `YES` after exact root readback.
+
+
+---
+
+## Latest overriding checkpoint — EAI-SYNTH B12 2025 author thesis confirms unresolved sparse noise semantics (2026-10-25)
+
+**Active isolated track:** `TRACK_ID=EAI`, `ACTIVE_TOPIC=SYNTHETIC_DATA`, `ACTIVE_SUBLINE=EAI-SYNTH`. **LATEST_COMPLETED=SYNTH-B12; NEXT_CANDIDATE=NONE / B13_NOT_STARTED; SUBLINE_DECISION=PARK_SPARSE_COUNT_SEMANTICS_PENDING_AUTHOR_CLARIFICATION**. All B1–B11 and EAI-SYS SCOUT-S54/S55_NOT_STARTED, EAI-P/EAI-SEC and unrelated FHE/SHIP/BOOT/CGS/VFHE/EXPLORE untouched. User directs all Codex work requirements be parked pending with no execution/prompts until explicitly asked.
+
+**Source files:** `findings/eai-synth-b12-2025-author-thesis-semantic-resolution-source-gate-2026-10-25.md` plus `failures/eai-synth-b12-later-author-source-resolves-noise-semantics-no-go-2026-10-25.md`. B11 human review retained. Original 2024 author paper formally published in `IEEE Transactions on Privacy 1 (2024), 19–30`, DOI `10.1109/TP.2024.3486687`; arXiv `2402.08012v3` original PDF Algorithm2 printed p7 / Appendix A printed p20 physically screen-reviewed. Also author's Roman Vershynin website indexed original PDF and author Yiyun He 2025 UC Irvine Mathematics dissertation `Differentially Private Synthetic Data`, Chapter5 §5.2.2 **Algorithm10** and **Lemma5.6 proof**, official UC eScholarship `https://escholarship.org/uc/item/8pg3c2md` (PDF physical page93–95, printed82–84) direct PDF text retrieved. Note publisher-PDF screenshot endpoint 429; no claim of visual validation for thesis. IEEE typeset final article full-text could not be retrieved; no verified canonical code repository/erratum found in limited public discovery. Search absence is NOT proof none exists.
+
+**ONE H-B12 author-version gate NEGATIVE:** Later author source clarifies repeated-timestamp test-noise lifetime or actual segment-index upper bound, settling B11. Instead 2025 dissertation reproduces the pretest BEFORE consuming `X_t`, noise symbol `lambda'_t~Lap`, end-segment and j++, and in Lemma5.6 proof the `2T noises` and unconditional `T segments` language. No explicit `lambda'_t` reuse-versus-redraw rule resolved. The literal loop can end empty segments without advancing time; this is corroborated across author texts, but does **NOT** establish which execution was intended or show actual privacy/utility bug. B11's fresh-noise standard geometric-tail and reused-time-sample conditional infinite-mean cases remain mutually distinct hypothetical interpretations, not author verdicts.
+
+**STATUS:** `HUMAN_REVIEW_B12_SOURCE_SEMANTICS_UNRESOLVED / SOURCE_COMPARISON_COMPLETE`.
+**RESULT:** `AUTHOR_2025_THESIS_FOUND_AND_COMPARED / TEXTUAL_CONTROL_FLOW_PERSISTS / REFERENCE_IMPLEMENTATION_AND_FINAL_IEEE_SEMANTICS_UNVERIFIED`.
+**NOVELTY:** `NOT_ESTABLISHED`, neither new DP primitive nor validated author vulnerability.
+**NEXT_TEST:** NONE automatically on this sparse-count subline. On PI explicit request alone: acquire actual author canonical implementation / exact final IEEE PDF / author clarification to disambiguate test noise lifetime, or separately authorize a **fresh EAI-SYNTH** synthetic-data direction. Do NOT start B13 adjacent Toy calculations or turn this ambiguous pseudocode into a paper claim.
+**PENDING_CODEX:** `OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO` (carried, not run, no prompt delivered). No extra Codex requirement for B12. Continue original PI rule.
+**STATE_UPDATE:** `YES` after exact append/readback.

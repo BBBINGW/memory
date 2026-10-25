@@ -674,3 +674,22 @@ STATUS: PASS public extraction algebra; UNCLEAR concrete matched-noise lattice s
 **NEXT_TEST:** `NO_EAGLE3_TEST_WHILE_PARKED`.
 **NEXT_ACTION:** `READ_ONLY_EAI_P_EAI010_ARTIFACT_QUALITY_AND_PRIORART_AUDIT`.
 **STATE_UPDATE:** `YES` for this GitHub Notes checkpoint, subject to immediate read-back validation; independent raw Codex ZIP audit still PENDING.
+
+
+---
+
+## Latest overriding checkpoint — EAI-P/EAI-010 evidence recovered, raw independent audit pending (2026-10-25)
+
+**Current PI-selected target:** `EAI-P / EAI-010` **read-only RAW evidence and quality audit**. EAI-SYS EAGLE3 K0 remains parked, `SCOUT-S54_COMPLETED`, `S55_NOT_STARTED`; EAI-P's historical EAI-010 is already completed, and no new EAI-P numbered research experiment began. All earlier FHE and EAI study notes are preserved.
+
+**New evidence record:** `findings/eai-p-eai010-raw-evidence-recovery-gate-2026-10-25.md`.
+
+**Latest Codex report:** `PASS_EVIDENCE_RECOVERED`; original remote EAI-010/EAI-009R manifest checks 143/143 and 129/129, pinned llama.cpp `f849095365d5ac1f560886a4e6574531d559e96f`, both original directories read-only checked. Three existing paired 32K decode runs recomputed: Native `320.145267516` vs Conversion `254.941605844` tok/s = **+25.575920202%** (assistant independently checked the ratio arithmetic). 255 paired NLL positions reportedly aligned; `mean(abs(pointwise NLL delta))=0.092033067989` nat, not the misleading `abs(diff of mean NLL)=0.002821804440`. This is **not** a quality-equivalence PASS or new quality evaluation. Close prior art: llama.cpp Issue #30001 (2026-10-05) already reports closely analogous selective native q8_0/q4_0 FlashAttention and +26% at 32K on RTX4090: **NOVELTY_NOT_ESTABLISHED**.
+
+**Evidence limitation:** sanitized 44,599,217B Mac-local `EAI-010-RAW-EVIDENCE-AUDIT-2026-10-25.zip` SHA256 **reported** `4f695731ad080f65c8903b75fe79a82ab33555d15ad7ef82c9ef1884f4bdf6ac`; original source/CSV/ZIP bytes **not accessible to this ChatGPT session**, and cannot claim independent hash/manifest validation. No new GPU run, build, downloads or experimental changes.
+
+**STATUS:** `PASS_EVIDENCE_RECOVERED_CODEX_REPORTED / GPT_RAW_AUDIT_PENDING`.
+**RESULT:** Raw artifacts reportedly preserved and rechecked by Codex; reported throughput ratio independently recalculated, distinct NLL statistics clarified, strong overlapping native-kernel prior art; no accepted new algorithm.
+**NEXT_ACTION:** `USER_UPLOAD_EAI010_RAW_ZIP_TO_CHAT_THEN_GPT_CHECK_SHA_MANIFEST_PAIRED_CSV_AND_NLL_BEFORE_ANY_MORE_CODEX`.
+**NEXT_TEST:** `READ_ONLY_INDEPENDENT_RAW_ARTIFACT_AUDIT`; no new native experiments or extra research iteration.
+**STATE_UPDATE:** `YES` after GitHub append readback.

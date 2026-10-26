@@ -220,3 +220,20 @@ Status: **PENDING FULL TEXT**, as of 2026-10-26. Related source-first finding: `
 3. **ePrint 2026/2562** — Zhaoyang Liang, Runkun Liu, Jingwei Fang, Dan Ding, *A New Approach to Reducing Modulus Requirements in Homomorphic Computation: Precision Allocation in CKKS*, Oct 2026. https://eprint.iacr.org/2026/2562 . **Needed:** exact allocation invariant, rotation/multiplication compatibility, cryptographic budget proof, comparison to focused/shaped CKKS and data-dependent demand. Secondary blocker for novelty.
 
 Additional competitive-only 2026 sources (not prerequisite until first source gate survives): `2026/2524` GCKKS; `2026/2600` high-precision GCKKS bootstrapping; `2026/2618` native conjugate-invariant CKKS bootstrapping. All tested with Research MCP and unavailable via its verified full-text path at this date. Avoid claiming absence of authors' solved mechanisms. No Codex or native checks authorized at this time.
+
+
+## Fast Batch Bootstrapping in CKKS (Cheon–Kang–Lee, ASIACRYPT 2026)
+
+**Status:** MISSING FULL PUBLIC TEXT / exact ePrint ID not independently located as of 2026-10-26.
+
+**Authors:** Jung Hee Cheon, Minsik Kang, Junho Lee. **Venue:** ASIACRYPT 2026, accepted/to appear as confirmed by Minsik Kang's current official publication list https://mskang0503.github.io/publications/ ; publication name is not proof of its specific SinC conversion/bootstrapping content.
+
+**Needed For:** After the previous fully parsed CRYPTO 2026 SinC batch matrix multiply paper (ePrint 2025/1957), rule out whether the same authors have already implemented low-cost bidirectional SinC↔slot transforms, mixed matrix/nonlinear workload scheduling, or enhanced SinCBoot with different per-ciphertext costs, security and precision assumptions. **Do not assume ANY of these without the missing paper.**
+
+**Searched:** exact author-title on web/ePrint/arXiv and author publication page 2026-10-26. Public reference page confirms venue only; no reliable accessible full paper/algorithm or verified ePrint number was found. We did NOT identify, read or authenticate a 2026 PDF for this specific article.
+
+**Paper existing baseline already available:** ePrint 2025/1957, 32 page mirrored PDF cached and fully readable (VERSION_UNVERIFIED); physical pp12–14 §3.1/§3.2 already show SinCBoot as HalfBoot + partial-DFT stage; pp31–32 Table5 already benchmark slot→SinC and SinCBoot separately at FTm. See `findings/pure-fhe-p0-sinc-batchboot-mixed-operator-roundtrip-source-gate-2026-10-26.md`. This missing newest work is **not** a blocker to rejecting naive 'we invent SinCBoot conversion fusion', but blocks source-complete claims about any unaddressed performance headroom.
+
+**Requested Human Action:** Only if convenient, place the complete legitimate author/preprint PDF in `papers/supplied/` and provide exact publication version. No author outreach, Codex, or assumption of inaccessible results.
+
+**Reading Verification:** PENDING, no supplied file.

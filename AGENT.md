@@ -595,3 +595,10 @@ If `STATUS = HUMAN_REVIEW`, present the minimum decision package required by Sec
 **Integration & numbering:** Keep global general I1–I192 **FROZEN**, independent V1–V42, PVFHE P01–P27, TFHE-ISA T01–T02 and historical opportunity-backlog Pxx separate. Different P prefixes are NOT the same sequence. Consolidate in `findings/RESEARCH_PROGRAM_INTEGRATION_2026-10-15.md` and cross-link evidence to `findings/OPEN_RESEARCH_BRANCHES.md`. Original files and commit history remain authoritative, no rewriting old work; cross-reference rather than deduplicate by destruction. Current PI-selected strategic theme supersedes any old automatic NEXT_ACTION for parked branches, but does NOT reopen V42 or PVFHE P27 absent their specified missing evidence.
 
 **After strategic updates:** verify each GitHub write by reread and preserve parent state. Human PI still chooses a specific next primary technical target; a strategic research theme alone does not authorize unbounded autonomous exploration.
+
+
+---
+
+## Research Quality Directive (PI, 2026-10-26)
+
+**Operational source:** [Research Quality Execution Guide](findings/RESEARCH_QUALITY_EXECUTION_2026-10-26.md). Keep one primary falsifiable claim, one cheapest decisive test, source provenance, complete correctness/security/noise/cost gates, read-before-write and PI authority. Additionally implement P0 important problem-first research (not paper roulette), P1 early source/novelty/new-mechanism/end-to-end-gain gate, and P2 cross-track reusable failure lessons. Mark unavailable author algorithms SOURCE_BLOCKED; avoid repeated paper-specific toy models. Assess a bounded protocol/representation redesign for valuable interface obstructions; after two or three low-information probes trigger VALUE_REVIEW. Distinguish DERIVED, TOY_EXECUTED, CODEX_REPORTED, RAW_AUDITED and NATIVE_REEXECUTED. Do not infer a new official research round or permission to reopen a paused track from this methodology directive.

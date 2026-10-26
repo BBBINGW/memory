@@ -2,9 +2,9 @@
 
 ## Purpose
 
-This repository follows the research philosophy in `RESEARCH_PHILOSOPHY.md`.
+This repository follows the research philosophy in `RESEARCH_PHILOSOPHY.md` and the operational quality gates in [the Research Quality Execution Guide](findings/RESEARCH_QUALITY_EXECUTION_2026-10-26.md).
 
-The agent should optimize for **fast elimination of bad ideas**, not for producing large amounts of analysis.
+The agent should optimize for **important original problem selection, complete mechanism design, and fast elimination of bad variants**, not for producing large amounts of analysis.
 
 Default research pattern:
 

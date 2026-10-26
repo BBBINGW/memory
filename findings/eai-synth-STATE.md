@@ -169,3 +169,23 @@ PI authorized ONE C15 original-source/theory gate. No Codex, GPU, training, mode
 **NEXT_TEST:** NONE_AUTOMATIC. PI decides PARK or materially different source-first problem; **C17_NOT_STARTED**.
 **PENDING_CODEX:** OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO, previously displayed prompt, no confirmed submission/execution; C16 none.
 **STATE_UPDATE:** YES after exact GitHub readback. Root STATE.md unchanged.
+
+
+---
+
+## LATEST PAUSE CHECKPOINT — 2026-10-26 after SYNTH-C16 (PI-ordered AI program freeze)
+
+**AUTHORITY:** PI: "暂时封存AI这条line，我们先开个对话继续搞密码学的内容".
+**TRACK_ID=EAI | ACTIVE_TOPIC=SYNTHETIC_DATA | ACTIVE_SUBLINE=EAI-SYNTH.**
+**STATUS=PAUSED_BY_PI. LATEST_COMPLETED=SYNTH-C16. NEXT_CANDIDATE=NONE_AUTOMATIC; SYNTH-C17_NOT_STARTED.** Entire AI research program including sibling EAI-SYS/EAI-SEC/EAI-P is to remain paused pending explicit future PI reauthorization; **no sibling research-state files changed**. New independent cryptography conversation does NOT inherit or execute any AI NEXT_ACTION.
+
+**Canonical PAUSE HANDOFF:** `findings/eai-program-pause-after-synth-c16-2026-10-26.md` (the full 28-round scientific summary, named evidence files, ambiguity/novelty limits, crypto return verification warning, and strict no-unapproved-experiment rules). C16 source-first finding and failure archives remain unchanged and independently verified.
+
+**SCIENCE:** B01–B12 and C01–C16 completed = 28 gates; latest C16 falsified purported novelty of unknown finite action synchronization discovery by direct CoalA (CONCUR2025) prior art. C13–C16 are consecutive negative screening gates; restricted solutions known from DB IVM/SSI, APIPilot/ARMeta, SL^lambda RA, CoalA. Overall EAI-SYNTH **NOVELTY_NOT_ESTABLISHED**, no verified publishable original end-to-end construct. No C17 started, no models/GPU/Codex/real API executed in pause workflow.
+
+**PENDING_CODEX:** OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO remains historic **PENDING/PAUSED**. Previous chat displayed its full instruction, but submission and execution were NEVER verified. **DO NOT EXECUTE** until explicit PI approval; no newer Codex task.
+
+**CRYPTO TRANSITION SAFETY:** User wants a new conversation about earlier cryptography research, but did NOT specify BOOT vs SHIP vs VFHE vs CGS. Do NOT silently pick or launch an iteration. Prior conversation reported BOOT B123 and SHIP I407, but LIVE GitHub `findings/boot-STATE.md` appears to end around B056 and `findings/ship-memory-STATE.md` around I251; resolve independent dated snapshot provenance first. vFHE V43 revised-author CRT repair and CGS-52 status also need proper re-read. Root `STATE.md` too large; unchanged. Cryptography state files NOT modified in this transition.
+
+**NEXT_ACTION:** EAI NONE_AUTOMATIC. New crypto chat first verify primary files/snapshots and show PI a brief baseline/priority choice; PI then approves exact crypto subline/one primary hypothesis and one cheapest decisive test. Re-enter EAI only upon explicit PI instruction.
+**STATE_UPDATE:** YES upon this append and exact GitHub readback.

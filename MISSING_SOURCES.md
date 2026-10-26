@@ -187,29 +187,25 @@ Readability Verification: 2026-10-15 Research MCP PDF physical pp15–17,27 text
 Research Record: findings/pvfhe-P27-coeff-bitwidth-wire-provenance-gate.md; local report /mnt/data/PVFHE_P27_Coeff_Bitwidth_Source_Provenance_Gate.md.
 
 ## Hwang et al. ePrint 2025/395 — current 2026 full protocol
-Status: **MISSING — FULL CURRENT PAPER**; the authors' public explanatory blog is available but not a substitute for the full proof.
+Status: **SUPPLIED_READABLE — TEXT VERIFIED; OFFICIAL BYTE PARITY UNVERIFIED** (supersedes prior MISSING status).
 Authors: Intak Hwang; Yisol Hwang; Miran Kim; Dongwon Lee; Yongsoo Song
-Venue / Year: ASIACRYPT 2026 (confirmed SNU Crypto & Privacy Lab), ePrint 2025/395; updated title **On the (In)security of Approximate Computation Protocols from CKKS**.
-Identifier: https://eprint.iacr.org/2025/395 ; author blog https://ckks.org/blog/2026/Insecurity-ckks-protocol/
-Needed For: FHE×MPC standard-approximate-CKKS collaborative sampling × UC/MGHE security interface after 2026-10-26 prescout.
-Missing Evidence: exact final `F_sample`, corrupted-party / malicious / selective-abort model, precise joint output distribution, parameterized noise tails/threshold PDec simulator, full multi-party Discrete-CKKS bootstrap/cleaning sampling algorithm and exact proof/experiment scope.
-Why Public Retrieval Failed: 2026-10-26 Research MCP `get_eprint_paper(2025/395)` got official PDF HTTP403, no matching arXiv exact-title+author result and alternate GitHub mirror failed paper-title identity authentication. Web indexed excerpt from older PDF and public author blog provide partial facts but not a verified, parseable **current** full version. Do not treat accessible web snippets as current PDF proof.
-Impact: Cannot certify standard-security + `IND-CPApD/IND-CIRC/SIM-PDEC/Rob` integration or claim a novel gap. Stop source-dependent protocol variations; complete theorem-applicability comparison already recorded.
-Human Action: If convenient, supply authors' **current ASIACRYPT 2026 ePrint full PDF** to `papers/supplied/`. No outreach without PI approval.
-Repository Path: **NONE; not supplied**.
-Readability Verification: **PENDING**; full text/source version not authenticated.
-Research Record: `findings/fhe-mpc-standard-approx-uc-composition-source-gate-2026-10-26.md`.
+Venue / Year: ASIACRYPT 2026; ePrint 2025/395; title **On the (In)security of Approximate Computation Protocols from CKKS**.
+Identifier: https://eprint.iacr.org/2025/395
+Needed For: Standard approximate CKKS MPC Collaborative Sampling × malicious UC/MGHE source comparison.
+Previously Missing: Full current proof, `Fn-ColSamp`, t-out-of-n protocol and concrete bit-sharing. Prior official PDF retrieval HTTP403; author blog alone insufficient.
+Repository Path: **`papers/supplied/2025-395.pdf`**; Git blob SHA **`84710edb51998a1c9d50a8c306ec1970d8d389f5`**; **35 physical pages**.
+Readability Verification: **PASS 2026-10-26** via Research MCP `read_repo_pdf`, cover pp1–3, formal semi-honest Definition3 p7, shared-error functionality/protocol/theorem pp15–16, Discrete-CKKS BinBoot/Clean/PRF implementation p17, t-out-of-n post-selected-T AppendixD pp29–31. Equations need visually authenticated render when typesetting details matter. No independent official IACR byte identity authentication.
+Source Audit Result: Paper **proves semi-honest standard simulation in the `ColSamp` hybrid**; it does not itself establish malicious UC `FMGHE` instantiation. See `findings/fhe-mpc-supplied-fulltext-standard-approx-uc-source-gate-2026-10-26.md`.
+Human Action: **NONE** for source text currently needed; only supply official version/byte hash if independent origin identity later becomes critical.
 
 ## Cao–Chatel–Knabenhans ePrint 2025/1845 — ASIACRYPT 2026 final-version source
-Status: **MISSING — LATEST VERSION CHECK**, **older 61-page full PDF read successfully**.
+Status: **SUPPLIED_READABLE — NEW SPLIT-WITNESS REVISION TEXT; OFFICIAL BYTE PARITY UNVERIFIED** (supersedes prior MISSING LATEST VERSION status).
 Authors: Ganyuan Cao; Sylvain Chatel; Christian Knabenhans
-Venue / Year: ASIACRYPT 2026, source ePrint 2025/1845, authors' September 2026 publication entry.
+Venue / Year: ASIACRYPT 2026; ePrint 2025/1845.
 Identifier: https://eprint.iacr.org/2025/1845 ; https://s-chtl.github.io/publication/ucmhe/
-Needed For: Check whether **current final** UC-MGHE/OtF-MPC models standard approximate outputs with collaborative noise shares, and latest split-witness NIZK composition conditions.
-Missing Evidence: final source revision, precise standard vs liberal approx `FMGHE` and `FOtF-MPC` semantics; current Theorems 1–6 and `split-witness` compiler proof; whether it already composes Hwang 2025/395 in malicious multi-group setting.
-Why Public Retrieval Failed: Research MCP acquired older mirrored 61pp full text under `2025/1845` SHA256 `191dc8e8f15c4cd90bcefa5c6c42429dd8211aff76e65c3e6059292046611c47` but marked `VERSION_UNVERIFIED`; September 2026 author page announces split-witness contribution, while older PDF's checked pages do not certify that latest component. Author website points PDF to the ePrint landing, not a separately version-pinned file. The older paper **is not source-blocked for its historical Theorem1/Remark2 claims**, only final revision-specific comparison is.
-Impact: Cannot assert that 2026 final version omits or proves standard approximate output composition. Older p5 Theorem1 premises and p22 Remark2 are available with provenance qualification.
-Human Action: If convenient, provide the **latest authoritative ASIACRYPT 2026 PDF or version metadata/byte hash**, preferably including split-witness appendix; no outreach without PI authorization.
-Repository Path: **NONE for final identified version**; older full PDF cached in research MCP (not imported into repository).
-Readability Verification: Older mirror physical pp3–7,14–17,20–28, etc. read 2026-10-26; latest text **PENDING**.
-Research Record: `findings/fhe-mpc-standard-approx-uc-composition-source-gate-2026-10-26.md`.
+Needed For: malicious UC-MGHE/OtF-MPC model, approximate/language leakage semantics and split-witness NIZK.
+Previously Missing: Latest split-witness functionality and malicious compiler; older Research MCP 61pp mirror was VERSION_UNVERIFIED, SHA256 `191dc8e8f15c4cd90bcefa5c6c42429dd8211c47`.
+Repository Path: **`papers/supplied/2025-1845.pdf`**; Git blob SHA **`754d6ed681195e39488cc30175ba0f14ae5ff043`**; **62 physical pages**, includes split-witness in cover abstract and §3.4.
+Readability Verification: **PASS 2026-10-26** via Research MCP `read_repo_pdf`; pp1–11, 15–22, 24–28 readable. p17 Theorem1 for corrupt server and clients: `Rob + IND-CPApD + SIM-PDEC` under hypotheses; p18 Theorem2 for uncorrupted server adds `IND-CIRC`. p21–22 OtF-MPC approximate error tracking aligns with **liberal** security and explicitly defers standard semantics to Hwang. p25–28: actual new split-witness functionality and Naor–Yung malicious compiler; p26 states a formal realization theorem for split-witness functionality is future work. p28 keeps liberal approximate semantics. Mathematical glyphs/official source byte parity unverified.
+Source Audit Result: The newly supplied current-like source closes our **text-access** gate, NOT the research-compatibility/proof gap. See `findings/fhe-mpc-supplied-fulltext-standard-approx-uc-source-gate-2026-10-26.md`.
+Human Action: **NONE** for source text currently needed; official copy/byte parity only if future proof-level version provenance requires it.

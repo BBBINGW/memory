@@ -1,0 +1,30 @@
+# SYNTH-C15 — Reset-efficient cross-app probes: register-automata prior-art gate
+Date: 2026-10-26 Asia/Singapore
+TRACK_ID=EAI | ACTIVE_TOPIC=SYNTHETIC_DATA | ACTIVE_SUBLINE=EAI-SYNTH.
+One PI-authorized literature/theory iteration only. No Codex/GPU/model downloads/training/remote API execution or environment changes.
+
+## ONE hypothesis, ONE cheapest decisive test
+H-C15: In an authorized RESETTABLE DETERMINISTIC multi-app sandbox with FINITE control, ONE live symbolic resource identifier, equality/inequality guards and sequential operation-order conditions, discovering hidden same-entity cross-app success/conflict relations using low-reset adaptive matched API probes requires a genuinely NEW causal query selector not covered by active black-box learning.
+
+Minimal falsifier: Determine whether that restricted hidden contract is a register-automata (RA) data language and whether the original 2026 SL-lambda algorithm already learns equality guards with short/restricted distinguishing suffixes and bounded query counts. If yes FAIL/PARK. Source/representability test only; no synthetic API benchmark.
+
+## First-party evidence
+[FACT] Simon Dierl, Paul Fiterău-Broştean, Falk Howar, Bengt Jonsson, Konstantinos Sagonas, Fredrik Tåquist, *SL^lambda: A Scalable Algorithm for Register Automata Learning*, **Journal of Automated Reasoning 70, article 14 (2026-08-03)**, original publisher full HTML https://link.springer.com/article/10.1007/s10817-026-09758-9 . Read §4.1–4.6: MAT membership/equivalence oracle, classification tree, short distinguishing and restricted data-dependent suffixes. §6 **Theorem 1**: finite-index data-language RA identified with ideal membership/equivalence oracle; **Theorem 7/Corollary 8**: O(t) equivalence queries, and in equality theory O(t²(2n)^n + m t² m^m) membership queries (n locations, t transitions, m longest counterexample). §7 specializes restricted symbolic suffixes; §8 measures actual **reset counts**. Authors report up to order-of-magnitude fewer membership queries in selected benchmarks; not independently reproduced. Critical: real black-box equivalence oracle is **approximated**, so there is NO finite-budget general correctness claim about actual multi-app systems.
+[FACT] Shehroz Khan et al., **ARMeta** arXiv:2605.28321v1 original full HTML https://arxiv.org/html/2605.28321v1 §III: seed/follow-up metamorphic API tests, automatically executable; §III-B explicit **request and time budget** caps; §IV-B author setup 1000 API requests/30 minutes; §V cross-API consistency remains emerging/future, LLM nondeterminism unresolved. These are AUTHOR method/settings, NOT measured by us.
+[FACT, abstract-only] Kim et al. **AutoRestTest** (ICSE2025), institutional abstract https://research.ibm.com/publications/a-multi-agent-approach-for-rest-api-testing-with-semantic-graphs-and-llm-driven-inputs : dependency graph plus MARL adaptive exploration. Sun et al. **BRAT** (ICSE2026 SEIP), original conference abstract https://conf.researchr.org/details/icse-2026/icse-2026-software-engineering-in-practice/6/Enabling-Black-box-RPC-API-Testing-with-Multi-Agent-Reinforcement-Learning-and-LLMs- : dependency graph/constraints and MARL adaptive API target selection. No full-method or theorem audit for these two.
+[FACT from C14] APIPilot original §III.D already says a successful 2xx certifies executable dependency in current context, not business semantics. RESTler, LoBREST, CRUDinfer already study black-box dependencies and business workflows. C12/13 state-handling/DB prior remains archived.
+
+## Single falsifier [DERIVATION] — exact restricted-class reduction
+After reset, a successful A.reserve(x) moves finite control q0→q1 and stores register r:=x. B.book(y) at q1 takes equality guard y=r or inequality guard y!=r. A shared slot store yields B.book(r)=CONFLICT; independent inventory can yield SUCCESS; both can allow fresh y!=r. Finite control q0/q1 captures sequence ordering, register equality captures same-entity dependence, and responses label traces of a deterministic data language. It belongs to the finite-control one-register learning regime. The distinguishing continuation B.book(r) vs B.book(fresh) is precisely a SHORT, data-restricted symbolic suffix already exploited by SL^lambda. Thus the proposed restricted generic 'active same-key/different-key probes to minimize resets' is NOT a new primitive. This is a representation/algorithm-comparison proof, not another fabricated author bug, toy experiment, or real API measurement.
+
+## Scope boundary / decision
+[NEGATIVE] H-C15 false under these explicit assumptions. No new method or quantitative end-to-end gain.
+[OPEN] Unbounded outstanding entities, unknown cross-app ID mapping, continuous clocks, concurrency/rollback, stochastic response, incomplete reset, irreversible side effects, joint query/reset/token/side-effect budgets are NOT solved by this one-register reduction or SL^lambda oracle theorem. ARMeta does not guarantee sound hidden cross-app causal discovery. A weighted cost wrapper or LLM prompting alone has no validated new algorithm. No complete nontrivial repair was found, so do not develop the falsified mechanism further.
+[RECOMMENDATION] C13–C15 produced 3 sequential prior-art/necessity failures, no new constructive technique. Strategic PI HUMAN_REVIEW/PARK preferred to automatically launching C16; the PI can authorize a genuinely different formal target if desired.
+
+STATUS: FAIL_C15_LOW_RESET_CROSS_APP_EQUALITY_PROBING_VS_REGISTER_AUTOMATA
+RESULT: SL^lambda original method directly covers active short equality-guard probes for deterministic finite-control one-register cross-app sequential constraints; theoretical oracle limits are acknowledged.
+NOVELTY: FAIL for restricted C15 selector, wider EAI-SYNTH NOT_ESTABLISHED.
+NEXT_TEST: NONE_AUTOMATIC. C16_NOT_STARTED. PI chooses PARK or explicit materially distinct next hypothesis.
+PENDING_CODEX: OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO; its instructions were previously displayed but execution/submission unconfirmed. No C15 Codex.
+STATE_UPDATE: YES contingent on actual GitHub readback.

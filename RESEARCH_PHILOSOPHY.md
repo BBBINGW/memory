@@ -704,3 +704,26 @@ A and B independently work under documented assumptions
 **Lesson:** Finding a real obstruction and several correct necessary components is **not** yet a complete repair. In vFHE V24/V31+, we identified shared bounded integer witnesses, small-integer MLE checks and cross-modulus linking, but did not combine them into a simultaneously sound and succinct construction. The authors' revised ePrint 2025/286 §4.3 (Figure 2; Theorem 4.11) combines an auxiliary prime-field range proof, **partial evaluation (random m-variable prefix + Boolean suffix)** and bounded no-wrap integer lifting to close that gap. This is established author prior art, **not our new contribution**.
 
 **Transferable principle:** After falsifying a baseline, explicitly ask how the minimal necessary pieces can form ONE sufficient, testable protocol. Before assuming a costly generic SNARK/PCF/MPC/wrapper is necessary, screen — **when mathematically relevant** — a changed representation, auxiliary domain, selective partial evaluation/decomposition, reordered checks or bounded lifting. State the joint invariant, transcript/challenge order, completeness/soundness (or FHE correctness/security) argument, and cost/noise/precision/parameter bounds **together**. Kill the candidate if an interface or cost fails; do not mistake a collection of conditional lemmas for a working construction. Keep **one falsifiable hypothesis + one cheapest decisive test per iteration**; this is a synthesis gate, not a mandate to test every technique.
+
+
+---
+
+## 2026-10-26 Quality and Research-Convergence Amendment
+
+This PI-requested amendment complements — and does not delete — the above **填洞式科研**, one-hypothesis/one-cheapest-test rule, constructive synthesis, provenance discipline, and progressive security/noise/cost verification. The detailed execution contract and seven retrospectively identified failure remedies are maintained in [`findings/RESEARCH_QUALITY_EXECUTION_2026-10-26.md`](findings/RESEARCH_QUALITY_EXECUTION_2026-10-26.md).
+
+### P0 — 从重要问题出发，而非不断换论文
+
+Start with one source-verified, significant bottleneck, the best exact baseline, and the regime where closing it matters. Avoid the cycle `new paper → superficial technique combination → toy no-go → arbitrary next paper`. For a high-value obstruction rooted in a *particular interface*, test one bounded redesigned representation/protocol invariant before killing the broader idea. Do not mistake 'bounded redesign' for a demand to pursue infinite variants.
+
+### P1 — 把原文、原创性、机制及完整收益前置
+
+Read the author algorithm, key/ciphertext interface, revision and proof before claiming a source-specific optimization. If a critical full source is unavailable, record `SOURCE_BLOCKED` and `MISSING_SOURCES.md`; at most one source-independent necessary-condition derivation, then park the dependent claim. Compare genuine prior-art mechanisms before expensive work. Check a *new* linking invariant and an optimistic full end-to-end Pareto bound including keys, conversions, noise/precision, DFR and online/offline cost. Re-audit originality after the complete construction.
+
+### P2 — 把失败积累成设计知识，而非孤立记录
+
+Classify each important obstruction (fundamental lower bound, representation/key interface, security/noise, complete cost, novelty, source gap). Reuse evidence from VFHE cross-domain consistency, SHIP secret-coupled key compression, CGS related-hint non-composition, and BOOT NTRU/CKKS/TFHE output-interface lessons. Author-provided repairs remain *prior art*. Cross-track learning is read-only unless the PI explicitly reopens a topic.
+
+### Progress must mean more than PASS_MATH
+
+A mathematically correct model is not a whole cryptographic protocol. Always disclose assumptions, quantifiers and execution evidence. Distinguish `DERIVED` / `TOY_EXECUTED` / `CODEX_REPORTED` / `RAW_AUDITED` / `NATIVE_REEXECUTED`. A candidate only matures after correctness, security/assumptions, noise/precision/DFR, complete gain and novelty gates. Two or three low-information probes trigger `VALUE_REVIEW`; keep the three-iteration stagnation rule. The PI decides direction, trade-offs, major pivots and eventual paper contribution. This methodology amendment does **not** advance or reopen any research iteration or modify historical results.

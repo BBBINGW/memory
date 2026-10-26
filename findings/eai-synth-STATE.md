@@ -132,3 +132,21 @@ One source-first C11 hypothesis refuted: Kessler COLM2026 Algorithm1/§5.2 repea
 **NOVELTY:** current overall EAI-SYNTH `NOT_ESTABLISHED`; C14 `FAIL_C14_SUCCESSFUL_WORKFLOW_IMPLIES_HIDDEN_CROSS_APP_CAUSAL_DEPENDENCE`, with original authors explicitly limiting 2xx to executability.
 **ISOLATION:** EAI-SYS latest SCOUT-S54 and S55_NOT_STARTED, EAI-P, EAI-SEC, FHE SHIP/BOOT/CGS/VFHE/EXPLORE all unchanged and may NOT inherit this handoff NEXT. Root `STATE.md` near write cap and NOT modified.
 **STATE_UPDATE:** YES when this append exactly reread.
+
+
+---
+
+## LATEST OVERRIDING CHECKPOINT — SYNTH-C15 cross-app RA prior-art novelty gate (2026-10-26)
+
+**TRACK_ID=EAI | ACTIVE_TOPIC=SYNTHETIC_DATA | ACTIVE_SUBLINE=EAI-SYNTH ONLY. LATEST_COMPLETED=SYNTH-C15; NEXT_CANDIDATE=NONE_AUTOMATIC / SYNTH-C16_NOT_STARTED.**
+PI authorized ONE C15 original-source/theory gate. No Codex, GPU, training, model downloads, API/server/sandbox probes, or environment edits; all other EAI-SYS/EAI-SEC/EAI-P and FHE tracks untouched. Root STATE.md untouched.
+
+**STATUS: FAIL_C15_LOW_RESET_CROSS_APP_EQUALITY_PROBING_VS_REGISTER_AUTOMATA.** Hypothesis: under RESETTABLE DETERMINISTIC finite control, ONE symbolic live resource-ID register, equality guards and sequential ordering, short budgeted matched interventions to infer hidden cross-app same-key conflict demand an original new causal selector. One decisive representability+first-party test refutes necessity: A.reserve(x) stores r=x and q0→q1, B.book(y) guards y=r versus y!=r; shared versus independent resource semantics differ on same-key success/conflict. This is a restricted one-register automata/data-language model. **Dierl et al. SL^lambda, J. Automated Reasoning 70:14 (2026)** original §4, §6 Theorem 1, Theorem 7, Corollary 8, §7, §8 already learns such equality-guard dependencies using classification-tree short/restricted symbolic suffixes and reports reset counts; under ideal MAT O(t) equivalence and O(t²(2n)^n + mt² m^m) membership queries for equality theory. True real black-box equivalence is only APPROXIMATED: no claimed exact finite-budget realistic API guarantee. **ARMeta** arXiv2605.28321v1 original §III-B has executable metamorphic seed/followup and request/time budgets (author §IV-B setup 1000 API requests/30min); AutoRestTest ICSE2025 and BRAT ICSE2026 conference/author abstracts already explore graph-guided adaptive API testing, not full contract identification.
+
+**NOVELTY=FAIL** for restricted low-reset equality-query policy; **overall EAI-SYNTH NOT_ESTABLISHED**. Unlimited entities, unknown cross-app ID mapping, real-time/transaction concurrency, stochastic/irreversible side effects, weak reset and joint token/reset/side-effect budgets remain OPEN and NOT proven solved or new. No complete nontrivial repair survived the source-first falsifier. C13–C15 are three successive negative mechanism/novelty gates; agent recommends **STRATEGIC PI HUMAN_REVIEW / PARK**, not an automatic C16 adjacent toy.
+
+**FINDING:** findings/eai-synth-c15-register-automata-cross-app-intervention-priorart-gate-2026-10-26.md.
+**FAILURE:** failures/eai-synth-c15-low-reset-cross-app-same-key-query-priorart-no-go-2026-10-26.md.
+**NEXT_TEST:** NONE_AUTOMATIC, PI chooses PARK or explicitly authorizes materially different hypothesis; **C16 NOT_STARTED**.
+**PENDING_CODEX:** OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO, prompt displayed to PI in earlier chat, no verified Codex submission/execution. C15 none.
+**STATE_UPDATE:** YES upon exact reread of finding, failure and THIS appended state. Root STATE.md NOT modified.

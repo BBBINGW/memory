@@ -150,3 +150,22 @@ PI authorized ONE C15 original-source/theory gate. No Codex, GPU, training, mode
 **NEXT_TEST:** NONE_AUTOMATIC, PI chooses PARK or explicitly authorizes materially different hypothesis; **C16 NOT_STARTED**.
 **PENDING_CODEX:** OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO, prompt displayed to PI in earlier chat, no verified Codex submission/execution. C15 none.
 **STATE_UPDATE:** YES upon exact reread of finding, failure and THIS appended state. Root STATE.md NOT modified.
+
+
+---
+
+## LATEST OVERRIDING CHECKPOINT — SYNTH-C16 CoalA cross-app action-synchronization prior-art gate (2026-10-26)
+
+**TRACK_ID=EAI | ACTIVE_TOPIC=SYNTHETIC_DATA | ACTIVE_SUBLINE=EAI-SYNTH ONLY. LATEST_COMPLETED=SYNTH-C16. NEXT_CANDIDATE=NONE_AUTOMATIC / SYNTH-C17_NOT_STARTED.** Human PI "继续" after C15 authorized exactly ONE C16 literature/derivation round. Other EAI-SYS/EAI-SEC/EAI-P/FHE tracks and root STATE.md untouched. NO Codex, GPU, models, training, downloads, server/API experiments, environment changes.
+
+**STATUS=FAIL_C16_NEW_UNKNOWN_SYNCHRONIZATION_ALPHABET_DISCOVERY_NECESSARY.** Hypothesis: in deterministic resettable finite GLOBAL API-action alphabet sequential multi-app trace-language model, discovering unknown cross-app action-level synchronizing components with compositional efficiency requires a novel causal alphabet learner. One cheapest original source+representability falsifier: **Henry–Mousavi–Neele–Sammartino, CoalA, CONCUR 2025** https://tneele.com/static/papers/concur2025_comp_learning_alphabets.pdf original §3.1 Definitions 3.3/3.4, §4 Theorem 4.25, §5 Algorithm1/Lemma5.1/Theorem5.3 already infer **unknown component action alphabets/synchronization** from global membership and counterexamples, with ideal Teacher. Example a=A.reserve(u), b=B.book(u): independent Σ_A={a},Σ_B={b} accepts ab; shared-store dependency can be modeled as Σ_A={a},Σ_B={a,b} with B semantic component q0 --a-->q1, q0 --b-->q0, q1 lacks b, so ab rejected. Initial singleton alphabet decomposition wrongly accepts ab; exactly CoalA's global counterexample refinement class. The shared a is an ABSTRACT event participation, NOT literal second API invocation. CoalA §5 **Remark 5.4** explicitly does not guarantee learning actual number/identity of physical component LTS; model language-equivalence != hidden physical causality/business state recovery. Original PDF text parsed; PDF screenshot web attempt failed so not claimed visually verified. Author-reported 630+ systems/up to 5 orders fewer membership queries not independently replayed; zero API/native tests.
+
+**ADDITIONAL PRIOR:** Huo–Li **FDRRestTest ESEM2026**, publication October 5 2026, official abstract https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ESEM.2026.20 already combines API runtime dependency evolution, multidimensional logical oracle and budget-aware utility scheduling; FULL technical PDF not inspected in C16 and cannot infer complete causal world correctness from this. C15 SL^lambda equality guard learner independently exists, but RA+CoalA does NOT automatically prove a joint algorithm.
+
+**NOVELTY=FAIL** restricted cross-app synchronizing-action discovery; EAI-SYNTH overall NOT_ESTABLISHED. Complex unknown identity mapping, temporal/concurrent transaction semantics, stochastic/incomplete reset, irreversible side effects, joint query/reset/token costs remain OPEN and NOT claimed universally prior-solved. No complete nontrivial repair was established; stop given prior art. FOUR consecutive C13–C16 negative primary mechanism gates motivate STRATEGIC PI HUMAN_REVIEW / PARK instead of automatic C17.
+
+**FINDING:** findings/eai-synth-c16-unknown-synchronization-action-alphabet-coala-gate-2026-10-26.md.
+**FAILURE:** failures/eai-synth-c16-new-cross-app-action-synchronization-learner-necessity-no-go-2026-10-26.md.
+**NEXT_TEST:** NONE_AUTOMATIC. PI decides PARK or materially different source-first problem; **C17_NOT_STARTED**.
+**PENDING_CODEX:** OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO, previously displayed prompt, no confirmed submission/execution; C16 none.
+**STATE_UPDATE:** YES after exact GitHub readback. Root STATE.md unchanged.

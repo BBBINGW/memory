@@ -33,8 +33,7 @@
 新会话从 [START_RESEARCH_SESSION.md](START_RESEARCH_SESSION.md) 开始。
 本地/长期存储规则见 [LOCAL_WORKSPACE.md](LOCAL_WORKSPACE.md)；论文获取规则见
 [papers/README.md](papers/README.md)，重要证据缺口记录在
-[MISSING_SOURCES.md](MISSING_SOURCES.md)。运行 `python3 scripts/research_health.py`
-检查核心文件、Git 忽略规则及明显凭证风险（不是完整秘密扫描器）。
+[MISSING_SOURCES.md](MISSING_SOURCES.md)。如果当前 checkout 确实包含 `scripts/research_health.py`，可运行该脚本检查基础文件与凭证风险；执行前应先验证脚本存在。当前仓库目录清单未显示 `scripts/`，因此不应将该命令写成必需的启动步骤。
 
 当前 MCP 支持 `papers/supplied/` 下 PDF 的只读分页文本提取，不支持本机文件、
 PDF 写入、OCR 或图像解读。使用方法与质量限制见 `papers/supplied/README.md`。

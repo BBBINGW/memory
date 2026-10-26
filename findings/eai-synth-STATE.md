@@ -115,3 +115,20 @@ One source-first C11 hypothesis refuted: Kessler COLM2026 Algorithm1/§5.2 repea
 **NEXT:** NO AUTOMATIC C15. Only PI continuation permits one source-first constrained oracle/intervention-cost gate. If result just ARMeta/LoBREST composition, recommend PARK rather than more passive success toy tests.
 **PENDING_CODEX:** `OPTIONAL_B11_AUTHOR_VERSION_SEMANTIC_AND_MINIMAL_CONTROL_FLOW_REPRO`, unexecuted and no prompt released. No C14 Codex.
 **STATE_UPDATE:** YES on exact append/readback. Root giant STATE.md NOT changed.
+
+
+---
+
+## LATEST HANDOFF CHECKPOINT — 2026-10-26 after C14 (C15 still NOT_STARTED)
+
+**TRACK_ID: EAI | ACTIVE_TOPIC: SYNTHETIC_DATA | ACTIVE_SUBLINE: EAI-SYNTH ONLY.**
+**LATEST_COMPLETED: SYNTH-C14. NEXT_CANDIDATE: SYNTH-C15_NOT_STARTED.** A cross-chat HANDOFF only; this update did NOT run a research iteration, Codex, GPU, a model, or any remote experiment.
+**FULL SELF-CONTAINED HANDOFF:** `findings/eai-synth-session-handoff-2026-10-26.md` (latest read order, summary of B01–B12/C01–C14, P0–P3 priorities, isolation, one-claim/one-test protocol, C15 original-source target).
+**OPTIONAL CODEX TASK FILE:** `findings/eai-synth-pending-codex-b11-author-semantics-audit-2026-10-26.md`. Explicit CORRECTION to stale earlier checkpoints: the PI requested Codex instructions and a full B11 prompt was **displayed in the previous ChatGPT answer** on 2026-10-26; however there is NO confirmation it was submitted to Codex and NO verified Codex execution. Task remains OPTIONAL_P2/PENDING, must not execute autonomously.
+**PRIORITY P0:** Only on new explicit PI request, run ONE C15 source-first gate investigating whether bounded, authorized, resettable cross-app interventions can identify HIDDEN SAME-ENTITY temporal/transactional/business causal constraints better than existing APIPilot, ARMeta, LoBREST, CRUDinfer, RESTler and related program synthesis / active testing. First identify exactly one falsifiable new algorithmic claim and its cheapest prior-art-killing test; don't automatically run API calls or code.
+**PRIORITY P1:** conditional on C15 genuine novelty, design an end-to-end comparison with oracle/reset/side-effect/token budgets and soundness plus consistency metrics; seek distinct PI approval for code.
+**PRIORITY P2:** historical B11/B12 author-code source ambiguity audit (optional Codex instruction saved).
+**PRIORITY P3:** B01–B10/C01–C11 parked; C12–C14 base issue and generic repairs already prior known, do not restart adjacent toys.
+**NOVELTY:** current overall EAI-SYNTH `NOT_ESTABLISHED`; C14 `FAIL_C14_SUCCESSFUL_WORKFLOW_IMPLIES_HIDDEN_CROSS_APP_CAUSAL_DEPENDENCE`, with original authors explicitly limiting 2xx to executability.
+**ISOLATION:** EAI-SYS latest SCOUT-S54 and S55_NOT_STARTED, EAI-P, EAI-SEC, FHE SHIP/BOOT/CGS/VFHE/EXPLORE all unchanged and may NOT inherit this handoff NEXT. Root `STATE.md` near write cap and NOT modified.
+**STATE_UPDATE:** YES when this append exactly reread.

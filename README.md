@@ -6,7 +6,8 @@
 
 - AGENT.md：用户确认的协作与操作规则。
 - RESEARCH_PHILOSOPHY.md：用户确认的研究原则。
-- STATE.md：仅全局战略和各研究线索引；不包含可执行的 NEXT_ACTION。
+- [科研质量执行指南](findings/RESEARCH_QUALITY_EXECUTION_2026-10-26.md)：七个科研问题的修复、P0–P2、完整贡献门槛与可复现证据等级。
+- STATE.md：历史及当前状态入口，可能包含可执行的 NEXT_ACTION；若落后于可信的最新研究线快照，必须先核验和对账，不能凭旧标题改变当前方向。
 - TODO.md：待办与下一步。
 - inbox/：临时材料和未分类文字。
 - papers/notes/：论文阅读笔记、引用和原文链接。
@@ -18,7 +19,7 @@
 
 选择 GitHub Notes 插件，然后指定目标路径，例如：
 
-- “先按 START_RESEARCH_SESSION.md 锁定 TRACK_ID，再读取对应研究线的状态文件。”
+- “先按 START_RESEARCH_SESSION.md 识别 PI 最近明确选择的目标，读取科研质量执行指南，核对最新可靠的研究线快照。”
 - “把这段文字保存到 inbox/2026-10-07-idea.md，提交信息 docs: save idea。”
 - “把论文笔记保存到 papers/notes/author-year-topic.md。”
 - “把今天的进展追加到 logs/2026-10-07.md；如果文件不存在，先创建。”
@@ -42,18 +43,15 @@ ChatGPT 中可能需要刷新工具列表
 以发现新增的 `read_repo_pdf`。
 
 
-## 多研究线隔离（2026-10-15）
+## 当前科研指南和研究状态（2026-10-26）
 
-并行研究 **SHIP / CGS / VFHE** 时，先遵守
-[START_RESEARCH_SESSION.md](START_RESEARCH_SESSION.md)，并读取
-[研究线索引](findings/RESEARCH_TRACK_INDEX.md) 与
-[隔离规则](findings/TRACK_ISOLATION_POLICY.md)。
+研究会话优先按 [START_RESEARCH_SESSION.md](START_RESEARCH_SESSION.md)、[科研质量执行指南](findings/RESEARCH_QUALITY_EXECUTION_2026-10-26.md)、[AGENT.md](AGENT.md) 和 [RESEARCH_PHILOSOPHY.md](RESEARCH_PHILOSOPHY.md) 工作。
 
-- SHIP 的唯一权威状态：`findings/ship-memory-STATE.md`（I226）
-- CGS 的唯一权威状态：`findings/threshold-fhe-correlated-gaussian-sampling.md`（CGS-17）
-- VFHE 的唯一权威状态：`findings/vfhe-cross-crt-state.md`（V43）
+- **P0：**先确定重要的、原文可查的实际瓶颈和基线，避免不断换论文拼 technique。
+- **P1：**在深入推导或 Codex 前完成原文接口、原创机制、先前技术、乐观端到端收益四项检查；缺关键原文时标记 `SOURCE_BLOCKED`。
+- **P2：**复用旧的失败和完整修复经验；保留一个最小可证伪假设、一个决定性测试，以及正确性、安全、精度和完整成本的渐进验证。
+- 研究线由 PI 最近的明确选择确定；`继续`不得擅自切换或重启 `PAUSED` 项目。若根 `STATE.md` 与晚近独立审计/交接冲突，应显式标记 `STATE_STALE/RECONCILE_REQUIRED`，先核验再更新。
+- 原 [研究线索引](findings/RESEARCH_TRACK_INDEX.md)、[隔离规则](findings/TRACK_ISOLATION_POLICY.md) 和 [MCP 隔离设计](findings/MCP_TRACK_GUARD_CODEX_SPEC.md) 是历史文件，不是要求额外部署服务端隔离的当前规范；这不取消 PI 对研究目标和写入范围的授权要求。
+- 历史 GitHub 累计记录可能滞后。例如 SHIP-I407、BOOT-B123 的较新交接证据曾独立保存；引用轮次、原生性能和新颖性结论前应逐项核对证据等级，不能默默把 prescout 记成正式完成。
 
-各对话的“继续”只能继续各自锁定的研究线，不能由根 `STATE.md` 自动切换。
-正常科研回合不可编辑其他研究线的文件或全局元数据。
-**目前属于文档约束；Research MCP 服务端权限硬隔离仍待实现**：Codex
-实施说明位于 [MCP_TRACK_GUARD_CODEX_SPEC.md](findings/MCP_TRACK_GUARD_CODEX_SPEC.md)。
+此方法文档更新不改变任何历史研究结论、暂停状态、正式编号或实验授权。

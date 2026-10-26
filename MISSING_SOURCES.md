@@ -185,3 +185,31 @@ Human Action: PI may supply authentic author FHE.EvalGate→Ring-R1CS source, wh
 Repository Path: **None supplied.** Do not invent papers/supplied path.
 Readability Verification: 2026-10-15 Research MCP PDF physical pp15–17,27 text readable with formula cautions; full authenticity/render and author implementation UNSUPPLIED. Re-read the exact supplied artifact before resuming.
 Research Record: findings/pvfhe-P27-coeff-bitwidth-wire-provenance-gate.md; local report /mnt/data/PVFHE_P27_Coeff_Bitwidth_Source_Provenance_Gate.md.
+
+## Hwang et al. ePrint 2025/395 — current 2026 full protocol
+Status: **MISSING — FULL CURRENT PAPER**; the authors' public explanatory blog is available but not a substitute for the full proof.
+Authors: Intak Hwang; Yisol Hwang; Miran Kim; Dongwon Lee; Yongsoo Song
+Venue / Year: ASIACRYPT 2026 (confirmed SNU Crypto & Privacy Lab), ePrint 2025/395; updated title **On the (In)security of Approximate Computation Protocols from CKKS**.
+Identifier: https://eprint.iacr.org/2025/395 ; author blog https://ckks.org/blog/2026/Insecurity-ckks-protocol/
+Needed For: FHE×MPC standard-approximate-CKKS collaborative sampling × UC/MGHE security interface after 2026-10-26 prescout.
+Missing Evidence: exact final `F_sample`, corrupted-party / malicious / selective-abort model, precise joint output distribution, parameterized noise tails/threshold PDec simulator, full multi-party Discrete-CKKS bootstrap/cleaning sampling algorithm and exact proof/experiment scope.
+Why Public Retrieval Failed: 2026-10-26 Research MCP `get_eprint_paper(2025/395)` got official PDF HTTP403, no matching arXiv exact-title+author result and alternate GitHub mirror failed paper-title identity authentication. Web indexed excerpt from older PDF and public author blog provide partial facts but not a verified, parseable **current** full version. Do not treat accessible web snippets as current PDF proof.
+Impact: Cannot certify standard-security + `IND-CPApD/IND-CIRC/SIM-PDEC/Rob` integration or claim a novel gap. Stop source-dependent protocol variations; complete theorem-applicability comparison already recorded.
+Human Action: If convenient, supply authors' **current ASIACRYPT 2026 ePrint full PDF** to `papers/supplied/`. No outreach without PI approval.
+Repository Path: **NONE; not supplied**.
+Readability Verification: **PENDING**; full text/source version not authenticated.
+Research Record: `findings/fhe-mpc-standard-approx-uc-composition-source-gate-2026-10-26.md`.
+
+## Cao–Chatel–Knabenhans ePrint 2025/1845 — ASIACRYPT 2026 final-version source
+Status: **MISSING — LATEST VERSION CHECK**, **older 61-page full PDF read successfully**.
+Authors: Ganyuan Cao; Sylvain Chatel; Christian Knabenhans
+Venue / Year: ASIACRYPT 2026, source ePrint 2025/1845, authors' September 2026 publication entry.
+Identifier: https://eprint.iacr.org/2025/1845 ; https://s-chtl.github.io/publication/ucmhe/
+Needed For: Check whether **current final** UC-MGHE/OtF-MPC models standard approximate outputs with collaborative noise shares, and latest split-witness NIZK composition conditions.
+Missing Evidence: final source revision, precise standard vs liberal approx `FMGHE` and `FOtF-MPC` semantics; current Theorems 1–6 and `split-witness` compiler proof; whether it already composes Hwang 2025/395 in malicious multi-group setting.
+Why Public Retrieval Failed: Research MCP acquired older mirrored 61pp full text under `2025/1845` SHA256 `191dc8e8f15c4cd90bcefa5c6c42429dd8211aff76e65c3e6059292046611c47` but marked `VERSION_UNVERIFIED`; September 2026 author page announces split-witness contribution, while older PDF's checked pages do not certify that latest component. Author website points PDF to the ePrint landing, not a separately version-pinned file. The older paper **is not source-blocked for its historical Theorem1/Remark2 claims**, only final revision-specific comparison is.
+Impact: Cannot assert that 2026 final version omits or proves standard approximate output composition. Older p5 Theorem1 premises and p22 Remark2 are available with provenance qualification.
+Human Action: If convenient, provide the **latest authoritative ASIACRYPT 2026 PDF or version metadata/byte hash**, preferably including split-witness appendix; no outreach without PI authorization.
+Repository Path: **NONE for final identified version**; older full PDF cached in research MCP (not imported into repository).
+Readability Verification: Older mirror physical pp3–7,14–17,20–28, etc. read 2026-10-26; latest text **PENDING**.
+Research Record: `findings/fhe-mpc-standard-approx-uc-composition-source-gate-2026-10-26.md`.

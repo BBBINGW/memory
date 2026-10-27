@@ -690,3 +690,15 @@ DECISION: PARK implementation-level optimization. No Codex/native.
 FINDING: findings/boot-B138-conjugate-pair-base-ntt-reuse-2026-10-27.md.
 NEXT: B139 NOT_STARTED — audit 2026/2119 Section 7 frequency-basis tradeoff against SWIFT 2026/1163 and prior art before proposing signed/multilevel bases.
 STATE_UPDATE YES. BOOT only.
+
+
+## BOOT B139 — 2026-10-27 — Frequency-basis depth/root tradeoff
+STATUS: COMPLETE_AS_SOURCE_GATED / SIGNED_DIFFERENCE_LOW_NOVELTY / MULTILEVEL_MATH_PASS_BUT_PARAMETER_AND_PRIOR_ART_GATED.
+SOURCE: 2026/2119 Section 7 explicit one-extra-level GPSP basis; SWIFT 2026/1163 full text unavailable (403/no arXiv/no fixed mirror), recorded in findings/boot-missing-source-2026-1163.md.
+MATH: exact local enumeration: d=12 positive-sum min=4 and signed sum/difference min=4. d=40 positive-sum min=9; signed min=7 (example {2,11,13,14,18,19,21}); size6 exhaustively excluded. Multi-level positive additive bases for d=40: L=2/h=4 min=4 (example {1,3,7,16}); L=3/h=8 min=3 (example {1,2,6}).
+VALUE: idealized T(r)=r*C_BR+(d-r)*C_mul; 9->4 roots saves five BRs but adds at least five products and one depth level. 2026/2119 parameter families already sit at/near SEAL tc128 max modulus budgets: 8192/218, 16384/437-438, 32768/881. Extra depth is not free at fixed N; must consume/reallocate output/precision budget or increase N.
+NOVELTY: signed-difference trick uses standard conjugation + classical difference-basis structure and is already independently present in a public non-author implementation. Exact SWIFT boundary remains source-gated.
+DECISION: PARK signed-difference; MULTILEVEL conditional/source-gated/parameter-gated; NO CODEX/native.
+FINDING: findings/boot-B139-frequency-basis-depth-tradeoff-2026-10-27.md.
+NEXT B140: fresh source/value scout of supplied ePrint 2026/2600 (High-Precision Bootstrapping for GCKKS), seeking a whole-bootstrap bottleneck before proposing optimization.
+STATE_UPDATE YES. BOOT only.

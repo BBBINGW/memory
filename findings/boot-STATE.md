@@ -866,3 +866,13 @@ CODEX_REQUIRED: YES for next test, but NOT LAUNCHED because PI authorization is 
 FINDING: findings/boot-B153-b152-error-modulus-gate-2026-10-27.md.
 NEXT: minimal native A/B: source-faithful two-FBS baseline vs one-Root4096 eight-LUT B145/B152, matched security/packing/word size; measure correctness, output error, latency, peak modulus/depth, and memory. No broad implementation.
 STATE_UPDATE YES. BOOT only.
+
+
+## BOOT B154 — 2026-10-27 — Prior-art/open-problem gate for B145
+STATUS: PASS_NO_DIRECT_COLLISION / OPEN_PROBLEM_ALIGNMENT / NOVELTY_PROMISING_NOT_ESTABLISHED.
+SOURCE: ePrint 2026/233 full cached mirror + supplied 1836/1840/1869/2368.
+RESULT: 2026/233 explicitly leaves as an open problem whether arithmetic->Boolean conversion can use O(1) bootstrapping without amortization; its B-A2B only amortizes iterative rounds across n/w ciphertexts. 1836 uses 3 BTS for Z_2^n A2B. 1840 and 1869 use two sequential FBS. 2368 obtains one-bootstrap digit decomposition from ordinary real/integer CKKS slots and explicitly notes that 1840/1869 combine neighboring arithmetic positions after FBS and therefore need two sequential FBS; it does not derive B145's pre-FBS arithmetic overflow cancellation.
+NOVELTY DELTA: pre-FBS identity B*x_j+x_(j-1) cancels the 1869 intermediate overflow modulo B^2, enabling a 2368-style one-FBS window directly from arithmetic polynomial encoding; plus B=4E boundary repair and top-radix guard treatment.
+DECISION: direct collision not found; novelty promising but not established. Next decisive step remains minimal native falsification.
+FINDING: findings/boot-B154-b145-prior-art-open-problem-gate-2026-10-27.md.
+STATE_UPDATE YES. BOOT only.

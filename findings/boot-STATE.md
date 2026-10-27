@@ -884,3 +884,14 @@ RESULT: after shift, one local window is w=B d+a+r mod B^2 with r in [0,2E]. If 
 SCOPE: local-window/full-range model only; B32 may be possible with a tighter probabilistic overflow bound, multi-window observation, or extra state.
 FINDING: findings/boot-B155-minimum-radix-local-window-lower-bound-2026-10-27.md.
 STATE_UPDATE YES. BOOT only.
+
+
+## BOOT B156 independent audit — 2026-10-27
+ARTIFACT SHA256: 7ae78aafe5fd4331a93f5d88653ae04473a47045669b1572ac52d1a547b3936d.
+RAW: Codex reported FAIL_SECURITY_MODULUS for packed-output depth33 candidate; baseline native PASS.
+AUDIT: artifact MANIFEST passes. Baseline 2-FBT n256 N65536 correctness 65536/65536, max error 0.0011853, A2B 62.4817s total, 48.9947s excluding optional output repacking, QP1690, HYBRID digits8.
+OVERRULE: final FAIL label is too broad. Codex treated optional output packing as mandatory +1 depth and treated candidate HYBRID digits8 as a matching requirement. Original experiment did not require cosmetic repacking. Source appendix describes output reordering as optional; fair core comparison may omit it in both arms. HYBRID digit count is a KS performance/key-memory parameter, not security/packing identity.
+ARTIFACT-FOUND VIABLE POINT: depth32, Q1650, P60, QP1710, NumLargeDigits33, below paper 128-bit QP bound~1746. This exact point was probed only with HEStd_NotSet, so security is not yet PASS.
+DECISION: FAIL_PACKED_VARIANT_SECURITY / UNPACKED_CORE_CANDIDATE_REMAINS_VIABLE / REOPEN_NATIVE_GATE.
+NEXT B157: instantiate exact depth32/digits33/N65536/scale50 with HEStd_128_classic and same estimator; if PASS, run full one-FBS candidate in native Boolean layout. Compare against baseline core 48.9947s, not 62.48s. Measure KS key size/memory/latency impact of 33 digits. Do not reduce scale yet.
+FINDING: findings/boot-B156-native-artifact-audit-2026-10-27.md.

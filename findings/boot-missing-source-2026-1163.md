@@ -29,3 +29,7 @@ Public metadata confirms the paper/title/authors only; it is insufficient for te
 ## Action when supplied
 
 If an authorized copy is placed under papers/supplied/, audit it before reopening any B139 multi-level frequency-basis implementation work.
+
+
+## Resolution update — 2026-10-27
+RESOLVED: the human supplied the full PDF under papers/supplied/ and it has now been read in the BOOT audit. This source is no longer blocking.

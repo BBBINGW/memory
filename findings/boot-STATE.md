@@ -702,3 +702,13 @@ DECISION: PARK signed-difference; MULTILEVEL conditional/source-gated/parameter-
 FINDING: findings/boot-B139-frequency-basis-depth-tradeoff-2026-10-27.md.
 NEXT B140: fresh source/value scout of supplied ePrint 2026/2600 (High-Precision Bootstrapping for GCKKS), seeking a whole-bootstrap bottleneck before proposing optimization.
 STATE_UPDATE YES. BOOT only.
+
+
+## BOOT B140 — 2026-10-27 — GCKKS joint split-and-clean level gate
+STATUS: COMPLETE_SOURCE_AND_ALGEBRA_GATE / PASS_BOTTLENECK_TENSION / FAIL_OBVIOUS_3_TO_2_LEVEL_FUSION / IMPLEMENTATION_GATED.
+TARGET: supplied ePrint 2026/2600. Paper explicitly has no implementation yet.
+RESULT: current GCKKS joint precision-doubling shares x^2/x^3 power/relinearization work before even/odd split but consumes 3 Delta-scale levels per iteration; revised Focused CKKS tree is reported as split-first, duplicate cleaning, 2 levels/iteration. The obvious attempt to retain sharing while deleting the slot-mask level fails: when k doubles, discarded source useful slots must be zeroed before factor conversion; merely choosing small F' does not reduce normalized unused-slot magnitude because F' cancels. A nonzero cyclotomic ring element cannot vanish at only a subset of canonical embeddings, so monomial/unit/aux-H depth-free multipliers cannot implement the required 0/1 projection. Automorphism-only butterflies mix arbitrary values and do not commute with nonlinear h1 cleaning.
+SCOPE: not a universal 3-level lower bound; lazy output-scale normalization or a different representation remains UNCLEAR.
+FINDING: findings/boot-B140-gckks-joint-split-clean-level-gate-2026-10-27.md.
+NEXT B141: audit supplied revised Focused CKKS ePrint 2026/2531 Section 6 and test a partial-share hybrid (share expensive prefix before split, finish cleaning after split) against exact scale/unused-slot algebra. NO CODEX.
+STATE_UPDATE YES. BOOT only.

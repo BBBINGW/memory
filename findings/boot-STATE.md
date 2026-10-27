@@ -822,3 +822,13 @@ DECISION: PARK; B145 primary backend remains direct one-root B^2 MVB. NO CODEX.
 FINDING: findings/boot-B148-phase-quotient-root-splitting-gate-2026-10-27.md.
 NEXT B149: audit SWIFT 2026/1163 as a direct 12-bit LUT backend under B145's existing slot-block layout; quantify incremental slot blowup, shared-power multi-output cost, and whether latency gains survive packing.
 STATE_UPDATE YES. BOOT only.
+
+
+## BOOT B149 — 2026-10-27 — SWIFT backend matched-packing gate
+STATUS: FAIL_MATCHED_THROUGHPUT / SMALL-BATCH_LATENCY_ONLY / PARK_AS_PRIMARY_BACKEND.
+STAGE RECHECK: B145 is correctly pre-FBS. 1869 Section 5.2 defines x_j=d_j+I'_(sj-1)-B I'_(s(j+1)-1) before FBS1; original FBS1 computes remainders, then linear neighbor cancellation, then FBS2. B145 moves neighbor cancellation before FBS1 and genuinely targets 2 sequential FBS -> 1.
+SWIFT SLOT GATE: 12-bit SWIFT uses ~t*n slots per scalar LUT input: t2/n64=128, t3/n16=48, t4/n8=32. B145 n=256/B64 has u=43 independent windows/message, so SWIFT needs 5504/2064/1376 slots/message. At N=2^16 this packs only ~5/15/23 messages vs 1869's 256 arithmetic messages. Matched throughput loss ~51x/17x/11x before multi-output cost.
+DECISION: SWIFT not primary B145 backend. It remains a small-batch latency Pareto option. Direct 2368-style B^2 MVB preserves in-place one-window-per-slot layout.
+FINDING: findings/boot-B149-swift-backend-slot-gate-2026-10-27.md.
+NEXT B150: sparse-Hermite/in-place 4096-LUT gate, source ePrint 2026/1026 needed.
+STATE_UPDATE YES. BOOT only.

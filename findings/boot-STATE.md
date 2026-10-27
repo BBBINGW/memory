@@ -760,3 +760,18 @@ CODEX: NO, not yet.
 NEXT: B145 variable-size/segmented carry maps using P384 sparse alpha and local carry ranges.
 FINDING: findings/boot-B144-final-carry-reparameterization-2026-10-27.md.
 STATE_UPDATE YES. BOOT only.
+
+
+## BOOT B144 — 2026-10-27 — Single-FBS adjacent-window A2B for arithmetic polynomial encoding
+STATUS: PASS_ALGEBRA / PASS_PRIOR_ART_PRESCOUT / PERF_GATED / PROMISING.
+SOURCES: supplied 2026/1869 + 2026/2368 + 2026/1163 + 2026/1836.
+RESULT: for M=2^n, 1869 gives x_j=d_j+U_j-BU_{j+1}, alpha_j=0, refreshed |U_j|<=16. Pre-FBS adjacent window y_j=B x_j+x_{j-1} cancels U_j exactly: y_j = B d_j+d_{j-1}+U_{j-1}-B^2 U_{j+1}. Thus mod B^2 it is a two-digit window plus one bounded displacement, matching the structural input of 2368.
+TOP RADIX: reinterpret reduced arithmetic polynomial as z mod B^u with z≡m mod 2^n; terminal carry is absorbed in guard bits and disappears mod B^2. Recovering z and discarding bits >=n returns m exactly.
+BOUNDARY REPAIR: with E=16 and B=64=4E, 2368's simplified recurrence is not valid unchanged. Exact corrected recurrence uses G=1_H(b), Htilde=1_L(c)(1[b=0]-1[b=B-2E]); delta_j=1_L(c_j)sigma_{j-1}, sigma_j=G_j+Htilde_j sigma_{j-1}. The slope may be -1, but 2368's complex affine-state composition supports arbitrary real affine pairs. Randomized exact-integer tests over n=32/64/128/256 passed tens of thousands of trials.
+CANDIDATE: one Root/FBS over B^2=4096 outputs one complex affine state plus six bit-function/correction tables; prefix scan H=ceil(log2 ceil(n/6)); final bit correction. At n=256, post-FBS ~12 CMults, depth 7. This replaces 1869's two sequential FBS calls and 65 post-FBS CMults (B=32 case).
+PRIOR: 2368 explicitly identifies 1840/1869 as two-sequential-FBS methods but starts from ordinary slot integer/real inputs and does not derive this arithmetic-window identity. 1836 uses 3 BTS for Z_2^n A2B, 5 for prime moduli, so does not subsume B144. 1163 SWIFT demonstrates practical 4096-point/12-bit LUTs but trades slots for latency.
+VALUE: potentially HIGH; unlike B143, attacks dominant sequential-FBS cost.
+GATE: performance/parameter model for 4096-point multi-value FBS under 1869-like packing/security. Check 2026/1200 before novelty/performance claim. No Codex yet.
+FINDING: findings/boot-B144-single-fbs-adjacent-window-a2b-2026-10-27.md.
+NEXT: B145 paper-level cost/parameter gate; source 2026/1200 desirable. 1779/1023 remain separate ring-switching source gate.
+STATE_UPDATE YES. BOOT only.

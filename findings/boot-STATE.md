@@ -746,3 +746,17 @@ DECISION: PARK; NO CODEX/native. Dominant open problem is two-FBS->one-FBS, but 
 FINDING: findings/boot-B143-compact-carry-transplant-2026-10-27.md.
 NEXT: fresh supplied-source scout; 2026/2368 remains P0 missing source.
 STATE_UPDATE YES. BOOT only.
+
+
+## BOOT B144 — 2026-10-27 — Final-carry reparameterization for kappa=0 arbitrary-modulus A2D
+STATUS: COMPLETE / PASS_ALGEBRA / HIGH-POTENTIAL / NEEDS IMPLEMENTATION-LEVEL COST VALIDATION.
+SOURCE: supplied 2026/1869; 2026/2368 only abstract-level prior-art screen.
+RESULT: when kappa=0, use lambda=c_ell-q_{ell-1} and enumerate public final-carry candidates g instead of all lambda in Lambda. Broadcast encrypted q=q_{ell-1} and form a_tilde_j=a_j-alpha_j q linearly; for each g, FBS2 evaluates transitions with lambda_g=g-q, then check fixed-point final carry g plus overflow-range bound. Valid g <-> valid original lambda bijectively, and smallest g <-> smallest lambda.
+MIN_TEST: 10,000 randomized small synthetic instances; candidate sets matched 10,000/10,000.
+P384/B32: K_I=17, |Lambda|=35; global C={-5,...,5}, |C|=11; final G={-2,...,2}, |G|=5. Appendix-C.2 FBS2 outputs 4620->610 (7.57x fewer); carry-composition CMults over H=7 levels 326095->46585 (7x fewer).
+SCOPE: applies to P-384 and Curve25519 b=4,8,16 choices where M<b^d; not directly to Curve25519 b=2,d=254 where kappa in {0,1}.
+NOVELTY: generic one-FBS digit decomposition is likely covered by 2026/2368, but B144 targets 1869-specific global lambda enumeration. Full 2368 still source-gated.
+CODEX: NO, not yet.
+NEXT: B145 variable-size/segmented carry maps using P384 sparse alpha and local carry ranges.
+FINDING: findings/boot-B144-final-carry-reparameterization-2026-10-27.md.
+STATE_UPDATE YES. BOOT only.

@@ -660,3 +660,17 @@ DECISION: original B136 question on D={0,...,p-1}: FAIL_NONAFFINE_ESCAPE. Strong
 FINDING: findings/boot-B136-discrete-leaf-nonaffine-gate-2026-10-27.md.
 NEXT_TEST B137 NOT STARTED: source/prior-art scout for a structured discrete CKKS encoding naturally compatible with the split-leaf sum/difference interface whose induced leaf functions remain low-degree/low-depth and are not subsumed by ePrint 2026/1200. If 2026/2119 full PDF is supplied, preempt B137 and resume B135 fairness audit.
 STATE_UPDATE YES. BOOT only.
+
+
+## BOOT B135 resumed — 2026-10-27 — Full-source fairness audit of ePrint 2026/2119
+STATUS: SOURCE_GATE_RESOLVED / PASS_SCOPED_SUB10MS_LL13_GPU / PASS_MATCHED_CPU_LL13_SPEEDUP / NO_MATCHED_GPU_BASELINE.
+SOURCE: papers/supplied/2026-2119.pdf, Git blob SHA 5de485db8242148144f74de0c857cfcd698f0f35, 35 physical pages.
+HEADLINE SCOPE: 8.2 ms is LL13 complex on NVIDIA RTX PRO 6000; N=2^13, log(PQ)=218, one remaining multiplication level, measured precision 5.18 bits (max absolute slot error metric), authors state 128-bit security target. Batch64 amortized latency is 4.6 ms/ciphertext. High-precision LL14 is 23.1-bit precision but 44 ms batch1 and 29 ms batch64, so generic/high-precision sub10ms is FALSE.
+MATCHED SHIP CPU: same parameter families and unchanged SHIP S2C. LL13 real speedup 1.86x 1-core / 2.49x 48-core; LL13 complex 2.58x / 3.71x, with higher measured precision. LL14/HT15 do not show universal latency wins. Therefore do not infer 26x-50x algorithmic speedup from 8.2ms vs old SHIP wall-clock numbers.
+GPU/SETUP: custom CUDA + EasyFHE, Tensor/CUDA cores on disjoint RNS workloads; S2C, KS and product tree run on GPU; evaluation-ready blind-rotation key remains resident in GPU memory. One-time coefficient-packed-key reconstruction is explicitly excluded from bootstrap latency. Reconstruction time, final resident key bytes/peak GPU memory and per-stage GPU breakdown are not reported.
+ALGORITHM: narrow blind rotation cuts table-selector products from 4gh to 2g(h+ceil(h/B)); complex real/imag selector packing halves the evaluation-ready narrow-key ciphertext count but not arithmetic; NTT-permutation fusion cuts direct 2gh forward NTTs to 2h base-table NTTs and turns dominant work into sparse matrix-matrix multiplication; four coefficient-packed ciphertexts compress transmission/setup representation and are expanded once.
+PARAMETERIZATION NOTE: paper theorem writes equal blocks g=N/h exactly, while experiments state h=31 and N powers of 2. This is not literal. A public unequal-block / zero-padding repair using G=ceil(N/h) is straightforward. LL13 introduces only 23 dummy candidate positions (0.28%); tail condition remains valid. Label PASS_REPAIRABLE_PARAMETERIZATION_GAP, not correctness break.
+DFR: manuscript states 128-bit security target but no separate bootstrapping failure-probability table was found; do not equate measured precision with DFR certification.
+FINDING: findings/boot-B135-full-source-fairness-audit-2026-10-27.md.
+NEXT_RESERVED: B137 remains NOT_STARTED but is preempted by a higher-value post-B135 scout: test whether the four-ciphertext packed indicator representation can feed narrow blind rotation without fully materializing all evaluation-ready selector ciphertexts. Algebra/source/cost gate only; NO CODEX/native yet. Kill if direct packed consumption merely replaces one-time extraction by repeated rotation/key-switch work or cannot reduce steady-state GPU traffic.
+STATE_UPDATE YES. BOOT only.

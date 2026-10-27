@@ -723,3 +723,14 @@ DECISION: PARK local 3->2 level hybrid. NO CODEX/native.
 FINDING: findings/boot-B141-focused-vs-gckks-hybrid-gate-2026-10-27.md.
 NEXT: fresh BOOT source scout; do not continue local 2026/2600 split-clean reorderings.
 STATE_UPDATE YES. BOOT only.
+
+
+## BOOT B142 — 2026-10-27 — Fresh scout ePrint 2026/2368
+STATUS: SOURCE_GATED / HIGH_PRIORITY.
+PUBLIC EVIDENCE ONLY: paper title Low-Latency Parallel Digit Decomposition and Sign Evaluation for CKKS. Public abstract/metadata reports all radix-B digits extracted in parallel with a single bootstrapping; 2.04x at ten radix-64 digits; 7.83x sign evaluation for 1024 real pairs at 2^-60 separation; O(log B) lookup depth, O(log u) carry look-ahead, Theta(u) slots/input, and claimed Theta(p) rather than Theta(p^2) modulus behavior in its stated sign-evaluation model.
+SOURCE RETRIEVAL: official ePrint 403; no matching arXiv; fixed mirror absent; no obvious public code repo found.
+DECISION: do not infer mechanism or propose optimization from abstract. Record as new P0 source because it directly touches digit extraction/cleaning used by recent high-precision bootstraps.
+MISSING SOURCE: findings/boot-missing-source-2026-2368.md.
+PRIORITY: if 2026/2368 PDF is supplied, audit before further fresh scout. SWIFT 2026/1163 remains needed only to reopen B139 frequency-basis branch.
+CODEX_REQUIRED: NO.
+STATE_UPDATE YES. BOOT only.

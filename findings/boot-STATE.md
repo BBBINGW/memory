@@ -832,3 +832,17 @@ DECISION: SWIFT not primary B145 backend. It remains a small-batch latency Paret
 FINDING: findings/boot-B149-swift-backend-slot-gate-2026-10-27.md.
 NEXT B150: sparse-Hermite/in-place 4096-LUT gate, source ePrint 2026/1026 needed.
 STATE_UPDATE YES. BOOT only.
+
+
+## BOOT B150 — 2026-10-27 — Sparse-Hermite joint-spectrum gate
+STATUS: SOURCE_GATED_1026 / JOINT_SPECTRAL_DENSITY_LOW_UPSIDE.
+RESULT: for B=64,W=4096, F_k(w)=bit_k(floor(w/64)) has exact W-point DFT support size 1+64*2^k = 65,129,257,513,1025,2049. Across k=0..5 the union is 4033/4096 frequencies. L(c)=1[c<32] is sparse (33 frequencies), but the six bits jointly are nearly dense. Thus a shared sparse-frequency basis has little value-level sparsity to exploit, though 1026 may use a different/approximate Hermite notion and remains useful to audit.
+MISSING: findings/boot-missing-source-2026-1026.md. It is supporting, not blocking.
+FINDING: findings/boot-B150-sparse-hermite-joint-spectrum-gate-2026-10-27.md.
+
+## BOOT B151 — 2026-10-27 — Free carry-LUT elimination
+STATUS: PASS_EXACT / FREE_OUTPUT_REDUCTION.
+RESULT: at B=64,E=16, carry intercept G=H(b)=bit_5(b)=F5. Also P(b)-T(b)=F5(b-1)-F5(b), hence carry slope S=L(c)(P-T)=D5. Therefore the highest-bit LUT pair (F5,D5) is exactly the carry affine state. Generic 14 real LUT outputs reduce to 12 with zero extra cost. After PrefixScan, the state intercept is already recovered bit5, so only bits0-4 need final corrections. n=256 post-LUT CMults reduce 12->11, depth unchanged.
+FINDING: findings/boot-B151-free-carry-lut-elimination-2026-10-27.md.
+NEXT B152: direct-4096 MVB cost gate for twelve outputs; determine whether source-level operation count predicts material win over 1869 two-FBS before requesting native implementation.
+STATE_UPDATE YES. BOOT only.

@@ -674,3 +674,19 @@ DFR: manuscript states 128-bit security target but no separate bootstrapping fai
 FINDING: findings/boot-B135-full-source-fairness-audit-2026-10-27.md.
 NEXT_RESERVED: B137 remains NOT_STARTED but is preempted by a higher-value post-B135 scout: test whether the four-ciphertext packed indicator representation can feed narrow blind rotation without fully materializing all evaluation-ready selector ciphertexts. Algebra/source/cost gate only; NO CODEX/native yet. Kill if direct packed consumption merely replaces one-time extraction by repeated rotation/key-switch work or cannot reduce steady-state GPU traffic.
 STATE_UPDATE YES. BOOT only.
+
+
+## BOOT B137 — 2026-10-27 — Packed-key direct consumption gate
+STATUS: COMPLETE / FAIL_LINEAR_DIRECT_CONSUMPTION / FAIL_PARTIAL_EXPANSION_CACHE / NONLINEAR_ESCAPE_PRIOR_ART_FAMILY / PARK.
+RESULT: fixed-output narrow column selection F_i(b,z)=sum_y b_y z_{rho_y(i)} has bilinear rank g. Any construction linear in packed encrypted selector and public table with R selector-table multiplicative channels needs R>=g. Partial caching of the same N-leaf binary expansion tree leaves N-M online substitution+KS internal nodes when M leaves/subroots are cached, giving near one-for-one memory/online-expansion tradeoff. Nonlinear compact encrypted-index evaluation escapes but is the existing SHIP Mux/hybrid family.
+FINDING: findings/boot-B137-packed-key-direct-consumption-gate-2026-10-27.md.
+CODEX_REQUIRED: NO.
+
+## BOOT B138 — 2026-10-27 — Conjugate-pair base-table NTT reuse
+STATUS: COMPLETE / PASS_ALGEBRA / FAIL_WHOLE_SYSTEM_HEADROOM / PARK.
+RESULT: Eq.(14)/(19)/(20) conjugate table pairs can be synthesized from one source table encoding/forward NTT per block/pack. CKKS conjugation is a public Galois/NTT permutation and X^(N/2) evaluates to +i in every canonical slot. Encoding the source at half the downstream table scale yields both transformed tables at the original target scale without HE depth. Residual base-table forward NTTs halve from 2(h+ceil(h/B)) to h+ceil(h/B); repaired LL13 count 72->36.
+VALUE: paper had already reduced 2gh to 2h; diagnostic non-author CPU implementation profiles place table NTT at only about 5% of complete FBS, implying low-single-digit whole-system ceiling if its profile is representative. No matched author-GPU stage data. Direct publication prior art not found, but ingredients are standard and novelty weak.
+DECISION: PARK implementation-level optimization. No Codex/native.
+FINDING: findings/boot-B138-conjugate-pair-base-ntt-reuse-2026-10-27.md.
+NEXT: B139 NOT_STARTED — audit 2026/2119 Section 7 frequency-basis tradeoff against SWIFT 2026/1163 and prior art before proposing signed/multilevel bases.
+STATE_UPDATE YES. BOOT only.

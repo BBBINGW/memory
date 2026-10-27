@@ -876,3 +876,11 @@ NOVELTY DELTA: pre-FBS identity B*x_j+x_(j-1) cancels the 1869 intermediate over
 DECISION: direct collision not found; novelty promising but not established. Next decisive step remains minimal native falsification.
 FINDING: findings/boot-B154-b145-prior-art-open-problem-gate-2026-10-27.md.
 STATE_UPDATE YES. BOOT only.
+
+
+## BOOT B155 — 2026-10-27 — Minimum radix lower bound for B145 local-window model
+STATUS: PASS_LOCAL_IMPOSSIBILITY / B64_MINIMAL_POWER_OF_TWO_UNDER_E16.
+RESULT: after shift, one local window is w=B d+a+r mod B^2 with r in [0,2E]. If B<=2E, r=0 and r=B are both allowed. For any d>=1,a, instances (d,a,r=0) and (d-1,a,r=B) produce exactly the same w but require different recovered high digits. Therefore no deterministic one-window function can recover d for the full overflow support when B<=2E. With 1869 source bound E=16, must have B>32; among power-of-two radices, minimum B=64, hence minimum direct window domain 4096.
+SCOPE: local-window/full-range model only; B32 may be possible with a tighter probabilistic overflow bound, multi-window observation, or extra state.
+FINDING: findings/boot-B155-minimum-radix-local-window-lower-bound-2026-10-27.md.
+STATE_UPDATE YES. BOOT only.

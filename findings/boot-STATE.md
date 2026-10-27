@@ -811,3 +811,14 @@ DECISION: do NOT transplant the complete LRMT-FBT. Keep exact low-rank structure
 NEXT HYPOTHESIS B148: from single R=zeta_{B^2}^w, derive R_c=R^B=zeta_B^c; evaluate q(c)=zeta_{B^2}^{-c} by a B-point LUT; set R_b=R*q(c)=zeta_B^b. If viable, all B145 factors become B-point LUTs without FDD or a second root production.
 FINDING: findings/boot-B147-lrmt-direct-transplant-gate-2026-10-27.md.
 STATE_UPDATE YES. BOOT only.
+
+
+## BOOT B148 — 2026-10-27 — Phase-quotient root splitting
+STATUS: PASS_ALGEBRA / FAIL_AS_PRIMARY_BACKEND / PARK.
+RESULT: from Rw=zeta_(B^2)^(Bb+c), Rc=Rw^B=zeta_B^c and a B-point branch LUT q(c)=zeta_(B^2)^(-c) gives Rb=Rw*q(c)=zeta_B^b. Exact algebraically and avoids the second RootB in 2368 Remark 2.
+VALUE GATE: not free. For B=64, Rc requires six dependent squarings; q(c) is a genuine B-point LUT; Rb costs another CMult; b-functions require a further B-point LUT. This is a leveled-depth substitute for the paper's second root production. 2368 Algorithm 3 already evaluates all functions directly as shared B^2-point LUTs on one root.
+PARAMETER GATE: 1869 n=256 at N=2^16 uses about 1519 bits total Q+P analytically (or ~1562 if the implementation's extra level is charged); OpenFHE HEStd_128 classic cap at N=65536 is 1747-1749 bits. Six extra 38-bit levels consume 228 bits; six 43-bit levels 258 bits, before the extra multiply. Thus phase splitting is on/over the matched security-budget boundary and cannot be assumed to preserve N.
+DECISION: PARK; B145 primary backend remains direct one-root B^2 MVB. NO CODEX.
+FINDING: findings/boot-B148-phase-quotient-root-splitting-gate-2026-10-27.md.
+NEXT B149: audit SWIFT 2026/1163 as a direct 12-bit LUT backend under B145's existing slot-block layout; quantify incremental slot blowup, shared-power multi-output cost, and whether latency gains survive packing.
+STATE_UPDATE YES. BOOT only.

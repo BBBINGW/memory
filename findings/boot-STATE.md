@@ -846,3 +846,13 @@ RESULT: at B=64,E=16, carry intercept G=H(b)=bit_5(b)=F5. Also P(b)-T(b)=F5(b-1)
 FINDING: findings/boot-B151-free-carry-lut-elimination-2026-10-27.md.
 NEXT B152: direct-4096 MVB cost gate for twelve outputs; determine whether source-level operation count predicts material win over 1869 two-FBS before requesting native implementation.
 STATE_UPDATE YES. BOOT only.
+
+
+## BOOT B152 — 2026-10-27 — Eight-LUT hidden-correction backend for B145
+STATUS: PASS_ALGEBRA / PASS_OPERATION_COUNT_MODEL / PRECISION_NATIVE_GATED.
+RESULT: direct MVB outputs only F0..F5, L(c), D5 = 8 real 4096-LUTs. Use identity D_k=L*Z_k*(1-2F_k), Z_k=prod_{r<k}(1-F_r), to synthesize D0..D4 in parallel with the carry scan. Explicit schedule uses 13 CMult at depth4. At n256, carry prefix depth6; five final bit corrections add one level, so critical post-LUT depth remains 7, same as B151. Post-LUT non-LUT CMult rises 11->24, but four full 4096 PS EvalLUT branches are removed. MVB source says EvalPower is shared but per-LUT PS branches repeat; 1840 gives sqrt(p)-scale per-LUT cost, so replacing four sqrt(4096)-scale branches by 13 CMult is strongly favorable in operation count.
+SANITY: within 2368 same implementation, 2-real-LUT sign path ~16-18s vs 4-real-LUT digit path ~22-24s; extra outputs matter but root/powers are shared. Cross-library absolute timing not used.
+RISK: synthesized corrections have extra approximate multiplications, so scale/error margin needs a conservative gate/native check.
+FINDING: findings/boot-B152-eight-lut-hidden-correction-backend-2026-10-27.md.
+NEXT B153: error/modulus headroom for synthesized D0..D4 under source output precisions; if PASS, B145 reaches minimal native falsification gate.
+STATE_UPDATE YES. BOOT only.

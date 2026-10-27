@@ -35,3 +35,7 @@ Public abstract-level evidence is insufficient to audit:
 ## Action when supplied
 
 If an authorized copy is placed under papers/supplied/, prioritize it before further fresh scouting. Audit exact decomposition interface, carry-lookahead structure, modulus/precision budget, parallelism model, and matched benchmark.
+
+
+## Resolution update — 2026-10-27
+RESOLVED: the human supplied the full PDF under papers/supplied/ and it has now been read in the BOOT audit. This source is no longer blocking.

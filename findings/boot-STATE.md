@@ -775,3 +775,28 @@ GATE: performance/parameter model for 4096-point multi-value FBS under 1869-like
 FINDING: findings/boot-B144-single-fbs-adjacent-window-a2b-2026-10-27.md.
 NEXT: B145 paper-level cost/parameter gate; source 2026/1200 desirable. 1779/1023 remain separate ring-switching source gate.
 STATE_UPDATE YES. BOOT only.
+
+
+## BOOT numbering correction — 2026-10-27
+The single-FBS adjacent-window A2B candidate was initially logged as B144 during this session, but B144 was already occupied by findings/boot-B144-final-carry-reparameterization-2026-10-27.md.
+Canonical numbering:
+- B144 = pre-existing final-carry-reparameterization round.
+- B145 = single-FBS adjacent-window arithmetic A2B candidate.
+- B146 = B145 low-rank LUT backend/performance gate.
+The mistakenly created findings/boot-B144-single-fbs-adjacent-window-a2b-2026-10-27.md is now only a redirect and MUST NOT be counted as an iteration.
+
+## BOOT B145 — 2026-10-27 — Single-FBS adjacent-window arithmetic A2B
+STATUS: PASS_ALGEBRA / PASS_PRIOR_ART_PRESCOUT / PERF_GATED / PROMISING.
+KEY RESULT: for 1869 power-of-two A2B, x_j=d_j+U_j-BU_{j+1}. Pre-FBS y_j=B x_j+x_{j-1} cancels U_j exactly modulo B^2, yielding a 2368-style two-digit window directly from arithmetic polynomial encoding. Partial top radix is handled by a uniform radix-B lift with guard bits; lower n bits remain m. At B=64,E=16= B/4, repair 2368's strict B>4E recurrence with exact boundary term T=1[b=B-2E]: sigma_j=H(b_j)+L(c_j)(P(b_j)-T(b_j))sigma_{j-1}. Randomized exact-integer falsification passed n=32/64/128/256. Candidate uses one 4096-domain FBS/root then affine prefix; n=256 post-LUT tail about 12 CMults, depth 7. 1836 does not collide (3 BTS for power-of-two A2B).
+FINDING: findings/boot-B145-single-fbs-adjacent-window-a2b-2026-10-27.md.
+
+## BOOT B146 — 2026-10-27 — B145 low-rank LUT backend gate
+STATUS: PASS_STRUCTURE / SOURCE_GATED_1264 / NATIVE_NOT_YET.
+RESULT: under w=64b+c, every B145 output LUT is exact rank 1 as a 64x64 matrix: H(b), L(c)(P(b)-T(b)), bit_k(b), and L(c)(bit_k(b-1)-bit_k(b)). Therefore generic 4096-point Hermite cost is a pessimistic upper bound.
+2026/1200 direct Character Block Encoding is not the main backend: public BRU implementation width is t-1, so t=4096 costs 4095 coordinates/value and destroys packing; artifact from_standard path is only benchmarked/capped to log2(t)<=7 in its LogN=15 chain.
+Public abstract of 2026/1264 LRMT-FBT is a direct structural match: reshaped low-rank LUTs, exact separable rank treatment, multi-value/multi-input extensions. Full PDF unavailable, so exact rank-1 CMult/depth/precision/packing cannot be claimed.
+Fallback evidence: 2368 already implements B=64,B^2=4096 one-bootstrap digit decomposition at N=2^16; 1163 SWIFT implements 12-bit LUTs, so the domain size is not intrinsically infeasible.
+DECISION: B145 stays PROMISING. No Codex yet. P0 source needed for performance gate: ePrint 2026/1264.
+FINDING: findings/boot-B146-b145-lowrank-lut-backend-gate-2026-10-27.md.
+MISSING: findings/boot-missing-source-2026-1264.md.
+STATE_UPDATE YES. BOOT only.

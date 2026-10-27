@@ -856,3 +856,13 @@ RISK: synthesized corrections have extra approximate multiplications, so scale/e
 FINDING: findings/boot-B152-eight-lut-hidden-correction-backend-2026-10-27.md.
 NEXT B153: error/modulus headroom for synthesized D0..D4 under source output precisions; if PASS, B145 reaches minimal native falsification gate.
 STATE_UPDATE YES. BOOT only.
+
+
+## BOOT B153 — 2026-10-27 — Error/modulus gate for B152
+STATUS: PASS_ERROR_MARGIN / PASS_DEPTH_NEUTRALITY / NATIVE_GATE_REACHED.
+RESULT: B152 leaves carry path untouched (direct F5,D5), so new errors affect only lower-bit correction. With direct-LUT error epsilon, worst D4 product perturbation <=(1+epsilon)^5(1+2epsilon)-1. At epsilon=2^-6.25 this is ~0.0955; including lookup/carry first-order errors gives a conservative final-bit algebraic error ~0.122, leaving ~0.378 margin to 1/2. Ordinary HE eval noise still needs native verification but no structural precision blocker appears. D synthesis depth4 runs in parallel with carry-prefix depth6, so critical post-LUT depth remains7; unlike B148 it adds no serial modulus chain.
+DECISION: B145/B152 has passed source, algebra, direct-prior prescout, operation-count, and conservative error/depth gates. The next decisive test is minimal matched native falsification.
+CODEX_REQUIRED: YES for next test, but NOT LAUNCHED because PI authorization is required.
+FINDING: findings/boot-B153-b152-error-modulus-gate-2026-10-27.md.
+NEXT: minimal native A/B: source-faithful two-FBS baseline vs one-Root4096 eight-LUT B145/B152, matched security/packing/word size; measure correctness, output error, latency, peak modulus/depth, and memory. No broad implementation.
+STATE_UPDATE YES. BOOT only.

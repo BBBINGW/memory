@@ -734,3 +734,15 @@ MISSING SOURCE: findings/boot-missing-source-2026-2368.md.
 PRIORITY: if 2026/2368 PDF is supplied, audit before further fresh scout. SWIFT 2026/1163 remains needed only to reopen B139 frequency-basis branch.
 CODEX_REQUIRED: NO.
 STATE_UPDATE YES. BOOT only.
+
+
+## BOOT B143 — 2026-10-27 — Compact carry-state transplant into 2026/1869
+STATUS: COMPLETE / PASS_LOCAL_ALGEBRA / FAIL_WHOLE_SYSTEM_HEADROOM / PARK.
+SOURCES: supplied 2026/1869 + supplied 2026/1840.
+RESULT: for B=32 binary carry, transplant 1840's 3-state compact carry encoding into 1869. Hybrid A (1840-style correction): n=256 post-FBS CMults 65->21 but depth ~6->10. Hybrid B (keep 1869 dual candidate bits): compact prefix H=6 plus five final bit selections gives 65->11 CMults, second-FBS outputs 12->11, depth 6->7. Algebraically valid.
+VALUE: 1840 measured n=256/base2 breakdown is RefreshI 17.36s + FBS1 50.34s + FBS2 32.96s + carry 1.80s + correction 1.56s =104.02s; two FBS+RefreshI are 96.77%, post-FBS work only 3.23%. This is diagnostic rather than matched 1869 hardware, but implies low-single-digit whole-system headroom and +1 level can offset local savings.
+SOURCE NOTE: 1869 formula 19+ceil(log2 ell) yields depths 22/23/24/25 for n=32/64/128/256, while implementation paragraph reports 23/24/25/26; treat as one-level accounting discrepancy, not correctness failure.
+DECISION: PARK; NO CODEX/native. Dominant open problem is two-FBS->one-FBS, but likely collides with missing 2026/2368, so source-gated.
+FINDING: findings/boot-B143-compact-carry-transplant-2026-10-27.md.
+NEXT: fresh supplied-source scout; 2026/2368 remains P0 missing source.
+STATE_UPDATE YES. BOOT only.

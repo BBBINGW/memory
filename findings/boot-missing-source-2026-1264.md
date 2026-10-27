@@ -33,3 +33,7 @@ Do not infer concrete LRMT performance from the abstract.
 
 - findings/boot-B145-single-fbs-adjacent-window-a2b-2026-10-27.md
 - findings/boot-B146-b145-lowrank-lut-backend-gate-2026-10-27.md
+
+
+## Resolution update — 2026-10-27
+RESOLVED: the human supplied papers/supplied/2026-1264.pdf. Full-source audit completed in BOOT-B147. This source is no longer blocking.

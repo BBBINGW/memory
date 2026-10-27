@@ -630,3 +630,20 @@ FINDINGS: findings/boot-B056-carousel-valid-lwe-functional-lut-guard-and-kernel-
 FAILURE: failures/boot-B056-index-error-not-equal-functional-dfr.md
 NEXT_TEST B057 NOT STARTED: Choose different FULL-source recent BOOTSTRAPPING core primitive where a truly new whole-algorithm technique may reduce complexity/key/noise or repair a substantive gap, avoid trivial integer precision edits, CMS knapsack, BSGS, repeated key-row sharing, PaCo multi-C. One primary hypothesis and cheapest decisive test plus correctness/security/perf/novelty, under PI control. BOOT writes only; SHIP PAUSED_BY_PI after I407.
 STATE_UPDATE YES.
+
+
+---
+## 2026-10-27 session handoff — post B135
+
+LATEST_COMPLETED: B135  
+NEXT_RESERVED: B136_DISCRETE_LEAF_NONAFFINE_GATE — NOT STARTED  
+CODEX_REQUIRED: NO  
+NATIVE_BENCHMARK: NO  
+SOURCE_NEEDED: ePrint 2026/2119 full PDF
+
+Detailed recovery file: `findings/boot-HANDOFF-post-B135-2026-10-27.md`.
+Missing-source record: `findings/boot-missing-source-2026-2119.md`.
+
+Active next target: Liang-Ding, ePrint 2026/1779, discrete/finite-domain escape from the paper's affine-only independent-leaf theorem. First step is exact source/theorem recovery and a small finite-domain algebraic falsification; do not launch Codex before that gate passes.
+
+Parked in this session: Descent-PBS KSK local compression B124-B127; phase-decomposition bounded-alphabet BR B128-B129; CI-ring CKKS local CtS/Hermite variants B130-B133; further LRMT rank optimization B134. B135 remains source-gated until 2026/2119 is supplied.

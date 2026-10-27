@@ -800,3 +800,14 @@ DECISION: B145 stays PROMISING. No Codex yet. P0 source needed for performance g
 FINDING: findings/boot-B146-b145-lowrank-lut-backend-gate-2026-10-27.md.
 MISSING: findings/boot-missing-source-2026-1264.md.
 STATE_UPDATE YES. BOOT only.
+
+
+## BOOT B147 — 2026-10-27 — Full-source LRMT audit for B145
+STATUS: FAIL_DIRECT_LRMT_TRANSPLANT / KEEP_AS_STRUCTURAL_HINT.
+SOURCE: supplied 2026/1264.
+RESULT: B145's fourteen 4096-window LUTs are indeed exact rank-1 under 64x64 reshape. 1264 Algorithm 2 certifies rank-r LRMTEval cost r(alpha+beta) scalar mult + r CMult at depth 2; multi-value LUTs share selectors. For P=4096, alpha=beta=64, each rank-1 output is 128 scalar mult + 1 CMult; fourteen outputs sum to 1792 scalar mult +14 CMult once selectors exist.
+OBSTRUCTION: full LRMT-FBT obtains selectors through FDD. At P=2^12, source chooses p=8, hence t=4 sequential SlotsMVB/FBS digit extractions. This destroys B145's one-root objective. Source stage breakdown at P=2^12 shows FDD ~107.48s vs LUT eval 2.12s for rank-2 ReLU, confirming front-end dominance (absolute cross-paper timing not used).
+DECISION: do NOT transplant the complete LRMT-FBT. Keep exact low-rank structure as a hint.
+NEXT HYPOTHESIS B148: from single R=zeta_{B^2}^w, derive R_c=R^B=zeta_B^c; evaluate q(c)=zeta_{B^2}^{-c} by a B-point LUT; set R_b=R*q(c)=zeta_B^b. If viable, all B145 factors become B-point LUTs without FDD or a second root production.
+FINDING: findings/boot-B147-lrmt-direct-transplant-gate-2026-10-27.md.
+STATE_UPDATE YES. BOOT only.

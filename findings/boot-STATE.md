@@ -712,3 +712,14 @@ SCOPE: not a universal 3-level lower bound; lazy output-scale normalization or a
 FINDING: findings/boot-B140-gckks-joint-split-clean-level-gate-2026-10-27.md.
 NEXT B141: audit supplied revised Focused CKKS ePrint 2026/2531 Section 6 and test a partial-share hybrid (share expensive prefix before split, finish cleaning after split) against exact scale/unused-slot algebra. NO CODEX.
 STATE_UPDATE YES. BOOT only.
+
+
+## BOOT B141 — 2026-10-27 — Focused CKKS vs GCKKS partial-share hybrid gate
+STATUS: COMPLETE / FAIL_PARTIAL_SHARE_TWO_LEVEL_HYBRID / REPRESENTATION_LEVEL_TRADEOFF / PARK.
+SOURCES: supplied 2026/2531 revision and 2026/2600.
+RESULT: Focused tree's 2-level advantage comes from a different invariant: background slots may retain approximate D-valued messages while only focus-slot precision is improved; final partial S2C discards background. GCKKS newly-unused slots instead must satisfy a magnitude/noise invariant proportional to F', so source useful values must be zeroed before factor conversion. Direct conversion leaves normalized discarded-slot magnitude |d|/|F|^2 independent of F'. Therefore a hybrid that shares x^2 then splits still needs a high-precision diagonal mask; moving/delaying that mask changes schedule but does not remove its modulus cost. 2026/2600 already fuses selection with h1 coefficients and a final rescale.
+PRIOR ART: 2026/2600 explicitly compares its delayed-split/shared-power method against revised Focused tree split-first/duplicated-cleaning, so a new contribution needs a new representation/invariant rather than another local x^2/x^3 reorder.
+DECISION: PARK local 3->2 level hybrid. NO CODEX/native.
+FINDING: findings/boot-B141-focused-vs-gckks-hybrid-gate-2026-10-27.md.
+NEXT: fresh BOOT source scout; do not continue local 2026/2600 split-clean reorderings.
+STATE_UPDATE YES. BOOT only.

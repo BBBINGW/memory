@@ -1,12 +1,12 @@
 # BOOT State
 
-Updated: 2026-10-29 — Cryptography 10.0, Research Turn 12/25, post delayed-recombination static screen.
+Updated: 2026-10-29 — Cryptography 10.0, Research Turn 13/25, post hybrid-selector Pareto screen.
 
 - TRACK_ID: BOOT
 - ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
 - LATEST_COMPLETED: B175_AUDIT
-- NEXT_ITERATION: HYBRID_SELECTOR_CIRCUIT_PARETO_SCREEN; BOOT-DECISION-001_PENDING
-- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / EXPLICIT_DELAYED_RECOMBINATION_STATIC_FAIL / HYBRID_FRONTIER_UNDER_STATIC_REVIEW / OVERNIGHT_AUTONOMOUS_RESEARCH
+- NEXT_ITERATION: HYBRID_FRONTIER_PUBLIC_MASK_CONVOLUTION_SCREEN; BOOT-DECISION-001_PENDING
+- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / HYBRID_FRONTIER_SIZE_2_UNVALIDATED / OVERNIGHT_AUTONOMOUS_RESEARCH
 - CURRENT_EXPERIMENT: NONE_AUTHORIZED
 - CURRENT_RESULT: FAIL_B175_POINTWISE_NOISE
 - EVIDENCE: RAW_AUDITED
@@ -21,7 +21,7 @@ Updated: 2026-10-29 — Cryptography 10.0, Research Turn 12/25, post delayed-rec
 - PENDING_PI_DECISIONS: BOOT-DECISION-001
 
 Latest completed finding:
-findings/boot-B175-delayed-recombination-static-screen-2026-10-29.md
+findings/boot-B175-hybrid-selector-pareto-screen-2026-10-29.md
 
 Pending PI queue:
 findings/boot-PENDING_PI_DECISIONS.md
@@ -81,6 +81,14 @@ Delayed-recombination screen:
 - Passing would require an effective SI increment of at most 25 bits, while every observed SI multiplication adds 29--31 bits.
 - The low-count factorized endpoint recurs to 664 required bits; the explicit endpoint fails both count and scale-aware screens.
 - Actual partial-product residuals remain unmeasured, and no general representation impossibility theorem is claimed.
+
+Hybrid-selector Pareto screen:
+
+- Forty-three weighted nonisomorphic selector-subcube circuits were statically enumerated; twenty survive the raw optimistic ceiling before dominance filtering.
+- Two count-26, selector-endpoint-depth-two mechanism classes form the minimal frontier: an explicit lower-two-bit selector and a high-bit distributed balanced split.
+- Their full SI dependency depth remains four, so neither improves full depth.
+- Under the optimistic 29-bit increment, zero-mask-cost model, Frontier A scores 644 required bits with four units of slack and Frontier B scores 645 with three units of slack.
+- Each fails under small deviations already observed in B175; neither is a validated candidate or established contribution.
 
 Overnight rule:
 

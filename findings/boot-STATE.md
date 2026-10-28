@@ -1,12 +1,12 @@
 # BOOT State
 
-Updated: 2026-10-29 — Cryptography 10.0, Research Turn 9/25, post B175 static noise-attribution audit.
+Updated: 2026-10-29 — Cryptography 10.0, Research Turn 10/25, post source-level SI error-bound derivation.
 
 - TRACK_ID: BOOT
 - ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
 - LATEST_COMPLETED: B175_AUDIT
-- NEXT_ITERATION: SOURCE_LEVEL_SI_ERROR_BOUND_DERIVATION; BOOT-DECISION-001_PENDING
-- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / STATIC_PATH_ATTRIBUTION_PASS_COARSE_FINE_UNCLEAR / OVERNIGHT_AUTONOMOUS_RESEARCH
+- NEXT_ITERATION: STATIC_REPRESENTATION_MECHANISM_FEASIBILITY_SCREEN; BOOT-DECISION-001_PENDING
+- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / TENSOR_REFERENCE_TERM_DOMINANT / OVERNIGHT_AUTONOMOUS_RESEARCH
 - CURRENT_EXPERIMENT: NONE_AUTHORIZED
 - CURRENT_RESULT: FAIL_B175_POINTWISE_NOISE
 - EVIDENCE: RAW_AUDITED
@@ -21,7 +21,7 @@ Updated: 2026-10-29 — Cryptography 10.0, Research Turn 9/25, post B175 static 
 - PENDING_PI_DECISIONS: BOOT-DECISION-001
 
 Latest completed finding:
-findings/boot-B175-static-noise-attribution-audit-2026-10-29.md
+findings/boot-B175-source-level-si-error-bounds-2026-10-29.md
 
 Pending PI queue:
 findings/boot-PENDING_PI_DECISIONS.md
@@ -58,6 +58,14 @@ Post-B175 static attribution:
 - Current traces do not uniquely separate tensor input-noise propagation, quantization rounding, and relinearization/GadgetProduct noise.
 - The minimum decisive separation requires a post-quantization/pre-relinearization degree-two residual and a relinearization-only residual; neither is present in B175.
 - If the multiplication-path increment remains 31 bits, a representation-only repair must reduce the worse input from 633 to at most 617 required bits, a conditional 16-bit recovery threshold.
+
+Source-level SI error bounds:
+
+- Scale-invariant quantization contributes less than `2^46` in coefficient infinity norm under deterministic ternary-secret bounds, corresponding to at most 63 required bits in the B175 convention.
+- Conservative relinearization/GadgetProduct noise is less than `2^22`, corresponding to at most 39 required bits.
+- The measured pointwise residual has coefficient bit length 647 and required bits 664; subtracting both conservative bounds leaves the same 647-bit / 664-required-bit magnitude.
+- Therefore the aggregate tensor/reference term, rather than quantization or relinearization, necessarily dominates this B175 failure.
+- Fine attribution within the tensor/reference term remains unclear because B175 lacks componentwise centered lifts, coefficient-domain references, and the pre-relinearization degree-two state.
 
 Overnight rule:
 

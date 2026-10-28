@@ -1,12 +1,12 @@
 # BOOT State
 
-Updated: 2026-10-29 — Cryptography 10.0, Research Turn 19/25, post zero-rerandomization support screen.
+Updated: 2026-10-29 — Cryptography 10.0, Research Turn 20/25, post quantization-cell robustness screen.
 
 - TRACK_ID: BOOT
 - ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
 - LATEST_COMPLETED: B175_AUDIT
-- NEXT_ITERATION: TURN17_QUANTIZATION_CELL_ROBUSTNESS_SUPPORT_COUNTING_SCREEN; BOOT-DECISION-001_PENDING
-- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / HYBRID_FRONTIER_SIZE_2_UNVALIDATED / UNSELECTED_RERANDOMIZATION_WORST_CASE_RESCUE_FAILED / OVERNIGHT_AUTONOMOUS_RESEARCH
+- NEXT_ITERATION: HYBRID_FRONTIER_BEST_CASE_RESEARCH_VALUE_CEILING; BOOT-DECISION-001_PENDING
+- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / HYBRID_FRONTIER_SIZE_2_UNVALIDATED / STATIC_RERANDOMIZATION_SUBLINE_SATURATED / OVERNIGHT_AUTONOMOUS_RESEARCH
 - CURRENT_EXPERIMENT: NONE_AUTHORIZED
 - CURRENT_RESULT: FAIL_B175_POINTWISE_NOISE
 - EVIDENCE: RAW_AUDITED
@@ -21,7 +21,7 @@ Updated: 2026-10-29 — Cryptography 10.0, Research Turn 19/25, post zero-rerand
 - PENDING_PI_DECISIONS: BOOT-DECISION-001
 
 Latest completed finding:
-findings/boot-B175-zero-rerandomization-support-guarantee-2026-10-29.md
+findings/boot-B175-quantization-cell-robustness-2026-10-29.md
 
 Pending PI queue:
 findings/boot-PENDING_PI_DECISIONS.md
@@ -138,6 +138,14 @@ Zero-rerandomization support/guarantee screen:
 - Therefore a single unselected zero rerandomization fails as a worst-case all-coins correctness rescue.
 - The explicit support events have extremely small idealized mass, so no useful B175/frontier DFR bound follows.
 - Probabilistic rerandomization remains an unauthorized new DFR problem, not a validated candidate.
+
+Quantization-cell robustness screen:
+
+- The Turn-17 PASS and FAIL support points each extend to exact, nontrivial discrete quantization cells; the FAIL witness is not isolated.
+- The PASS cell has `39^(N+1)` support points and a certified probability of `39*Q^-N`; a single FAIL cell has `39^(N-1)` support points.
+- Both verdict cells remain astronomically negligible because their probability is dominated by hitting prescribed uniform ring polynomials.
+- The result strengthens only the absence of a worst-case all-coins guarantee; it does not transfer to B175/frontier DFR.
+- The static gauge/rerandomization subline has no further independent information gain without actual component states and is closed as an explanatory-only line.
 
 Overnight rule:
 

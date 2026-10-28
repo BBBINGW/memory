@@ -1,39 +1,60 @@
 # BOOT State
 
-Updated: 2026-10-28 — Research Turn 2/25, post independent B174 artifact audit.
+Updated: 2026-10-28 — Cryptography 10.0, Research Turn 6/25, post independent B175 raw-artifact audit.
 
 - TRACK_ID: BOOT
 - ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
-- LATEST_COMPLETED: B174_AUDIT
-- NEXT_ITERATION: B175_CANDIDATE_PI_REVIEW; B175_NOT_STARTED
-- CURRENT_STATUS: B174_AUDITED / WAIT_PI
-- CURRENT_EXPERIMENT: NONE_AUTHORIZED; B175_NOT_STARTED
-- CURRENT_RESULT: PASS_B174_SCALE_INVARIANT_GROUPED
-- HEADROOM: MARGINAL
+- LATEST_COMPLETED: B175_AUDIT
+- NEXT_ITERATION: NO_REGRET_POST_B175_ANALYSIS; BOOT-DECISION-001_PENDING
+- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / OVERNIGHT_AUTONOMOUS_RESEARCH
+- CURRENT_EXPERIMENT: NONE_AUTHORIZED
+- CURRENT_RESULT: FAIL_B175_POINTWISE_NOISE
 - EVIDENCE: RAW_AUDITED
 - ACTIVE_CANDIDATE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
 - ACTIVE_GEOMETRY: H=8192, s=8
 - ACTIVE_CHECKPOINT: k0=32
-- STATUS: ACTIVE_NATIVE_CANDIDATE / WAIT_PI
-- NOVELTY: PROMISING_NOT_ESTABLISHED
+- STATUS: DIRECT_SI_POINTWISE_COMBINATION_FAILED / PENDING_PI_DECISION
+- NOVELTY: NOT_ESTABLISHED
 - FULL_ALGORITHM5_CORRECTNESS: NOT_ESTABLISHED
+- DFR: NOT_ESTABLISHED
 - END_TO_END_SPEEDUP: NOT_ESTABLISHED
-
-Authoritative handoff:
-findings/boot-HANDOFF-post-B174-audit-waiting-PI-2026-10-28.md
+- PENDING_PI_DECISIONS: BOOT-DECISION-001
 
 Latest completed finding:
-findings/boot-B174-audit-si-grouped-marginal-and-pointwise-gate-2026-10-28.md
+findings/boot-B175-audit-direct-si-pointwise-noise-failure-2026-10-28.md
 
-B174 original ZIP SHA-256:
-9232a9b3e57fe08adb0daf84c2bfe3183e4fb49a7de4695396720d96decfe4d8
+Pending PI queue:
+findings/boot-PENDING_PI_DECISIONS.md
 
-Independently checked: outer hash, 29/29 internal checksums, original B173 parent byte identity, exact diff, unchanged parameter/security/mask/comparator scope, all 11 CSVs/119 rows, 36 stage probes, exact public references, scale/noise/counts, and evaluation-key report.
+B175 original ZIP:
 
-Established: three fixed cases exact at L18, final GROUPED budgets 15/14/15, final scale43178. Actual25 ct-ct to grouped;27 remains projected. Eval keys965.03 MiB use an inherited L14 LT plan and are not the final all-L18 composition cost. Nonzero y^4=-1 phase coverage, whole Algorithm5, DFR and speedup remain unestablished.
+    BOOT-B175-B158-CASE1-SI-POINTWISE-NATIVE-20261028.zip
+    size: 13,680,154 bytes
+    SHA-256: 1b1e49d07d4bf60a27cde1d67474cfcd9f9f2523c53aac1735ca1e13444796fa
 
-Only pending candidate:
-A single CASE_1 same-context L18 LT8 x GROUPED SI pointwise falsifier, with actual LT key levels checked/promoted to >=18. Stop at pointwise; no benchmark or later stages. This is a proposal requiring PI judgment, not an execution instruction.
+Independent raw audit established:
 
-Important rule:
-Do not restart B174 or launch B175 without PI authorization. No Codex/native experiment was launched in this audit. Preserve the prior B173 audit and B174-running handoff as history. The unrelated root STATE.md is known stale for this explicit BOOT recovery and is not the active research authority.
+- Outer hash, ZIP structure/CRC, and all 65 internal SHA256SUMS entries pass.
+- The embedded B174 parent source is byte-identical to the already audited B174 source.
+- Exactly one fixed CASE_1 native run was executed; no retry, rescue, parameter sweep, leading multiplication, DFR, benchmark, or later Algorithm-5 stage was run.
+- LT8 and GROUPED are valid exact L18 inputs with budgets +72 and +16, respectively.
+- The single real SI pointwise ct-ct output is L18 with required bits 664, budget -15, and 32767/32768 decoded mismatches.
+- The independently reconstructed pointwise scale is 30059, matching raw evidence.
+- Actual ct-ct count through pointwise is 21 basis + 4 grouped + 1 pointwise = 26; leading remains zero.
+- Promoting the five required LT keys from L14 to L18 raises reported evaluation-key BinarySize from 965.03 MiB to 1062.54 MiB (+97.50 MiB), eliminating the isolated B174 apparent saving at this interface. This is not RSS or a complete bootstrapping-key measurement.
+
+Scientific boundary:
+
+The fixed-parameter direct composition
+
+    B174 GROUPED + same-context raw-L18 LT8 + direct SI pointwise
+
+is falsified for the authorized CASE_1 gate. This does not falsify all checkpoint-decoupled representations, establish general phase behavior, or establish full Algorithm 5, DFR, or end-to-end performance.
+
+Overnight rule:
+
+Do not launch B176, repeat B175, sweep parameters, change Q/k0/geometry, test DFR, or implement a new representation layer without PI authorization. Continue only independent no-regret work: provenance/reproducibility, literature/novelty, theoretical necessary conditions, and shared cost/security/correctness analysis. Carry BOOT-DECISION-001 through every handoff.
+
+Historical authority:
+
+The B174 finding and post-B174 handoff remain historical parent evidence. The unrelated root STATE.md is known stale for this explicit BOOT recovery and does not override this topical state.

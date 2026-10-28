@@ -438,3 +438,159 @@ Decision from this negative control:
 The candidate should target functions with explicit interaction/locality structure that is misaligned with the source's contiguous digit split. Random-like/cryptographic substitution tables such as the AES S-box remain high-rank under all balanced bit partitions in this screen.
 
 This strengthens the workload gate: require a structured practical LUT, not merely an arbitrary high-rank table.
+
+
+## Fixed-partition optimality inside the LRMT separable model
+
+For a fixed digit bipartition A|B, let M=M_f^{A|B}.
+
+Consider an exact evaluator that:
+1. forms arbitrary row-only linear combinations g_k(delta_A) from the row selector;
+2. forms arbitrary column-only linear combinations h_k(delta_B) from the column selector;
+3. uses r cross ciphertext multiplications g_k*h_k;
+4. linearly sums the r products.
+
+At the plaintext level, such an evaluator computes
+
+    f(a,b) = sum_{k=1}^r g_k(a) h_k(b).
+
+Therefore
+
+    M = sum_{k=1}^r u_k v_k^T
+
+for vectors u_k,v_k formed by evaluating g_k,h_k on all assignments.
+
+Hence
+
+    rank(M) <= r.
+
+So any exact evaluator in this two-selector separable model requires at least
+
+    r >= rank(M)
+
+cross ciphertext multiplications.
+
+The SVD/rank factorization used by 1264 attains exactly r=rank(M) for an exact rank-r matrix. Thus, for a fixed partition, LRMT is already optimal in the number of row/column cross multiplications inside this model.
+
+Consequently, after 1264 the natural remaining exact optimization is not a better rank-r evaluator; it is to change the variable partition and minimize the communication rank before applying the already-optimal factorization.
+
+For balanced partitions define
+
+    r_bal(f)
+      = min_{A: |A|=t/2} rank(M_f^{A|A^c}).
+
+Then r_bal(f) is the minimum number of cross multiplications achievable by a balanced two-selector separable LRMT evaluator.
+
+This is a model-specific lower bound. It does not constrain arbitrary FHE circuits that use additional nonlinear local computation or a different representation.
+
+## Finite-state / automaton rank theorem
+
+The partition idea admits a useful function class beyond isolated examples.
+
+Suppose several digit streams are grouped by digit position. Let each position produce a symbol sigma_i from a finite alphabet Sigma (for example, a pair of bits (x_i,y_i)).
+
+Assume f has a weighted-automaton representation with s states:
+
+    f(sigma_1,...,sigma_m)
+      = a^T A_{sigma_1} A_{sigma_2} ... A_{sigma_m} b,
+
+where A_sigma is an s x s matrix.
+
+Partition complete digit positions at a boundary:
+- A contains the first r position-symbols;
+- B contains the remaining m-r position-symbols.
+
+For a prefix u define
+
+    g(u)^T = a^T product_{i<=r} A_{sigma_i},
+
+and for a suffix v define
+
+    h(v) = product_{i>r} A_{sigma_i} b.
+
+Then
+
+    f(u,v) = g(u)^T h(v)
+           = sum_{j=1}^s g_j(u) h_j(v).
+
+Therefore
+
+    rank(M_f^{A|B}) <= s.
+
+So functions with a small finite-state interface across digit positions automatically have low communication rank when complete digit tuples are kept together.
+
+This gives a concrete structured class for RANK_PARTITION_LRMT:
+- carry/borrow propagation;
+- lexicographic comparison;
+- finite-state pattern/range predicates;
+- small-state digit transducers.
+
+### Carry example
+
+The final carry of adding two radix-p numbers has only p-dependent finite carry state (two states for binary addition). Grouping complete digit pairs (x_i,y_i) by position therefore yields rank bounded by the carry-state count, independent of bit width.
+
+### Comparison example
+
+For binary comparison, a prefix can be in one of the semantic states less/equal/greater. More directly, splitting high and low bit-pairs gives
+
+    LT(x,y)
+      = LT_high(x_H,y_H)
+        + EQ_high(x_H,y_H) * LT_low(x_L,y_L),
+
+because the first term and second term are disjoint on Boolean inputs.
+
+Hence the corresponding real LUT matrix has rank at most 2 under the position-aligned partition.
+
+By contrast, under the input-separated partition x|y,
+
+    M[x,y] = 1[x<y]
+
+is a strict triangular 2^m x 2^m matrix and has rank 2^m-1.
+
+Thus the same function has an exponential communication-rank gap caused only by variable grouping.
+
+## Prior-art warning: SALUS 2026/2561
+
+A current neighboring work is:
+
+Ran Mao, Zhou Zhang, Zian Zhao, Zhenyu Guan, Peng Yin, Song Bian,
+"SALUS: Large-Scale Homomorphic Circuit Synthesis via Logic-Aware LUT Optimization",
+ePrint 2026/2561 / IEEE TIFS 2026.
+
+Its public abstract states that SALUS:
+- synthesizes gate-level graphs into homomorphic LUTs;
+- applies BDD reordering;
+- uses multi-value refresh;
+- heuristically merges LUTs into multi-output LUTs;
+- reports large circuit-level speedups.
+
+Therefore the broad claim
+
+    "reorder Boolean variables based on function structure to make homomorphic LUT evaluation cheaper"
+
+is already direct compiler-level prior art.
+
+The surviving distinction of RANK_PARTITION_LRMT must be narrower and mathematical:
+- CKKS LRMT-FBT rather than mux/BDD LUT execution;
+- communication/spectral rank as the optimization objective;
+- zero-online-cost regrouping of already-produced digit one-hot vectors;
+- rank as a lower bound on cross ciphertext multiplications in the LRMT separable model;
+- function-class theorems such as finite-state rank bounds.
+
+Do not claim variable reordering itself as novelty.
+
+## Refined contribution hypothesis
+
+A potentially publishable contribution would have to look like:
+
+    Communication-Rank-Aware LRMT Functional Bootstrapping
+
+with all of:
+1. the fixed-partition optimality theorem above;
+2. balanced partition search/heuristics;
+3. function-class rank bounds (finite-state / factor-graph / tensor-network structure);
+4. zero-extra-online-cost integration with 1264 FDD/KProduct;
+5. realistic digit-native multi-input workloads where default LRMT rank is high and specialized alternatives do not dominate;
+6. end-to-end source-faithful performance evidence.
+
+Without items 5-6, this remains an elegant algebraic/compiler observation rather than a CCF-A/B paper.

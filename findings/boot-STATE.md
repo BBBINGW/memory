@@ -1,12 +1,12 @@
 # BOOT State
 
-Updated: 2026-10-29 — Cryptography 10.0, Research Turn 23/25, post claim-boundary synthesis.
+Updated: 2026-10-29 — Cryptography 10.0, Research Turn 24/25, checkpoint audit passed after minimal queue repair.
 
 - TRACK_ID: BOOT
 - ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
 - LATEST_COMPLETED: B175_AUDIT
-- NEXT_ITERATION: PROVENANCE_AND_CHECKPOINT_AUDIT; BOOT-DECISION-001_PENDING
-- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / POST_B175_STATIC_SYNTHESIS_COMPLETE / STATIC_INFORMATION_FRONTIER_REACHED / OVERNIGHT_AUTONOMOUS_RESEARCH
+- NEXT_ITERATION: TURN25_MILESTONE_CHECKPOINT; BOOT-DECISION-001_PENDING
+- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / POST_B175_STATIC_SYNTHESIS_COMPLETE / STATIC_INFORMATION_FRONTIER_REACHED / PASS_CHECKPOINT_READY_AFTER_REPAIR
 - CURRENT_EXPERIMENT: NONE_AUTHORIZED
 - CURRENT_RESULT: FAIL_B175_POINTWISE_NOISE
 - EVIDENCE: RAW_AUDITED
@@ -21,7 +21,7 @@ Updated: 2026-10-29 — Cryptography 10.0, Research Turn 23/25, post claim-bound
 - PENDING_PI_DECISIONS: BOOT-DECISION-001
 
 Latest completed finding:
-findings/boot-B175-post-claim-boundary-synthesis-2026-10-29.md
+findings/boot-B175-provenance-checkpoint-audit-2026-10-29.md
 
 Pending PI queue:
 findings/boot-PENDING_PI_DECISIONS.md
@@ -171,6 +171,13 @@ Post-B175 claim-boundary synthesis:
 - Remaining questions require actual frontier/common-lineage components, new native/DFR evidence, implementation, or PI resolution of BOOT-DECISION-001.
 - There is no validated redesign candidate or established paper contribution. Frontier A is an engineering repair only; Frontier B retains only low-ceiling distributional, instance-specific, or lineage-specific claim space.
 - Turn 24 is restricted to provenance/checkpoint audit. Subject to a clean audit and no new PI input, Turn 25 should checkpoint the static frontier and enter pending-PI/no-independent-work state; Turn 26 remains handoff-only.
+
+Provenance and checkpoint audit:
+
+- The scientific finding chain, state consistency, overclaim boundary, and execution boundary pass; durable GitHub memory is reliable.
+- Two minor pending-queue defects were identified and repaired: the Turn-9 finding is now in the source closure, and the continuation boundary now reflects that no substantive independent research remains.
+- There are 16 standalone scientific findings across Turns 6--23, with no missing durable scientific result; governance/folded Turns 7--8 are accounted for.
+- The repaired checkpoint manifest is ready for Turn 25. Turn 26 remains HANDOFF ONLY and must carry BOOT-DECISION-001 and all fixed-scope boundaries into the successor session.
 
 Overnight rule:
 

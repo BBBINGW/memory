@@ -1,12 +1,12 @@
 # BOOT State
 
-Updated: 2026-10-29 — Cryptography 10.0, Research Turn 25/25, final milestone checkpoint sealed after minimal metadata repair.
+Updated: 2026-10-29 — Cryptography 11.0, Research Turn 2/25, pending-PI independent-work reassessment complete.
 
 - TRACK_ID: BOOT
 - ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
 - LATEST_COMPLETED: B175_AUDIT
-- NEXT_ITERATION: TURN26_HANDOFF_ONLY; BOOT-DECISION-001_PENDING; SUCCESSOR_WAIT_PI
-- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / POST_B175_STATIC_SYNTHESIS_COMPLETE / STATIC_INFORMATION_FRONTIER_REACHED / PASS_CHECKPOINT_READY
+- NEXT_ITERATION: WAIT_PI; BOOT-DECISION-001_PENDING; B176_NOT_AUTHORIZED
+- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / POST_B175_STATIC_SYNTHESIS_COMPLETE / STATIC_INFORMATION_FRONTIER_REACHED / INDEPENDENT_RESEARCH_REASSESSMENT_COMPLETE / NO_INDEPENDENT_RESEARCH_REMAINING / WAIT_PI
 - CURRENT_EXPERIMENT: NONE_AUTHORIZED
 - CURRENT_RESULT: FAIL_B175_POINTWISE_NOISE
 - EVIDENCE: RAW_AUDITED
@@ -20,8 +20,11 @@ Updated: 2026-10-29 — Cryptography 10.0, Research Turn 25/25, final milestone 
 - END_TO_END_SPEEDUP: NOT_ESTABLISHED
 - PENDING_PI_DECISIONS: BOOT-DECISION-001
 
-Latest completed finding:
-findings/boot-B175-final-milestone-checkpoint-2026-10-29.md
+Latest completed control/research-status finding:
+findings/boot-B175-pending-pi-independent-work-reassessment-2026-10-29.md
+
+Latest completed scientific experiment audit remains:
+findings/boot-B175-audit-direct-si-pointwise-noise-failure-2026-10-28.md
 
 Pending PI queue:
 findings/boot-PENDING_PI_DECISIONS.md

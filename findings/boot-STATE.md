@@ -1,12 +1,12 @@
 # BOOT State
 
-Updated: 2026-10-29 — Cryptography 10.0, Research Turn 20/25, post quantization-cell robustness screen.
+Updated: 2026-10-29 — Cryptography 10.0, Research Turn 21/25, post hybrid-frontier research-value ceiling.
 
 - TRACK_ID: BOOT
 - ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
 - LATEST_COMPLETED: B175_AUDIT
-- NEXT_ITERATION: HYBRID_FRONTIER_BEST_CASE_RESEARCH_VALUE_CEILING; BOOT-DECISION-001_PENDING
-- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / HYBRID_FRONTIER_SIZE_2_UNVALIDATED / STATIC_RERANDOMIZATION_SUBLINE_SATURATED / OVERNIGHT_AUTONOMOUS_RESEARCH
+- NEXT_ITERATION: UNIVERSAL_SCHEDULE_DOMINANCE_IMPOSSIBILITY_SCREEN; BOOT-DECISION-001_PENDING
+- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / FRONTIER_A_VALUE_FAIL / FRONTIER_B_UNCLEAR_LOW_CEILING / OVERNIGHT_AUTONOMOUS_RESEARCH
 - CURRENT_EXPERIMENT: NONE_AUTHORIZED
 - CURRENT_RESULT: FAIL_B175_POINTWISE_NOISE
 - EVIDENCE: RAW_AUDITED
@@ -21,7 +21,7 @@ Updated: 2026-10-29 — Cryptography 10.0, Research Turn 20/25, post quantizatio
 - PENDING_PI_DECISIONS: BOOT-DECISION-001
 
 Latest completed finding:
-findings/boot-B175-quantization-cell-robustness-2026-10-29.md
+findings/boot-B175-hybrid-frontier-research-value-ceiling-2026-10-29.md
 
 Pending PI queue:
 findings/boot-PENDING_PI_DECISIONS.md
@@ -146,6 +146,15 @@ Quantization-cell robustness screen:
 - Both verdict cells remain astronomically negligible because their probability is dominated by hitting prescribed uniform ring polynomials.
 - The result strengthens only the absence of a worst-case all-coins guarantee; it does not transfer to B175/frontier DFR.
 - The static gauge/rerandomization subline has no further independent information gain without actual component states and is closed as an explanatory-only line.
+
+Hybrid-frontier best-case research-value ceiling:
+
+- Even assuming hypothetical native correctness, both frontiers retain 26 ct-ct through output, 27 projected with leading, full SI depth four, 30 rotations/key switches, and the same best-case key material; both increase ct-pt from 30 to 31.
+- Their sole structural benefit is reducing selector endpoint depth from three to two, without reducing full depth or establishing latency improvement.
+- Frontier A is a distributive lower-two-bit selector expansion with heavier scale/plaintext-interface work and no independent contribution beyond an engineering repair.
+- Frontier B is a lower-burden reassociation that breaks the modular GROUPED/LT8 interface; it has only a low research-value ceiling unless a general, prior-art-distinct SI component-lift/Q-carry scheduling theorem can be proved.
+- Neither frontier has native correctness, a validated redesign, novelty, count/depth/key/memory advantage, or end-to-end evidence.
+- The next no-regret test is a universal schedule-dominance impossibility screen using legal component representatives and gauge sensitivity to seek a relative-noise ranking reversal.
 
 Overnight rule:
 

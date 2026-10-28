@@ -6,7 +6,7 @@ MODE: PAPER_LEVEL_ONLY
 CODEX: NOT_USED
 NATIVE: NOT_RUN
 
-## Authoritative BOOT state
+## Authoritative native state
 
 LATEST_COMPLETED: B162_AUDIT
 NEXT_NATIVE_GATE: B163_CORRECTED_B160_NOSCALE_SELECTOR_GATE
@@ -20,126 +20,97 @@ B158_NOVELTY: PROMISING_NOT_ESTABLISHED
 B158_NATIVE_FEASIBILITY: UNRESOLVED
 B163: NOT_RUN
 
-## Question
+## Candidate
 
-Can the standard FHEW/TFHE tail
+Consider the standard FHEW/TFHE tail
 
-    RLWE accumulator
+    ring accumulator
       -> SampleExtract
-      -> modulus switch
-      -> LWE key switch
+      -> modulus/key return
+      -> output LWE ciphertext.
 
-be structurally shortened by absorbing SampleExtract into the key-return operation?
+Question: can SampleExtract and key return be fused into a new structural primitive that materially reduces work/key material, rather than merely reordering an existing linear transform?
 
-## Observation 1 — SampleExtract itself is only a public linear reindexing
+## Source closure 1 — TFHE functional key switching already absorbs linear morphisms
 
-For an RLWE ciphertext (a(X),b(X)) under ring secret t(X), extracting coefficient 0 gives an LWE ciphertext under the coefficient vector of t.
+TFHE (ePrint 2018/421) explicitly revisits key switching as a more general functional key-switching primitive.
 
-At the message/noise level SampleExtract introduces no new cryptographic operation; it is a deterministic public coefficient permutation/sign pattern.
+The paper states that key switching can:
+- switch between scalar and polynomial message spaces;
+- homomorphically evaluate a public or private Z-linear morphism while switching keys;
+- perform projections/permutations/repacking via functional key switching.
 
-Therefore merely "fusing the loops" of SampleExtract and LWE key switching does not remove the expensive part:
-- gadget decomposition of the extracted mask coefficients;
-- multiplication/addition with the key-switching material.
-
-It changes dataflow, not asymptotic cryptographic work.
-
-## Observation 2 — TFHE functional key switching already absorbs public linear morphisms
-
-Chillotti–Gama–Georgieva–Izabachène,
-"TFHE: Fast Fully Homomorphic Encryption over the Torus",
-ePrint 2018/421.
-
-Section 4.1 explicitly generalizes key switching beyond key replacement:
-- it switches between scalar and polynomial message spaces;
-- it evaluates public or private Z-module linear morphisms during the key switch;
-- public functional key switching can implement projections/permutations/packing-style linear maps.
+It also treats SampleExtract as a noiseless linear operation.
 
 Research MCP source:
-ePrint 2018/421, physical pp.19-24,
-mirror PDF SHA256
+ePrint 2018/421, physical pp.19-24 and Table 1 around p.49,
+mirror PDF SHA256:
 23fa887ff217f14a47763d6711d8c9304a392954751bee11799a223499d393cd
 (version status VERSION_UNVERIFIED).
 
-Hence the conceptual idea
-    "do extraction's public linear map inside key switching"
-is already within the original TFHE functional-key-switch framework.
+Therefore "absorb a public linear extraction/rearrangement into key switching" is not a new cryptographic primitive.
 
-## Observation 3 — moving key return BEFORE extraction is also prior art
+## Source closure 2 — ring-domain key return before extraction is already prior art
 
-Wang–Xiang–Zhang–Deng–Feng 2025,
-"Improved FHE Bootstrapping and Its Applications in Discretized Neural Networks",
-performs the key-return operation while the ciphertext is still in the NTRU/ring layer and extracts afterwards.
+The 2025 improved NTRU-based bootstrapping baseline audited elsewhere in BOOT moves the key return into the NTRU/ring domain before extraction, targeting a zero-padded form of the output LWE secret.
 
-The construction aligns the target ring-secret coefficient vector with the original LWE secret padded with zeros, performs an NTRU-domain key switch to that target, and then sample-extracts.
+Thus the natural ordering
 
-This is stronger than an implementation-level fusion:
-the expensive key return is reordered across extraction and moved into the ring domain.
+    ring ciphertext
+      -> ring/NTRU key return
+      -> SampleExtract
 
-Therefore:
+is already an explicit modern construction.
 
-    RING_KEY_RETURN_THEN_EXTRACT = PRIOR ART.
+This also shrinks the final KSK to a negligible tail in the reported baseline, making a new extraction/KSK fusion even less valuable.
 
-## Commutation viewpoint
+See:
+    findings/boot-KSK-linear-embedding-gate-2026-10-28.md
 
-Let E denote constant-coefficient SampleExtract at the plaintext/ciphertext-linear level.
+## Algebraic cost observation
 
-Let KS_R denote a ring-domain key switch from t(X) to a target ring secret t'(X), and suppose the coefficient vector of t' is chosen so that its relevant extracted coordinates correspond to the desired LWE secret s.
+SampleExtract is a public linear rearrangement/sign pattern on the ring ciphertext coefficients.
 
-Then the prior-art strategy realizes the commuting intent
+Moving or fusing this linear map with a key switch does not by itself remove the secret-dependent decomposition work:
+- the output mask still depends on the ring-secret coefficients;
+- ordinary key switching still requires gadget decomposition / encrypted secret-dependent material unless a stronger secret relation or different cryptographic representation is introduced.
 
-    E after KS_R
-instead of
-    KS_L after E.
-
-The precise ciphertext-noise distributions differ by construction, but the high-level stage-reordering goal is already established.
-
-## Why no hidden asymptotic gain remains from "fusion"
-
-Any direct fused Extract+LWE-KS using the same ordinary LWE KSK must still process the N extracted mask coefficients (or their gadget digits). SampleExtract contributes essentially no expensive secret-dependent computation to remove.
-
-To obtain a real asymptotic/key-size gain one must change something deeper:
-- secret structure,
-- ring-domain key return,
-- decomposition method,
-- or the target ciphertext representation.
-
-Those directions are already covered by existing work audited elsewhere in BOOT.
+Hence a loop-level implementation can fuse indexing/rearrangement with decomposition, but this is an implementation fusion, not a structural reduction in asymptotic secret-dependent work.
 
 ## Decision
 
-SAMPLEEXTRACT_PLUS_LWE_KS_LOOP_FUSION:
-    IMPLEMENTATION-LEVEL ONLY / LOW VALUE.
+SAMPLEEXTRACT_PLUS_KEYSWITCH_AS_NEW_LINEAR_FUSION:
+    PRIOR_ART / NOT NOVEL.
 
-PUBLIC_LINEAR_EXTRACTION_INSIDE_FUNCTIONAL_KS:
-    PRIOR ART (TFHE).
+RING_DOMAIN_KEY_RETURN_BEFORE_EXTRACTION:
+    PRIOR_ART.
 
-RING_KEY_RETURN_BEFORE_EXTRACTION:
-    PRIOR ART (Wang et al. 2025).
+EXPECTED_KEY_MATERIAL_REDUCTION_FROM_LINEAR_REORDERING:
+    NONE.
 
-GENERIC_EXTRACT_KEYRETURN_STAGE_FUSION:
-    PARK.
+EXPECTED_ASYMPTOTIC_DECOMPOSITION_REDUCTION:
+    NONE.
 
-NOVELTY:
+CCF_A_B_VALUE:
     FAIL for the generic idea.
 
 CODEX/NATIVE:
     NOT REQUIRED.
 
-## Next structural scout
+## What would be needed to reopen
 
-Move to the *input* side of blind rotation.
+Only reopen if a new mechanism removes secret-dependent decomposition itself, e.g.:
+- a new secret relation with a justified security model;
+- a new ciphertext representation that exposes the desired output secret publicly;
+- or a cross-stage theorem showing that an entire key family disappears.
 
-The remaining generic front-end stage is the modulus-switch / phase-to-rotation-index conversion:
-    high-modulus LWE
-      -> rounded rotation-domain LWE
-      -> blind rotation.
+Do not spend BOOT cycles on ordinary SampleExtract/key-switch loop fusion.
 
-Question:
-Can the explicit rounding/modulus-switch stage be absorbed into a different rotation representation or accumulator geometry so that:
-- no separate modulus-switch error is introduced;
-- the blind rotation still uses a compact ring;
-- and cost does not simply reappear as a larger ring or larger LUT?
+## Next structural axis
 
-This is only a scouting question; no positive claim is made.
+Move to bootstrap-entry or cross-stage questions rather than tail fusion:
+- whether input modulus switching can be structurally absorbed;
+- whether a later refresh can absorb intentionally coarser earlier approximations;
+- or other stage-elimination mechanisms.
 
-B163 remains the highest native gate once Codex quota returns.
+B163 remains the highest native priority once Codex quota is explicitly restored.

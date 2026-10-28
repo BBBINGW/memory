@@ -244,6 +244,101 @@ However:
 Status:
     MASK_CANONICALIZATION_FIX = PLAUSIBLE / NOT ESTABLISHED.
 
+
+## Stronger closure: drift-aware ModSwitch and randomized ModSwitch are already general defenses
+
+Two prior works substantially narrow the remaining BOOT-security space.
+
+### Bernard–Joye–Smart–Walter, ePrint 2024/1718 / EUROCRYPT 2025
+
+"Drifting Towards Better Error Probabilities in Fully Homomorphic Encryption Schemes"
+
+For modulus switching, write the public rounding/drift vector as
+    (alpha_1,...,alpha_n,beta)
+and the secret-dependent drift as
+    e_drift = beta - sum_j alpha_j s_j.
+
+The paper:
+- identifies modulus switching drift as the main correctness/IND-CPA-D gap in FHEW/TFHE/FINAL;
+- transforms a ciphertext to another encryption of the same message, including by adding encryptions of zero, to change the drift vector;
+- applies a PUBLIC quality test before accepting the transformed ciphertext;
+- gives both probabilistic mean/variance tests and an exact worst-case bounded-secret test;
+- retries the transform until the candidate drift vector passes.
+
+Hence:
+    GENERIC_PRE_MODSWITCH_RERANDOMIZE_AND_PUBLIC_DRIFT_TEST = PRIOR ART.
+
+This is stronger than merely saying "add fresh noise": the prior work explicitly exposes a public failure-relevant statistic and rejects bad candidates before ModSwitch.
+
+Primary source:
+ePrint 2024/1718; EUROCRYPT 2025.
+
+### Liu–Wang–Fisch, ePrint 2025/1627 / CCS 2025
+
+"IND-CPA-D of Relaxed Functional Bootstrapping: A New Attack, A General Fix, and A Stronger Model"
+
+Research MCP recovered the full PDF:
+SHA256
+29ee6aeb6263f576e9b976c4b3f6a25813308d98789ba68a4ab5cd2718a5385a
+(version status VERSION_UNVERIFIED).
+
+Section 5 defines
+
+    ModSwitch'(pk, ct; r)
+      = round( (q'/q) * (ct + Enc_pk(0;r)) ).
+
+The paper's Lemma 5.1 proves the intended IND-CPA-D hiding property under its fixed-Hamming-weight secret setup and modulus/error conditions.
+
+The authors state that this randomized procedure:
+- has essentially no overhead relative to bootstrapping;
+- prevents their modulus-switching-error inequality hints;
+- applies as a general mitigation to existing modulus-switching-error-based exact-FHE bootstrapping attacks as well.
+
+The paper also explains a critical limitation:
+in the stronger IND-CPA-DR model, where the adversary observes evaluation randomness, the fix fails because the adversary can recover/subtract the zero-encryption mask and reconstruct the hint.
+
+Therefore:
+
+    GENERIC_HIDDEN_RANDOMNESS_MODSWITCH_ERROR_FIX = DIRECT PRIOR ART.
+    "ZERO-OVERHEAD" RANDOMIZED MODSWITCH AS IND-CPA-D REPAIR = DIRECT PRIOR ART.
+    IND_CPA_DR_SECURE_VARIANT = NOT SOLVED BY THIS FIX.
+
+### Combined implication for ePrint 2026/2546
+
+The public abstract of 2026/2546 contains three attacks.
+
+Only its first attack class is directly BOOT-specific: extension of bootstrapping-failure attacks to BFV/BGV, with special focus on BGV powerful-basis representation.
+
+The second and third attacks target BFV plaintext-ciphertext and ciphertext-ciphertext multiplication heuristic noise bounds. They are important FHE security results but are not themselves bootstrapping optimizations and should not pull this BOOT track into a generic BFV-noise-security subproject.
+
+For the BOOT-specific first attack, a positive repair is interesting ONLY if the exact 2546 failure variable is not already reducible to:
+- the public linear drift-quality model of 2024/1718; or
+- a modulus-switching-error hint hidden by 2025/1627's randomized ModSwitch.
+
+If the powerful-basis attack is just a representation-specific instance of such a modulus-switching/drift hint, then:
+    NEW_REPAIR_NOVELTY = FAIL.
+
+A surviving target must identify a failure-critical variable that remains visible/correlated even after both defenses.
+
+## Priority update
+
+BOOT_SECURITY_2546:
+    DOWNGRADE TO SOURCE-GATED NARROW CHECK.
+
+Reason:
+- full-input ACER rerandomization: prior art;
+- TFHE stage-local sanitization: prior art;
+- public drift-vector candidate testing: prior art;
+- randomized zero-encryption ModSwitch with general mod-switch-error hiding claim: prior art.
+
+Only:
+    BGV_POWERFUL_BASIS_NON_MODSWITCH_FAILURE_SURFACE
+may remain interesting, and this cannot be established from the public abstract.
+
+The exact 2546 PDF is now the only justified next step on this security branch.
+
+Do not spend Codex/native effort on defenses before that source is available.
+
 ## Research decision
 
 POST_EVAL_RERANDOMIZATION:
@@ -262,10 +357,10 @@ BFV/BGV_MASK_SKEW_LOCAL_FIX:
     PLAUSIBLE BUT SOURCE-GATED.
 
 BFV/BGV_BOOTSTRAP_FAILURE_LOCAL_FIX:
-    UNKNOWN / SOURCE-GATED.
+    UNKNOWN / SOURCE-GATED; generic ModSwitch/drift repairs are already prior art.
 
 NOVELTY:
-    NOT ESTABLISHED.
+    NOT ESTABLISHED; generic rerandomization/ModSwitch repair is prior art.
 
 CCF_A_B_READINESS:
     NO.

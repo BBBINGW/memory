@@ -79,5 +79,5 @@ Turn 25 may now execute the final normal-research milestone checkpoint. Turn 26 
 
 ## Research-GPT evidence identifier
 
-- CHECKPOINT_MANIFEST_SHA256: `7ea7dbead7b1ca6c7d39ac55009fd3a2dc974aa438c6522b6ad1a979af6653d08`
+- CHECKPOINT_MANIFEST_SHA256: `7ea7dbead7b1ca6c7d39ac55009fd3a2dc974aa438c6522b6ad1a979af6653d0`
 

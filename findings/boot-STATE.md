@@ -1,12 +1,12 @@
 # BOOT State
 
-Updated: 2026-10-29 — Cryptography 10.0, Research Turn 24/25, checkpoint audit passed after minimal queue repair.
+Updated: 2026-10-29 — Cryptography 10.0, Research Turn 25/25, final milestone checkpoint sealed after minimal metadata repair.
 
 - TRACK_ID: BOOT
 - ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
 - LATEST_COMPLETED: B175_AUDIT
-- NEXT_ITERATION: TURN25_MILESTONE_CHECKPOINT; BOOT-DECISION-001_PENDING
-- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / POST_B175_STATIC_SYNTHESIS_COMPLETE / STATIC_INFORMATION_FRONTIER_REACHED / PASS_CHECKPOINT_READY_AFTER_REPAIR
+- NEXT_ITERATION: TURN26_HANDOFF_ONLY; BOOT-DECISION-001_PENDING; SUCCESSOR_WAIT_PI
+- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / POST_B175_STATIC_SYNTHESIS_COMPLETE / STATIC_INFORMATION_FRONTIER_REACHED / PASS_CHECKPOINT_READY
 - CURRENT_EXPERIMENT: NONE_AUTHORIZED
 - CURRENT_RESULT: FAIL_B175_POINTWISE_NOISE
 - EVIDENCE: RAW_AUDITED
@@ -21,7 +21,7 @@ Updated: 2026-10-29 — Cryptography 10.0, Research Turn 24/25, checkpoint audit
 - PENDING_PI_DECISIONS: BOOT-DECISION-001
 
 Latest completed finding:
-findings/boot-B175-provenance-checkpoint-audit-2026-10-29.md
+findings/boot-B175-final-milestone-checkpoint-2026-10-29.md
 
 Pending PI queue:
 findings/boot-PENDING_PI_DECISIONS.md
@@ -181,7 +181,7 @@ Provenance and checkpoint audit:
 
 Overnight rule:
 
-Do not launch B176, repeat B175, sweep parameters, change Q/k0/geometry, test DFR, or implement a new representation layer without PI authorization. Continue only independent no-regret work: provenance/reproducibility, literature/novelty, theoretical necessary conditions, and shared cost/security/correctness analysis. Carry BOOT-DECISION-001 through every handoff.
+After Turn-25 milestone persistence and mandatory Turn-26 handoff, enter WAIT_PI. Until BOOT-DECISION-001 is resolved, only evidence preservation, checkpoint persistence, morning-report preparation, and handoff preparation are permitted. No substantive independent research remains. Do not launch B176, repeat B175, sweep parameters, change Q/k0/geometry, test DFR, or implement a new representation layer without PI authorization. Carry BOOT-DECISION-001 through every handoff.
 
 Historical authority:
 

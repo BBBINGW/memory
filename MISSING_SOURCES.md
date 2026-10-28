@@ -293,3 +293,17 @@ Impact: abstract-level affine-only boundary and scheme-independent interaction-r
 Human Action: obtain/upload an authorized current copy of ePrint 2026/1779. No author contact unless PI explicitly approves.
 Repository Path: papers/supplied/eprint-2026-1779-ring-switch-no-slot-recovery.pdf
 Readability Verification: **PENDING** — after supply, verify the ring-switch leaf transform, slot-recovery procedure, affine-only theorem, and benchmark sections before changing status.
+
+
+## Chartier–Lemou ePrint 2026/2630 — exact error bootstrapping full text
+Status: **MISSING**
+Authors: Philippe Chartier; Mohammed Lemou
+Venue / Year: IACR ePrint 2026/2630, 2026
+Identifier: https://eprint.iacr.org/2026/2630
+Needed For: BOOT lossy-KS-to-error-bootstrap cross-stage gate; exact correctness/value test for intentionally coarser key switching followed by exact error refresh.
+Missing Evidence: exact error encoding; rounding quantum; recoverable error interval; ring-dimension / blind-rotation resolution condition; comb-bootstrap capacity; full noise theorem; placement and precision of key switching in the implementation; parameter tables and current TFHE-rs baseline.
+Why Public Retrieval Failed: On 2026-10-28 GitHub Notes get_eprint_paper("2026/2630") returned RETRIEVAL_BLOCKED: official IACR PDF HTTP 403; no exact-title author-matched arXiv fallback; fixed arturo-kong GitHub ePrint mirror lacked 2026/2630.pdf. Public ePrint mirrors expose the abstract only.
+Impact: abstract-level structural facts and a scheme-independent approximate-key-switch residual bound can be used, but no 2630-specific coarse-KS correctness, parameter saving, or novelty claim is authorized.
+Human Action: obtain/upload an authorized current copy of ePrint 2026/2630. No author contact unless PI explicitly approves.
+Repository Path: papers/supplied/eprint-2026-2630-exact-error-bootstrap.pdf
+Readability Verification: **PENDING** — verify the exact error-range theorem, algorithms, key-switch placement, parameter tables, and benchmarks before changing status.

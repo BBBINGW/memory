@@ -1,12 +1,12 @@
 # BOOT State
 
-Updated: 2026-10-29 — Cryptography 10.0, Research Turn 10/25, post source-level SI error-bound derivation.
+Updated: 2026-10-29 — Cryptography 10.0, Research Turn 11/25, post representation-mechanism negative screen.
 
 - TRACK_ID: BOOT
 - ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
 - LATEST_COMPLETED: B175_AUDIT
-- NEXT_ITERATION: STATIC_REPRESENTATION_MECHANISM_FEASIBILITY_SCREEN; BOOT-DECISION-001_PENDING
-- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / TENSOR_REFERENCE_TERM_DOMINANT / OVERNIGHT_AUTONOMOUS_RESEARCH
+- NEXT_ITERATION: DELAYED_RECOMBINATION_OPTIMISTIC_STATIC_CEILING; BOOT-DECISION-001_PENDING
+- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / BACKEND_ONLY_RESCUES_KILLED / GEOMETRY_CHANGING_SURVIVORS_UNVALIDATED / OVERNIGHT_AUTONOMOUS_RESEARCH
 - CURRENT_EXPERIMENT: NONE_AUTHORIZED
 - CURRENT_RESULT: FAIL_B175_POINTWISE_NOISE
 - EVIDENCE: RAW_AUDITED
@@ -21,7 +21,7 @@ Updated: 2026-10-29 — Cryptography 10.0, Research Turn 10/25, post source-leve
 - PENDING_PI_DECISIONS: BOOT-DECISION-001
 
 Latest completed finding:
-findings/boot-B175-source-level-si-error-bounds-2026-10-29.md
+findings/boot-B175-representation-mechanism-negative-screen-2026-10-29.md
 
 Pending PI queue:
 findings/boot-PENDING_PI_DECISIONS.md
@@ -66,6 +66,13 @@ Source-level SI error bounds:
 - The measured pointwise residual has coefficient bit length 647 and required bits 664; subtracting both conservative bounds leaves the same 647-bit / 664-required-bit magnitude.
 - Therefore the aggregate tensor/reference term, rather than quantization or relinearization, necessarily dominates this B175 failure.
 - Fine attribution within the tensor/reference term remains unclear because B175 lacks componentwise centered lifts, coefficient-domain references, and the pre-relinearization degree-two state.
+
+Representation-mechanism screen:
+
+- Backend-only, key-switch-only, pure LT-scheduling, simple-permutation, and reconstruct-before-multiply decomposition rescues are statically killed for the fixed-`Q` B175 deficit.
+- Delayed recombination, external-product representation, and ring/field switching survive only the geometry-changing necessary-condition gate.
+- No survivor has an established 16-required-bit recovery, complete cost/security case, or novelty claim; there is no validated redesign candidate.
+- The next no-regret test is an optimistic eight-block delayed-recombination ceiling using the existing powers, scales, required-bit traces, accumulation bound, and operation counts.
 
 Overnight rule:
 

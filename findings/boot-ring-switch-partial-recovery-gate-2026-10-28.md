@@ -236,6 +236,75 @@ If one uv channel is substantially cheaper and remains in small-ring arithmetic,
 
 Do NOT jump directly to a high-degree CKKS EvalMod polynomial. High degree may make d-1 synchronization channels erase the advantage.
 
+
+## Rank-prior-art disambiguation — 1023 / 1264 do not directly kill the interaction-rank question
+
+Two 2026 CKKS papers use sparsity/low-rank structure, but their rank objects are different from the cross-leaf interaction rank defined above.
+
+### ePrint 2026/1023 — sparse CoeffToSlot / SlotToCoeff
+
+Xiaopeng Zheng,
+"Faster CoeffToSlot and SlotToCoeff for Sparsely Packed Ciphertexts with Application to CKKS Bootstrapping."
+
+The public abstract states that it exploits the repeated slot pattern of sparse CKKS packing itself:
+- N is the ring dimension;
+- packed vector length is n/2;
+- repetition factor r=N/n;
+- if n<=r/2, each transform uses one plaintext-ciphertext multiplication and O(log n) rotations;
+- otherwise it uses 2n/r plaintext-ciphertext multiplications and O(sqrt(2n/r)+log r) rotations;
+- the transforms keep multiplicative depth 1;
+- for N=2^16 and tested sparse dimensions n/2<=1024, the paper reports 3.53x--7.95x transform speedups and 1.71x--5.28x whole-bootstrap speedups over its OpenFHE sparse baselines.
+
+Primary landing/abstract:
+https://eprint.iacr.org/2026/1023
+
+This is direct prior art for:
+    ACTIVE_SLOT / REPETITION_AWARE_LINEAR_TRANSFORM_REDUCTION.
+
+It does NOT study nonlinear interaction between distinct ring-switched leaves.
+
+### ePrint 2026/1264 — LUT matrix rank
+
+Zhihao Li, Xuan Shen, Cheng Hong, Ruida Wang, Xianhui Lu, Tao Wei,
+"The Power of Low Rank: Fast CKKS Functional Bootstrapping for High-Precision Lookup Tables."
+
+The public abstract makes the rank definition explicit:
+- prior high-precision CKKS functional bootstrapping reshapes a size-P LUT into a matrix and pays O(P) multiplications;
+- many practical LUT matrices have small exact/numerical rank;
+- the paper gives an SVD/spectral framework and exact rank bounds for structured function classes;
+- LRMT-FBT evaluates through singular values/vectors with O(r sqrt(P)) homomorphic multiplication cost;
+- it reports examples such as Step rank 1 and ReLU rank 3.
+
+Primary landing/abstract:
+https://eprint.iacr.org/2026/1264
+
+Therefore its r is:
+    RANK_OF_RESHAPED_LUT_MATRIX / NUMERICAL_SVD_RANK.
+
+This is NOT the same object as the present two-leaf interaction separation rank:
+    minimum R with mixed part M(u,v)=sum_{j=1}^R g_j(u) h_j(v).
+
+The former compresses a lookup-table evaluation representation; the latter measures how much cross-leaf information a nonlinear function needs after a particular ring-switch decomposition.
+
+### Current rank map
+
+1. Linear-transform sparsity / repeated-slot structure:
+       DIRECT PRIOR ART — ePrint 2026/1023 and the 2513 fiber-aware transforms.
+
+2. Functional-LUT matrix rank:
+       DIRECT PRIOR ART — ePrint 2026/1264.
+
+3. Cross-leaf nonlinear interaction/separation rank after ring switching:
+       NO DIRECT COLLISION FOUND YET.
+
+This distinction prevents an overclaim:
+the word "rank" itself is heavily occupied, so any eventual contribution must define the cross-leaf communication/interference object precisely and prove that it controls recovery/synchronization cost in the exact 1779 scheme.
+
+Status update:
+    PRIOR_ART_WARNING_1264 = RESOLVED_AS_NEIGHBORING_NOT_DIRECT.
+    GENERIC_LOW_RANK_BOOTSTRAPPING_CLAIM = FORBIDDEN / PRIOR ART.
+    CROSS_LEAF_INTERACTION_RANK_NOVELTY = STILL NOT ESTABLISHED.
+
 ## Potential contribution standard
 
 A CCF-A/B-level result would need more than the rank lemma.

@@ -1,12 +1,12 @@
 # BOOT State
 
-Updated: 2026-10-29 — Cryptography 10.0, Research Turn 14/25, post public-mask convolution screen.
+Updated: 2026-10-29 — Cryptography 10.0, Research Turn 15/25, post public-mask operator-kernel screen.
 
 - TRACK_ID: BOOT
 - ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
 - LATEST_COMPLETED: B175_AUDIT
-- NEXT_ITERATION: PUBLIC_MASK_OPERATOR_KERNEL_INVERTIBILITY_SCREEN; BOOT-DECISION-001_PENDING
-- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / HYBRID_FRONTIER_SIZE_2_UNVALIDATED / PUBLIC_MASK_SCREEN_UNCLEAR / OVERNIGHT_AUTONOMOUS_RESEARCH
+- NEXT_ITERATION: HYBRID_FRONTIER_ALGEBRAIC_COMPLETION_INDETERMINACY_SCREEN; BOOT-DECISION-001_PENDING
+- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / HYBRID_FRONTIER_SIZE_2_UNVALIDATED / OPERATOR_ONLY_LOWER_BOUND_FAILED / OVERNIGHT_AUTONOMOUS_RESEARCH
 - CURRENT_EXPERIMENT: NONE_AUTHORIZED
 - CURRENT_RESULT: FAIL_B175_POINTWISE_NOISE
 - EVIDENCE: RAW_AUDITED
@@ -21,7 +21,7 @@ Updated: 2026-10-29 — Cryptography 10.0, Research Turn 14/25, post public-mask
 - PENDING_PI_DECISIONS: BOOT-DECISION-001
 
 Latest completed finding:
-findings/boot-B175-public-mask-convolution-screen-2026-10-29.md
+findings/boot-B175-public-mask-operator-kernel-screen-2026-10-29.md
 
 Pending PI queue:
 findings/boot-PENDING_PI_DECISIONS.md
@@ -98,6 +98,14 @@ Public-mask convolution screen:
 - Frontier A lacks the full coefficient residuals for `Y`, `Y^2`, and `Y^3`, so none of its decisive masked branches can be evaluated.
 - An upper bound from mask `l1` norms is not a lower bound on unknown operands; cancellation and missing component-lift/`Q`-carry state prevent formal elimination.
 - Both frontiers remain `UNCLEAR_NOT_ELIMINATED`; no validated redesign candidate exists.
+
+Public-mask operator-kernel screen:
+
+- Across all 19 L18 primes, every raw-lift public-mask operator is a full-rank unit with no NTT spectral zero; the plaintext `RingT` projection geometry does not survive in the residual operator.
+- The rigorous finite-field inverse-norm lower bound loses roughly 34--38 bits and cannot force the three-to-four-bit growth needed to eliminate the frontiers.
+- Explicit inverse-polynomial and carry-cancellation constructions prove that no operator-only universal positive coefficient-norm lower bound exists for an unknown residual vector.
+- A 14.26--15.46-bit conditional integer no-wrap gain explains the historical empirical warning but is inapplicable without no-wrap, carry, and branch-cancellation proofs.
+- The operator-only screening hypothesis fails; both frontiers remain `UNCLEAR_NOT_ELIMINATED` and unvalidated.
 
 Overnight rule:
 

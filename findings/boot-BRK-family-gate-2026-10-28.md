@@ -214,6 +214,34 @@ https://doi.org/10.46586/tches.v2024.i3.418-451
 Therefore:
     NTRU_SPECIFIC_BKU = PRIOR ART.
 
+## Direct NTRU block-key closure: Feng–Wu–Lin–Xiang, ePrint 2025/2311
+
+After the first version of this finding was written, a direct NTRU-specific source was recovered:
+
+"Accelerating NTRU-based Bootstrapping with Block Key Distributions",
+ePrint 2025/2311.
+
+It applies exactly the secret-support route to NTRU blind rotation:
+- block-binary and block-ternary LWE secret distributions;
+- n/ell external products instead of n;
+- combination with key unrolling yielding n/(2 ell) external products in the stated construction.
+
+For ell=4, the paper reports a 1.12x speedup over the CHES 2024 key-unrolling baseline and 1.73x over FINAL in its 128-bit-security experiments. It states that the latter two tested variants increase memory by less than 15 MB relative to the CHES 2024 unrolling method.
+
+More importantly for the structural gate, the paper explicitly exposes the same tradeoff when block keys are combined with dense-state unrolling: the RHS contains ell^2+2ell nontrivial terms per step, so the method generates n(ell+2) evaluation keys in that construction.
+
+Research MCP source:
+ePrint 2025/2311, physical pp. 1-3 and 13-14, mirror PDF SHA256
+648736ab3995464bbcf231cec6d409957b21e0589a84efda2b56c38d4d421b78
+(version status VERSION_UNVERIFIED).
+
+Therefore:
+    NTRU_BLOCK_SECRET_N_TO_N_OVER_ELL = DIRECT PRIOR ART.
+    NTRU_BLOCK_PLUS_UNROLLING_N_TO_N_OVER_2ELL = DIRECT PRIOR ART.
+    KEY/MEMORY_TRADEOFF_FOR_HIGHER_BLOCK_FACTOR = EXPLICIT PRIOR ART.
+
+This strengthens the PARK decision: even the natural NTRU-specific combination of block-structured secrets and unrolling is already directly explored.
+
 ## Tradeoff closure
 
 For dense/unstructured secrets, the obvious family-count reduction mechanisms are now all covered:

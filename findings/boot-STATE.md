@@ -1,12 +1,12 @@
 # BOOT State
 
-Updated: 2026-10-29 — Cryptography 10.0, Research Turn 21/25, post hybrid-frontier research-value ceiling.
+Updated: 2026-10-29 — Cryptography 10.0, Research Turn 22/25, post universal schedule-dominance impossibility screen.
 
 - TRACK_ID: BOOT
 - ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
 - LATEST_COMPLETED: B175_AUDIT
-- NEXT_ITERATION: UNIVERSAL_SCHEDULE_DOMINANCE_IMPOSSIBILITY_SCREEN; BOOT-DECISION-001_PENDING
-- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / FRONTIER_A_VALUE_FAIL / FRONTIER_B_UNCLEAR_LOW_CEILING / OVERNIGHT_AUTONOMOUS_RESEARCH
+- NEXT_ITERATION: CLAIM_BOUNDARY_SYNTHESIS; BOOT-DECISION-001_PENDING
+- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / FRONTIER_A_VALUE_FAIL / UNIVERSAL_SCHEDULE_DOMINANCE_EXCLUDED / COMMON_LINEAGE_NATIVE_UNCLEAR / OVERNIGHT_AUTONOMOUS_RESEARCH
 - CURRENT_EXPERIMENT: NONE_AUTHORIZED
 - CURRENT_RESULT: FAIL_B175_POINTWISE_NOISE
 - EVIDENCE: RAW_AUDITED
@@ -21,7 +21,7 @@ Updated: 2026-10-29 — Cryptography 10.0, Research Turn 21/25, post hybrid-fron
 - PENDING_PI_DECISIONS: BOOT-DECISION-001
 
 Latest completed finding:
-findings/boot-B175-hybrid-frontier-research-value-ceiling-2026-10-29.md
+findings/boot-B175-universal-schedule-dominance-impossibility-2026-10-29.md
 
 Pending PI queue:
 findings/boot-PENDING_PI_DECISIONS.md
@@ -155,6 +155,14 @@ Hybrid-frontier best-case research-value ceiling:
 - Frontier B is a lower-burden reassociation that breaks the modular GROUPED/LT8 interface; it has only a low research-value ceiling unless a general, prior-art-distinct SI component-lift/Q-carry scheduling theorem can be proved.
 - Neither frontier has native correctness, a validated redesign, novelty, count/depth/key/memory advantage, or end-to-end evidence.
 - The next no-regret test is a universal schedule-dominance impossibility screen using legal component representatives and gauge sensitivity to seek a relative-noise ranking reversal.
+
+Universal schedule-dominance impossibility screen:
+
+- Exact L18 component-algebra witnesses reverse the relative final-residual ranking between the current schedule and each of Frontiers A/B while fixing plaintext, input residual, level, scale, and ternary-secret class.
+- One representative makes each frontier strictly better; another makes the current schedule strictly better. All relevant inputs/intermediates remain in the positive-budget region.
+- The result excludes deterministic dominance in either direction over all legal component representatives; it does not establish common-lineage/native realizability, expected-noise dominance, DFR, or instance-specific behavior.
+- Frontier A retains no visible independent value beyond engineering repair. Frontier B's remaining claim space is restricted to distributional, instance-specific, or public-affine-lineage-specific results requiring absent and unauthorized evidence.
+- The next no-regret task is a complete claim-boundary synthesis matrix and Turn-25 checkpoint-boundary decision.
 
 Overnight rule:
 

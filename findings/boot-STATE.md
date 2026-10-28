@@ -1,12 +1,12 @@
 # BOOT State
 
-Updated: 2026-10-28 — Cryptography 10.0, Research Turn 6/25, post independent B175 raw-artifact audit.
+Updated: 2026-10-29 — Cryptography 10.0, Research Turn 9/25, post B175 static noise-attribution audit.
 
 - TRACK_ID: BOOT
 - ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
 - LATEST_COMPLETED: B175_AUDIT
-- NEXT_ITERATION: NO_REGRET_POST_B175_ANALYSIS; BOOT-DECISION-001_PENDING
-- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / OVERNIGHT_AUTONOMOUS_RESEARCH
+- NEXT_ITERATION: SOURCE_LEVEL_SI_ERROR_BOUND_DERIVATION; BOOT-DECISION-001_PENDING
+- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / STATIC_PATH_ATTRIBUTION_PASS_COARSE_FINE_UNCLEAR / OVERNIGHT_AUTONOMOUS_RESEARCH
 - CURRENT_EXPERIMENT: NONE_AUTHORIZED
 - CURRENT_RESULT: FAIL_B175_POINTWISE_NOISE
 - EVIDENCE: RAW_AUDITED
@@ -21,7 +21,7 @@ Updated: 2026-10-28 — Cryptography 10.0, Research Turn 6/25, post independent 
 - PENDING_PI_DECISIONS: BOOT-DECISION-001
 
 Latest completed finding:
-findings/boot-B175-audit-direct-si-pointwise-noise-failure-2026-10-28.md
+findings/boot-B175-static-noise-attribution-audit-2026-10-29.md
 
 Pending PI queue:
 findings/boot-PENDING_PI_DECISIONS.md
@@ -50,6 +50,14 @@ The fixed-parameter direct composition
     B174 GROUPED + same-context raw-L18 LT8 + direct SI pointwise
 
 is falsified for the authorized CASE_1 gate. This does not falsify all checkpoint-decoupled representations, establish general phase behavior, or establish full Algorithm 5, DFR, or end-to-end performance.
+
+Post-B175 static attribution:
+
+- The 31-bit increase is attributable at coarse path level to the real SI ct-ct tensoring, scale-invariant quantization, and relinearization path, rather than the CASE_1 LT8 slot layout or public expected reference.
+- Five SI ct-ct operations in the same run show stable 29--31-bit required-bit increments.
+- Current traces do not uniquely separate tensor input-noise propagation, quantization rounding, and relinearization/GadgetProduct noise.
+- The minimum decisive separation requires a post-quantization/pre-relinearization degree-two residual and a relinearization-only residual; neither is present in B175.
+- If the multiplication-path increment remains 31 bits, a representation-only repair must reduce the worse input from 633 to at most 617 required bits, a conditional 16-bit recovery threshold.
 
 Overnight rule:
 

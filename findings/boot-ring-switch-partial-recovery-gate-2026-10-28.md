@@ -358,3 +358,171 @@ RING_SWITCH_PARTIAL_RECOVERY_GATE_2:
 - PARK immediately if one cross statistic is not materially cheaper than full recovery.
 
 B163 remains untouched until Codex quota is explicitly restored by the PI.
+
+
+## Artifact resolution — exact 1779 recovery map and decisive value failure
+
+A public author artifact was subsequently recovered:
+
+    Zhaoyang-Liang/bootstrapping-via-ring-switching-without-slot-recovery
+
+The repository is explicitly organized around the paper's tables and includes the Table 9 CKKS slot-recovery baseline, fused-recovery experiment, raw timing data, and pinned source.
+
+This artifact resolves the key value question without waiting for the PDF.
+
+### Exact two-leaf recovery map
+
+For top logN=17 and leaf logN=16, let the two split leaf plaintexts be c0 and c1.
+
+The artifact constructs a public per-slot multiplier alpha and implements forward recovery as
+
+    r0 = c0 + alpha * c1,
+    r1 = c0 - alpha * c1.
+
+Code:
+    slotRecovery(...)
+
+Cost declaration in the artifact:
+- 1 plaintext-ciphertext multiplication total for forward recovery;
+- 1 rescale / 1 level;
+- 0 rotations;
+- 0 extra evaluation-key bytes.
+
+The inverse map is
+
+    c0' = (d0 + d1)/2,
+    c1' = alpha^{-1} (d0 - d1)/2.
+
+A separate implementation uses two plaintext-ciphertext multiplications and two rescales.
+
+More importantly, the artifact also implements a fused inverse route:
+- split the final StC into a prefix and last factor;
+- mix the two leaf prefix outputs by sum/difference;
+- absorb the 1/2 and 1/(2 alpha) branch weights into the LAST StC factor diagonals;
+- preserve the original diagonal support.
+
+The code explicitly validates that the modified last factor has the same support and reports:
+    total StC = 158 pt-muls, 38 rotations;
+    last factor = 32 pt-muls, 10 rotations.
+
+Therefore inverse recovery need not add a separate recovery layer to the final output.
+
+### Raw Table 9 timing
+
+Formal 10-trial aggregate from:
+
+raw_data/table_3_ckks_bootstrapping_and_table_9_slot_recovery/
+table_9_ckks_slot_recovery_baseline/
+formal_fused_slot_recovery_20260830_220248/
+
+gives:
+
+route | forward recovery | leaf-through-W wall | final linear stage | total
+--- | ---: | ---: | ---: | ---:
+no-recovery | 0 | 44.619591081 s | 2.663256169 s | 48.061743206 s
+separate-recovery | 0.010227729 s | 44.257329623 s | 2.755625176 s | 47.703253599 s
+fused-inverse | 0.010358466 s | 44.224729696 s | 2.605747794 s | 47.624565896 s
+
+The separate final-stage microbenchmark reports:
+
+ordinary StC:
+    8.445980049 s
+
+fused inverse:
+    8.502755119 s
+
+paired mean ratio:
+    1.007099337
+
+and the fused route preserves output level 15, whereas separate inverse recovery outputs level 14.
+
+Thus the only unavoidable explicit recovery cost in the best prior-art route is essentially the forward recovery:
+    about 10.36 ms in a ~47.62 s bootstrap.
+
+Its measured fraction is approximately
+
+    0.010358466 / 47.624565896
+      ~= 2.175e-4
+      ~= 0.02175%.
+
+Even an impossible zero-cost deletion of this entire forward recovery gives at most about 0.022% end-to-end serial gain for this benchmark.
+
+### Quadratic partial-recovery algebra on the REAL artifact map
+
+For a desired original-slot square, recovered branches are
+
+    r+ = u + alpha v,
+    r- = u - alpha v.
+
+After squaring and applying inverse recovery,
+
+    (r+^2 + r-^2)/2
+        = u^2 + alpha^2 v^2,
+
+    alpha^{-1}(r+^2-r-^2)/2
+        = 2uv.
+
+Therefore a no-forward-recovery implementation must still produce the cross-leaf ciphertext product
+
+    uv.
+
+This exactly matches the earlier interaction-rank theorem:
+quadratic degree d=2 requires one cross channel.
+
+But now the cost comparison is decisive:
+- full prior-art forward recovery: one pt×ct multiplication + rescale, ~10 ms in the formal artifact;
+- partial-recovery quadratic route: at least one cross-leaf ct×ct multiplication to create uv, plus relinearization/rescale/key material, unless an entirely new primitive is introduced.
+
+The local u^2 and v^2 terms may potentially be absorbed into functional leaf bootstrapping, but that does not remove the required uv channel.
+
+The cross product also consumes multiplicative depth, so it does not recover the one level used by the forward recovery in any obvious way.
+
+### Value decision
+
+The model-level interaction-rank theorem remains mathematically valid.
+
+However the proposed performance direction is defeated by the actual paper artifact:
+
+1. conventional two-leaf recovery is already almost free relative to leaf bootstrap;
+2. inverse recovery can be fused into the existing StC last factor with unchanged diagonal support;
+3. the only explicit forward-recovery cost is ~0.022% of end-to-end time in the formal benchmark;
+4. the first non-affine case needs a ct×ct cross-leaf product, which is cryptographically heavier than the pt×ct operation it would replace.
+
+Therefore:
+
+    PARTIAL_RECOVERY_QUADRATIC_VALUE = FAIL.
+    INTERACTION_RANK_AS_PERFORMANCE_DIRECTION = PARK.
+
+This is a VALUE failure, not an algebraic failure.
+
+### What remains potentially useful
+
+The interaction-rank lemma may still be useful as:
+- a conceptual lower bound explaining the affine-only boundary;
+- a negative result for proposed recovery-free nonlinear extensions;
+- a proof tool if a future ring-switch design has genuinely expensive recovery.
+
+But for the concrete 1779 two-leaf CKKS construction, recovery is too cheap to justify replacing it with nonlinear cross-leaf interaction.
+
+## Updated gate decision
+
+TWO_LEAF_INTERACTION_RANK_THEOREM:
+    PASS / RETAIN AS THEORY.
+
+ACTUAL_1779_RECOVERY_MAP:
+    RESOLVED FROM AUTHOR ARTIFACT.
+
+FULL_RECOVERY_COST:
+    VERY LOW; forward ~10.36 ms, inverse fusable.
+
+QUADRATIC_ONE_CROSS_STATISTIC:
+    ALGEBRA PASS, VALUE FAIL.
+
+PARTIAL_RECOVERY_PERFORMANCE_CANDIDATE:
+    PARK.
+
+CCF_A_B_PERFORMANCE_VALUE:
+    FAIL FOR THIS CONCRETE 1779 SETTING.
+
+CODEX/NATIVE:
+    NOT REQUIRED.

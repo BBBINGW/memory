@@ -1,12 +1,12 @@
 # BOOT State
 
-Updated: 2026-10-29 — Cryptography 10.0, Research Turn 15/25, post public-mask operator-kernel screen.
+Updated: 2026-10-29 — Cryptography 10.0, Research Turn 16/25, post hybrid-completion indeterminacy screen.
 
 - TRACK_ID: BOOT
 - ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
 - LATEST_COMPLETED: B175_AUDIT
-- NEXT_ITERATION: HYBRID_FRONTIER_ALGEBRAIC_COMPLETION_INDETERMINACY_SCREEN; BOOT-DECISION-001_PENDING
-- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / HYBRID_FRONTIER_SIZE_2_UNVALIDATED / OPERATOR_ONLY_LOWER_BOUND_FAILED / OVERNIGHT_AUTONOMOUS_RESEARCH
+- NEXT_ITERATION: DECRYPTION_FIBER_GAUGE_REALIZABILITY_SCREEN; BOOT-DECISION-001_PENDING
+- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / HYBRID_FRONTIER_SIZE_2_UNVALIDATED / SUMMARY_LEVEL_NONIDENTIFIABILITY_PROVED / OVERNIGHT_AUTONOMOUS_RESEARCH
 - CURRENT_EXPERIMENT: NONE_AUTHORIZED
 - CURRENT_RESULT: FAIL_B175_POINTWISE_NOISE
 - EVIDENCE: RAW_AUDITED
@@ -21,7 +21,7 @@ Updated: 2026-10-29 — Cryptography 10.0, Research Turn 15/25, post public-mask
 - PENDING_PI_DECISIONS: BOOT-DECISION-001
 
 Latest completed finding:
-findings/boot-B175-public-mask-operator-kernel-screen-2026-10-29.md
+findings/boot-B175-hybrid-completion-indeterminacy-2026-10-29.md
 
 Pending PI queue:
 findings/boot-PENDING_PI_DECISIONS.md
@@ -106,6 +106,14 @@ Public-mask operator-kernel screen:
 - Explicit inverse-polynomial and carry-cancellation constructions prove that no operator-only universal positive coefficient-norm lower bound exists for an unknown residual vector.
 - A 14.26--15.46-bit conditional integer no-wrap gain explains the historical empirical warning but is inapplicable without no-wrap, carry, and branch-cancellation proofs.
 - The operator-only screening hypothesis fails; both frontiers remain `UNCLEAR_NOT_ELIMINATED` and unvalidated.
+
+Hybrid-completion indeterminacy screen:
+
+- At the summary/decryption-residual level, each frontier admits one exact public-affine-compatible completion that passes the fixed-`Q` static bound and one that fails it.
+- Frontier A's constructed outputs are 645 and 652 required bits; Frontier B's are 639 and 649.
+- Therefore the persisted maxima, scales, exact saved arrays, masks, and affine rules cannot determine either frontier's static verdict; summary-level `UNCLEAR` is information-theoretically unavoidable.
+- This does not establish opposite realizable native executions. Common secret, component lifts, `Q_Mul` states, quantization/relinearization errors, cross-stage lineage, and distribution support remain missing.
+- Both frontiers remain `UNCLEAR_NOT_ELIMINATED`; no validated redesign candidate or novelty claim exists.
 
 Overnight rule:
 

@@ -251,3 +251,17 @@ Impact: abstract-level source mapping and scheme-independent algebra/capacity bo
 Human Action: obtain/upload an authorized copy of the current ePrint 2026/2616 PDF. Do not contact authors unless PI explicitly approves.
 Repository Path: papers/supplied/eprint-2026-2616-descent-pbs.pdf
 Readability Verification: **PENDING** — after supply, verify the required algorithm/theorem/refinement pages through the research MCP before changing status.
+
+
+## Chartier–Koskas–Lemou ePrint 2026/2332 — MVB output-noise full text
+Status: **MISSING** (primary full PDF; public abstract accessible)
+Authors: Philippe Chartier; Michel Koskas; Mohammed Lemou
+Venue / Year: IACR ePrint 2026/2332, 2026
+Identifier: https://eprint.iacr.org/2026/2332
+Needed For: BOOT source-level novelty/noise boundary for multi-value bootstrapping and any future Descent-PBS multi-output branch.
+Missing Evidence: exact factorization theorem and ring assumptions; definitions of SVM/MVM; exact G-form output variance theorem; admissible covariance model; optimization/parameter consequences; experiments and failure-probability comparison.
+Why Public Retrieval Failed: On 2026-10-28 GitHub Notes get_eprint_paper("2026/2332") returned RETRIEVAL_BLOCKED: official IACR PDF HTTP 403; exact-title arXiv metadata request returned HTTP 429; fixed arturo-kong GitHub ePrint mirror lacked 2026/2332.pdf. Public metadata/abstract mirrors expose the abstract but not the full proof/experiments.
+Impact: the public abstract is enough to establish strong prior-art overlap for function-independent shared rotation and exact-noise-analysis topic, but not enough for theorem-level comparison or a new noise claim.
+Human Action: obtain/upload an authorized current copy of ePrint 2026/2332 if this line is reopened. No author contact unless PI explicitly approves.
+Repository Path: papers/supplied/eprint-2026-2332-rotate-once-read-many.pdf
+Readability Verification: **PENDING** — after supply, verify exact theorem/algorithm/experiment pages before using them for technical claims.

@@ -594,3 +594,74 @@ with all of:
 6. end-to-end source-faithful performance evidence.
 
 Without items 5-6, this remains an elegant algebraic/compiler observation rather than a CCF-A/B paper.
+
+
+## Practical-workload gate update — 2026-10-28
+
+Two source scans materially weaken the immediate publication value.
+
+### ALU / carry / comparison are not valid value evidence
+
+Supplied current ALU papers were checked:
+
+- papers/supplied/2026-1840.pdf, "Efficient Homomorphic Arithmetic Logical Units with O(1) Bootstrapping";
+- papers/supplied/2026-1836.pdf, "FHE for ALU over Large Prime Moduli and Application to One-Round Threshold ECDSA";
+- papers/supplied/2026-1869.pdf, "High-Precision Homomorphic ALU over Arbitrary Moduli with O(1) Bootstrapping".
+
+These works already provide specialized constructions for the very finite-state tasks that make the partition theorem look attractive:
+- 1840 converts triangle/radix representations and evaluates local carry state with two FBT calls independent of message width, followed by leveled parallel carry propagation;
+- 1836 gives homomorphic canonicalization with a constant number of CKKS bootstraps for bit recovery and modulus conversion;
+- 1869 gives A2D/A2B conversion with exactly two functional bootstrap calls plus logarithmic leveled depth.
+
+Therefore equality/comparison/carry examples should be treated as theorem witnesses, not practical evidence for LRMT partitioning. A specialized ALU implementation must be the comparison baseline for these workloads.
+
+### Public multi-real-input LUT implementation is not a strong workload
+
+The public ICISSP 2026 implementation
+    yamanalab/HE-lutEval-CKKS
+for "Private Multivariate Function Evaluation Using CKKS-Based Homomorphic Encrypted Lookup Tables"
+was inspected at source level.
+
+Its public generateLUT_twoInput_propsed demo constructs
+    f(x,y)=x+y,
+and generateLUT_threeInput_propsed constructs
+    f(x,y,z)=x+y+z.
+
+These functions have trivial direct homomorphic realizations and therefore cannot justify a multi-input LUT optimization. The paper abstract motivates LUTs using HE-unfriendly operations such as division, conditional branching, and logarithms, but the public demo does not provide a compelling high-dimensional nonseparable workload for the present gate.
+
+This is evidence of a workload gap, not a criticism of the paper's algorithmic contribution.
+
+### Boolean-circuit LUT synthesis is heavily adjacent
+
+SALUS (ePrint 2026/2561 / IEEE TIFS 2026) already applies BDD reordering and LUT merging in a homomorphic circuit-synthesis framework.
+
+Thus using generic Boolean benchmark cones merely to show that variable reordering changes matrix rank would be too close to existing compiler-level structure optimization unless the LRMT communication-rank objective yields a clearly different algorithmic/runtime result.
+
+## Revised status
+
+The mathematical candidate remains valid:
+- zero-cost balanced repartition at the LRMT front end;
+- exponential exact-rank separations;
+- fixed-partition cross-multiplication optimality in the separable LRMT model;
+- finite-state low-rank theorem.
+
+But the current CCF-A/B value gate is NOT passed.
+
+Status:
+
+    RANK_PARTITION_LRMT_ALGEBRA = PASS
+    PRIOR_ART_COLLISION = NO_DIRECT_LRMT_COLLISION_FOUND
+    REALISTIC_UNIQUE_WORKLOAD = NOT_FOUND
+    SPECIALIZED_BASELINE_RISK = HIGH
+    PUBLICATION_PRIORITY = HOLD_NO_WORKLOAD
+    CODEX_REQUIRED = NO
+
+Kill/reopen rule:
+- do not spend implementation/native cycles now;
+- reopen only when a concrete digit-native multi-input workload is found with:
+  (i) high rank under the source-faithful contiguous split,
+  (ii) low rank under a balanced alternative split,
+  (iii) no cheaper specialized arithmetic/canonicalization/Boolean-circuit method,
+  (iv) enough LUT-stage weight that the rank drop materially changes end-to-end cost.
+
+Until then, keep the theorem as reusable BOOT research memory rather than an active mainline.

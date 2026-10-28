@@ -1,12 +1,12 @@
 # BOOT State
 
-Updated: 2026-10-29 — Cryptography 10.0, Research Turn 13/25, post hybrid-selector Pareto screen.
+Updated: 2026-10-29 — Cryptography 10.0, Research Turn 14/25, post public-mask convolution screen.
 
 - TRACK_ID: BOOT
 - ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
 - LATEST_COMPLETED: B175_AUDIT
-- NEXT_ITERATION: HYBRID_FRONTIER_PUBLIC_MASK_CONVOLUTION_SCREEN; BOOT-DECISION-001_PENDING
-- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / HYBRID_FRONTIER_SIZE_2_UNVALIDATED / OVERNIGHT_AUTONOMOUS_RESEARCH
+- NEXT_ITERATION: PUBLIC_MASK_OPERATOR_KERNEL_INVERTIBILITY_SCREEN; BOOT-DECISION-001_PENDING
+- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / HYBRID_FRONTIER_SIZE_2_UNVALIDATED / PUBLIC_MASK_SCREEN_UNCLEAR / OVERNIGHT_AUTONOMOUS_RESEARCH
 - CURRENT_EXPERIMENT: NONE_AUTHORIZED
 - CURRENT_RESULT: FAIL_B175_POINTWISE_NOISE
 - EVIDENCE: RAW_AUDITED
@@ -21,7 +21,7 @@ Updated: 2026-10-29 — Cryptography 10.0, Research Turn 13/25, post hybrid-sele
 - PENDING_PI_DECISIONS: BOOT-DECISION-001
 
 Latest completed finding:
-findings/boot-B175-hybrid-selector-pareto-screen-2026-10-29.md
+findings/boot-B175-public-mask-convolution-screen-2026-10-29.md
 
 Pending PI queue:
 findings/boot-PENDING_PI_DECISIONS.md
@@ -89,6 +89,15 @@ Hybrid-selector Pareto screen:
 - Their full SI dependency depth remains four, so neither improves full depth.
 - Under the optimistic 29-bit increment, zero-mask-cost model, Frontier A scores 644 required bits with four units of slack and Frontier B scores 645 with three units of slack.
 - Each fails under small deviations already observed in B175; neither is a validated candidate or established contribution.
+
+Public-mask convolution screen:
+
+- Exact Lattigo coefficient polynomials for `c2`, `d2`, and `M0..M3` were reconstructed and their slot identities and coefficient norms verified.
+- On saved healthy residuals, exact mask convolution raises required bits by 17--18; this is strong operand-specific negative evidence against the frontiers' three-to-four-bit slack.
+- Frontier B's known low branch reaches 610 required bits after exact mask and scale alignment, but the decisive `c2*SI(LT8,Y^4)` residual is missing.
+- Frontier A lacks the full coefficient residuals for `Y`, `Y^2`, and `Y^3`, so none of its decisive masked branches can be evaluated.
+- An upper bound from mask `l1` norms is not a lower bound on unknown operands; cancellation and missing component-lift/`Q`-carry state prevent formal elimination.
+- Both frontiers remain `UNCLEAR_NOT_ELIMINATED`; no validated redesign candidate exists.
 
 Overnight rule:
 

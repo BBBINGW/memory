@@ -1,12 +1,12 @@
 # BOOT State
 
-Updated: 2026-10-29 — Cryptography 10.0, Research Turn 17/25, post decryption-fiber gauge screen.
+Updated: 2026-10-29 — Cryptography 10.0, Research Turn 18/25, post common-lineage gauge-accessibility screen.
 
 - TRACK_ID: BOOT
 - ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
 - LATEST_COMPLETED: B175_AUDIT
-- NEXT_ITERATION: COMMON_LINEAGE_GAUGE_ACCESSIBILITY_SCREEN; BOOT-DECISION-001_PENDING
-- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / HYBRID_FRONTIER_SIZE_2_UNVALIDATED / SI_GAUGE_SENSITIVITY_PROVED_COMPONENT_LEVEL / OVERNIGHT_AUTONOMOUS_RESEARCH
+- NEXT_ITERATION: ZERO_ENCRYPTION_RERANDOMIZATION_SUPPORT_GUARANTEE_SCREEN; BOOT-DECISION-001_PENDING
+- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / HYBRID_FRONTIER_SIZE_2_UNVALIDATED / EXACT_GAUGE_PUBLIC_REDESIGN_KILLED / OVERNIGHT_AUTONOMOUS_RESEARCH
 - CURRENT_EXPERIMENT: NONE_AUTHORIZED
 - CURRENT_RESULT: FAIL_B175_POINTWISE_NOISE
 - EVIDENCE: RAW_AUDITED
@@ -21,7 +21,7 @@ Updated: 2026-10-29 — Cryptography 10.0, Research Turn 17/25, post decryption-
 - PENDING_PI_DECISIONS: BOOT-DECISION-001
 
 Latest completed finding:
-findings/boot-B175-decryption-fiber-gauge-realizability-2026-10-29.md
+findings/boot-B175-common-lineage-gauge-accessibility-2026-10-29.md
 
 Pending PI queue:
 findings/boot-PENDING_PI_DECISIONS.md
@@ -122,6 +122,14 @@ Decryption-fiber gauge screen:
 - This reaches single-SI component-algebra realizability, stronger than residual-only completions, without relying on relinearization error.
 - It does not establish common encryption-distribution or B158/B175 cross-stage lineage realizability, nor a public way to select a favorable gauge.
 - Gauge sensitivity is established, but no gauge-based repair, native frontier correctness, or novelty claim is validated.
+
+Common-lineage gauge-accessibility screen:
+
+- The current B158/B175 public path contains no rerandomization, public key, fresh zero encryption, or component adjustment between operand completion and pointwise SI multiplication.
+- Exact residual-preserving gauge selection is secret-key-only and absent from the gate; it is killed as a current public redesign mechanism.
+- Secret-key zero encryption adds at most 22 required bits under a conservative bound but requires online secret access and samples an uncontrolled gauge.
+- Counterfactual public-key zero encryption adds at most 32 required bits under a conservative bound and roughly 12 MiB key payload; these costs alone do not prove failure, but the mechanism is probabilistic, unimplemented, and unauthorized.
+- Gauge sensitivity is retained only as an explanatory phenomenon. Both frontiers remain unvalidated and native-unclear.
 
 Overnight rule:
 

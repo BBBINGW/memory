@@ -307,3 +307,17 @@ Impact: abstract-level structural facts and a scheme-independent approximate-key
 Human Action: obtain/upload an authorized current copy of ePrint 2026/2630. No author contact unless PI explicitly approves.
 Repository Path: papers/supplied/eprint-2026-2630-exact-error-bootstrap.pdf
 Readability Verification: **PENDING** — verify the exact error-range theorem, algorithms, key-switch placement, parameter tables, and benchmarks before changing status.
+
+
+## Peikert–Pepin Vive Galois! Part 2 — explicit short bases / fast transforms
+Status: **MISSING / NOT PUBLICLY LOCATED**
+Authors: Chris Peikert; Zachary Pepin
+Venue / Year: cited in ePrint 2025/1760 as "in preparation"
+Identifier: Part 1 reference [PP25], title "Vive Galois! Part 2: Short structured bases and fast transforms"
+Needed For: BOOT STABILIZER_AWARE_SUBFIELD_SECRET Gate 2 — exact nonzero automorphism supports and concrete structured-basis geometry for the Appendix B.2 multidimensional packed-bootstrap field.
+Missing Evidence: explicit short-basis construction for each relevant cyclotomic subfield/composite; exact homomorphic transform coefficients/support for the B.2 factor stages; basis norms/covariances beyond Part 1 upper bounds; any implementation guidance needed to turn Lemma 5.13 support bounds into exact KS counts.
+Why Public Retrieval Failed: Part 1 (ePrint 2025/1760) repeatedly cites Part 2 as "in preparation." On 2026-10-28 targeted web search for the exact title and Chris Peikert/Zachary Pepin did not surface a public paper, ePrint, or author-hosted Part 2. Chris Peikert's current publication page lists Vive Galois! Part 1 (TCC 2025) but not Part 2.
+Impact: The coset-hoisting theorem, same-degree orientation gap, source-faithful B.2 tensor-factor witness, and source-bound Pareto model are available. Exact B.2 automorphism support, exact operation savings, and tight secret/basis geometry remain blocked; do not claim end-to-end speedup.
+Human Action: none required unless the PI already has an authorized draft or explicit basis/transform material from the authors. Do not contact authors without PI approval.
+Repository Path: **N/A — no public Part 2 artifact located**
+Readability Verification: **PENDING / NOT AVAILABLE**

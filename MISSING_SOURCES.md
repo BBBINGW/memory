@@ -237,3 +237,17 @@ Additional competitive-only 2026 sources (not prerequisite until first source ga
 **Requested Human Action:** Only if convenient, place the complete legitimate author/preprint PDF in `papers/supplied/` and provide exact publication version. No author outreach, Codex, or assumption of inaccessible results.
 
 **Reading Verification:** PENDING, no supplied file.
+
+
+## Xiong et al. ePrint 2026/2616 — Descent-PBS full text
+Status: **MISSING**
+Authors: Zhenyu Xiong; Mingsheng Wang; Han Wang; Zhedong Wang
+Venue / Year: IACR ePrint 2026/2616, 2026
+Identifier: https://eprint.iacr.org/2026/2616
+Needed For: BOOT DESCENT_MVB_GATE_3 — exact maximal shared-prefix / late-branch verification for multi-output large-domain PBS
+Missing Evidence: exact module accumulator representation; the truncation map and subring-secret compatibility statement; merged-column functional key-switch map; plaintext/test-polynomial representation; Meta-PBS refinement algorithm; which first-rotation/descent/refinement stages are function-independent versus LUT-dependent; exact reachable carrier states; relevant noise formulas.
+Why Public Retrieval Failed: On 2026-10-28 GitHub Notes get_eprint_paper could not acquire a verified parseable full text: official IACR PDF returned HTTP 403; the arXiv title query was unavailable/timed out; the fixed arturo-kong/IACR-eprint-mirror did not contain 2026/2616.pdf. Additional public GitHub ePrint mirrors checked in this research turn also lacked the PDF. Public ePrint mirror/index text exposes the abstract only and cannot replace the exact algorithm.
+Impact: abstract-level source mapping and scheme-independent algebra/capacity bounds can continue, but no Descent-PBS-specific common-carrier, maximal shared-prefix, late-branch correctness, noise, or novelty claim is authorized without the exact paper.
+Human Action: obtain/upload an authorized copy of the current ePrint 2026/2616 PDF. Do not contact authors unless PI explicitly approves.
+Repository Path: papers/supplied/eprint-2026-2616-descent-pbs.pdf
+Readability Verification: **PENDING** — after supply, verify the required algorithm/theorem/refinement pages through the research MCP before changing status.

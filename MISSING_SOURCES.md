@@ -265,3 +265,17 @@ Impact: the public abstract is enough to establish strong prior-art overlap for 
 Human Action: obtain/upload an authorized current copy of ePrint 2026/2332 if this line is reopened. No author contact unless PI explicitly approves.
 Repository Path: papers/supplied/eprint-2026-2332-rotate-once-read-many.pdf
 Readability Verification: **PENDING** — after supply, verify exact theorem/algorithm/experiment pages before using them for technical claims.
+
+
+## Jain–Lin–Liu–Saha ePrint 2026/1730 — fast/shallow FHE bootstrapping full text
+Status: **MISSING**
+Authors: Aayush Jain; Huijia Lin; Zeyu Liu; Sagnik Saha
+Venue / Year: CRYPTO 2026; IACR ePrint 2026/1730
+Identifier: https://eprint.iacr.org/2026/1730 ; DOI 10.1007/978-3-032-35374-0_14
+Needed For: BOOT source gates BINARY_NTT_SPARSE_COMPOSITION_GATE and BINARY_NTT_KEY_TRAFFIC_GATE.
+Missing Evidence: exact sparse-secret bootstrapping algorithm and PBC/Cuckoo-style representation if used; exact Binary NTT RLWE definition and secret structure; relinearization-free BV multiplication; interface between the paper's first and second contributions; exact sequential-layer/work counts; evaluation-key objects/sizes; noise/security parameters; whether the two contributions are already combined or incompatible.
+Why Public Retrieval Failed: On 2026-10-28 GitHub Notes get_eprint_paper("2026/1730") returned RETRIEVAL_BLOCKED: official IACR PDF HTTP 403; no exact-title author-matched arXiv fallback; fixed arturo-kong GitHub ePrint mirror did not contain 2026/1730.pdf. Springer proceedings and author metadata confirm the CRYPTO 2026 publication, but available public pages only expose metadata/abstract-level content.
+Impact: abstract-level closure is enough to park generic sequential-NTT elimination (reported 3 layers) and to define source gates, but no Binary-NTT-specific composition, key-traffic, correctness, security, or novelty claim is authorized.
+Human Action: obtain/upload an authorized current copy of ePrint 2026/1730 or the CRYPTO 2026 chapter PDF. No author contact unless PI explicitly approves.
+Repository Path: papers/supplied/eprint-2026-1730-fast-shallow-bootstrapping.pdf
+Readability Verification: **PENDING** — after supply, verify Binary NTT RLWE definition, multiplication algorithm, sparse-secret algorithm, complexity/key tables, and security sections before changing status.

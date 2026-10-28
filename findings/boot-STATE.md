@@ -1,12 +1,12 @@
 # BOOT State
 
-Updated: 2026-10-29 — Cryptography 10.0, Research Turn 22/25, post universal schedule-dominance impossibility screen.
+Updated: 2026-10-29 — Cryptography 10.0, Research Turn 23/25, post claim-boundary synthesis.
 
 - TRACK_ID: BOOT
 - ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
 - LATEST_COMPLETED: B175_AUDIT
-- NEXT_ITERATION: CLAIM_BOUNDARY_SYNTHESIS; BOOT-DECISION-001_PENDING
-- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / FRONTIER_A_VALUE_FAIL / UNIVERSAL_SCHEDULE_DOMINANCE_EXCLUDED / COMMON_LINEAGE_NATIVE_UNCLEAR / OVERNIGHT_AUTONOMOUS_RESEARCH
+- NEXT_ITERATION: PROVENANCE_AND_CHECKPOINT_AUDIT; BOOT-DECISION-001_PENDING
+- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / POST_B175_STATIC_SYNTHESIS_COMPLETE / STATIC_INFORMATION_FRONTIER_REACHED / OVERNIGHT_AUTONOMOUS_RESEARCH
 - CURRENT_EXPERIMENT: NONE_AUTHORIZED
 - CURRENT_RESULT: FAIL_B175_POINTWISE_NOISE
 - EVIDENCE: RAW_AUDITED
@@ -21,7 +21,7 @@ Updated: 2026-10-29 — Cryptography 10.0, Research Turn 22/25, post universal s
 - PENDING_PI_DECISIONS: BOOT-DECISION-001
 
 Latest completed finding:
-findings/boot-B175-universal-schedule-dominance-impossibility-2026-10-29.md
+findings/boot-B175-post-claim-boundary-synthesis-2026-10-29.md
 
 Pending PI queue:
 findings/boot-PENDING_PI_DECISIONS.md
@@ -163,6 +163,14 @@ Universal schedule-dominance impossibility screen:
 - The result excludes deterministic dominance in either direction over all legal component representatives; it does not establish common-lineage/native realizability, expected-noise dominance, DFR, or instance-specific behavior.
 - Frontier A retains no visible independent value beyond engineering repair. Frontier B's remaining claim space is restricted to distributional, instance-specific, or public-affine-lineage-specific results requiring absent and unauthorized evidence.
 - The next no-regret task is a complete claim-boundary synthesis matrix and Turn-25 checkpoint-boundary decision.
+
+Post-B175 claim-boundary synthesis:
+
+- Forty-six claims were classified across raw evidence, scoped static proofs, static falsifications, unclear boundaries, PI-blocked work, and unestablished claims.
+- The post-B175 static information frontier is reached: no substantive, independent, no-PI/no-native, non-duplicative test remains.
+- Remaining questions require actual frontier/common-lineage components, new native/DFR evidence, implementation, or PI resolution of BOOT-DECISION-001.
+- There is no validated redesign candidate or established paper contribution. Frontier A is an engineering repair only; Frontier B retains only low-ceiling distributional, instance-specific, or lineage-specific claim space.
+- Turn 24 is restricted to provenance/checkpoint audit. Subject to a clean audit and no new PI input, Turn 25 should checkpoint the static frontier and enter pending-PI/no-independent-work state; Turn 26 remains handoff-only.
 
 Overnight rule:
 

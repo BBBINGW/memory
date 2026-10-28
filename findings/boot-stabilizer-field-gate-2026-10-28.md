@@ -438,3 +438,177 @@ CODEX_REQUIRED_NOW:
 4. RANK_PARTITION_LRMT — HOLD_NO_WORKLOAD.
 
 B163 remains the highest native gate when Codex quota is explicitly restored by the PI.
+
+
+## Global direct-product allocation gate — correction to the single-stage witness
+
+The 0-versus-3 KS-class example above is only a **stage-local** witness. A complete CRT transform evaluates several tensor-factor stages. If two equal-size factors have symmetric stage costs, choosing a stabilizer aligned with one merely moves the free stage from one factor to the other, and the global KS total can remain unchanged.
+
+Therefore the real optimization variable is a **stabilizer budget allocation across factors**, not merely "pick any aligned subfield."
+
+### Direct-product model
+
+Suppose the packed-bootstrap Galois group factors as
+
+    G = T_1 x ... x T_m,
+
+and the i-th structured-transform stage has automorphism support
+
+    S_i subseteq T_i.
+
+This is exactly the factor-wise picture supplied by 1760 Remark 5.12 / Appendix B, where independent Galois factors act independently on slot-tensor dimensions.
+
+For a product stabilizer
+
+    H = H_1 x ... x H_m,
+    H_i <= T_i,
+
+the i-th source-key class count is bounded by
+
+    |pi_H(S_i)| - 1.
+
+If the full factor T_i is used as support, this becomes
+
+    [T_i:H_i] - 1.
+
+If H_i=T_i, the entire i-th automorphism stage is key-switch-free.
+
+The temporary fixed-field degree is controlled by the total stabilizer order:
+
+    [L^H:Q] = [L:Q] / product_i |H_i|.
+
+Thus a fixed security-dimension budget constrains the product of |H_i|, while the linear-transform objective is an additive weighted sum of quotient sizes.
+
+This is a genuine allocation problem.
+
+### Same-order global comparison inside 1760 Appendix B.2
+
+The B.2 field has independent factor degrees
+
+    2, 4, 2, 2, 4, 2, 6
+
+over J for the seven external tensor dimensions.
+
+Consider a stabilizer budget of order four, so every candidate temporary fixed field has degree
+
+    24576 / 4 = 6144.
+
+Two source-supported product choices are:
+
+A. Concentrated order-four stabilizer:
+    H_A = full C_5^(1) tensor-factor subgroup, |H_A|=4.
+
+B. Split order-two-by-order-two stabilizer:
+    H_B = (C_3^(1) factor subgroup) x (C_7^(3) factor subgroup),
+    |H_B|=2*2=4.
+
+Under the full-support cost model for those factor stages:
+
+- H_A makes the degree-four stage key-switch-free, eliminating up to
+      4-1 = 3
+  nontrivial source-key classes.
+
+- H_B makes two degree-two stages key-switch-free, eliminating up to
+      (2-1)+(2-1) = 2
+  classes.
+
+So at identical fixed-field degree, the factor allocation can change the transform-side KS budget.
+
+The strict arithmetic identity behind this effect is
+
+    (ab-1) - [(a-1)+(b-1)]
+      = (a-1)(b-1) > 0
+
+for a,b>1.
+
+Concentrating a multiplicative stabilizer-order budget into one larger transform factor can eliminate more class transitions than spreading the same order across smaller independent factors, when the corresponding stage weights are comparable.
+
+### Important exact-support caveat
+
+1760 Lemma 5.13 gives a **support upper bound**:
+for the favorable direct-product case, nonzero automorphism coefficients are contained in the selected transversal subgroup T_i and there are at most |T_i| relevant automorphisms.
+
+The source does not state that every element of each T_i necessarily has a nonzero coefficient for every concrete CRT-transform stage.
+
+Therefore the "3 versus 2" comparison above is a source-faithful **full-support cost model**, not yet an exact operation count.
+
+The next source-level task must recover the actual nonzero support S_i for the concrete B.2 bases/transforms before claiming an exact saving.
+
+Nevertheless, if H_i contains the actual support subgroup, that stage is rigorously key-switch-free regardless of sparsity.
+
+## First SECRET_GEOMETRY proxy from the same Appendix B.2 construction
+
+The single-stage KS benefit is not free: different same-degree fixed fields can have different structured-basis geometry.
+
+1760 B.2 bounds a short structured basis of the full field using the product
+
+    1*1*3*5*3*8*9*5 = 16200
+
+inside the square-root norm bound.
+
+Using the same tensor-basis construction on a fixed subcomposite gives a first conservative geometry proxy.
+
+### Choice H_A: remove the C_5^(1) degree-four factor
+
+The C_5^(1) basis factor carries d=1 in the B.2 bound.
+
+For the fixed field of degree 6144, the inherited bound is therefore approximately
+
+    B_A <= sqrt(16200 * 6144)
+        ~= 9976.61.
+
+### Choice H_B: remove C_3^(1) and C_7^(3)
+
+Their basis factors carry d=1 and d=3.
+
+For the same fixed-field degree 6144,
+
+    B_B <= sqrt((16200/3) * 6144)
+        = 5760.
+
+Thus the available source bound differs by
+
+    B_A / B_B <= sqrt(3)
+                ~= 1.732,
+
+or about
+
+    log2(sqrt(3)) ~= 0.7925 bits.
+
+Interpretation:
+- H_A has the better transform-side full-support KS count (up to one fewer class per transform direction in this comparison);
+- H_B has the better available structured-basis norm upper bound by a factor sqrt(3).
+
+This is precisely the kind of tradeoff the candidate is supposed to optimize jointly.
+
+### Critical limitation of this proxy
+
+Do **not** equate the above basis-norm bound with the actual EvalMod/digit-removal range.
+
+1760's short-basis bounds concern canonical geometry of number-ring bases.
+1594's nonlinear-range gain is derived in its own subring/coefficient representation and depends on the effective secret/noise behavior of that construction.
+
+For a general fixed field, a full secret-distribution analysis is still required:
+- choose how the temporary key is sampled in the fixed-field basis;
+- derive its embedded canonical/coefficient covariance;
+- derive the exact modulus-raising/decryption-error contribution used by the chosen bootstrap;
+- then translate that into the nonlinear Decode/digit-removal parameter.
+
+The sqrt(3) calculation is only a conservative **geometry warning/proxy**, not an end-to-end error theorem.
+
+## Refined Gate-2 status
+
+The candidate survives the global correction, but the bar is now clearer:
+
+    STAGE_LOCAL_ORIENTATION_EFFECT = PASS.
+    GLOBAL_EQUAL_WEIGHT_EFFECT = NOT AUTOMATIC.
+    DIRECT_PRODUCT_BUDGET_ALLOCATION = PASS as a symbolic optimization model.
+    B2_ORDER4_ALLOCATION_DIFFERENCE = PASS under full-support model.
+    EXACT_B2_AUTOMORPHISM_SUPPORT = NOT YET RECOVERED.
+    SECRET_GEOMETRY_PROXY = DIFFERENT BY sqrt(3) in one same-degree comparison.
+    EXACT_BOOTSTRAP_ERROR/RANGE_EFFECT = UNKNOWN.
+
+Next:
+1. derive exact nonzero S_i for at least the B.2 degree-4 and degree-2 factor stages;
+2. compute exact forward+inverse KS counts for H_A and H_B;
+3. only then decide whether the transform saving survives before a full security/noise analysis.

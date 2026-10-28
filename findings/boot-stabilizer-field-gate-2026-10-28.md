@@ -612,3 +612,151 @@ Next:
 1. derive exact nonzero S_i for at least the B.2 degree-4 and degree-2 factor stages;
 2. compute exact forward+inverse KS counts for H_A and H_B;
 3. only then decide whether the transform saving survives before a full security/noise analysis.
+
+
+## Source-incomplete gate and B.2 Pareto frontier
+
+### Exact-support blocker
+
+Part 1 (1760) proves only that the nonzero automorphism support of a structured transform stage is contained in a small set/subgroup derived from the transversal. Lemma 5.13 is a necessary-support statement, not an exact coefficient formula for the concrete short bases used in Appendix B.2.
+
+The paper repeatedly refers the explicit short structured bases / associated fast transforms to:
+
+    Vive Galois! Part 2: Short structured bases and fast transforms
+
+listed in Part 1 as "in preparation."
+
+As of 2026-10-28, targeted web search and Chris Peikert's current publication page did not surface a public Part 2 paper. The public page lists Part 1 (TCC 2025) but not Part 2.
+
+Therefore:
+    EXACT_B2_SUPPORT_S_i = SOURCE_INCOMPLETE.
+
+Do not turn Lemma 5.13's |T_i| support upper bound into an exact operation count.
+
+### What can still be optimized symbolically
+
+For the seven external tensor factors of B.2, the factor degrees are
+
+    2, 4, 2, 2, 4, 2, 6.
+
+Under the full-support/unit-weight proxy, making a full factor subgroup part of H eliminates at most
+
+    degree_i - 1
+
+nontrivial source-key classes for that factor stage.
+
+For a product stabilizer H made from whole independent factors:
+- stabilizer order is the product of selected factor degrees;
+- fixed-field degree is 24576/|H|;
+- proxy KS saving is the sum of (degree_i-1).
+
+The B.2 structured-basis norm bound contains the factor
+
+    D = 1*1*3*5*3*8*9*5 = 16200.
+
+For a fixed subcomposite obtained by removing selected independent factor fields, applying the same tensor-basis bound to the remaining factors gives the conservative proxy
+
+    B_proxy(H)
+      = sqrt( (16200 / product selected basis-d_i) * (24576/|H|) ).
+
+Again: this is a basis-geometry proxy, not an exact secret-error bound.
+
+### Fixed order |H|=4
+
+All candidates have fixed-field degree 6144.
+
+Representative Pareto points:
+
+1. H = full C_13^(3) factor
+   - proxy KS saving: 3
+   - removed basis-d product: 3
+   - B_proxy = 5760
+
+2. H = C_11^(5) factor x C_19^(9) factor
+   - proxy KS saving: 2
+   - removed basis-d product: 5*9=45
+   - B_proxy ~= 1487.23
+
+The second has one fewer proxy KS saving but a roughly
+
+    5760 / 1487.23 ~= 3.87
+
+times better available structured-basis bound.
+
+The alternative full C_5^(1) factor also gives proxy saving 3, but B_proxy ~= 9976.61, so it is dominated by C_13^(3) under this two-axis proxy.
+
+### Fixed order |H|=8
+
+All candidates have fixed-field degree 3072.
+
+Two representative frontier points:
+
+1. H = C_13^(3) x C_19^(9)
+   - proxy KS saving: 4
+   - removed basis-d product: 27
+   - B_proxy ~= 1357.65
+
+2. H = C_7^(3) x C_11^(5) x C_19^(9)
+   - proxy KS saving: 3
+   - removed basis-d product: 135
+   - B_proxy ~= 607.16
+
+Again, extra transform-side class elimination trades against a noticeably worse geometry bound.
+
+### Fixed order |H|=16
+
+All candidates have fixed-field degree 1536.
+
+Representative frontier points:
+
+1. H = C_5^(1) x C_13^(3)
+   - proxy KS saving: 6
+   - B_proxy = 2880
+
+2. H = C_11^(5) x C_13^(3) x C_19^(9)
+   - proxy KS saving: 5
+   - B_proxy ~= 429.33
+
+The geometry gap becomes much larger.
+
+### Interpretation
+
+Even before exact support/noise formulas are available, the source parameters already show that the candidate is not a monotone "align more = always better" trick.
+
+It is naturally a Pareto optimization over:
+- transform-side automorphism/key-switch classes;
+- fixed-field degree/security;
+- structured-basis geometry;
+- eventually the exact bootstrapping error/nonlinear range.
+
+This strengthens the conceptual contribution if the construction survives, but also raises the bar for a positive result.
+
+## Refined status after Gate 2
+
+COSET_HOISTING_ALGEBRA:
+    PASS.
+
+SOURCE_FAITHFUL_MULTIDIMENSIONAL_FIELD:
+    PASS.
+
+GLOBAL_STABILIZER_ALLOCATION_MODEL:
+    PASS.
+
+B2_PARETO_STRUCTURE:
+    PASS under source-derived support/geometry upper-bound proxies.
+
+EXACT_AUTOMORPHISM_SUPPORT:
+    BLOCKED_BY_UNPUBLISHED_PART2 / NOT_ESTABLISHED.
+
+EXACT_SECRET_ERROR_GEOMETRY:
+    NOT_ESTABLISHED.
+
+END_TO_END_KS_SAVING:
+    NOT ESTABLISHED.
+
+CURRENT_LABEL:
+    PROMISING_SOURCE_INCOMPLETE.
+
+Do not run Codex/native work.
+
+Reopen exact Gate 2 immediately if Part 2 or an equivalent explicit basis/transform construction becomes available.

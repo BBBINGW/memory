@@ -1,12 +1,12 @@
 # BOOT State
 
-Updated: 2026-10-29 — Cryptography 10.0, Research Turn 16/25, post hybrid-completion indeterminacy screen.
+Updated: 2026-10-29 — Cryptography 10.0, Research Turn 17/25, post decryption-fiber gauge screen.
 
 - TRACK_ID: BOOT
 - ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
 - LATEST_COMPLETED: B175_AUDIT
-- NEXT_ITERATION: DECRYPTION_FIBER_GAUGE_REALIZABILITY_SCREEN; BOOT-DECISION-001_PENDING
-- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / HYBRID_FRONTIER_SIZE_2_UNVALIDATED / SUMMARY_LEVEL_NONIDENTIFIABILITY_PROVED / OVERNIGHT_AUTONOMOUS_RESEARCH
+- NEXT_ITERATION: COMMON_LINEAGE_GAUGE_ACCESSIBILITY_SCREEN; BOOT-DECISION-001_PENDING
+- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / HYBRID_FRONTIER_SIZE_2_UNVALIDATED / SI_GAUGE_SENSITIVITY_PROVED_COMPONENT_LEVEL / OVERNIGHT_AUTONOMOUS_RESEARCH
 - CURRENT_EXPERIMENT: NONE_AUTHORIZED
 - CURRENT_RESULT: FAIL_B175_POINTWISE_NOISE
 - EVIDENCE: RAW_AUDITED
@@ -21,7 +21,7 @@ Updated: 2026-10-29 — Cryptography 10.0, Research Turn 16/25, post hybrid-comp
 - PENDING_PI_DECISIONS: BOOT-DECISION-001
 
 Latest completed finding:
-findings/boot-B175-hybrid-completion-indeterminacy-2026-10-29.md
+findings/boot-B175-decryption-fiber-gauge-realizability-2026-10-29.md
 
 Pending PI queue:
 findings/boot-PENDING_PI_DECISIONS.md
@@ -114,6 +114,14 @@ Hybrid-completion indeterminacy screen:
 - Therefore the persisted maxima, scales, exact saved arrays, masks, and affine rules cannot determine either frontier's static verdict; summary-level `UNCLEAR` is information-theoretically unavoidable.
 - This does not establish opposite realizable native executions. Common secret, component lifts, `Q_Mul` states, quantization/relinearization errors, cross-stage lineage, and distribution support remain missing.
 - Both frontiers remain `UNCLEAR_NOT_ELIMINATED`; no validated redesign candidate or novelty claim exists.
+
+Decryption-fiber gauge screen:
+
+- Exact unquantized tensor decryption is gauge invariant, but componentwise centered lift and `T/Q` quantization break that invariance.
+- A fixed-secret, fixed-plaintext, fixed-input-residual, fixed-scale L18 component witness produces a zero-residual PASS for one representative and a nonpositive-budget FAIL for a gauge-related representative.
+- This reaches single-SI component-algebra realizability, stronger than residual-only completions, without relying on relinearization error.
+- It does not establish common encryption-distribution or B158/B175 cross-stage lineage realizability, nor a public way to select a favorable gauge.
+- Gauge sensitivity is established, but no gauge-based repair, native frontier correctness, or novelty claim is validated.
 
 Overnight rule:
 

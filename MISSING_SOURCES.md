@@ -321,3 +321,17 @@ Impact: The coset-hoisting theorem, same-degree orientation gap, source-faithful
 Human Action: none required unless the PI already has an authorized draft or explicit basis/transform material from the authors. Do not contact authors without PI approval.
 Repository Path: **N/A — no public Part 2 artifact located**
 Readability Verification: **PENDING / NOT AVAILABLE**
+
+
+## Choe–Kang–Stehle ePrint 2026/2546 — BFV/BGV IND-CPA-D attacks full text
+Status: **MISSING**
+Authors: Hyeongmin Choe; Minsik Kang; Damien Stehle
+Venue / Year: ACM CCS 2026; IACR ePrint 2026/2546
+Identifier: https://eprint.iacr.org/2026/2546
+Needed For: BOOT IND-CPA-D / reactive-correctness repair gate for BFV/BGV; exact assessment of whether a lightweight local pre-evaluation canonicalizer can remove one or more new failure oracles without full rerandomization or worst-case parameter inflation.
+Missing Evidence: exact three attack algorithms/oracles; powerful-basis BGV bootstrapping-failure construction; BFV crafted-plaintext noise-skew formula and heuristic bound being violated; selected-encryption-of-zero mask-skew construction; query complexity/key-recovery details; parameter tables; any proposed mitigations; which internal variables must be randomized or bounded for correctness.
+Why Public Retrieval Failed: On 2026-10-28 GitHub Notes get_eprint_paper("2026/2546") returned RETRIEVAL_BLOCKED: official IACR PDF HTTP 403; exact-title arXiv fallback found no matching result; fixed arturo-kong GitHub ePrint mirror did not contain 2026/2546.pdf. Public ePrint mirrors and ACM CCS accepted-paper pages expose metadata/abstract only.
+Impact: the public abstract suffices to classify three attack families and derive scheme-independent no-go/sufficiency criteria for rerandomization, but no 2546-specific repair, correctness proof, parameter claim, or novelty claim is authorized.
+Human Action: obtain/upload an authorized current copy of ePrint 2026/2546. No author contact unless PI explicitly approves.
+Repository Path: papers/supplied/eprint-2026-2546-bfv-bgv-indcpad-attacks.pdf
+Readability Verification: **PENDING** — after supply, verify the exact attack algorithms, failure predicates, parameter tables, and mitigation discussion before changing status.

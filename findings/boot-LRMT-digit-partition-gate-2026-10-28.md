@@ -379,3 +379,30 @@ Suggested order before native access returns:
 3. 2630 lossy-KS -> exact-error bootstrap — lower priority and source-blocked.
 
 B163 remains the highest native gate when Codex quota is explicitly restored by the PI.
+
+
+## Multi-input value implication
+
+Section 4.3 of the supplied 1264 source gives a multi-input LRMT-FBT extension in which radix-p digit ciphertexts are already available. In that setting the paper explicitly removes the FDD stage and applies MVB/KProduct directly to the digit selectors before the same low-rank matrix evaluation.
+
+This materially strengthens the value case for function-aware partitioning:
+
+- unary high-precision LRMT-FBT can become FDD-dominated once r is small;
+- already-digitized multi-input LRMT-FBT has no FDD floor;
+- a balanced repartition preserves the number/length of digit vectors fed to the two KProducts;
+- therefore a large reduction in r can translate much more directly into end-to-end savings.
+
+The first practical workload search should consequently target:
+    ALREADY_DIGITIZED_MULTI_INPUT_LUTS,
+not unary activations that already have rank <=5 under the default split.
+
+However, simple equality/comparison are only structural witnesses: they may be cheaper through specialized arithmetic such as subtraction followed by a unary test. A publishable value claim needs at least one multi-input function for which the best known specialized preprocessing does not dominate LRMT-FBT.
+
+Revised value gate:
+1. identify realistic already-digitized multi-input LUTs;
+2. compare best balanced variable partition against the source-faithful contiguous partition;
+3. compare against specialized algebraic preprocessing, not only LRMT-FBT baseline;
+4. require a material predicted end-to-end gain after KProduct/noise/depth costs;
+5. PARK if every large rank collapse occurs only for functions with a cheaper specialized realization.
+
+Priority remains PROMISING_NOT_ESTABLISHED.

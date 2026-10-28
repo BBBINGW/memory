@@ -279,3 +279,17 @@ Impact: abstract-level closure is enough to park generic sequential-NTT eliminat
 Human Action: obtain/upload an authorized current copy of ePrint 2026/1730 or the CRYPTO 2026 chapter PDF. No author contact unless PI explicitly approves.
 Repository Path: papers/supplied/eprint-2026-1730-fast-shallow-bootstrapping.pdf
 Readability Verification: **PENDING** — after supply, verify Binary NTT RLWE definition, multiplication algorithm, sparse-secret algorithm, complexity/key tables, and security sections before changing status.
+
+
+## Liang–Ding ePrint 2026/1779 — ring switching without slot recovery full text
+Status: **MISSING**
+Authors: Zhaoyang Liang; Dan Ding
+Venue / Year: IACR ePrint 2026/1779, revised 2026-10-26
+Identifier: https://eprint.iacr.org/2026/1779
+Needed For: BOOT RING_SWITCH_PARTIAL_RECOVERY_GATE_2 — exact leaf map, slot-recovery operator, and cost of low-interaction-rank nonlinear cross-leaf evaluation after ring switching.
+Missing Evidence: exact ring-switch/leaf plaintext relation; conventional slot-recovery algorithm and capacity/synchronization cost; statement/proof/scope of the affine-only independent-leaf theorem; CKKS/BGV/BFV leaf bootstrap algorithms; key-switch/rotation requirements; whether any partial synchronization primitive is already discussed; exact benchmark parameters.
+Why Public Retrieval Failed: On 2026-10-28 GitHub Notes get_eprint_paper("2026/1779") returned RETRIEVAL_BLOCKED: official IACR PDF HTTP 403; exact-title arXiv fallback found no matching author result; fixed arturo-kong GitHub ePrint mirror did not contain 2026/1779.pdf. Public ePrint mirrors expose the revised abstract but not a verified parseable full text.
+Impact: abstract-level affine-only boundary and scheme-independent interaction-rank algebra can be studied, but no 1779-specific partial-recovery construction, cost, correctness, error, or novelty claim is authorized.
+Human Action: obtain/upload an authorized current copy of ePrint 2026/1779. No author contact unless PI explicitly approves.
+Repository Path: papers/supplied/eprint-2026-1779-ring-switch-no-slot-recovery.pdf
+Readability Verification: **PENDING** — after supply, verify the ring-switch leaf transform, slot-recovery procedure, affine-only theorem, and benchmark sections before changing status.

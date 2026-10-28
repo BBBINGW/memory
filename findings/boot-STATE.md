@@ -1,12 +1,12 @@
 # BOOT State
 
-Updated: 2026-10-29 — Cryptography 10.0, Research Turn 18/25, post common-lineage gauge-accessibility screen.
+Updated: 2026-10-29 — Cryptography 10.0, Research Turn 19/25, post zero-rerandomization support screen.
 
 - TRACK_ID: BOOT
 - ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
 - LATEST_COMPLETED: B175_AUDIT
-- NEXT_ITERATION: ZERO_ENCRYPTION_RERANDOMIZATION_SUPPORT_GUARANTEE_SCREEN; BOOT-DECISION-001_PENDING
-- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / HYBRID_FRONTIER_SIZE_2_UNVALIDATED / EXACT_GAUGE_PUBLIC_REDESIGN_KILLED / OVERNIGHT_AUTONOMOUS_RESEARCH
+- NEXT_ITERATION: TURN17_QUANTIZATION_CELL_ROBUSTNESS_SUPPORT_COUNTING_SCREEN; BOOT-DECISION-001_PENDING
+- CURRENT_STATUS: B175_RAW_AUDITED_FAIL / HYBRID_FRONTIER_SIZE_2_UNVALIDATED / UNSELECTED_RERANDOMIZATION_WORST_CASE_RESCUE_FAILED / OVERNIGHT_AUTONOMOUS_RESEARCH
 - CURRENT_EXPERIMENT: NONE_AUTHORIZED
 - CURRENT_RESULT: FAIL_B175_POINTWISE_NOISE
 - EVIDENCE: RAW_AUDITED
@@ -21,7 +21,7 @@ Updated: 2026-10-29 — Cryptography 10.0, Research Turn 18/25, post common-line
 - PENDING_PI_DECISIONS: BOOT-DECISION-001
 
 Latest completed finding:
-findings/boot-B175-common-lineage-gauge-accessibility-2026-10-29.md
+findings/boot-B175-zero-rerandomization-support-guarantee-2026-10-29.md
 
 Pending PI queue:
 findings/boot-PENDING_PI_DECISIONS.md
@@ -130,6 +130,14 @@ Common-lineage gauge-accessibility screen:
 - Secret-key zero encryption adds at most 22 required bits under a conservative bound but requires online secret access and samples an uncontrolled gauge.
 - Counterfactual public-key zero encryption adds at most 32 required bits under a conservative bound and roughly 12 MiB key payload; these costs alone do not prove failure, but the mechanism is probabilistic, unimplemented, and unauthorized.
 - Gauge sensitivity is retained only as an explanatory phenomenon. Both frontiers remain unvalidated and native-unclear.
+
+Zero-rerandomization support/guarantee screen:
+
+- Secret-key zero encryption has a uniform second component and bounded error support; its mathematical support contains both Turn-17 PASS and FAIL gauge representatives.
+- For a fixed public key, the PASS point is in support while the specified FAIL point is key-dependent; over joint key generation and rerandomization, both are in support.
+- Therefore a single unselected zero rerandomization fails as a worst-case all-coins correctness rescue.
+- The explicit support events have extremely small idealized mass, so no useful B175/frontier DFR bound follows.
+- Probabilistic rerandomization remains an unauthorized new DFR problem, not a validated candidate.
 
 Overnight rule:
 

@@ -760,3 +760,52 @@ CURRENT_LABEL:
 Do not run Codex/native work.
 
 Reopen exact Gate 2 immediately if Part 2 or an equivalent explicit basis/transform construction becomes available.
+
+
+## Detour closure: 1594 BGV/BFV and CRYPTO 2026 dBFV do not remove the source blocker
+
+### 1594 BGV/BFV is not a same-degree orientation knob
+
+The exact BGV/BFV analysis in 1594 (physical pp.18-22) classifies ker(f) into three cases:
+1. Frobenius-only kernel;
+2. rotation-only kernel;
+3. both rotation and Frobenius generators.
+
+But these cases are determined by the standard power-of-two subring R', the fixed N', and the plaintext-modulus slot parameters (l1,d). The paper does not provide a family of same-degree subrings/fixed fields whose stabilizer orientation can be freely chosen while keeping the rest of the construction fixed.
+
+Therefore:
+    1594_BGV_BFV_ORIENTATION_KNOB = NO.
+
+Its formulas remain strong evidence that stabilizer intersection with actual transform generators is the right cost object, but they do not instantiate the new optimization variable.
+
+### ePrint 2025/2321 / CRYPTO 2026 does not instantiate Vive Galois B.2 transforms
+
+Recovered primary source:
+Peikert, Zarchy, Zyskind,
+"High-Precision Exact FHE Made Simple, General, and Fast",
+ePrint 2025/2321 / CRYPTO 2026.
+
+Research-MCP mirror SHA256:
+1e41b62004aeee0bf572d0ccca8de8c5827ee9a14fb333a1d3d0f4d2ab483849.
+
+The paper presents dBFV, supports general cyclotomic automorphisms, and reduces dBFV bootstrapping to parallel ordinary BFV bootstraps plus standard exact-FHE rounding machinery.
+
+It does NOT provide the missing explicit short-basis / fast-transform coefficients for Vive Galois Appendix B.2, and it does not turn Lemma 5.13's support upper bounds into exact B.2 automorphism supports.
+
+Thus:
+    2321_RESOLVES_VIVE_GALOIS_PART2_BLOCKER = NO.
+
+## Current stopping rule
+
+The stabilizer-aware fixed-field candidate remains:
+
+    PROMISING_SOURCE_INCOMPLETE.
+
+Its algebraic/source-level contribution skeleton is preserved, but do not spend additional paper cycles trying to infer exact B.2 supports from Part 1 alone.
+
+Reopen only when:
+- Vive Galois Part 2 becomes public;
+- an equivalent explicit basis/transform implementation is released;
+- or an independent source supplies exact transform coefficients for the relevant multidimensional field.
+
+Until then, move BOOT scouting to sources with complete primary text.

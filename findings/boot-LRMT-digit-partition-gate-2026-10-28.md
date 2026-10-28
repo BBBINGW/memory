@@ -406,3 +406,35 @@ Revised value gate:
 5. PARK if every large rank collapse occurs only for functions with a cheaper specialized realization.
 
 Priority remains PROMISING_NOT_ESTABLISHED.
+
+
+## AES S-box balanced-partition screen — negative control
+
+To test whether balanced repartitioning trivially rescues an unstructured Class-C LUT, we screened the standard AES S-box.
+
+Source for the 256-byte substitution table:
+NIST FIPS 197 / FIPS 197-upd1, Table 4 (SBox).
+
+Offline mathematical check:
+- input width: 8 bits;
+- balanced partitions: all unique 4|4 bit bipartitions, modulo complement symmetry;
+- count: binom(8,4)/2 = 35;
+- matrix entries: AES S-box byte value for the merged 8-bit input;
+- exact rank: ordinary real matrix rank;
+- numerical-rank check: normalize outputs by 255 into [0,1] and use the 1264-style threshold epsilon=1/(2P)=1/512 for P=256.
+
+Result:
+- all 35/35 balanced partitions have exact rank 16 (full rank);
+- the standard low-nibble/high-nibble partition also has numerical rank 16;
+- only two of the 35 partitions reduce the epsilon-numerical rank to 15;
+- no partition gives a material spectral collapse.
+
+The best observed smallest normalized singular value was about 3.53e-4 for partition {0,3,4,5}, but the next singular value was about 1.08e-1, so only one singular direction falls below the 1/512 threshold.
+
+Decision from this negative control:
+
+    VARIABLE_PARTITION_IS_NOT_A_GENERIC_CLASS_C_CURE.
+
+The candidate should target functions with explicit interaction/locality structure that is misaligned with the source's contiguous digit split. Random-like/cryptographic substitution tables such as the AES S-box remain high-rank under all balanced bit partitions in this screen.
+
+This strengthens the workload gate: require a structured practical LUT, not merely an arbitrary high-rank table.

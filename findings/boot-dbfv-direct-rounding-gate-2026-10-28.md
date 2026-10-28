@@ -386,3 +386,151 @@ No native experiment until a source/algebraic construction survives.
 5. RANK_PARTITION_LRMT — HOLD_NO_WORKLOAD.
 
 B163 remains the highest native gate once Codex quota is explicitly restored by the PI.
+
+
+## Gate 2 update — native-SIMD obstruction and polynomial-rounding degree bound
+
+### The B-axis is not a native SIMD slot axis
+
+For the source's power-of-two integer plaintext example
+
+    R=Z, p=b^d,
+
+the underlying plaintext semantics are still Z/pZ. The digit polynomial is a redundant decomposition of one high-precision plaintext, not a product of d independent plaintext components.
+
+For p equal to a prime power (in particular p=2^64), Z/pZ is a local ring and has no nontrivial orthogonal idempotent decomposition into d independent factors.
+
+By contrast, a genuine d-slot SIMD plaintext algebra contains d orthogonal idempotents and is a product-like algebra after CRT splitting.
+
+Therefore there is no native ring isomorphism that turns the d dBFV digit coordinates into d ordinary SIMD slots while preserving the plaintext arithmetic.
+
+Any construction that makes the digit axis genuinely SIMD must change/switch representation to an auxiliary product/packing ring (or increase ambient slot capacity), so it falls under the cost model of ring packing / scheme switching rather than being a free property of dBFV.
+
+Status:
+    NATIVE_DIGIT_AXIS_SIMD = NO for the p=prime-power dBFV plaintext algebra.
+
+This is an algebra-structure obstruction, not a security statement.
+
+### Polynomial direct-rounding fixed-point lower bound
+
+Suppose a direct bootstrap tries to implement rounding on each relaxed digit through a scalar polynomial P.
+
+Let D be a set of M possible integer digit centers.
+
+A first-order error-cleaning polynomial should satisfy, for every n in D,
+
+    P(n)=n,
+    P'(n)=0.
+
+The derivative P' therefore has at least M distinct roots.
+
+Hence
+
+    deg(P) >= M+1.
+
+More generally, if one demands local order-r cleaning,
+
+    P(n+e)=n+O(e^r)
+
+at every n in D, then
+
+    P(n)=n,
+    P^(j)(n)=0 for 1<=j<r.
+
+So P' has a root of multiplicity at least r-1 at each of the M centers, giving
+
+    deg(P') >= M(r-1)
+
+and therefore
+
+    deg(P) >= M(r-1)+1.          (4)
+
+This is an exact algebraic lower bound under the stated fixed-point derivative conditions.
+
+It does not rule out:
+- approximate polynomials with nonzero but sufficiently small derivatives;
+- lookup/PBS evaluation;
+- rational or piecewise circuits;
+- vector-valued nonlinear primitives.
+
+But it shows that exact Hermite-style coordinate rounding cannot have degree independent of the number of admissible digit values.
+
+### Implication for the weighted-moment idea
+
+The Gate-1 quadratic identity efficiently provides
+
+    S_2=sum_i b^i y_i^2.
+
+However an exact/strong rounding polynomial over a digit domain of size M generally needs degree growing with M.
+
+To evaluate
+
+    sum_i b^i P(y_i)
+
+from moments requires higher weighted diagonal moments
+
+    S_k=sum_i b^i y_i^k.
+
+A direct mixed-radix exponent encoding can isolate S_3 with two polynomial multiplications, but requires temporary B-degree Theta(d^2); analogous k-way diagonal extraction grows rapidly in representation degree in the straightforward construction.
+
+Therefore:
+
+    QUADRATIC_MOMENT_TRICK = VALID BUT INSUFFICIENT.
+
+There is currently no evidence that a useful exact direct-rounding circuit can be expressed from O(1) low-order moments.
+
+### Positive problem reformulation
+
+The surviving problem is no longer:
+
+    "find a clever low-degree polynomial in the dBFV ring."
+
+It is:
+
+    "refresh/correct a d-dimensional small error vector while producing only the one recombined high-precision plaintext, without paying d independent full mod-p bootstraps."
+
+This points toward:
+- vector/module error bootstrap;
+- comb/bootstrap sharing across digit errors;
+- dGSW-specific refresh exploiting decomposed non-expanding plaintexts;
+- or a new representation-level nonlinear primitive.
+
+### 2026/2630 prior-art pressure becomes central
+
+The public abstract of ePrint 2026/2630 states that comb bootstrap refreshes several ciphertexts using one blind rotation because the error state space is much smaller than the ring rotation space.
+
+This is conceptually very close to the surviving dBFV problem:
+- dBFV has d small error coordinates;
+- generic Section 5 lifting produces d same-key BFV ciphertexts;
+- a third-generation host is already supported by 2321.
+
+Therefore any future direct-dBFV construction must beat or structurally differ from:
+
+    lift d coefficients -> generic multi-ciphertext/comb error refresh -> recombine.
+
+Because 2630 full text remains unavailable, this comparison is currently source-blocked.
+
+### Gate-2 status
+
+NATIVE_DIGIT_SIMD:
+    FAIL as a free same-algebra mechanism.
+
+LOW_DEGREE_HERMITE_ROUNDING:
+    DEGREE LOWER BOUND grows with digit-domain size.
+
+WEIGHTED_MOMENT_ROUTE:
+    PARTIAL POSITIVE (S2), but no complete circuit.
+
+DIRECT_DBFV_ROUNDING:
+    STILL HIGH_VALUE_OPEN.
+
+MOST_PLAUSIBLE_POSITIVE_AXIS:
+    VECTOR/COMB/ERROR BOOTSTRAP OR dGSW-SPECIFIC REFRESH.
+
+PRIMARY_BLOCKER:
+    no construction yet; 2026/2630 exact comparison source missing.
+
+CODEX/NATIVE:
+    NOT REQUIRED.
+
+Do not spend native cycles until the source/algebra gate produces a concrete refresh circuit with strictly fewer expensive nonlinear-refresh operations than d independent BFV bootstraps.

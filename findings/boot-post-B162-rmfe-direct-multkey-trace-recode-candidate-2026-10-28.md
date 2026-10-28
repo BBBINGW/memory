@@ -1,84 +1,109 @@
-# BOOT — RMFE direct MultKey trace-recode candidate
+# BOOT — RMFE direct-MultKey scout: correction and rank-k subspace candidate
 Date: 2026-10-28
 TRACK_ID: BOOT
 CODEX_USED: NO
 NATIVE_RUN: NO
 
-## Source/open problem
-PKC 2025 / ePrint 2025/350 explicitly asks whether MultKey can run directly on RMFE-packed ciphertexts instead of k split ciphertexts.
+## Correction to the earlier trace/recode candidate
+The earlier idea
+    existing thin MultKey on RMFE-packed slots -> relative trace -> recode
+is NOT source-faithful.
 
-Current Algorithm 2:
-SlotsToCtxts -> k times [ModSwitch + SlotsToCoeff + InnerProduct + CoeffToSlots] -> CtxtsToSlots -> RMFE DigitExtract.
+Pinned source audit:
+- 2025/350 uses HElib commit acdb264e1a991eaee35fd8b3c31bebe9528c49a1.
+- HElib ThinEvalMap is explicitly documented for thin bootstrapping "where slots are assumed to contain constants".
+- thinReCrypt actually applies ThinEvalMap::slotToCoeff before the boot-key inner product and ThinEvalMap::coeffToSlot afterwards.
+- ThinStep1Matrix uses a trace/deflation construction specialized to that constant-slot subspace.
 
-For p=5,w=512,k=5 correction/TnM, Table 2 reports 2.284 s split, 4.732 s MultKey, 0.078 s recombine, 4.240 s DigitExtract, total 11.33 s.
+Therefore feeding arbitrary RMFE extension elements into the existing thin map is not justified.
 
-## Candidate (proved s=1 subfamily)
-Use G=Z_(p^e), G'=GR(p^e,w) subset E=GR(p^e,d), with s=1.
-Let n=d/w and
-P = n^(-1) Tr_(E/G').
-For odd p and power-of-two n, n is invertible.
+A second attempted shortcut,
+    raw inner-product intermediate -> slotwise trace/recode -> RMFE DigitExtract,
+also fails generically: Halevi-Shoup digit extraction recovers selected HIGH p-adic digits of coefficient integers, and high-digit extraction does not commute with CRT/linear mixing because of carries. Example p=5,e=2: 4 and 1 each have top digit 0, but 4+1=5 has top digit 1.
 
-Direct packed MultKey produces slot state
-y = phi(m) + p*epsilon in E.
-Since P fixes G',
-P(y)=phi(m)+p*P(epsilon) in G'.
+Thus:
+OLD_TRACE_RECODE_DROPIN = SUPERSEDED / FAIL_AS_DROPIN.
 
-Apply recode pi=phi o psi. Since psi(phi(v))=v,
-pi(P(y)) = phi(m + p*delta),
-delta=psi(P(epsilon)) in (Z_(p^e))^k.
+## New candidate: rank-k RMFE-subspace slim transform
+Let each slot j contain
+    phi(a_0j,...,a_(k-1)j)
+with a_ij in Z_(p^e), and let b_i=phi(e_i).
+Let S be the existing thin SlotsToCoeff map, so for scalar slots
+    S((a_j)_j) = sum_j a_j X^(d j).
 
-Thus the result is exactly back in the RMFE image with integer components congruent to m modulo p, which matches Algorithm 4's input invariant.
+Let tau_i be the RMFE component projection.
+Define a single public linear transform
 
-Pipeline:
-ONE packed MultKey -> relative trace E->G' -> ONE recode -> existing correction-map DigitExtract.
+    T(c) = sum_(i=0)^(k-1) X^i * S(tau_i(c)).
 
-Status:
-RMFE_DIRECT_MULTKEY_S1_ALGEBRA = PASS.
-Correctness depends only on the standard BGV pre-digit invariant message + p*error.
+Then the plaintext after T is
 
-## p=5 parameter gate
-For m=32768,p=5, d=ord_32768(5)=8192.
-With w=512,s=1: n=16, so relative trace needs 4 recursive Frobenius-sum stages.
-For e=4, eta=125, Theorem 1 gives
-k <= min(6, floor(511/125)+1)=5.
-Therefore the paper's k=5 packing count is preserved.
+    M(X)=sum_j sum_i a_ij X^(d j+i).
 
-The same s=1 check preserves k=5 for p=11,e=3,w=512.
-It does not preserve p=3,e=5,w=512,k=7 (s=1 permits at most k=4).
+Because k <= d, all k*l scalar components occupy distinct coefficients of one plaintext polynomial; no split ciphertext is information-theoretically necessary.
 
-## Coarse value gate
-Baseline p=5 front end = 7.094 s.
-Table 2 indicates MultKey scales approximately linearly with k, giving one-MultKey proxy 4.732/5=0.946 s.
-Paper Section 5.1 says Method-1 recode is essentially SlotsToCtxts + CtxtsToSlots, proxy 2.362 s.
-Four trace stages are small relative to the ~45 automorphisms in the Method-1 split/recode; rough proxy ~0.20 s.
+Now run the ordinary optimized ModSwitch + boot-key inner product ONCE on T(c).
+For each active coefficient d j+i, the resulting integer has exactly the same p-adic decryption/digit invariant that the corresponding split thin bootstrap would have had. Coefficients outside the active set carry no message and may be ignored.
 
-Paper-level estimate:
-candidate front ~3.51 s;
-candidate total ~7.75 s versus 11.33 s;
-potential latency improvement ~1.46x.
+Define the inverse partial transform R to:
+1. select coefficient positions d j+i,
+2. map each residue class i back to scalar slots,
+3. multiply by b_i=phi(e_i),
+4. sum over i.
 
-This is NOT a native result.
+R therefore yields slots of the form
+    phi(z_0j,...,z_(k-1)j),
+where every z_ij is the noisy integer decryption intermediate for component a_ij.
 
-## Caveat / next gate
-Capacity is unresolved. The relative trace adds automorphism/key-switch noise, while the extra pre-recode may largely exchange the baseline split+recombine cost rather than remove its capacity cost.
+The existing RMFE correction-map DigitExtract from 2025/350 then applies directly and returns
+    phi(a_0j,...,a_(k-1)j).
 
-Targeted search found no direct normalized-trace + recode solution after 2025/350. FIMD prior art already allows generic linear maps to be folded into recoding, so any novelty claim must be narrow and bootstrap-specific.
+This preserves coefficient-domain high-digit semantics; unlike the superseded shortcut, it does not interchange nonlinear digit extraction with CRT mixing.
 
-Current status:
-RMFE_DIRECT_MULTKEY_S1 = ACTIVE_PAPER_LEVEL_POSITIVE
+## Relation to prior art
+Chen-Han slim/thin bootstrap is the rank-1 special case: every slot contains one base-ring scalar.
+General/thick bootstrap is effectively rank d and performs d digit extractions.
+2024/153 sparse packing handles plaintexts encoded in a subring and does not establish arbitrary proper linear-submodule rank-k bootstrapping.
+RMFE im(phi) is generally a proper Z_(p^e)-linear submodule of E, not a subring (e.g. paper p=5 point has k=5,w=512).
+
+Targeted search found no direct prior for this RMFE-aligned rank-k slim transform.
+
+## Value: conservative, not the old 1/k estimate
+The paper's current Algorithm 2 pays:
+    SlotsToCtxts -> k separate thin MultKey blocks -> CtxtsToSlots -> one RMFE DigitExtract.
+
+The proposed T/R path pays:
+    one rank-k linear transform T -> ONE ModSwitch/boot-key inner product -> one inverse rank-k transform R -> one RMFE DigitExtract.
+
+Even a naive implementation of T/R may still contain work comparable to k component projections/thin transforms. Therefore the previous estimate "MultKey cost becomes exactly 1/k" is withdrawn.
+
+Guaranteed structural saving, if T/R are implemented correctly:
+- k -> 1 ModSwitch/boot-key-inner-product executions;
+- k live ciphertexts through the MultKey stage -> 1;
+- one common coefficient-domain decryption intermediate instead of k independent ones.
+
+Possible additional saving:
+T and R are each single public linear maps and may share automorphisms/hoisting across the k components. This is promising but NOT yet proved.
+
+## Current status
+RMFE_DIRECT_THIN_MULTKEY = FAIL_AS_DROPIN
+RMFE_RAW_SLOT_RECODE = FAIL_GENERIC_BY_CARRY
+RMFE_RANKK_SUBSPACE_MULTKEY = ACTIVE_PAPER_LEVEL_CANDIDATE
+ALGEBRAIC_LAYOUT = PASS
+CORRECTNESS = PASS_AT_LINEAR/COEFFICIENT_INVARIANT_LEVEL
 DIRECT_PRIOR_COLLISION = NOT_FOUND
-CLOSE_PRIOR = YES
-LATENCY_VALUE = PROMISING_P5
-CAPACITY = UNRESOLVED
+VALUE = PROMISING_BUT_UNQUANTIFIED
+CAPACITY/NOISE = UNRESOLVED
 NOVELTY = PROMISING_NOT_ESTABLISHED
+NATIVE = NOT_RUN
 
-Next:
-1. source-faithful ModSwitch/MultKey correctness check;
-2. capacity/noise bound for 4-stage trace + pre-recode;
-3. evaluation-key reuse/memory check;
-4. no native/Codex until these pass.
+## Next gates
+1. Derive T/R as source-faithful HElib-style linear transforms and count automorphisms/plaintext multiplications.
+2. Determine whether T/R can share the same Galois keys/hoisting as existing thin maps plus RMFE projection maps.
+3. Bound noise/capacity of T -> single MultKey -> R against k independent thin MultKeys.
+4. Only if a clear paper-level value margin remains, prepare a Codex/native gate. Do not run it while quota is unavailable.
 
-## BOOT state unchanged
+## BOOT authoritative state unchanged
 LATEST_COMPLETED: B162_AUDIT
 NEXT_NATIVE: B163_PENDING_CODEX_QUOTA
 CODEX_AVAILABLE: NO

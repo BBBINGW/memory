@@ -1,24 +1,27 @@
 # BOOT Pending PI Decisions
 
-Updated: 2026-10-29, Cryptography 11.0 Research Turn 2/25, after independent-work reassessment.
+Updated: 2026-10-29, after PI authorized continuous autonomous structural redesign.
 
-PENDING_PI_DECISIONS:
+PENDING_PI_DECISIONS: NONE
 
-- BOOT-DECISION-001
+RESOLVED_PI_DECISIONS:
+
+- BOOT-DECISION-001: RESOLVED_ALLOW_AUTONOMOUS_STRUCTURAL_REDESIGN
 
 ## BOOT-DECISION-001
 
-- status: PENDING_PI_DECISION
+- status: RESOLVED_ALLOW_AUTONOMOUS_STRUCTURAL_REDESIGN
 - question: After the raw-audited B175 pointwise-noise failure, should the fixed-parameter direct SI pointwise combination be killed outright, or may one bounded representation-layer redesign be developed for later PI authorization?
 - why_pi_needed: B175 decisively falsifies the authorized direct composition. Whether a materially different representation-layer design merits implementation is a strategic research-allocation choice reserved to PI.
 - available_options:
   1. Kill the current direct SI pointwise combination and retain its audited negative result.
   2. Permit one bounded representation-layer redesign proposal; any native experiment remains separately PI-authorized.
+- resolution: PI retained the B175 direct mechanism as killed, retained B158 overall as ACTIVE_REDESIGN, authorized B176 representation-layer redesign, removed per-iteration and per-Codex-task authorization inside the top-level BOOT objective, and authorized autonomous park/kill/reprioritization under soft/hard candidate budgets of 8/12 substantive turns.
 - current_evidence: Valid exact L18 LT8 budget +72 and GROUPED budget +16; one real SI pointwise gives required bits 664, budget -15, and 32767/32768 mismatches. Static source derivation shows the aggregate tensor/reference term dominates; backend-only and local-noise rescues are killed. Explicit eight-branch delayed recombination fails at 34 ct-ct and an optimistic aligned score 655. A 43-circuit hybrid enumeration leaves two unvalidated count-26 classes with only three-to-four bits of modeled slack. Exact public-mask convolution adds 17--18 required bits on saved healthy operands, while operator-only universal lower bounds are impossible. Component-algebra witnesses prove representation sensitivity, but the actual path has no public exact-gauge access. Zero-encryption support contains non-isolated PASS and FAIL quantization cells, ruling out a worst-case guarantee, while their certified mass remains astronomically negligible and nontransferable to B175/frontier DFR. The static rerandomization line is saturated. Turn 21 shows Frontier A has no independent value beyond an engineering repair and Frontier B has only a low ceiling. Turn 22 excludes universal schedule dominance. Turn 23 completes a 46-claim synthesis and establishes that the static information frontier is reached: every remaining identifiable question requires PI authorization, actual common-lineage components, new native/DFR evidence, or implementation. No validated redesign candidate or paper contribution exists.
 - recommended_option: Treat the direct combination as killed. If PI permits one bounded redesign, require it to materially change tensor/reference geometry and pass the fixed-Q conditional 16-required-bit feasibility screen before any implementation; quantization, key-switch, or few-bit local-noise tuning should not be authorized as a rescue.
-- what_is_blocked_by_this_decision: B176/native follow-up; parameter rescue/sweep; Q, k0, or geometry changes; implementation of a new representation layer; full Algorithm 5; DFR; end-to-end benchmark.
-- what_can_continue_without_this_decision: Evidence preservation; provenance/checkpoint audit; morning-report preparation; Turn-25 milestone persistence; and Turn-26 handoff preparation only. No substantive independent research remains.
+- what_is_blocked_by_this_decision: RESOLVED. B176 and later structural iterations may proceed autonomously. Simple parameter-only rescues and the killed direct SI pointwise mechanism remain outside scope.
+- what_can_continue_without_this_decision: All in-scope continuous autonomous structural redesign, cheapest-decisive Codex execution, evidence audit, candidate park/kill, and BOOT reprioritization authorized by the PI policy.
 - source: findings/boot-B175-audit-direct-si-pointwise-noise-failure-2026-10-28.md; findings/boot-B175-static-noise-attribution-audit-2026-10-29.md; findings/boot-B175-source-level-si-error-bounds-2026-10-29.md; findings/boot-B175-representation-mechanism-negative-screen-2026-10-29.md; findings/boot-B175-delayed-recombination-static-screen-2026-10-29.md; findings/boot-B175-hybrid-selector-pareto-screen-2026-10-29.md; findings/boot-B175-public-mask-convolution-screen-2026-10-29.md; findings/boot-B175-public-mask-operator-kernel-screen-2026-10-29.md; findings/boot-B175-hybrid-completion-indeterminacy-2026-10-29.md; findings/boot-B175-decryption-fiber-gauge-realizability-2026-10-29.md; findings/boot-B175-common-lineage-gauge-accessibility-2026-10-29.md; findings/boot-B175-zero-rerandomization-support-guarantee-2026-10-29.md; findings/boot-B175-quantization-cell-robustness-2026-10-29.md; findings/boot-B175-hybrid-frontier-research-value-ceiling-2026-10-29.md; findings/boot-B175-universal-schedule-dominance-impossibility-2026-10-29.md; findings/boot-B175-post-claim-boundary-synthesis-2026-10-29.md; findings/boot-B175-provenance-checkpoint-audit-2026-10-29.md; findings/boot-B175-final-milestone-checkpoint-2026-10-29.md; findings/boot-B175-pending-pi-independent-work-reassessment-2026-10-29.md
-- carry_forward: REQUIRED in every Turn-26 handoff and successor session until PI resolves it.
+- carry_forward: Carry the RESOLVED status and the continuous-autonomous-research policy through every handoff; do not recreate this decision as pending.
 
-The operating rule is `requires_pi != stop` while independent no-regret work remains. The successor's formal Research Turn 2 independently reassessed every authorized direction-neutral category and found no substantive independent research remaining. Therefore the current `WAIT_PI` is caused by `independent_research_available=false`, not by the mere existence of `BOOT-DECISION-001`.
+The prior WAIT_PI was correct under the narrower authorization then in force, but it is superseded by the PI's expanded top-level authorization. `NEXT_ITERATION_REQUIRES_PI_AUTHORIZATION=false`; candidate/family exhaustion triggers evidence-backed park/kill and autonomous in-scope reprioritization. WAIT_PI is reserved for `RESEARCH_FRONTIER_EXHAUSTED` across the authorized top-level objective or a PI/system terminal blocker.

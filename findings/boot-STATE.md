@@ -253,609 +253,267 @@ The B174 finding and post-B174 handoff remain historical parent evidence. The un
 
 TRACK_ID: BOOT
 ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
-LATEST_COMPLETED: Research Turn 25/25 — MULTIOUTPUT_HOISTED_LINEAR_TRANSFORM_GATE
+LATEST_COMPLETED: Research Turn 25/25 — public-artifact Frobenius keyset reproducibility gate
 
-这是同一个逻辑 Turn 25/25 的完整重试，没有递增 turn。
-
-Primary hypothesis
-
-5 个 RMFE thin branches 的重复 SlotsToCoeff/CoeffToSlots，能否在不合并 ciphertext、不改变 secret/evaluation-key assumption的条件下，通过 multi-output hoisting 共享昂贵的 automorphism/key-switch decomposition，从而获得接近 
-𝑘
-=
-5
-k=5 的线性阶段摊销？
-
-Verdict
-FAIL_STOCK_CROSS_BRANCH_HOIST
-FAIL_STOCK_CROSS_BRANCH_HOIST
-	​
-
-Copy for Word
-
-并且对一个自然的 common-source weighted-transform rescue：
-
-COST_NEGATIVE_AT
- 
-𝑘
-=
-5
-COST_NEGATIVE_AT k=5
-	​
-
-
-因此该方向不值得启动 native/Codex experiment。
-
-1. HElib hoisting 是 per-ciphertext
-
-Pinned HElib@acdb264e... 的 BasicAutomorphPrecon 会对一个 ciphertext执行
-
-ctxt.parts[1].breakIntoDigits(polyDigits)
-ctxt.parts[1].breakIntoDigits(polyDigits)
-
-并缓存这些 gadget digits，随后多个 automorphisms复用它们。
-
-所以它共享的是：
-
-many automorphisms of the same ciphertext
-many automorphisms of the same ciphertext
-	​
-
-
-而不是：
-
-same transform/key across different ciphertexts
-.
-same transform/key across different ciphertexts
-	​
-
-.
-
-5 个 RMFE branches 在形成之后是 5 个不同 ciphertext states；其 gadget decompositions 不能直接共用。
-
-2. 当前 ThinEvalMap 的实际 geometry 很小
-
-固定：
-
-𝑚
-=
-32768
-,
+Primary question: can Turn 24's remaining uncertainty be closed from public Aung/HElib artifacts—specifically, does the reported 
 𝑝
 =
 5
 ,
-m=32768,p=5,
+𝑤
+=
+512
+p=5,w=512 benchmark establish direct one-hop Frobenius keys for
 
-有
+𝑗
+∈
+{
+1
+,
+2
+,
+3
+,
+4
+}
+↔
+𝑋
+↦
+𝑋
+5
+,
+25
+,
+125
+,
+625
+?
+j∈{1,2,3,4}↔X↦X
+5,25,125,625
+?
+Verdict
+纯文本
+RESULT:
+  PUBLIC_ARTIFACT_KEYSET_PROVENANCE_INCOMPLETE
 
-𝜙
-(
+FOUR_NONIDENTITY_FROBENIUS_TERMS:
+  PROVEN
+
+FOUR_PHYSICAL_KEYSWITCHES:
+  NOT PUBLICLY ESTABLISHED
+
+ZERO_ADDITIONAL_EVAL_KEY_BYTES:
+  NOT PUBLICLY ESTABLISHED
+
+CANDIDATE:
+  SURVIVES
+Copy for Word
+
+Aung et al. specify that their experiments use HElib, bits=400, 
 𝑚
-)
 =
-16384
-,
-ord
-⁡
 32768
-(
-5
-)
-=
-8192
-,
-ϕ(m)=16384,ord
-32768
-	​
+m=32768, and cite HElib commit acdb264; however, the implementation section does not record the exact Frobenius/key-switch matrix-generation strategy or evaluation-key size. 
+Cryptology ePrint Archive
++1
+ I also found no author implementation repository or artifact link in the exact-title searches/resource topic that exposes this missing configuration. 
+Ask Cryptography
++1
 
-(5)=8192,
-
-因此只有
-
-2
- physical slots
-.
-2 physical slots
-	​
-
-.
-
-对当前 mvec=[32768]：
-
-𝐷
-=
-16384
-8192
-=
-2.
-D=
-8192
-16384
-	​
-
-=2.
-
-因此 SlotsToCoeff 的显式 MatMul 部分实际上只是一个 2×2 transform，每个 branch最多只有一个非平凡 slot automorphism。
-
-即使完美跨 branch共享：
-
-5
-→
-1
-,
-5→1,
-
-也只省 4 次 automorphisms。
-
-3. 真正不能共享的是 CoeffToSlots 后面的 trace
-
-CoeffToSlots 不只是 2×2 transform。
-
-Pinned ThinEvalMap(invert=true) 的实际流程是：
-
-2×2 MatMul
-→
-traceMap
-.
-2×2 MatMul→
-traceMap
-	​
-
-.
-
-这里：
-
-𝑑
-=
-8192
-=
-2
-13
-.
-d=8192=2
-13
-.
-
-对当前非小-
-𝑑
-d 路径，`traceMap` 使用 binary doubling，因此每个 branch 恰好需要：
-
-13
-13
-	​
-
-
-次 Frobenius automorphisms。
-
-五个 branches：
-
-5
-×
-13
-=
-65
-.
-5×13=65
-	​
-
-.
-
-而这些 automorphisms作用于各自不断变化的 branch-local trace accumulator，所以 stock hoisting无法共享其 cached gadget decomposition。
-
-4. 利用共同 recryptEkey 也救不了 dominant trace
-
-post-ModSwitch branch 可以写成
-
-𝑢
-𝑖
-=
-𝑧
-0
-,
-𝑖
-+
-𝑧
-1
-,
-𝑖
-𝐸
-𝑠
-,
-u
-i
-	​
-
-=z
-0,i
-	​
-
-+z
-1,i
-	​
-
-E
-s
-	​
-
-,
-
-其中 
-𝐸
-𝑠
-E
-s
-	​
-
- 是共同的 encrypted boot secret。
-
-对于前面的 2×2 transform，确实可以预计算一次
-
+There is nevertheless a useful positive result. Aung's BSGS Method 2 explicitly evaluates terms 
 𝜎
-(
-𝐸
 𝑠
-)
-σ(E
-s
-	​
-
-)
-
-然后给五个 branches各乘不同 public coefficients。
-
-所以这一小段还能再省最多 4 次 automorphisms。
-
-但 trace 是
-
-Tr
-⁡
-(
-𝑢
-𝑖
-)
-=
-Tr
-⁡
-(
-𝑧
-0
-,
-𝑖
-)
-+
-∑
-𝑗
-=
-0
-8191
-𝜎
 𝑗
 (
-𝑧
-1
-,
-𝑖
+𝑥
 )
-𝜎
-𝑗
-(
-𝐸
-𝑠
-)
-.
-Tr(u
-i
-	​
-
-)=Tr(z
-0,i
-	​
-
-)+
-j=0
-∑
-8191
-	​
-
 σ
-j
-(z
-1,i
+sj
+(x) over a baby-step range of roughly 
+𝑤
+w
 	​
 
-)σ
-j
-(E
-s
-	​
-
-).
-
-这里 
-𝑧
+. For 
+𝑤
+=
+512
+w=512, this range necessarily includes 
+𝑗
+=
 1
 ,
-𝑖
-z
-1,i
-	​
-
- 是 independently-rounded 后的 branch-specific full-ring polynomial。
-
-若改成以 
-𝐸
-𝑠
-E
-s
-	​
-
- 为唯一共同源，则原来的 all-ones trace structure消失，问题退化为 generic weighted 8192-term linear transform。
-
-其 BSGS automorphism complexity 最低约为
-
 2
-8192
-≈
-181.
-2
-8192
-	​
+,
+3
+,
+4
+j=1,2,3,4. Thus those four Frobenius powers must at least be reachable/evaluable in a functioning BSGS execution. 
+Cryptology ePrint Archive
+ This does not prove that each has its own direct matrix: HElib can support different key-switch strategies, and its API distinguishes full/some/minimal/BSGS Frobenius-matrix configurations. 
+helib.github.io
 
-≈181.
-
-而原本五条 structured traces只需要：
-
-65.
-65.
-
-因此：
-
-181
->
-65
-.
-181>65
-	​
-
-.
-
-common-source multi-output rescue 在 
-𝑘
-=
-5
-k=5 下反而更差。
-
-5. 整体 automorphism ceiling
-
-只看 thin transforms：
-
-baseline 大约：
-
-5
- 
-(
-S
-2
-C
-)
-+
-5
- 
-(
-C
-2
-S
- 
-2
-×
-2
-)
-+
-65
- 
-(
-t
-r
-a
-c
-e
-)
-=
-75
-.
-5 (S2C)+5 (C2S 2×2)+65 (trace)=
-75
-	​
-
-.
-
-最乐观 cheap sharing：
-
-1
-+
-1
-+
-65
-=
-67
-.
-1+1+65=
-67
-	​
-
-.
-
-即最多：
+So Turn 8 should now be stated precisely as:
 
 75
 →
-67
+19
+ transform/automorphism terms
+75→19 transform/automorphism terms
+	​
+
+
+not yet
+
+75
+→
+19
+ physical key switches
+.
+75→19 physical key switches.
+
+For the final joint-recovery block,
+
+4
+ nonidentity Frobenius terms
+4 nonidentity Frobenius terms
+
+is proven. Exactly four physical key-switch hops is conditional on direct matrices for 
+𝑗
+=
+1
 ,
-75→67,
+…
+,
+4
+j=1,…,4. If only multi-hop reachability exists, latency rises; if missing direct matrices are added, that creates an evaluation-key-size tradeoff.
 
-约
+This also means there is no established hidden key-size blocker: the required maps belong to the same Frobenius family already central to Aung's recoding machinery. But there is also no defensible basis yet for claiming “zero extra key bytes” relative to the exact reported trace-and-merge baseline.
 
-10.7
-%
-10.7%
-	​
+The eventual closure test is tiny and does not require another bootstrap benchmark:
 
+纯文本
+for j = 1,2,3,4:
+    target = 5^j mod 32768
+    direct matrix present?
+    reachable?
+    smartAutomorph hop count?
+    exact matrices traversed?
 
-的 automorphism-count reduction。
+record:
+    stock evaluation-key bytes
+    bytes after adding any missing direct matrices
 
-这与我们需要的 
-𝑘
-k-fold middle-phase collapse 相差很远，而且还是忽略 plumbing/ct-pt accumulation 后的乐观上界。
+Because Research Turns 1–25 are now exhausted, if the pending native task is still unresolved, the next logical Turn 26 must be HANDOFF ONLY, per protocol; no new substantive hypothesis should be opened in this session.
 
-Projection side 顺带检查
+The running task remains:
 
-五个 RMFE projections 的确来自同一个 source ciphertext，并共享 Frobenius support。
+纯文本
+BOOT-RMFE-POSTRAW-BASELINE-TIMER-DECOMP-20261031-R4-01
+STATUS: UNKNOWN / PENDING
+DO_NOT_RERUN
 
-但每个 degree-512 trace可用：
+Detailed finding staged here because the verified local BBBINGW/memory clone is not mounted in this runtime:
 
-512
-=
-2
-9
-512=2
-9
+Turn 25 detailed finding
+ — SHA-256 5593ecf086c280849e600f3d7b2dc0665829bfdd7d2023aa9d161545f9c1b0a3
 
-的 9-step structured trace。
+Turn 25 evidence
+ — SHA-256 55a28cfd8b76d954b3e62e62434bd917392f9bed12c44bff0846848213cb4ab8
 
-baseline：
-
-5
-×
-9
-=
-45
-5×9=45
-
-次 automorphisms。
-
-把它改成 common-source generic BSGS：
-
-2
-512
-≈
-45.
-2
-512
-	​
-
-≈45.
-
-所以连 automorphism count都基本不降，只可能改变 decomposition scheduling，不形成新的 large-gain candidate。
-
-Decision
-MULTIOUTPUT_HOISTED_LINEAR_TRANSFORM=KILL
-MULTIOUTPUT_HOISTED_LINEAR_TRANSFORM=KILL
-	​
-
-
-作为高价值科研路径关闭。
-
-保留的仅是小型 engineering optimization：
-
-共享 SlotsToCoeff 的一个 D=2 automorphism；
-共享 CoeffToSlots 前 D=2 map 对共同 recryptEkey 的一个 automorphism。
-
-这些不足以改变 research frontier，也不是 cryptographic contribution。
-
-因此当前 RMFE single-linear-phase 局部优化链应停止继续向：
-
-decoder conditioning；
-exotic b
+<ORCHESTRATOR_CONTROL>
+action: CONTINUE
+milestone: true
+requires_pi: false
+independent_research_available: true
+</ORCHESTRATOR_CONTROL>
 NEXT_ITERATION: Resume from the saved handoff prompt and choose the next cheapest decisive test.
 CURRENT_STATUS: SESSION_RESEARCH_COMPLETE
-SESSION_ID: 9fa6c9b7-b341-442b-95e9-fd295eaa5e50
+SESSION_ID: 35190a39-0d31-45aa-b03e-33176a25fe96
 RESEARCH_TURN: 25 / 25
 
 ## Verdicts
-- Turn 1: PASS
-- Turn 2: FAIL
-- Turn 3: FAIL
-- Turn 4: FAIL
-- Turn 5: FAIL
-- Turn 6: FAIL
-- Turn 7: FAIL
-- Turn 8: FAIL
-- Turn 9: FAIL
-- Turn 10: FAIL
+- Turn 5: PASS
+- Turn 7: PASS
+- Turn 8: PASS
+- Turn 9: PASS
 - Turn 12: PASS
-- Turn 13: PASS
 - Turn 14: FAIL
-- Turn 15: FAIL
-- Turn 16: FAIL
-- Turn 17: FAIL
-- Turn 18: FAIL
-- Turn 19: FAIL
-- Turn 20: UNCLEAR
+- Turn 16: PASS
+- Turn 17: PASS
+- Turn 18: PASS
+- Turn 20: FAIL
 - Turn 21: FAIL
 - Turn 22: FAIL
-- Turn 23: UNCLEAR
-- Turn 24: UNCLEAR
 
 ## Main hypothesis
 See latest completed research answer and handoff prompt.
 
 ## Key findings
-- Research Turn 25/25 — MULTIOUTPUT_HOISTED_LINEAR_TRANSFORM_GATE
+- Research Turn 25/25 — public-artifact Frobenius keyset reproducibility gate
 
-这是同一个逻辑 Turn 25/25 的完整重试，没有递增 turn。
-
-Primary hypothesis
-
-5 个 RMFE thin branches 的重复 SlotsToCoeff/CoeffToSlots，能否在不合并 ciphertext、不改变 secret/evaluation-key assumption的条件下，通过 multi-output hoisting 共享昂贵的 automorphism/key-switch decomposition，从而获得接近 
-𝑘
+Primary question: can Turn 24's remaining uncertainty be closed from public Aung/HElib artifacts—specifically, does the reported 
+𝑝
 =
 5
-k=5 的线性阶段摊销？
+,
+𝑤
+=
+512
+p=5,w=512 benchmark establish direct one-hop Frobenius keys for
 
+𝑗
+∈
+{
+1
+,
+2
+,
+3
+,
+4
+}
+↔
+𝑋
+↦
+𝑋
+5
+,
+25
+,
+125
+,
+625
+?
+j∈{1,2,3,4}↔X↦X
+5,25,125,625
+?
 Verdict
-FAIL_STOCK_CROSS_BRANCH_HOIST
-FAIL_STOCK_CROSS_BRANCH_HOIST
-	​
+纯文本
+RESULT:
+  PUBLIC_ARTIFACT_KEYSET_PROVENANCE_INCOMPLETE
 
+FOUR_NONIDENTITY_FROBENIUS_TERMS:
+  PROVEN
+
+FOUR_PHYSICAL_KEYSWITCHES:
+  NOT PUBLICLY ESTABLISHED
+
+ZERO_ADDITIONAL_EVAL_KEY_BYTES:
+  NOT PUBLICLY ESTABLISHED
+
+CANDIDATE:
+  SURVIVES
 Copy for Word
 
-并且对一个自然的 common-source weighted-transform rescue：
-
-COST_NEGATIVE_AT
- 
-𝑘
+Aung et al. specify that their experiments use HElib, bits=400, 
+𝑚
 =
-5
-COST_NEGATIVE_AT k=5
-	​
-
-
-因此该方向不值得启动 native/Codex experiment。
-
-1. HElib hoisting 是 per-ciphertext
-
-Pinned HElib@acdb264e... 的 BasicAutomorphPrecon 会对一个 ciphertext执行
-
-ctxt.parts[1].breakIntoDigits(polyDigits)
-ctxt.parts[1].breakIntoDigits(polyDigits)
-
-并缓存这些 gadget digits，随后多个 automorphisms复用它们。
-
-所以它共享的是：
-
-many automorphisms of the same ciphertext
-many automorphisms of the same ciphertext
-	​
-
-
-而不是：
-
-same transform/key across different ciphertexts
-.
-same transform/key across different ciphertexts
-	​
-
-.
+32768
+m=32768, and cite HElib commit acdb264; however, the implementation section does not record the exact Frobenius/key-switch matrix-generation strategy or evaluation-key size. 
+Cryptology ePrint Archive
++1
+ I also found no author implementation repository or artifact link in the exact-t
 
 ## Killed ideas
 - None
@@ -874,10 +532,8 @@ same transform/key across different ciphertexts
 - {"task_id":"BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01","origin_session_id":"c3ba6616-a79a-4dc3-93a4-ddc3e828195d","origin_session":"密码学 12.0","origin_turn":23,"original_hypothesis":"TASK_ID: BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01\n\nMODEL: gpt-5.6-solREASONING: xhighZERO_API_BILLING: YESPAID_API_FALLBACK: FORBIDDENSILENT_MODEL_DOWNGRADE: FORBIDDENMODE: ONE_SHOT_SOURCE_FAITHFUL_NATIVE_CANARYDO_NOT_TOUCH:BOOT-RMFE-P5W512-CONSECUTIVE-R8-MERGED-MIDDLE-FIXEDQ-NATIVE-20261029-R21-RECOVERY-01its R20 work directoryits binaryits evidence ZIPits execution lockDo not retry, resume, modify, or reuse its partial execution.SINGLE_OBJECTIVE:Test the current source-faithful p=5,r=1 RMFE one-core candidate in pinned HElib, with enough stage instrumentation to localize any failure.PINNED_HELIB:homenc/HElib@acdb264e1a991eaee35fd8b3c31bebe9528c49a1CONTEXT:m=32768p=5r=1bits=400c=3skHwt=120scale=10resolution=3bitsInSpecialPrimes=0mvec=[32768]gens=[32767]ords=[2]threads=1ASSERT_AFTER_CONTEXT_BUILD:ordP=8192nslots=2e=5ePrime=2q=3126boot-key plaintext modulus=625securityLevel>=128DETERMINISTIC_NONPRODUCTION_SEED:202610292301RMFE_INSTANCE:G4=Z/625ZG4'=GR(625,512)F512(T)=T^512+182 mod625input reduction F512(T)=T^512+2 mod5evaluation points=[0,1,2,3,4]k=5w=512eta=125normal_basis=falseSTATIC_PREFLIGHT:regenerate or locate only exact prerequisite artifacts by their pinned hashes;verify the deterministic RMFE instance;verify tau_i(phi(e_j))=delta_ij mod625 and mod5;regenerate exact R8 maps if necessary;verify VW=WV=I16;verify grouped six-automorphism realization on 16/16 basis images;derive the mod5 S2C masks by centered reduction;derive mod625 normalized C2S masks with normalization 224 folded exactly once.On any failure, return SOURCE_BLOCKED and stop before key generation.SAFE_RECRYPT_INSTRUMENTATION:DO NOT use PubKeyHack, reinterpret_cast, private-field layout assumptions, offset arithmetic, or #define-private-public.The authoritative recryptKeyID is the return value of SecKey::genRecryptData().To obtain recryptEkey for the manually staged middle:use public PubKey/SecKey writeToJSON();read the serialized recryptKeyID and recryptEkey fields from the actual emitted schema;reconstruct recryptEkey with public Ctxt::readFromJSON(...).Verify JSON recryptKeyID equals genRecryptData() return.If public JSON reconstruction cannot be completed exactly, return SOURCE_OR_INSTRUMENTATION_FAILURE and stop before encryption.KEYS:Generate one deterministic key set only.Generate only the HElib baseline and custom automorphism keys actually required.After setup, verify every requested smartAutomorph exponent is reachable.Record requested automorphisms AND actual key-switch path lengths / matrix applications.No alternate key strategy, rescue, second seed, or regeneration.INPUT_CASES:CASE_A canonical control:slot0 components=[1,2,3,4,0]slot1 components=[4,1,3,0,2]CASE_B mandatory noncanonical input:in E512=F5[alpha]/(alpha^512+2):slot0=alpha^5slot1=1+2alpha^5+3alpha^6software decoder expectations:slot0=[0,1,2,3,4]slot1=[1,1,2,4,2]ENCRYPTION:Real BGV encryption only.No fresh-encryption surrogate for intermediate states.After encryption perform rotate(+1), rotate(-1) once to avoid an unrealistically pristine fresh ciphertext.Record initial and post-warmup capacity/noise/intFactor/primeSet.FRONT_END:Compute the five exact RMFE projections tau_i.For debug copies, decrypt and compare all 10 scalar values to the software decoder.Require 10/10 mod5.Then fuse/merge the five projected ciphertexts directly into the consecutive R8 envelope; do not retain unnecessary live thin ciphertexts beyond instrumentation.Verify envelope plaintext against software oracle.PIPELINE:mod5 custom grouped S2C_R8-> canonicalize / cleanup-> mod-down exactly as pinned thinReCrypt-> reLinearize(recryptKeyID)-> rawModSwitch(q=3126)-> newMakeDivisible(p^ePrime=25)-> exact division by25-> ctxt = reconstructed recryptEkey-> multByConstant(zzParts[1])-> addConstant(zzParts[0])-> RM10 coefficient retraction-> normalized mod625 grouped C2S_R8, with factor224 embedded exactly once-> eight-way unpack-> retain coordinates0..4-> stop candidate middleDO NOT:run Aung RMFE correction DigitExtract;use r=4;use modulus78125;use normalization26474;use subring_bts;use the old 3e337a6 patch;compare candidate raw representatives with sums of five split raw representatives;retry after any scientific or instrumentation failure.LINEAR_STAGE_ORACLES:At every custom linear stage, decrypt a debug clone and compare against independent software linear algebra:projections;envelope merge;S2C_R8 all 16 coefficients;RM10/retraction;normalized C2S_R8;unpack.RAW/CORE_INVARIANTS:Record rawModSwitch noise_est, bound, and ratio.Require ratio<=1.Record every newMakeDivisible congruence and exact divisibility by25.Record zzParts and prescribed divided representatives in the evidence artifact.DECISIVE FUNCTIONAL ORACLE:For each of the five retained mod625 coordinate ciphertexts, clone it and call pinned HElib:extractDigitsThin(clone,3,1,2)using a test-only forward declaration of the existing non-static symbol if needed.Decrypt after this scalar DigitExtract.Require exact recovery of the original ten source components mod5 for BOTH cases.This scalar native oracle is the correctness criterion; do not implement Aung correction maps in this first gate.INTFACTOR:Record input intFactor.Record post-core intFactor.After the scalar DigitExtract oracle restore/check original source semantics exactly as native thinReCrypt would.Do not use intFactor as the RM10 normalization mechanism.CAPACITY_CHECKPOINTS:inputpost-warmupeach projectionmerged envelopepost-S2Cpre-rawpost-boot-key multiply/addpost-RM10post-C2Seach unpacked retained coordinatepost-scalar-DigitExtract oracleFor each relevant stage record:bitCapacitynoiseBoundptxtSpaceintFactorprimeSetTIMING:Only if both cases pass correctness.Candidate-middle timing scope starts with an already-built envelope ciphertext and ends when five mod625 retained coordinates are ready.1 untimed warmup + 3 timed runs.Report median.Do not include projections or scalar DigitExtract oracle.SAME-MACHINE BASELINE:Only after candidate correctness PASS.Using the same context/key/input projections, run the five ordinary thin linear phases through CoeffToSlot, stopping before DigitExtract.1 warmup + 3 runs.Report median and candidate/split ratio.No full bootstrap benchmark.PASS:all static/source prerequisites pass;both projection oracles pass;all custom linear oracles pass;raw/divisibility invariants pass;10/10 components recover exactly in both cases via scalar extractDigitsThin;all retained coordinate capacities remain positive;no unintended source/interface change.FAIL:With valid source/instrumentation, any linear oracle mismatch, raw/divisibility failure, scalar DigitExtract mismatch, intFactor failure, or nonpositive retained capacity.UNCLEAR:Source/instrumentation/key-provisioning failure before attributable candidate execution.STOP:On PASS, FAIL, SOURCE_BLOCKED, or UNCLEAR stop.No retry, second seed, rescue, parameter change, full correction, DFR, optimization sweep, or additional witness.RETURN:classification and exact scope;stage arrays and capacities;requested automorphism counts;actual KS matrix application/path counts;context/security/key metadata;build/run exits;candidate-middle and split baseline timing only if correctness passed;complete source snapshot/diff;raw logs;artifact ZIP path/bytes/SHA-256;all internal SHA256SUMS;Git before/after/status;no research-memory write;no Git commit made for the scientific task.","working_directory":"/Users/bingwu/Developer/research-orchestrator","execution_backend":"Codex CLI / codex exec","model":"gpt-5.6-sol","reasoning":"xhigh","pid_or_remote_execution_identity":"2578","start_time":"2026-10-29T14:18:23.408Z","status":"COMPLETED","commit":"bb9e5d3413e75362c0f26f29bd3ec4d9bf64e11c","expected_artifacts":[],"artifacts":[{"path":"/Users/bingwu/Developer/research-orchestrator/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01.zip","sha256":"c9c563be6a9e3e2a646822e55813d5e5048c229ed57116988bd40595dd7592f0","bytes":103976},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/README.md","sha256":"5bb34386ab3f4d61d3f6421567d62b90a960748d7ae6e843e85d6ced6ea8ede2","bytes":752},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/SHA256SUMS","sha256":"9ce11c733dc2847d7e2f6a20019828df2f71b7e901eb7b9bf1407649fa8df4ec","bytes":3623},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/commands.sh","sha256":"78bb836fba1c89d862980686e3630aff24bbf43483f5be294c9dc75c668d43ce","bytes":423},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/environment/toolchain.txt","sha256":"a702151970a305594c44de54175f584bbf7f8b0a4734843a6b24e81163287797","bytes":326},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/evidence/automorphisms.json","sha256":"4e13969577bd40b90ade77d4baae766b336a7ef865f895b6a8a2b6a02694013b","bytes":212},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/evidence/build-run.json","sha256":"98b15c207aa7d413a8f166ed6502b758329e4765b0b98149a0c5033692d10af0","bytes":275},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/evidence/capacities.json","sha256":"4020fd1b2804639d8ddede1d3b51c4972545348b0c56179158fc151473b84d07","bytes":119},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/evidence/context-key-metadata.json","sha256":"4a532d8cd1adc8a8c2f9aef4c7e1b5b284e8252b91ac3ec69bb0421373294f9a","bytes":487},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/evidence/r18-reverification/lineage.json","sha256":"54af4d7e0429acfae5cefa7af32857ab03344fedb30ec328f464cc582684e69a","bytes":3602},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/evidence/r18-reverification/preflight.json","sha256":"1ab66752e4da058b2636d26e45a82c75a39bac1674a2198977e9cc63434b2cb4","bytes":3223},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/evidence/r18-reverification/result.json","sha256":"5435080bfeb14781a12fc62216e9682443daabe14a0489d91d2791371cf5c3bc","bytes":2795},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/evidence/r18-reverification/stage-vectors.json","sha256":"89654d469e1466fc6b1e8edcb2d9333f9aecd1914b282adf6f060e31534c1aac","bytes":37482},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/evidence/r18-reverification/transfer-matrices.json","sha256":"db988c3619e4252d2d2bebf2a1f1db5f8934a878275cfa69bf6b82e17e9fac20","bytes":11858},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/evidence/raw-core.json","sha256":"46125242119a4dd4f0e8e888b0ad9c9bed8b7d43340da51c7b4e383bf017034a","bytes":173},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/evidence/result.json","sha256":"d4714a1cb6b27d2f379ed509e7dfdc977835549e45676e7febdee58e15d78c42","bytes":1639},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/evidence/stage-arrays.json","sha256":"343da99064718827f35cf42a6d3c1d3dc2fc0ad041e1b56c3638259d9f96af7e","bytes":230},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/evidence/timing.json","sha256":"6d7df162e3e4ea407fa14c8960c82286307bb680652c7e855c9173d0862d9fdb","bytes":140},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/logs/r18-reverification.exit-code","sha256":"9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa","bytes":2},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/logs/r18-reverification.log","sha256":"de4904b5981aa74a20cfb873641a31ff6f52a7509bc72aca4a3f5e48ecd83167","bytes":4159},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/logs/static-preflight.exit-code","sha256":"53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3","bytes":2},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/logs/static-preflight.log","sha256":"578dbc7848f20ff39f554b92b15f6aeaaac286446f98ad4a2a589dc281651ec6","bytes":1469},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/manifest.json","sha256":"c43ae76b47ada4438ddf57a04de887c715c6a80d8b57eb6e018f645eb79d7ad2","bytes":869},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/provenance/execution.lock","sha256":"e5639c2d7406a58b8e3c3844093cb4532bb72128ce53661f6dcf77950daaced5","bytes":127},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/provenance/git-head-after.txt","sha256":"56e6d8f5935a7f5174d4203d386cbaadab24c2f0ea9739353746be33289fafd6","bytes":41},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/provenance/git-head-before.txt","sha256":"56e6d8f5935a7f5174d4203d386cbaadab24c2f0ea9739353746be33289fafd6","bytes":41},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/provenance/git-status-after.txt","sha256":"7f893b0a8af0326aefc7c57f74f539d847dea8107d7ebef1e07a00d8fca6a8ee","bytes":686},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/provenance/git-status-before.txt","sha256":"45aac2d85ea9ec624cb9bac6bf735bc1e9e64289720077959e845d0e7a5e75f6","bytes":618},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/provenance/task-scope.txt","sha256":"730a11c9dae61d111d974de72faf1ab5a375eaa2c151b27e5b745647e38bacad","bytes":498},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/source/pinned-helib.diff","sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","bytes":0},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/source/pinned/HElib/include/helib/Ctxt.h","sha256":"77332aae402ab63a39b84af51ea4bb92b5f8c3a57ad593d94b876ed0cd4dee22","bytes":52062},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/source/pinned/HElib/include/helib/keys.h","sha256":"a01eaba859a4dcdeae63bdd36053def1ed2340d2fb96cbe84e17ad95a090159b","bytes":17486},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/source/pinned/HElib/include/helib/recryption.h","sha256":"c2b979721b95c3177d96fd859f4351b31f3d54cbd1b3630e88cfdb1db6266241","bytes":3560},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/source/pinned/HElib/src/Ctxt.cpp","sha256":"d49a20fe9a42d7cdb52fe7661c68185d41058231ede1a6438717f4ee9177c7f2","bytes":96268},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/source/pinned/HElib/src/keys.cpp","sha256":"42ca27a5e05c74509f43a99077226eb3ddc56db8dff9802b059c75da9b76fea4","bytes":58908},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/source/pinned/HElib/src/recryption.cpp","sha256":"7d94a1bb9bf0fcaa87ec4ebc97cd162e23fc7f4223f5e3f920862afa22ecc490","bytes":39818},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/source/preflight.mjs","sha256":"e3186b917933655f2704335f9413a72d353068bf61dd4e82b01a72845dc2caa9","bytes":15629},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/source/r18-verify.mjs","sha256":"b664f640183fc97468771342fe46fda56d6e0bbeef963a653bd667e16b4629fe","bytes":34089},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/artifact/source/source.diff","sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","bytes":0},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/execution.lock","sha256":"e5639c2d7406a58b8e3c3844093cb4532bb72128ce53661f6dcf77950daaced5","bytes":127},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/preflight/r18-reverification/evidence/lineage.json","sha256":"54af4d7e0429acfae5cefa7af32857ab03344fedb30ec328f464cc582684e69a","bytes":3602},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/preflight/r18-reverification/evidence/preflight.json","sha256":"1ab66752e4da058b2636d26e45a82c75a39bac1674a2198977e9cc63434b2cb4","bytes":3223},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/preflight/r18-reverification/evidence/result.json","sha256":"5435080bfeb14781a12fc62216e9682443daabe14a0489d91d2791371cf5c3bc","bytes":2795},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/preflight/r18-reverification/evidence/stage-vectors.json","sha256":"89654d469e1466fc6b1e8edcb2d9333f9aecd1914b282adf6f060e31534c1aac","bytes":37482},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01/preflight/r18-reverification/evidence/transfer-matrices.json","sha256":"db988c3619e4252d2d2bebf2a1f1db5f8934a878275cfa69bf6b82e17e9fac20","bytes":11858}],"evidence_status":"AVAILABLE","audit_status":"AUDITED","result_delivered":true,"do_not_rerun":true,"result":"Classification: `SOURCE_BLOCKED`.\n\nThe fresh static preflight stopped at the grouped-S2C canonical hash check with exit code `2`. Before that:\n\n- All R14/R16/R17/R18 ZIP outer and internal hashes passed.\n- R18 exact two-slot identity reverification exited `0`.\n- `tau_i(phi(e_j))` passed `25/25` modulo 625 and modulo 5.\n\nPer the no-retry rule, no HElib build, context, keys, encryption, candidate stages, raw invariants, DigitExtract oracle, or timing was attempted. Automorphism requests and KS applications were both zero. This is not a scientific `FAIL`.\n\nEvidence: [R23 artifact ZIP](/Users/bingwu/Developer/research-orchestrator/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01.zip)\n\n- Bytes: `103976`\n- SHA-256: `c9c563be6a9e3e2a646822e55813d5e5048c229ed57116988bd40595dd7592f0`\n- Internal SHA256SUMS: 37 files, all verified\n- ZIP integrity: passed\n\nDetailed result: [result.json](/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-2026"}
 - {"task_id":"BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01","origin_session_id":"7570e5c6-0c16-48cb-9e1a-8b97a75b5a7c","origin_session":"密码学 13.0","origin_turn":1,"original_hypothesis":"TASK_ID: BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01\n\nTRACK_ID: BOOT\nACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS\n\nMODEL: gpt-5.6-sol\nREASONING: xhigh\nZERO_API_BILLING: YES\nPAID_API_FALLBACK: FORBIDDEN\nSILENT_MODEL_DOWNGRADE: FORBIDDEN\nSILENT_REASONING_DOWNGRADE: FORBIDDEN\n\nWORKING_DIRECTORY:\n/Users/bingwu/Developer/research-orchestrator\n\nPRIMARY_HYPOTHESIS:\nThe R23 grouped-S2C canonical-hash failure is a preflight representation/contract error rather than a genuine source-r=1 operator mismatch: the correct source-r=1 S2C is obtained by centered reduction of the established mod-625 R8 S2C to mod 5, and algebraic direct/grouped equivalence survives that reduction even though canonical serialized bytes/hashes need not equal the old mod-625 artifact.\n\nEXISTING_R23_ARTIFACT:\n/Users/bingwu/Developer/research-orchestrator/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01.zip\n\nEXPECTED_R23_ARTIFACT:\nbytes = 103976\nsha256 = c9c563be6a9e3e2a646822e55813d5e5048c229ed57116988bd40595dd7592f0\n\nEXPECTED_EMBEDDED_FILES_OF_INTEREST:\nartifact/source/preflight.mjs\nartifact/logs/static-preflight.log\nartifact/logs/static-preflight.exit-code\nartifact/evidence/result.json\nartifact/evidence/r18-reverification/preflight.json\nartifact/evidence/r18-reverification/result.json\nartifact/evidence/r18-reverification/transfer-matrices.json\nartifact/SHA256SUMS\n\nKNOWN_EXPECTED_EMBEDDED_HASHES:\nsource/preflight.mjs =\ne3186b917533655f2704335f9413a72d353068bf61dd4e82b01a72845dc2caa9\n\nlogs/static-preflight.log =\n578dbc7848f20ff39f554b92b15f6aeaaac286446f98ad4a2a589dc281651ec6\n\nevidence/result.json =\nd4714a1cb6b27d2f379ed509e7dfdc977835549e45676e7febdee58e15d78c42\n\nOBJECTIVE:\nPerform one READ-ONLY forensic audit of the EXISTING R23 evidence and determine exactly what caused the grouped-S2C canonical-hash failure.\n\nMANDATORY STEPS:\n\nPROVENANCE\n\nDo not execute or resume R23.\nVerify the existing ZIP byte count and outer SHA-256.\nTest ZIP integrity.\nVerify every entry listed in its existing SHA256SUMS.\nRecord exact pass/fail counts.\nDo not repair, rewrite, repack, or modify the existing ZIP.\n\nIDENTIFY THE FAILED ASSERTION\n\nRead, but DO NOT execute, the embedded source/preflight.mjs.\nRead static-preflight.log and evidence/result.json.\nLocate the exact grouped-S2C canonical-hash assertion that produced exit code 2.\nReport:\nexpected hash;\nactual hash;\nexpected object/source;\nactual object/source;\nmodulus of each object;\ncanonicalization/serialization used before hashing.\nQuote only the minimum source fragments/line ranges needed for provenance.\n\nINDEPENDENT MOD-5 RECONSTRUCTION\nIn a NEW audit work directory only, independently reconstruct the source-r=1 S2C from the pinned mod-625 R8 S2C masks by coefficientwise centered reduction modulo 5.\n\nDo not trust the failed R23 hash assertion as an oracle.\n\nIndependently verify:\n\nall 16 direct S2C basis images modulo 5;\nthe grouped six-automorphism realization versus the direct operator on all 16 basis images modulo 5;\nany matrix identities required to establish that this is the correct reduction of the persisted mod-625 operator.\n\nThe ring-homomorphism consequence must be checked computationally against the artifact data, not merely asserted.\n\nHASH-SEMANTICS TEST\nDetermine which of these applies:\n\nA. PREFLIGHT_CONTRACT_BUG\nThe expected hash belongs to a mod-625 representation or another representation that is not byte-identical by definition to the correctly reduced mod-5 object, while the mod-5 algebraic operator checks all pass.\n\nB. CANONICALIZATION_ONLY_BUG\nBoth objects represent the same mod-5 operator but differ only because of centered-vs-noncentered encoding, ordering, metadata, modulus tagging, JSON formatting, or another serialization choice.\n\nC. REAL_OPERATOR_MISMATCH\nAfter normalizing both operands to the same mod-5 representation, coefficients or operator action differ and at least one exact basis/operator check fails.\n\nD. EVIDENCE_PROVENANCE_FAIL\nThe existing ZIP/hash/SHA256SUMS evidence itself does not verify.\n\nE. UNCLEAR\nThe exact comparison cannot be reconstructed without modifying/rerunning R23.\n\nSCIENTIFIC BOUNDARY\n\nA or B:\nclassify R23 as PRECHECK/INSTRUMENTATION_BLOCKED;\nnative one-core mechanism remains UNCLEAR;\nexplicitly state that no scientific candidate failure occurred.\nC:\nidentify the first exact coefficient/operator divergence;\nclassify only the source-r=1 preflight/interface at that exact scope;\ndo not extrapolate to unrelated RMFE claims.\nD or E:\nreturn UNCLEAR/HUMAN_REVIEW as appropriate.\n\nSTRICTLY FORBIDDEN:\n\nrerun BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01;\nexecute its preflight.mjs as the decisive oracle;\nmodify its source, work directory, binary, ZIP, logs, or evidence;\nbuild HElib;\ngenerate context or keys;\nencrypt;\nexecute automorphisms/key switching;\nexecute rawModSwitch, newMakeDivisible, recryptEkey MultKey, RM10, C2S, unpacking, or extractDigitsThin;\ntiming or benchmarking;\nparameter changes;\nalternate RMFE instance;\nretry/rescue;\nGit commit;\nresearch-memory write.\n\nNEW AUDIT OUTPUT:\nUse a separate work directory named from this TASK_ID.\n\nProduce a small audit artifact containing:\n\nresult.json\nprovenance.json\nhash-comparison.json\nmod5-operator-verification.json\nminimal audit script/source\nraw audit log\nSHA256SUMS\n\nRETURN:\nSTATUS:\none of\nPASS_PREFLIGHT_CONTRACT_BUG\nPASS_CANONICALIZATION_ONLY_BUG\nFAIL_REAL_OPERATOR_MISMATCH\nFAIL_EVIDENCE_PROVENANCE\nUNCLEAR\n\nR23_SCIENTIFIC_RESULT:\nUNCLEAR unless independently justified otherwise\n\nEXACT_FAILED_ASSERTION:\nexpected/actual hash + objects + modulus + serialization\n\nMOD5_DIRECT_BASIS:\nx/16\n\nMOD5_GROUPED_VS_DIRECT:\nx/16\n\nOUTER_ZIP_HASH:\nPASS/FAIL\n\nINTERNAL_SHA256SUMS:\nx/y\n\nR23_RERUN:\nNO\n\nNATIVE_EXECUTION:\nNO\n\nGIT_BEFORE:\n...\n\nGIT_AFTER:\n...\n\nGIT_DIFF:\nmust be empty for tracked files\n\nAUDIT_ARTIFACT:\npath / bytes / SHA-256\n\nSTOP after this classification. Do not launch the repaired native scientific gate.","working_directory":"/Users/bingwu/Developer/research-orchestrator","execution_backend":"Codex CLI / codex exec","model":"gpt-5.6-sol","reasoning":"xhigh","pid_or_remote_execution_identity":"14294","start_time":"2026-10-29T15:17:31.889Z","status":"COMPLETED","commit":"7bdc4461b0774c27bb7392224d1cf12e6805f450","expected_artifacts":[],"artifacts":[{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01.zip","sha256":"633716565b9ffd22f171295f6b341afac02139bc97bb5b48a4ce46650c93fcb2","bytes":12972},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/artifact/SHA256SUMS","sha256":"bfd94f045fdc5bd9b532ef3ffa40b99a871db1eca16c98a6978f9b8024be9d0f","bytes":513},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/artifact/audit.mjs","sha256":"ea5b6a2a6b492f998767a5c08b1a0cafac753462dd50ab0d9a070e258b17d2cc","bytes":23632},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/artifact/hash-comparison.json","sha256":"d376b718ede82678103fb35fd61a9bbf0e2ab2ad2eedbd8f360b71b014e3842d","bytes":2274},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/artifact/mod5-operator-verification.json","sha256":"b1baf6a44b3410f47ed76ab14838f3784ac83dd1c8c7a0a0ead1c6c3ec6e1df3","bytes":3547},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/artifact/provenance.json","sha256":"e994e666c2e95af39fb3f30b7b85f641ee6bd8b104b65d9f6b28bffafead4a8e","bytes":5070},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/artifact/raw-audit.log","sha256":"fdff467e1b83a9170e62466f67afa4bf0a4a957db775d441b27c114648bd3059","bytes":1007},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/artifact/result.json","sha256":"d1ad6f0b45e90ed9697f4132ee5e40c51731239ad542256e8e8f3c760d40ba4a","bytes":1516},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/README.md","sha256":"fafeb23aea650c16560eef058cf616427b530c3572c2bc2fda7018a5484272f7","bytes":2161},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/SHA256SUMS","sha256":"7d7dcb6edc166b802898e83eb9df5b6a45d8a380b4b1dae89ccc6bc875eec9ac","bytes":2890},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/commands.txt","sha256":"28697252a013b10199fa8c8ba6a97b2c4f8ba5036f0e78b590110d0e3f8b64bb","bytes":515},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/environment/compiler-and-system.txt","sha256":"6bd55d43ff1b96474f1b8c5b95110b008ab3d3a713fd158c2834581cc15049ac","bytes":403},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/evidence/automorphism-routing.json","sha256":"463e30b23b2c0f00399db35d94a3ee1c0e549dec3ed596afc450a8d916fdcc0a","bytes":887},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/evidence/native-values.json","sha256":"fe1f6fd2a317dead6d0fd8d39e5d05668489a81e7f730671f167e0fe39f50d87","bytes":479},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/evidence/stage-ledgers.json","sha256":"89b8315767d10f47680f15fc18e7ea83d6694b232654f83e47feae4bf882807d","bytes":572},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/logs/interface-audit.exit-code","sha256":"9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa","bytes":2},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/logs/interface-audit.stderr","sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","bytes":0},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/logs/interface-audit.stdout","sha256":"6e0fdef17ca659b651242f29c73f4a7ff509281e1fe63c02c347df7b60f94780","bytes":6406},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/logs/native-build.log","sha256":"7c26b522bd356e47125cbd71c2d51ad64c6c88d2024c507ff97050d570f13a9a","bytes":295},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/logs/native-run.log","sha256":"08c8f318c591bc2a4be8460ee881da67f3489e068bfa1e47087506b30fc1cd34","bytes":193},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/logs/preflight.exit-code","sha256":"9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa","bytes":2},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/logs/preflight.stderr","sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","bytes":0},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/logs/preflight.stdout","sha256":"23ec2b2585cfbc156595e9da1e1b66a3b6f6bb09830c125ec5d9b15c41bebddd","bytes":844},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/manifest.json","sha256":"f5e72ac9ebebbd9a6e3a931ca100a979491654f37f60371aab8a970f414777db","bytes":3872},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/provenance/git-status.txt","sha256":"8e8c707702585cb09971212ad24763dfe7919b5e01374085ca4642befc5c37c6","bytes":610},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/provenance/task-prompt.txt","sha256":"1f3f4e7f78b6636064e8f858d79a25d6862956746e4af6a8bf1747b109e5c599","bytes":7254},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/source/interface_audit.sh","sha256":"64dc0c1dad49acdfb5f747fd9ff89381dc01af704a0b5c2a6ca20ed1d457474f","bytes":3583},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/source/pinned/HElib/Ctxt.cpp","sha256":"d49a20fe9a42d7cdb52fe7661c68185d41058231ede1a6438717f4ee9177c7f2","bytes":96268},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/source/pinned/HElib/EvalMap.h","sha256":"41937e1ef637e8ed004adca75bc479ce10092aa584acd1ed9b6e784b604bee8b","bytes":3787},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/source/pinned/HElib/keySwitching.cpp","sha256":"417aa30c709354952c527d33acb812802f7b6e1bedb2b585aec7d847f647e413","bytes":21152},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/source/pinned/HElib/keys.cpp","sha256":"42ca27a5e05c74509f43a99077226eb3ddc56db8dff9802b059c75da9b76fea4","bytes":58908},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/source/pinned/HElib/keys.h","sha256":"a01eaba859a4dcdeae63bdd36053def1ed2340d2fb96cbe84e17ad95a090159b","bytes":17486},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/source/pinned/subring_bts/HElib_code/CMakeLists.txt","sha256":"52ea368ad3b71424f0cd1e8945e2be7f137bfd6a2c36467f213a679a033f07fe","bytes":320},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/source/pinned/subring_bts/HElib_code/bgv_bts_subring.patch","sha256":"d32aa29f04a4ac5054c2bf49a5f0fa4e301c2a3113e62598200dcf9a09cfc352","bytes":398537},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/source/pinned/subring_bts/HElib_code/fatboot.cpp","sha256":"afc875d2c517c17595cd89980670a9d631d97d706183aa384b1d036860674ebb","bytes":62222},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/source/pinned/subring_bts/README.md","sha256":"08b323abba74919090e5b3808a2368a58accc132dc614a38d18222b9c300933c","bytes":2681},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/source/preflight.mjs","sha256":"356b4b3e82cec013f689b2987122c38f657035a3c61a9cf94339b686c68468e9","bytes":7648},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/source/source.diff","sha256":"6484dccaf231a2b979d67df982ee0f1023e93c69fcbbebd2f0845f7abd2c403a","bytes":12266},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/R14/artifact/source/upstream.diff","sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","bytes":0},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/README.md","sha256":"5bb34386ab3f4d61d3f6421567d62b90a960748d7ae6e843e85d6ced6ea8ede2","bytes":752},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/SHA256SUMS","sha256":"9ce11c733dc2847d7e2f6a20019828df2f71b7e901eb7b9bf1407649fa8df4ec","bytes":3623},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/commands.sh","sha256":"78bb836fba1c89d862980686e3630aff24bbf43483f5be294c9dc75c668d43ce","bytes":423},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/environment/toolchain.txt","sha256":"a702151970a305594c44de54175f584bbf7f8b0a4734843a6b24e81163287797","bytes":326},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/evidence/automorphisms.json","sha256":"4e13969577bd40b90ade77d4baae766b336a7ef865f895b6a8a2b6a02694013b","bytes":212},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/evidence/build-run.json","sha256":"98b15c207aa7d413a8f166ed6502b758329e4765b0b98149a0c5033692d10af0","bytes":275},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/evidence/capacities.json","sha256":"4020fd1b2804639d8ddede1d3b51c4972545348b0c56179158fc151473b84d07","bytes":119},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/evidence/context-key-metadata.json","sha256":"4a532d8cd1adc8a8c2f9aef4c7e1b5b284e8252b91ac3ec69bb0421373294f9a","bytes":487},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/evidence/r18-reverification/lineage.json","sha256":"54af4d7e0429acfae5cefa7af32857ab03344fedb30ec328f464cc582684e69a","bytes":3602},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/evidence/r18-reverification/preflight.json","sha256":"1ab66752e4da058b2636d26e45a82c75a39bac1674a2198977e9cc63434b2cb4","bytes":3223},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/evidence/r18-reverification/result.json","sha256":"5435080bfeb14781a12fc62216e9682443daabe14a0489d91d2791371cf5c3bc","bytes":2795},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/evidence/r18-reverification/stage-vectors.json","sha256":"89654d469e1466fc6b1e8edcb2d9333f9aecd1914b282adf6f060e31534c1aac","bytes":37482},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/evidence/r18-reverification/transfer-matrices.json","sha256":"db988c3619e4252d2d2bebf2a1f1db5f8934a878275cfa69bf6b82e17e9fac20","bytes":11858},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/evidence/raw-core.json","sha256":"46125242119a4dd4f0e8e888b0ad9c9bed8b7d43340da51c7b4e383bf017034a","bytes":173},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/evidence/result.json","sha256":"d4714a1cb6b27d2f379ed509e7dfdc977835549e45676e7febdee58e15d78c42","bytes":1639},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/evidence/stage-arrays.json","sha256":"343da99064718827f35cf42a6d3c1d3dc2fc0ad041e1b56c3638259d9f96af7e","bytes":230},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/evidence/timing.json","sha256":"6d7df162e3e4ea407fa14c8960c82286307bb680652c7e855c9173d0862d9fdb","bytes":140},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/logs/r18-reverification.exit-code","sha256":"9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa","bytes":2},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/logs/r18-reverification.log","sha256":"de4904b5981aa74a20cfb873641a31ff6f52a7509bc72aca4a3f5e48ecd83167","bytes":4159},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/logs/static-preflight.exit-code","sha256":"53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3","bytes":2},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/logs/static-preflight.log","sha256":"578dbc7848f20ff39f554b92b15f6aeaaac286446f98ad4a2a589dc281651ec6","bytes":1469},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/manifest.json","sha256":"c43ae76b47ada4438ddf57a04de887c715c6a80d8b57eb6e018f645eb79d7ad2","bytes":869},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/provenance/execution.lock","sha256":"e5639c2d7406a58b8e3c3844093cb4532bb72128ce53661f6dcf77950daaced5","bytes":127},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/provenance/git-head-after.txt","sha256":"56e6d8f5935a7f5174d4203d386cbaadab24c2f0ea9739353746be33289fafd6","bytes":41},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/provenance/git-head-before.txt","sha256":"56e6d8f5935a7f5174d4203d386cbaadab24c2f0ea9739353746be33289fafd6","bytes":41},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/provenance/git-status-after.txt","sha256":"7f893b0a8af0326aefc7c57f74f539d847dea8107d7ebef1e07a00d8fca6a8ee","bytes":686},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/provenance/git-status-before.txt","sha256":"45aac2d85ea9ec624cb9bac6bf735bc1e9e64289720077959e845d0e7a5e75f6","bytes":618},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/provenance/task-scope.txt","sha256":"730a11c9dae61d111d974de72faf1ab5a375eaa2c151b27e5b745647e38bacad","bytes":498},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/source/pinned-helib.diff","sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","bytes":0},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/source/pinned/HElib/include/helib/Ctxt.h","sha256":"77332aae402ab63a39b84af51ea4bb92b5f8c3a57ad593d94b876ed0cd4dee22","bytes":52062},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/source/pinned/HElib/include/helib/keys.h","sha256":"a01eaba859a4dcdeae63bdd36053def1ed2340d2fb96cbe84e17ad95a090159b","bytes":17486},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/source/pinned/HElib/include/helib/recryption.h","sha256":"c2b979721b95c3177d96fd859f4351b31f3d54cbd1b3630e88cfdb1db6266241","bytes":3560},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/source/pinned/HElib/src/Ctxt.cpp","sha256":"d49a20fe9a42d7cdb52fe7661c68185d41058231ede1a6438717f4ee9177c7f2","bytes":96268},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/source/pinned/HElib/src/keys.cpp","sha256":"42ca27a5e05c74509f43a99077226eb3ddc56db8dff9802b059c75da9b76fea4","bytes":58908},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/source/pinned/HElib/src/recryption.cpp","sha256":"7d94a1bb9bf0fcaa87ec4ebc97cd162e23fc7f4223f5e3f920862afa22ecc490","bytes":39818},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/source/preflight.mjs","sha256":"e3186b917933655f2704335f9413a72d353068bf61dd4e82b01a72845dc2caa9","bytes":15629},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/source/r18-verify.mjs","sha256":"b664f640183fc97468771342fe46fda56d6e0bbeef963a653bd667e16b4629fe","bytes":34089},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/input/artifact/source/source.diff","sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","bytes":0}],"evidence_status":"AVAILABLE","audit_status":"AUDITED","result_delivered":true,"do_not_rerun":true,"result":"STATUS: `PASS_CANONICALIZATION_ONLY_BUG`\n\nR23_SCIENTIFIC_RESULT: `UNCLEAR`\n\nR23 classification: `PRECHECK/INSTRUMENTATION_BLOCKED`. No scientific candidate failure occurred; the native one-core mechanism remains unclear.\n\nEXACT_FAILED_ASSERTION:\n\n- Expected hash: `231b77c181ad22548133630a3a690eafb7358b31fa8fe93553aa21b2435d67d7`\n- Actual hash: `7c4336fbdc8626bf9d5a1c66376cb3428e3a864e7f6eca32ab1398a3964ce6d4`\n- Expected object: R14 reconstructed, centered mod-625 grouped S2C masks.\n- Expected serialization: compact `JSON.stringify(Object.values({P0,P1,Q0,Q1}))`, 547 bytes.\n- Actual object: the identical 128 centered mod-625 mask coefficients.\n- Actual serialization: compact `JSON.stringify({P0,P1,Q0,Q1})`, retaining group names, 567 bytes.\n- Modulus: 625 for both operands.\n- Coefficients: 128/128 identical.\n- The mod-5 object had not yet been constructed when the assertion failed.\n\nMinimal provenance:\n\n- R23 defines `canonicalHash` as `sha256(JSON.stringify(value))`: [preflight.mjs:26]"}
 - {"task_id":"BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01","origin_session_id":"7570e5c6-0c16-48cb-9e1a-8b97a75b5a7c","origin_session":"密码学 13.0","origin_turn":2,"original_hypothesis":"TASK_ID: BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01\n\nTRACK_ID: BOOTACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASISMODEL: gpt-5.6-solREASONING: xhighZERO_API_BILLING: YESPAID_API_FALLBACK: FORBIDDENSILENT_MODEL_DOWNGRADE: FORBIDDENSILENT_REASONING_DOWNGRADE: FORBIDDENWORKING_DIRECTORY:/Users/bingwu/Developer/research-orchestratorPRIMARY_HYPOTHESIS:For the fixed source-faithful p=5,r=1,w=512 RMFE construction, after replacing the R23 serialization-only grouped-S2C preflight assertion with coefficient/operator equality, one fixed-ring HElib recryption core correctly carries both the canonical and mandatory noncanonical RMFE witnesses through the complete candidate middle and leaves five positive-capacity mod-625 coordinates whose native scalar extractDigitsThin calls recover all ten original F5 components exactly.THIS IS A NEW SCIENTIFIC TASK.It is NOT a rerun, resume, modification, or retry of:BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01The R23 directory, source, ZIP, logs, and evidence are immutable inputs/provenance only.PINNED PARAMETERS:p = 5r = 1m = 32768w = 512k = 5eta = 125normal_basis = falseHElib source:homenc/HElib@acdb264e1a991eaee35fd8b3c31bebe9528c49a1e = 5ePrime = 2q = 3126post-core plaintext modulus = 6251024^-1 mod625 = 224FORBIDDEN LINEAGE:subring_btsHElib 3e337a6r = 4modulus 78125normalization 26474MANDATORY PARENT PROVENANCE:Verify read-only:R23 ZIP:BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-NATIVE-20261029-R23-01.zipexpected bytes:103976expected SHA-256:c9c563be6a9e3e2a646822e55813d5e5048c229ed57116988bd40595dd7592f0expected internal SHA256SUMS:37/37Correct R23 preflight source hash:e3186b917933655f2704335f9413a72d353068bf61dd4e82b01a72845dc2caa9Do NOT use the stale transcription:e3186b917533655f2704335f9413a72d353068bf61dd4e82b01a72845dc2caa9R23_FORENSIC_AUDIT_RESULT:PASS_CANONICALIZATION_ONLY_BUGR23_FORENSIC_AUDIT_ZIP:work/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01/BOOT-RMFE-P5W512-SOURCE-R1-R8-R23-PREFLIGHT-FORENSIC-AUDIT-20261029-01.zipexpected forensic ZIP SHA-256:633716565b9ffd22f171295f6b341afac02139bc97bb5b48a4ce46650c93fcb2PRECHECK FIX:Do NOT require byte/hash equality between distinct JSON serializations.For grouped S2C:normalize both representations to the ordered tuple[P0,P1,Q0,Q1];compare all 128 centered mod-625 coefficients exactly;verify grouped operator == direct operator on 16/16 basis images mod625;derive source-r=1 masks coefficientwise mod5;verify grouped operator == direct operator on 16/16 basis images mod5.A JSON hash may be recorded as provenance only.It must never be a correctness oracle unless both sides use an explicitly identical canonical serialization.PRECHECK PASS REQUIRES:deterministic RMFE source instance lineage valid;tau_i(phi(e_j)) = delta_ij: 25/25 mod625;tau_i(phi(e_j)) = delta_ij: 25/25 mod5;V625 W625 = W625 V625 = I16;V5 W5 = W5 V5 = I16;grouped S2C/direct 16/16 mod625;grouped S2C/direct 16/16 mod5;exact C2S mod625 map;factor 224 folded exactly once.SAFE_RECRYPT_INSTRUMENTATION:No private-layout introspection.No reinterpret_cast.No offset arithmetic.No #define private public.No PubKeyHack.Use:SecKey::genRecryptData() return valueas the authoritative recryptKeyID.Use public:PubKey/SecKey::writeToJSON()Read the actual serialized:recryptKeyIDrecryptEkeyReconstruct recryptEkey only through:Ctxt::readFromJSON()Require:JSON recryptKeyID == genRecryptData() returned ID.If this cannot be achieved exactly:STATUS = SOURCE_OR_INSTRUMENTATION_FAILUREstop before attributable candidate execution.KEYS:Generate exactly one deterministic key set.Generate only keys required by the fixed candidate and faithful thin baseline infrastructure.No alternate key strategy.No second key set.No retry.INPUT CASES:CASE_A — canonical control:slot0 components = [1,2,3,4,0]slot1 components = [4,1,3,0,2]CASE_B — mandatory noncanonical:in E512 = F5[alpha]/(alpha^512+2)slot0 = alpha^5slot1 = 1 + 2 alpha^5 + 3 alpha^6software expected decoder:slot0 = [0,1,2,3,4]slot1 = [1,1,2,4,2]ENCRYPTION:Real BGV encryption only.After encryption perform exactly:rotate(+1)rotate(-1)Record pre/post warmup:bitCapacitynoiseBoundptxtSpaceintFactorprimeSetFRONT END:Compute exactly five RMFE projections tau_i.For debug clones:decrypt and require 10/10 expected source components mod5.Merge the five projections into the consecutive R8 envelope.Verify merged plaintext against an independent software oracle.CANDIDATE MIDDLE:mod5 grouped S2C_R8-> canonicalize/cleanup-> mod-down exactly as pinned thinReCrypt-> reLinearize(recryptKeyID)-> rawModSwitch(q=3126)-> newMakeDivisible(25)-> exact prescribed division by 25-> reconstruct/use recryptEkey-> multByConstant(zzParts[1])-> addConstant(zzParts[0])-> RM10 coefficient retraction-> normalized grouped C2S_R8 mod625 with factor 224 exactly once-> eight-way unpack-> retain coordinates 0..4LINEAR ORACLES:At every custom linear stage, decrypt a debug clone and compare with independently generated software linear algebra:projections;envelope;S2C_R8 all 16 coefficients;RM10/retraction;normalized C2S_R8;unpack.RAW/CORE INVARIANTS:Record rawModSwitch noise_est, bound, ratio.Require ratio <= 1.Record every newMakeDivisible congruence.Require exact divisibility by 25.Record:zzPartsprescribed divided representativesintFactorprimeSetDECISIVE FUNCTIONAL ORACLE:For each of the five retained mod625 coordinate ciphertexts, clone and call the pinned HElib existing symbol:extractDigitsThin(clone, 3, 1, 2)A test-only forward declaration of the existing non-static symbol is permitted if necessary.Decrypt the scalar result.Require exact recovery of all ten original source components modulo 5 for each input case.Do NOT implement Aung correction maps in this gate.CAPACITY CHECKPOINTS:Record for each case:inputpost-warmupeach projectionmerged envelopepost-S2Cpre-rawpost-boot-key multiply/addpost-RM10post-C2Seach retained unpacked coordinatepost-scalar-DigitExtract oracleFor each checkpoint record:bitCapacitynoiseBoundptxtSpaceintFactorprimeSetPASS:all source/static prerequisites pass;safe recrypt instrumentation passes;both projection oracles pass;every custom linear oracle passes;rawModSwitch bound passes;newMakeDivisible/division invariants pass;scalar extractDigitsThin recovers 10/10 components for CASE_A;scalar extractDigitsThin recovers 10/10 components for CASE_B;all five retained pre-DigitExtract coordinates have positive bitCapacity;no source/interface/parameter change.DECISIVE_SCIENTIFIC_FAIL:If all projections, custom linear stages, rawModSwitch, divisibility, RM10, C2S and unpack oracles pass,BUT scalar extractDigitsThin fails,classify:FAIL_ONECORE_PADIC_SEMANTICSThis is a decisive failure of the current source-r=1 one-core mechanism at this fixed instantiation.CANONICAL_ONLY_RESULT:If CASE_A passes fully and CASE_B fails only at the scalar p-adic oracle after all preceding invariants pass:FAIL_GENERAL_NONCANONICAL_CLAIMRETAIN_CANONICAL_FAST_PATH_ONLYOTHER FAILURES:linear oracle mismatch:localize exact interface/stage; do not overgeneralize.rawModSwitch bound failure:FAIL_FIXED_SOURCE_R1_INSTANTIATION.nonpositive retained pre-DigitExtract capacity:FAIL_FIXED_PARAMETER_CAPACITY.source/instrumentation/key provisioning before attributable candidate execution:UNCLEAR / SOURCE_OR_INSTRUMENTATION_FAILURE.NO TIMING IN THIS TASK.NO SAME-MACHINE BASELINE.NO FULL AUNG CORRECTION.NO DFR.NO FULL BOOTSTRAP.NO PARAMETER SWEEP.NO SECOND SEED.NO RESCUE.NO OPTIMIZATION.NO RETRY AFTER PASS/FAIL/UNCLEAR.NO RESEARCH-MEMORY WRITE.NO GIT COMMIT.GIT:Record HEAD before/after.Preserve all pre-existing tracked modifications exactly.Audit-induced tracked diff must be empty.ARTIFACT:Produce a complete immutable ZIP with:source snapshot;source diff;build/run logs;stage oracles;raw/core invariants;capacities;context/key metadata;requested automorphisms;actual KS path/matrix application counts;result.json;SHA256SUMS;provenance.RETURN:STATUSSCIENTIFIC_CLASSIFICATIONCASE_A_RESULTCASE_B_RESULTFIRST_ATTRIBUTABLE_FAILURE_STAGEPROJECTION_ORACLESLINEAR_ORACLESRAW_MOD_SWITCH_RATIODIVISIBILITY_CHECKSSCALAR_DIGIT_EXTRACT_RECOVERYRETAINED_CAPACITY_ARRAYSMIN_RETAINED_PRE_DIGIT_CAPACITYREQUESTED_AUTOMORPHISMSACTUAL_KS_APPLICATIONSCONTEXT_SECURITY_METADATABUILD_EXITRUN_EXITR23_RERUN = NOTIMING = NOT_RUNGIT_BEFOREGIT_AFTERTRACKED_DIFFARTIFACT_PATHARTIFACT_BYTESARTIFACT_SHA256INTERNAL_SHA256SUMSSTOP immediately after PASS, FAIL, SOURCE_OR_INSTRUMENTATION_FAILURE, or UNCLEAR.","working_directory":"/Users/bingwu/Developer/research-orchestrator","execution_backend":"Codex CLI / codex exec","model":"gpt-5.6-sol","reasoning":"xhigh","pid_or_remote_execution_identity":"18315","start_time":"2026-10-29T15:32:42.908Z","status":"COMPLETED","commit":"d10a35387c01bb4572221db9ce39895262d70b9e","expected_artifacts":[],"artifacts":[{"path":"/Users/bingwu/Developer/research-orchestrator/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01.zip","sha256":"c0fa3a60f58306b621b492e14238e6998dbd895484bf4953c3170cd5ecccbb48","bytes":1144723},{"path":"/Users/bingwu/Developer/research-orchestrator/README.md","sha256":"09aaf69ac188b0488a63c976f96c281a95f8718ddc9e1bce3eb8934dd7fe57c8","bytes":9201},{"path":"/Users/bingwu/Developer/research-orchestrator/SPEC.md","sha256":"4f54b782f3285afeeff2bfee312d43e4888d4ec4df73fc6c036a71d5523e12c1","bytes":7113},{"path":"/Users/bingwu/Developer/research-orchestrator/config/default.yaml","sha256":"cc853eca87f1721510abf677b4a0d2f7bea22451c69fd04d7566a8cad3e8ff43","bytes":1945},{"path":"/Users/bingwu/Developer/research-orchestrator/config/overnight.yaml","sha256":"4aaeb8f0a867f0ebe8e7a49a51a2a95fcea5b5823383604fd9963e0a2fa25561","bytes":1944},{"path":"/Users/bingwu/Developer/research-orchestrator/config/test.yaml","sha256":"9d33d78c8130cf086d1fe42a6f33a11b608c0caf2953fa6bb48b892348662d0b","bytes":1272},{"path":"/Users/bingwu/Developer/research-orchestrator/src/config.ts","sha256":"b2183a942a6ecf2960d9faaa0e21ee8089f2818550339646e44743ac56c5daca","bytes":9673},{"path":"/Users/bingwu/Developer/research-orchestrator/src/dashboard.ts","sha256":"7b9b199bd222b09eedc4a29f96040426401abc69cadae2710398863f922b0d10","bytes":14749},{"path":"/Users/bingwu/Developer/research-orchestrator/src/handoff.ts","sha256":"4949012674a654cfcfe4e61c0bd9a93db982a25abf9847ade59047644b0ec859","bytes":20843},{"path":"/Users/bingwu/Developer/research-orchestrator/src/model-policy.ts","sha256":"f2e3e6da74703ef9e19fc2e073cff4b3330214de973149fa94f89170ed05fb0f","bytes":1632},{"path":"/Users/bingwu/Developer/research-orchestrator/src/orchestrator.ts","sha256":"339748f5a5648571918b6044bd1099a5e7eb535829199bccf3178754d2bc6eca","bytes":32922},{"path":"/Users/bingwu/Developer/research-orchestrator/src/research/ui-policy.ts","sha256":"7587c461e39a7e136ce953ef525a8f3ac3dfbe1f7aead9b5adb26d857b9370e9","bytes":2438},{"path":"/Users/bingwu/Developer/research-orchestrator/src/server.ts","sha256":"ec9a61866312aef06d1172a8b23d925691faabec00b298bd484b1717cf3951f4","bytes":23020},{"path":"/Users/bingwu/Developer/research-orchestrator/src/store.ts","sha256":"a165af11257edb1335eb674129ac364152573631cf916834debf8505575c62ca","bytes":26428},{"path":"/Users/bingwu/Developer/research-orchestrator/src/types.ts","sha256":"d3c6ac5ecbd3425cba1017828db70443b3c00c046b703976718aa032f146a7d4","bytes":3877},{"path":"/Users/bingwu/Developer/research-orchestrator/tests/config-store.test.ts","sha256":"f0ea65bf3c1c740db001b1f707d9ca793c7753a98f0e4369e56a788870d32e07","bytes":7686},{"path":"/Users/bingwu/Developer/research-orchestrator/tests/event-loop.test.ts","sha256":"b0a54c7e94592c00c0d3a26fb258561b3cf43b8270944d6df2f3cea38ee4eed7","bytes":17786},{"path":"/Users/bingwu/Developer/research-orchestrator/tests/handoff.test.ts","sha256":"ddc365419728d9a29a76f61da1ed0f1a584c23a805b494137bb208767b8ea79b","bytes":10982},{"path":"/Users/bingwu/Developer/research-orchestrator/tests/pi-dashboard.test.ts","sha256":"310ca4a7116216c116826f6c7c672ddcf973ef234512c46cd3b62d85ad307910","bytes":13635},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/README.md","sha256":"864368c26539c7d665c585b804d686da34ccd9b1a2836fd7662c9859d2f37aa6","bytes":1404},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/SHA256SUMS","sha256":"690cca0f91d064ac22403465942a0a83c6fdcfd22e15e5c1c3f1672376789b3a","bytes":6735},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/environment/CMakeCXXCompiler.cmake","sha256":"1e418d80f6754e94fcbde17635082a50777e1ab3886b389ac54327a8e62f4f5b","bytes":6176},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/environment/CMakeCache.txt","sha256":"7cc11ac1e4fea376d693e85bfd8abad0a81dba0e61ff6a04acbdaf3a097d5258","bytes":13808},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/environment/CMakeConfigureLog.yaml","sha256":"2de6eaf286831eb9d9f8d1487d2d4c7f0c3263563ed48404ce32b9b1a30e7678","bytes":23095},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/environment/build.ninja","sha256":"e5dba6fe15b0c604374b82c280677b64dd289df713bc129c6bd9d5e6f6dab6e7","bytes":12694},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/environment/helib-library-hashes.txt","sha256":"998e6ae2d51855191fa9b94a13a15d09d000109aad415631dd1ed7709b42aac4","bytes":770},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/environment/native-binary.file","sha256":"c38e9e8f8767860f3136cc1d3636345ab80b53115508bbb739debc44bb68f1e2","bytes":75},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/environment/native-binary.sha256","sha256":"22482e95f4f9d26637f66eb635048818d17d7237c5e18e3ecd56277e2225b78f","bytes":109},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/environment/native-linkage.txt","sha256":"193ab2c394be441bd28842764cdf4f66f8bae8192998846a8e2077f753c59a8f","bytes":389},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/environment/toolchain.txt","sha256":"203d11c0f5b7bc50c8293f922eadeca977bb90c27947db879ce1905ca2e1aa7e","bytes":668},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/evidence/automorphisms-ks.json","sha256":"addd0cd1bc83ad8e14d6aa16e075c0461d0133732de7367011aa50ba5f49e0c4","bytes":84453},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/evidence/build-run.json","sha256":"e65c11e5dc4f080bfaf7f025835fd40acd20800dac09c0a66829f06dab987eb4","bytes":213},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/evidence/capacities.json","sha256":"206ab02adfe2f5e2b69d467451c8155225bd87127f8c71e95b3e899a298fca03","bytes":671},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/evidence/context-key-metadata.json","sha256":"bd168afb06a5094e375c2458bf6506a259f7a209e7fa752e8dbf54df30b4ebfb","bytes":1652},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/evidence/forbidden-pattern-scan.exit-code","sha256":"4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865","bytes":2},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/evidence/forbidden-pattern-scan.log","sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","bytes":0},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/evidence/native-evidence.json","sha256":"b41cc572636639bc273f982498cd056bc07ca39790517a3e627b1a876e8b061a","bytes":5961207},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/evidence/public-interface-lines.log","sha256":"fa6c1f04f1a11f953012f4b0f4e6c09f194460ef216563d1701ecf905016f6c0","bytes":1127},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/evidence/raw-core-summary.json","sha256":"51e6af5958571e6cfca0df600cf71105a33c364632b2196103905b6ac74cd9ad","bytes":2174},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/evidence/result.json","sha256":"d279a7da3cbc6009c93b9f3170c0cd8e11686dbdcc6c665f975554faffc4d110","bytes":875},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/evidence/scalar-digit-extract.json","sha256":"4d58a445499fcb475c5af5f262a037843e3effb78d0a7de88d7204ad547ce363","bytes":1141},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/evidence/source-interface-audit.json","sha256":"d9a6449360f3dab3ec2293d0f588aea8d6e2657b71980b0343405fb6cb53cd51","bytes":474},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/evidence/stage-oracles-capacities.json","sha256":"279d357454b81d5c57801feea48020764ac77fc5ca26d2f5c7cb4649d2f49aae","bytes":49169},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/logs/build-clean.exit-code","sha256":"9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa","bytes":2},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/logs/build-clean.log","sha256":"c8268da576875f989033ad8e6410e0bbd9800527df07fdb19772495e07d5828f","bytes":55},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/logs/build.exit-code","sha256":"9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa","bytes":2},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/logs/build.log","sha256":"674384d74f0302f42c03b0dd1ccf7496abeb43c112a7a2fc5f3557d58d40e657","bytes":744},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/logs/configure.exit-code","sha256":"9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa","bytes":2},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/logs/configure.log","sha256":"bbde880fb4beb9311664d7c82c84b1515e3cccbc825669057566abdb69223257","bytes":222},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/logs/native-run.exit-code","sha256":"1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2","bytes":2},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/logs/native-run.log","sha256":"5017001d681dc9ba7c55f0544f1631d4418f0b5492bc7467965f50314e9f6c44","bytes":18133},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/logs/progress.jsonl","sha256":"103e69a9ae2cd4ea9598a1abd00f4fc0882030e1edfab76a5eb1b7deb05bd1ca","bytes":6244},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/logs/static-preflight.exit-code","sha256":"9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa","bytes":2},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/logs/static-preflight.log","sha256":"0e508a2d4bdabfcb0f415485bf849b8b34709eacf41b4955aaa10d475dd5b6bc","bytes":1736},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/manifest.json","sha256":"2abef5b4cd622cef902c423d7e280b4e0d127bee488202fce603cd5e1e645129","bytes":485},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/preflight/preflight.json","sha256":"8aa266252bb4fbfce369a52e293731049db650d4ddd2dfac530ac4bb4e98a0e8","bytes":2713},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/preflight/runtime-config.json","sha256":"e3b96ba398cc1cb5efe27627c18639f157f2a0a7c443f6f55babdc2d0d329443","bytes":1445161},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/provenance/archive-inputs.json","sha256":"9554c783c97d6659d684a4d4473850a18e3482f783c34b38f119da42f2f971fc","bytes":1616},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/provenance/execution-lock.json","sha256":"388bc341ee820027e9f659f727a311b06c8bb93d9e5668ea946f9aca72d9f359","bytes":204},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/provenance/forensic-audit/verification.json","sha256":"22c1d59f0b07a20de52593285962edfc2876dea8a8c027435d9af4004581cfe3","bytes":395},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/provenance/git-head-after.txt","sha256":"48480af4b64d7445731e2557f25a6b7bb1d27799cef6e33e021a99f413afb64d","bytes":41},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/provenance/git-head-before.txt","sha256":"9fd8443264c18eb080f368efef4f227e82cdfc6821118296207c4b4c4b1f59ed","bytes":41},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/provenance/git-status-after.txt","sha256":"544fbe5addad7a02d71e40e47e6a60933e34c7030424272e1b2ee536209250cb","bytes":748},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/provenance/git-status-before.txt","sha256":"de04e1757f40ffbd412cc84cec156d6f06b87046dc39e6f104b08d1ede157b4c","bytes":678},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/provenance/git-transition.json","sha256":"3fc5048d9a2a17bdf6dc777137c3438648b1bf9755edc9d15bae736763c66886","bytes":217},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/provenance/parent-r23/verification.json","sha256":"7a4d4c7ccf4fe2442593c4f20934205a4c70acb66d6346ce6011254f01f70868","bytes":409},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/provenance/task-scope.txt","sha256":"03c91c0f959c255c95f357ee8669fbb811467def8d0f7125973d8fc4b9f29573","bytes":540},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/provenance/tracked-diff-after.exit-code","sha256":"9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa","bytes":2},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/provenance/tracked-diff-after.patch","sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","bytes":0},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/provenance/tracked-diff-before.patch","sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","bytes":0},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/result.json","sha256":"d279a7da3cbc6009c93b9f3170c0cd8e11686dbdcc6c665f975554faffc4d110","bytes":875},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/source/CMakeLists.txt","sha256":"aaab833ddacd618228bec6c4906e8cd23de59fd47c736b2d442e0c568a93f4d2","bytes":485},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/source/canary-new-file.diff","sha256":"933774e9d3e0115548bd1d23d56cd766f4d3ee4a4ef2b82cf748843baac8d10f","bytes":67452},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/source/canary.cpp","sha256":"0f27d3ed7375fa7b9402cf3c0fd8ae7c4da242a2c552447edb9a2b2569beed95","bytes":65468},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/source/cmake-new-file.diff","sha256":"8498e1027021384157c49a200433e90498c68553d737221d17ccad764d7fdf7e","bytes":660},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/source/pinned-helib-commit.txt","sha256":"c3b5386a458eb3eff0418799c2d56d368991dae0314425b7cb3962f92a382d8a","bytes":54},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/source/pinned-helib.diff","sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","bytes":0},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/source/pinned/HElib/include/helib/Ctxt.h","sha256":"77332aae402ab63a39b84af51ea4bb92b5f8c3a57ad593d94b876ed0cd4dee22","bytes":52062},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/source/pinned/HElib/include/helib/keys.h","sha256":"a01eaba859a4dcdeae63bdd36053def1ed2340d2fb96cbe84e17ad95a090159b","bytes":17486},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/source/pinned/HElib/include/helib/recryption.h","sha256":"c2b979721b95c3177d96fd859f4351b31f3d54cbd1b3630e88cfdb1db6266241","bytes":3560},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/source/pinned/HElib/src/Ctxt.cpp","sha256":"d49a20fe9a42d7cdb52fe7661c68185d41058231ede1a6438717f4ee9177c7f2","bytes":96268},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/source/pinned/HElib/src/keys.cpp","sha256":"42ca27a5e05c74509f43a99077226eb3ddc56db8dff9802b059c75da9b76fea4","bytes":58908},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/source/pinned/HElib/src/recryption.cpp","sha256":"7d94a1bb9bf0fcaa87ec4ebc97cd162e23fc7f4223f5e3f920862afa22ecc490","bytes":39818},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/source/preflight.mjs","sha256":"99ca4ffb3a54f6d7ade662405751efa8acd5b53f76894e89857de5e47fe1176d","bytes":19635},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/source/r18-verify.mjs","sha256":"b664f640183fc97468771342fe46fda56d6e0bbeef963a653bd667e16b4629fe","bytes":34089},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/source/r23-to-r24-preflight.diff","sha256":"ef9d40cedf086d394404ee80e2afd7d6ebf1542a9d714368f51a2080bbfcd81e","bytes":12987},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/source/source-diff-index.json","sha256":"9dc4d58b25a98cf1ae24c9177c0df29a51671b561a492de82e9cfaf30e5a1df9","bytes":294},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/source/source-snapshot.sha256","sha256":"b980953ee194aab5c6012262f4a860b744d0ef4ac3a27d62ec08d11beac227b5","bytes":1691},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/artifact/verification/final-consistency.json","sha256":"f71bce5c0bef989d60d51a0fc41d6f94c1e2341e7c153501e325725c07c84f40","bytes":573},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/build/.ninja_deps","sha256":"d3b7a68b16ea0d2bf1c962b00807bf7a3d66772906a48ecc606f800a8169e4cc","bytes":115868},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/build/.ninja_log","sha256":"59039e2ebbe44c4d6cb71dc403b736a1cc256d4c95ba51f98bf8b0adbac36355","bytes":448},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/build/CMakeCache.txt","sha256":"7cc11ac1e4fea376d693e85bfd8abad0a81dba0e61ff6a04acbdaf3a097d5258","bytes":13808},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/build/CMakeFiles/4.0.1/CMakeCXXCompiler.cmake","sha256":"1e418d80f6754e94fcbde17635082a50777e1ab3886b389ac54327a8e62f4f5b","bytes":6176},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/build/CMakeFiles/4.0.1/CMakeDetermineCompilerABI_CXX.bin","sha256":"94ddc0abce7c3bae773a27429465e285739c213f5e689b1c230bea66d2dbb2e0","bytes":16984},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/build/CMakeFiles/4.0.1/CMakeSystem.cmake","sha256":"246638c71f2ac0a7a05e1b7dff0d43f574f3251307dad42dc2d1fcf7504a1202","bytes":360},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/build/CMakeFiles/4.0.1/CompilerIdCXX/CMakeCXXCompilerId.cpp","sha256":"21a3758926b3e82b820380f967c8e8fb87e21001b28cb4e7a9d47ff8f8435b17","bytes":28585},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/build/CMakeFiles/4.0.1/CompilerIdCXX/a.out","sha256":"dcab3118215cec4b5f6345ff4dddeb9304da3da74fb5e8f455acfb64020d11d5","bytes":33736},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/build/CMakeFiles/CMakeConfigureLog.yaml","sha256":"2de6eaf286831eb9d9f8d1487d2d4c7f0c3263563ed48404ce32b9b1a30e7678","bytes":23095},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/build/CMakeFiles/InstallScripts.json","sha256":"0e4bef6d5089860534d865f93a085c2e59ea5334260ea3ce44a236b9dd03a111","bytes":208},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/build/CMakeFiles/TargetDirectories.txt","sha256":"19aeab265642ee74fb06cb19919b00f55950ec62c7c69668d957b0aba3118fb8","bytes":503},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/build/CMakeFiles/cmake.check_cache","sha256":"a26189e394421da57f45706a07713c5720acd200a41711b0c0c590c3c63371c4","bytes":85},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/build/CMakeFiles/rmfe_p5w512_source_r1_onecore_canary.dir/canary.cpp.o","sha256":"68182502242462491e1bee83ef9e23cf5e360bfe9a34373ca8ebf6a4e1af828d","bytes":164296},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/build/CMakeFiles/rules.ninja","sha256":"0108e33a06b3b2deb01af59f499477ebcf81241b2301242e38f7eac2ae161ab1","bytes":2324},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/build/build.ninja","sha256":"e5dba6fe15b0c604374b82c280677b64dd289df713bc129c6bd9d5e6f6dab6e7","bytes":12694},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/build/cmake_install.cmake","sha256":"321c225572611844c756990bda3990eec81d348c6d1982dd617f76437615b707","bytes":2257},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/build/rmfe_p5w512_source_r1_onecore_canary","sha256":"2fffe8ea80a9ff48fbb1bc2660bb25198804fb93ae5c11d835dba023e3fe8def","bytes":2194056},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/helib.log","sha256":"aec03cb5164f0b718c1a958469edb537cf85f457b7b073035850aae130225ff7","bytes":236},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/internal-checksum-verification.log","sha256":"3a08870fe6baad6cf8eb86c01773704d703b1be833b2a6527a280a8c676cddf8","bytes":2457},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/preflight/preflight.json","sha256":"8aa266252bb4fbfce369a52e293731049db650d4ddd2dfac530ac4bb4e98a0e8","bytes":2713},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/preflight/runtime-config.json","sha256":"e3b96ba398cc1cb5efe27627c18639f157f2a0a7c443f6f55babdc2d0d329443","bytes":1445161},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/source/CMakeLists.txt","sha256":"aaab833ddacd618228bec6c4906e8cd23de59fd47c736b2d442e0c568a93f4d2","bytes":485},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/source/canary.cpp","sha256":"0f27d3ed7375fa7b9402cf3c0fd8ae7c4da242a2c552447edb9a2b2569beed95","bytes":65468},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/source/preflight.mjs","sha256":"99ca4ffb3a54f6d7ade662405751efa8acd5b53f76894e89857de5e47fe1176d","bytes":19635},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/source/r18-verify.mjs","sha256":"b664f640183fc97468771342fe46fda56d6e0bbeef963a653bd667e16b4629fe","bytes":34089},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-P5W512-SOURCE-R1-R8-ONECORE-CORRECTNESS-CAPACITY-20261029-R24-01/zip-test.log","sha256":"17e49a82375ad79da938b242edd9dff10815ea388861d3edbaace3bdb6f71631","bytes":4947}],"evidence_status":"AVAILABLE","audit_status":"AUDITED","result_delivered":true,"do_not_rerun":true,"result":"Decisive scientific failure: all precursor invariants passed, but native scalar digit extraction failed for both witnesses.\n\n- `STATUS=FAIL`\n- `SCIENTIFIC_CLASSIFICATION=FAIL_ONECORE_PADIC_SEMANTICS`\n- `CASE_A_RESULT=FAIL_SCALAR_DIGIT_EXTRACT`\n- `CASE_B_RESULT=FAIL_SCALAR_DIGIT_EXTRACT`\n- `FIRST_ATTRIBUTABLE_FAILURE_STAGE=CASE_A/scalar_DigitExtract_oracle`\n- `PROJECTION_ORACLES=CASE_A 10/10; CASE_B 10/10`\n- `LINEAR_ORACLES=CASE_A PASS; CASE_B PASS`\n- `RAW_MOD_SWITCH_RATIO=[1.6818149196868187e-46, 1.684772776700593e-46]`\n- `DIVISIBILITY_CHECKS=PASS` — two parts per case, 16,384 coefficients per part, zero congruence mismatches and zero divisibility failures\n- `SCALAR_DIGIT_EXTRACT_RECOVERY=CASE_A 3/10; CASE_B 1/10`\n  - CASE_A actual: `[[2,2,2,0,0],[1,3,3,4,1]]`\n  - CASE_B actual: `[[4,0,0,2,4],[3,0,3,3,4]]`\n- `RETAINED_CAPACITY_ARRAYS=CASE_A [341,341,341,341,341]; CASE_B [341,341,341,341,341]`\n- `MIN_RETAINED_PRE_DIGIT_CAPACITY=341`\n- `REQUESTED_AUTOMORPHISMS=[5,25,33,65,125,129,257,513"}
+- {"task_id":"BOOT-RMFE-POSTRAW-BASELINE-TIMER-DECOMP-20261031-R4-01","origin_session_id":"35190a39-0d31-45aa-b03e-33176a25fe96","origin_session":"密码学 16.0","origin_turn":5,"original_hypothesis":"TASK_ID: BOOT-RMFE-POSTRAW-BASELINE-TIMER-DECOMP-20261031-R4-01\nResearch Turn 5/25 — R8 direct multi-output recovery gate\n\n本轮检验的是：能否把\n\nR\n8\n \nC\n2\nS\n→\nu\nn\np\na\nc\nk\n→\nC\nt\nx\nt\ns\nT\no\nS\nl\no\nt\ns\nR8 C2S→unpack→CtxtsToSlots\n\n直接融合成一个更便宜的 \n𝑅\n8\n→\nR\nM\nF\nE\nR\n8\n\t​\n\n→RMFE 线性恢复图。\n\n关键发现：真实接口是 4-output，不是 1-output\n\n这里 \n625\n=\n5\n4\n625=5\n4\n，所以 correction-style digit extraction 需要：\n\n𝐿\n0\n(\n𝑧\n)\n=\n𝑧\n,\n𝐿\n1\n(\n𝑧\n)\n,\n𝐿\n2\n(\n𝑧\n)\n,\n𝐿\n3\n(\n𝑧\n)\n.\nL\n0\n\t​\n\n(z)=z,L\n1\n\t​\n\n(z),L\n2\n\t​\n\n(z),L\n3\n\t​\n\n(z).\nCopy for Word\n\nAung 的 CtxtsToSlots 正是从五个 scalar branches 通过常数乘法 + 加法同时生成主 ciphertext 和这些 correction images。\n\n因此之前可能想到的“一个 fused map 只需 6 次 automorphism”是不完整的：真实 candidate 必须生成 4 个不同线性输出。\n\nDirect map 存在，但 generic cost 不占优\n\n每个复合映射\n\n𝐷\n𝑡\n:\n𝑅\n8\n→\n𝑅\n,\n𝑡\n=\n0\n,\n1\n,\n2\n,\n3\nD\nt\n\t​\n\n:R\n8\n\t​\n\n→R,t=0,1,2,3\n\n都是 \n𝑆\n=\n𝑍\n/\n625\n𝑍\nS=Z/625Z-linear。利用有限 ring-Galois extension 的标准 automorphism-multiplier 表示，每个 \n𝐷\n𝑡\nD\nt\n\t​\n\n 都可以写成\n\n𝐷\n𝑡\n(\n𝑥\n)\n=\n∑\nℎ\n∈\n(\n𝑍\n/\n32\n𝑍\n)\n∗\n𝑎\n𝑡\n,\nℎ\nℎ\n(\n𝑥\n)\n.\nD\nt\n\t​\n\n(x)=\nh∈(Z/32Z)\n∗\n∑\n\t​\n\na\nt,h\n\t​\n\nh(x).\n\n也就是说，algebraic existence PASS。相关 Galois crossed-product 表示确实给出 automorphism-multiplier 与基环线性 endomorphism 的同构。\nCiteSeerX\n\n但四输出 generic schedule 的成本是关键：\n\n(\n𝑍\n/\n32\n𝑍\n)\n∗\n=\n⟨\n5\n⟩\n×\n⟨\n31\n⟩\n,\n(Z/32Z)\n∗\n=⟨5⟩×⟨31⟩,\n\n可以共享 3 个 baby-step automorphisms；随后每个输出需要\n\n2 个 giant-step automorphisms；\n1 个 \n31\n31-coset automorphism。\n\n因此四输出共：\n\n3\n+\n4\n(\n2\n+\n1\n)\n=\n15\n3+4(2+1)=15\n\t​\n\n\n次 automorphism/key-switch。\n\n而当前 conservative recovery 是：\n\n6\n  \n(\nR\n8\n \nC\n2\nS\n)\n+\n7\n  \n(\nE\n8\n \nu\nn\np\na\nc\nk\n)\n=\n13\n.\n6(R8 C2S)+7(E8 unpack)=\n13\n\t​\n\n.\n\nCtxtsToSlots 随后只需要 constant multiplications/additions。\n\n所以：\n\n15\n>\n13\n.\n15>13\n\t​\n\n.\nVerdict\n\nFAIL_GENERIC_DIRECT_MULTIOUTPUT_RECOVERY_AS_COST_IMPROVEMENT\n\n具体 disposition：\n\nDirect \n𝑅\n8\n→\nR\n8\n\t​\n\n→ RMFE map existence：PASS_STATIC\nGeneric four-output fused recovery：不优于现有 recovery\n当前 post-RM10 automorphisms：\n13\n13\ngeneric fused four-output：\n15\n15\n加上 RM10：当前 \n23\n23，generic fused \n25\n25\n\n因此不能因为“省掉论文中的 0.078 s CtxtsToSlots”就放宽上一轮的 timing threshold；那样会漏算四个 correction outputs 的成本。\n\n所以 Turn 4 的 hard-kill threshold\n\n𝜌\nmax\n⁡\n=\n0.5984704142\nρ\nmax\n\t​\n\n=0.5984704142\n\t​\n\n\n保持不变，既有任务\n\nBOOT-RMFE-POSTRAW-BASELINE-TIMER-DECOMP-20261031-R4-01\n\n仍然有效，不需要因本轮重跑或修改。\n\n当前 original post-raw fusion 继续保留，等待 baseline timing decomposition；generic direct multi-output fusion 则 PARK / KILL as default optimization。只有如果以后发现 \n𝐿\n1\n,\n𝐿\n2\n,\n𝐿\n3\nL\n1\n\t​\n\n,L\n2\n\t​\n\n,L\n3\n\t​\n\n 具有额外特殊代数结构，才值得重新打开。\n\n详细 finding 已持久化到：\n\nfindings/boot-RMFE-r8-direct-multioutput-recovery-gate-2026-10-31.md\n\ncommit：\n\nd59a79d9e0ac3a23523a3724f5e71a16bb50660f\n\nblob SHA：\n\n00b71ed5503fcc317d49b1a20ba6f6cb223430ff。","working_directory":"/Users/bingwu/Developer/research-orchestrator","execution_backend":"Codex CLI / codex exec","model":"gpt-5.6-sol","reasoning":"medium","pid_or_remote_execution_identity":"691","start_time":"2026-10-31T11:39:20.875Z","status":"RUNNING","commit":null,"expected_artifacts":[],"artifacts":[],"evidence_status":"PENDING","audit_status":"PENDING","result_delivered":false,"do_not_rerun":true,"result":""}
 
 ## PI decisions
-- Infrastructure recovery, not a separate Research Turn: the preceding assistant response was truncated to a title by an expired GitHub Notes connector and has been durably marked uncounted. Do not call GitHub Notes or any external connector in this recovery. Complete the already-started independent R24 audit now from the evidence already present in this conversation. The required scientific disposition is to verify whether the fixed source-r=1 one-core mechanism is decisively FAIL_ONECORE_PADIC_SEMANTICS: projection/custom-linear/raw-switch/divisibility gates passed, retained pre-digit capacities were positive (minimum 341), but scalar extractDigitsThin recovered only CASE_A 3/10 and CASE_B 1/10. Preserve exact origin provenance, distinguish this from a rerun, state that no new Codex/native execution was launched, and end with exactly one valid final ORCHESTRATOR_CONTROL block. This complete response is Research Turn 1/25; autonomous BOOT research remains enabled.
-- Infrastructure recovery is complete. Resume the same logical session with Research Turn 6/25. Continue one highest-information BOOT research unit from the durable Turn 5 state. This message does not change the scientific state and must not restart completed experiments.
-- Recover the transient ChatGPT UI send timeout without changing scientific state. Continue the same logical session with Research Turn 11/25 from the durably completed Turn 10. Do not repeat completed work or restart experiments.
-- Same logical Turn 11 retry after transient UI model-selector recovery. The preceding incomplete Turn 11 attempt is INVALID and uncounted. Produce one complete substantive Turn 11/25 from the durable Turn 10 state with exactly one final ORCHESTRATOR_CONTROL block. Do not repeat completed experiments.
+- None recorded
 <!-- RESEARCH_ORCHESTRATOR_STATE_END -->

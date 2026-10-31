@@ -265,7 +265,7 @@ That is at most
 5\times17=85
 \]
 
-carry states, i.e. fewer than 7 bits of auxiliary state per coefficient under this conservative bound.
+carry states, i.e. at most 7 bits of auxiliary state per coefficient under this conservative bound.
 
 ## Main information-theoretic consequence
 
@@ -406,7 +406,7 @@ CURRENT_K5_KAPPA_Q:
   subset of [-8,8]
 
 AUXILIARY_STATE_SIZE:
-  < 7 bits/coefficient under conservative bounds
+  <= 7 bits/coefficient under conservative bounds
 
 FULL_BRANCH_RAW_OUTPUT_MATERIALIZATION:
   NOT INFORMATION-THEORETICALLY NECESSARY

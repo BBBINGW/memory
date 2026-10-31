@@ -2,11 +2,13 @@
 
 Date: 2026-11-01
 Session: 密码学 17.0
-Logical Research Turn: 4/25
+Logical Research Turn: 3/25 — Part 2 continuation (does not increment turn)
 TRACK_ID: BOOT
 ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
 
 ## Scope
+
+Turn-accounting correction: this finding is Part 2 of the same logical Research Turn 3/25 as the immediately preceding RM10 physical-KS strategy gate. It does not consume a new research turn.
 
 Read-before-write authority:
 `BBBINGW/memory main@df3dd029825d2193132db15301f062cfe04743a4`.
@@ -92,7 +94,8 @@ bytes of row data, and all matrices contain exactly D such DCRTs.
 More explicitly, using HElib's own binary-layout accounting, one DCRT has fixed context-dependent size
 
 [
-S_{m DCRT}
+S_{
+m DCRT}
 =
 8 + L(16+8phi)
 ]
@@ -113,7 +116,9 @@ Hence each same-context Frobenius matrix has
 
 [
 oxed{
-S_{m KS}=80+D S_{m DCRT}+s
+S_{
+m KS}=80+D S_{
+m DCRT}+s
 }
 ]
 
@@ -138,18 +143,21 @@ phi(m)=16384,qquad operatorname{ord}_m(5)=8192,
 so the SIMD quotient
 
 [
-Z_m^*/langle5angle
+Z_m^*/langle5
+angle
 ]
 
 has order 2.
 
-HElib `findGenerators` chooses ordinary dimensions in this quotient. Therefore the sole nontrivial ordinary-dimension generator lies outside the Frobenius subgroup (langle5angle), and its order-2 direct 1D matrix cannot equal any Frobenius target (5^e).
+HElib `findGenerators` chooses ordinary dimensions in this quotient. Therefore the sole nontrivial ordinary-dimension generator lies outside the Frobenius subgroup (langle5
+angle), and its order-2 direct 1D matrix cannot equal any Frobenius target (5^e).
 
 Other stock matrices also cannot deduplicate the ten targets:
 - power/relinearization matrices have `fromSPower>1`;
 - recryption-key switching has different source/target key IDs.
 
-The ten RM10 targets from Turn 3 all lie in (langle5angle) and none belongs to the BSGS direct baby/giant index set.
+The ten RM10 targets from Turn 3 all lie in (langle5
+angle) and none belongs to the BSGS direct baby/giant index set.
 
 Therefore, for the standard BSGS Frobenius configuration:
 
@@ -168,10 +176,12 @@ for 180 distinct direct Frobenius matrices.
 Because all 190 Frobenius matrices have identical stored DCRT geometry,
 
 [
-rac{Delta 	ext{Frobenius DCRT payload}}
+
+rac{Delta 	ext{Frobenius DCRT payload}}
      {	ext{baseline BSGS Frobenius DCRT payload}}
 =
-rac{10}{180}
+
+rac{10}{180}
 =
 oxed{5.555555ldots%}.
 ]
@@ -201,7 +211,8 @@ Thus one serializable matrix is at least 131177 bytes and at most the same fixed
 Using an adversarial comparison in which all 10 added seeds are maximum-length and all 180 baseline BSGS Frobenius seeds are minimum-length gives
 
 [
-rac{10(131208)}{180(131177)}
+
+rac{10(131208)}{180(131177)}
 =
 0.0555686845ldots
 ]

@@ -135,23 +135,19 @@ Conversely, a much smaller transform share could still pass if those non-transfo
 
 ## Historical HElib sanity bracket
 
-Halevi-Shoup's later HElib bootstrapping report gives single-thread thin-bootstrapping experiments where the reported linear-transform share of total recrypt latency varies substantially:
+Halevi-Shoup's HElib bootstrapping report contains single-thread thin-bootstrapping timing tables, but the currently accessible live-indexed PDF and the cached mirror used by the research connector expose different table values for the linear-transform rows.
+
+Therefore these historical transform-share numbers are **version-sensitive provenance** and must not be used quantitatively for the present gate.
+
+Across either edition they are also different parameters and report total recrypt rather than Aung's p=5 MultKey block.
+
+Conclusion:
 
 \[
-11/21\approx52.4\%,
-\quad
-10/18\approx55.6\%,
-\quad
-8/23\approx34.8\%,
-\quad
-15/45\approx33.3\%.
+\boxed{\text{historical HElib transform timings are sanity evidence only}}
 \]
 
-These are different parameters and report total recrypt, not Aung's MultKey block. They are therefore **not transferable measurements**.
-
-However, they show that a transform share near the critical 51.6% boundary is historically plausible, while substantially smaller shares are also plausible.
-
-Thus historical HElib data does not provide a decisive static kill or pass.
+and provide neither a static kill nor a static pass for the current candidate.
 
 ## Historical toPoly timer sanity check
 

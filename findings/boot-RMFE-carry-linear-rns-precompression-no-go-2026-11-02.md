@@ -242,6 +242,45 @@ For two ciphertext parts, the prior stock 10-stream requirement cannot become
 
 This is an algebraic stream-count theorem, not a wall-clock lower bound.
 
+
+### Global-vector strengthening
+
+The argument is not limited to using the same branch-mixing coefficients at
+every NTT frequency.
+
+For N coefficient positions, let (T) denote the full invertible linear
+RNS/NTT-to-centered-coefficient change of coordinates before the nonlinear
+representative/rounding step, and let
+
+[
+mathcal D = D_a^{	imes N}circ T^{	imes k}.
+]
+
+Because (T^{	imes k}) is invertible and the scalar defect has trivial
+translation stabilizer, the vector defect map (mathcal D) also has trivial
+translation stabilizer on the universal coefficient domain.
+
+Hence **any additive sketch of the complete k-branch linear state** through
+which the full exact defect vector factors must be injective. In particular, a
+frequency-dependent or coefficient-mixing linear sketch that stores only r
+full-sized streams over the same residue group still requires r>=k.
+
+This closes the obvious loophole of merely varying the linear sketch across NTT
+coordinates. It still does not exclude nonlinear processing before the sketch.
+
+### Scope caveat: universal coefficient-domain theorem
+
+This turn keeps the same universal-exact source-level premise used by the
+ordinary-linear closure: the replacement must be correct for every coefficient
+state in the rawModSwitch domain (G^{kN}).
+
+It is **not** yet a theorem that the exact distribution/support of ciphertext
+states reachable from one narrowly restricted Aung encryption harness equals
+all of (G^{kN}). A future proposal that explicitly changes the premise to a
+proved smaller reachable-state subset would need a separate support theorem;
+absence of such a theorem is not treated here as a novelty or correctness
+argument.
+
 ## Reconciliation with compact carry
 
 No contradiction exists with the earlier O(log k)-bit carry state.

@@ -1196,742 +1196,436 @@ TRACK_ID=EAI; ACTIVE_SUBLINE=EAI-SYNTH. **LATEST_COMPLETED=SYNTH-C10; NEXT=SYNTH
 
 TRACK_ID: BOOT
 ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
-LATEST_COMPLETED: BOOT — Research Turn 25/25
+LATEST_COMPLETED: Copy for Word
+Research Turn 25/25 — Session milestone consistency checkpoint
 
-主题：RMFE 融合时的 HElib 取整与 carry 交换律审计
+Verdict：`PASS_SESSION_MILESTONE_CONSISTENCY_CHECKPOINT`。
 
-Verdict：FAIL_NAIVE_ADDITIVE_PREPROCESSING
+我对 Turn 14–24 的全部 surviving claims、被 kill claims、参数、坐标布局、four-output correction、cost ledger、implementation contract、prior-art boundary 和 future-native decision matrix 做了 cross-turn consistency audit，并重新校验了当前 /mnt/data 中 21 个 Turn 14–24 artifacts 的 SHA256。没有发现新的 theorem-level contradiction。
 
-本轮通过 HElib 源码中的实际运算规则，构造了一个精确反例：即使 rawModSwitch 的输出能够直接相加，随后的 newMakeDivisible 与除法也不一定满足加法交换律。
+当前必须以以下最终版本为准：Turn 15 的初始 coordinate set 已被 Turn 16 的
 
-这说明，五分支共享 bootstrapping-key reconstruction 不能只证明线性代数等价，还必须证明整数取整及其 carry 被正确处理。
-
-1. 最小可证伪假设
-
-在 
-𝑝
+𝐽
 =
-5
-p=5、
-𝑞
-=
-5
-4
-+
-1
-=
-626
-q=5
-4
-+1=626、
-𝑒
-′
-=
-1
-e
-′
-=1 下，考虑预处理映射：
-
-𝐷
-(
-𝑧
-)
-=
-𝑧
-+
-𝑞
-𝑣
-(
-𝑧
-)
-5
-D(z)=
-5
-z+qv(z)
-	​
-
-
-其中 
-𝑣
-(
-𝑧
-)
-∈
 {
-−
-2
-,
-−
-1
-,
 0
 ,
-1
+1024
 ,
-2
+7168
+,
+2048
+,
+6144
 }
-v(z)∈{−2,−1,0,1,2} 满足：
-
-𝑧
-+
-𝑞
-𝑣
-(
-𝑧
-)
-≡
+=
+{
 0
+,
+±
+1024
+,
+±
+2048
+}
 (
 m
 o
 d
-5
+8192
 )
+J={0,1024,7168,2048,6144}={0,±1024,±2048}(mod8192)
+	​
+
+
+取代；Turn 18 的 
+𝐿
+0
+L
+0
+	​
+
+-only optimal labelling 已被 Turn 22 的四输出联合最优
+
+[
+2
+,
+0
+,
+3
+,
+1
+,
+4
+]
+[2,0,3,1,4]
+	​
+
+
+取代；Turn 21 的“
+𝑧
+→
+z→ Algorithm 4”简写也已经被 Turn 22 修正为必须先构造
+
+𝐿
+0
+,
+𝐿
+1
+,
+𝐿
+2
+,
+𝐿
+3
 .
-z+qv(z)≡0(mod5).
+L
+0
+	​
 
-这正对应 HElib recryption.cpp 中 newMakeDivisible 后除以 
-𝑝
-𝑒
-′
-p
-e
-′
- 的整数运算规则。
-GitHub
-
-假设 H25：若将多分支的整数输入先相加，再执行该映射，结果与逐分支执行后相加在模 5 下等价。
-
-反例：
-
-取 
-𝑧
-1
-=
-1
-,
-𝑧
-2
-=
-2
-z
+,L
 1
 	​
 
-=1,z
+,L
 2
 	​
 
-=2。
-
-𝐷
-(
-1
-)
-	
-=
-(
-1
-−
-626
-)
-/
-5
-=
-−
-125
-,
-
-
-𝐷
-(
-2
-)
-	
-=
-(
-2
-−
-1252
-)
-/
-5
-=
-−
-250
-,
-
-
-𝐷
-(
+,L
 3
-)
-	
-=
-(
-3
-+
-1252
-)
-/
-5
-=
-251.
-D(1)
-D(2)
-D(3)
 	​
 
-=(1−626)/5=−125,
-=(2−1252)/5=−250,
-=(3+1252)/5=251.
+	​
+
+.
+
+另外，candidate inverse 必须保持 pure power-basis / normal_basis=false 语义，不能重新使用 stock firstMap(normal_basis=true) 后把结果解释成 power-basis coordinates。
+
+旧 architecture 的状态没有任何变化：
+
+post-reconstruction aggregate-only delayed fusion remains KILLED
+.
+post-reconstruction aggregate-only delayed fusion remains KILLED.
 	​
 
 
-因此：
+原因已经闭合：真实 HElib pre-C2S state 可以是 full extension-valued dirty state，而
 
-𝐷
+𝐹
 (
-3
-)
-−
-𝐷
-(
-1
-)
-−
-𝐷
-(
-2
-)
-=
-626
-≡
-1
-(
-m
-o
-d
-5
-)
-D(3)−D(1)−D(2)=626≡1(mod5)
-	​
-
-
-该差异并未在模 5 下消失。
-
-2. 进一步核对实际 rawModSwitch
-
-为了避免只检查任意构造的整数输入，我又采用 HElib Ctxt.cpp 的 rawModSwitch 标量计算规则，选择一个与 
-𝑚
-=
-32768
-m=32768 同余要求兼容的示例模数 
-𝑄
-=
-65537
-Q=65537。
-
-在以下输入下：
-
-原始整数 
-𝑐
-c
-
-	
-
-rawModSwitch 输出
-
-	
-
-整数归一化 
-𝐷
-D
-
-
-
-
-27
-
-	
-
-1
-
-	
-
-−125
-
-
-
-
-29
-
-	
-
-2
-
-	
-
-−250
-
-
-
-
-56
-
-	
-
-3
-
-	
-
-251
-
-这里 
-56
-=
-27
-+
-29
-56=27+29，模数切换后的数值也保持 
-3
-=
-1
-+
-2
-3=1+2，但是归一化仍然产生 626 的偏差。HElib 的源代码明确包含上述模数缩放、平衡修正、newMakeDivisible 及整数除法步骤。
-GitHub
-+1
-
-这是一个 source-shaped 标量算术反例，不是在真实安全参数下运行的完整 BGV ciphertext 攻击或 native correctness failure。
-
-3. 五分支 carry 的精确界
-
-对五个未加权整数输入 
-𝑧
-1
+𝐶
+0
 ,
 …
 ,
-𝑧
-5
-z
-1
-	​
-
-,…,z
-5
-	​
-
-，令 
-𝑀
-=
-5
-𝑒
-′
-M=5
-e
-′
-，则有精确恒等式：
-
-𝐷
-(
-∑
-𝑖
-=
-1
-5
-𝑧
-𝑖
-)
-−
-∑
-𝑖
-=
-1
-5
-𝐷
-(
-𝑧
-𝑖
-)
-=
-𝑞
 𝐶
-D(
-i=1
-∑
-5
-	​
-
-z
-i
-	​
-
-)−
-i=1
-∑
-5
-	​
-
-D(z
-i
-	​
-
-)=qC
-
-其中
-
-𝐶
+4
+)
 =
-𝑣
-(
 ∑
 𝑖
-𝑧
+𝑌
 𝑖
-)
-−
-∑
-𝑖
-𝑣
-(
-𝑧
-𝑖
-)
-𝑀
-.
-C=
-M
-v(∑
-i
-	​
-
-z
-i
-	​
-
-)−∑
-i
-	​
-
-v(z
-i
-	​
-
-)
-	​
-
-.
-
-由于 
-𝑣
-v 使用平衡剩余表示，可以证明：
-
 𝐶
-∈
-{
-−
-2
-,
-−
-1
-,
+𝑖
+F(C
 0
-,
-1
-,
-2
-}
-C∈{−2,−1,0,1,2}
+	​
+
+,…,C
+4
+	​
+
+)=
+i
+∑
+	​
+
+Y
+i
+C
+i
 	​
 
 
-轻量 Python 验证遍历了 
-5
-5
-=
-3125
-5
-5
-=3125 个模 5 输入组合，五种 carry 值全部出现，并验证了恒等式。
+在该 domain 丢失 branch identity；不存在 aggregate-only recovery 能普遍恢复 stock branchwise scalar semantics。新 candidate 没有 reopen 这个路线，而是在 nonlinear middle 之前保存 branch identity。
 
-这个界仅针对未加权、同模数的标量五项求和。实际 RMFE 基变换、加权重组和密文元数据仍需单独审计。
-
-4. 决策与交接
-
-KILL： 无修正地交换 newMakeDivisible 与五分支求和。
-
-CONTINUE： 当前 carry-aware B158 候选。反例不能否定已经正确补偿 carry 的方案。
-
-后续审计重点： 在实际 HElib 参数和 powerful-basis 表示下验证 carry 修正符号、全部 slot 的语义等价、noise/capacity，以及 Turn 24 的性能门槛。
-
-完整研究记录（Markdown）
-
-可复现验证脚本（Python）
-
-本轮未触碰 Codex。两个文件已经生成并校验 SHA-256，但尚未提交到本地 Git 权威仓库。
-
-Research Turn 25/25 完成。 如果后台任务仍未返回，Turn 26 必须严格为 HANDOFF ONLY，不再开展新的实质研究。
+当前 surviving candidate 的 canonical path 固定为：
 
 纯文本
-<ORCHESTRATOR_CONTROL>
-action: CONTINUE
-milestone: false
-requires_pi: false
-independent_research_available: true
-</ORCHESTRATOR_CONTROL>
-Copy for Word
+Aung SlotsToCtxts
+-> five scalar branches
+-> sparse coordinate packing on J
+-> one rho-compensated shared forward transform
+-> one source-identical HElib recryption middle
+-> pure inverse (normal_basis=false semantics)
+-> 17-call target-pruned binary unpack
+-> five scalar Z_625 lifts
+-> four RMFE recombinations L0,L1,L2,L3
+-> Aung Algorithm 4
+-> restore original intFactor at the stock final point
+
+在标准 HElib recryption correctness/noise bound 条件下，这条链现在可以称为 statically closed：selected leaves 是真正的 
+𝑍
+625
+Z
+625
+	​
+
+ scalars，其 mod-5 residues 对应原五个 branches；higher 
+5
+5-adic digits 可以任意 dirty；四个 RMFE correction images 都严格由 scalar lifts 生成，所以进入 Algorithm 4 时重新落入正确的 
+im
+⁡
+𝜙
+imϕ domain。这里没有声称与 stock 五条 raw transcript 相等，也没有声称 native correctness 已验证。
+
+Transform-side 的最终 ledger 是：
+
+19
+ candidate vs 
+75
+ baseline
+19 candidate vs 75 baseline
+	​
+
+
+其中 candidate 是
+
+1
+ forward
++
+1
+ pure inverse
++
+17
+ pruned Frobenius
+.
+1 forward+1 pure inverse+17 pruned Frobenius.
+
+Recovery-side physical KS 是 
+18
+18 vs stock 
+70
+70，但每个 selected output 的 KS depth 都仍为 
+14
+14。这个 19 只能描述 transform-side automorphism/KS schedule，绝不能称为“整个 MultKey 只有 19 个操作”或直接拿来预测 latency。candidate 仍然需要 shared recryption middle、21 次 unpack add/sub、四套五路 RMFE recombinations 和完整 DigitExtract。
+
+Public-cost 状态也一致：Turn 17 的 fixed-Q local public factor 为
+
+507904
+,
+log
+⁡
+2
+=
+18.954196
+ bits
+,
+507904,log
+2
+	​
+
+=18.954196 bits,
+
+但它不是 final HElib capacity 的可直接相减预测。Sparse packing 的一次性 triangle tax 是
+
+log
+⁡
+2
+5
+=
+2.321928
+ bits
+.
+log
+2
+	​
+
+5=2.321928 bits.
+
+而 Turn 22 对最终 [2,0,3,1,4] labelling 的四输出 audit 中，candidate 相对 stock 的 recombination delta 分别为
+
+(
+−
+0.213245
+,
+−
+0.332235
+,
+−
+0.157599
+,
+−
+0.405765
+)
+ bits
+,
+(−0.213245,−0.332235,−0.157599,−0.405765) bits,
+
+因此补齐 
+𝐿
+0
+…
+𝐿
+3
+L
+0
+	​
+
+…L
+3
+	​
+
+ 没有产生新的 positive recombination blocker。
+
+Implementation contract 也已经闭合到一个很小的 source patch：evaluation 不需要 secret key，不增加新的 cryptographic primitive/security assumption；FULL key resource 下也不需要新的 evaluation-key type。唯一核心 HElib patch 是把 stock recryption preprocessing body 抽成一个 source-shared internal PubKey hook，继续保持 recryptEkey / recryptKeyID private、`newMakeDivisible` file-local。纯 external public-API implementation 目前做不到，但这是 encapsulation 问题，不是密码学 obstruction。
+
+Novelty boundary 在 Turn 24 后必须严格收窄。Geelen–Vercauteren 2024/1587 已经直接覆盖：
+
+纯文本
+pack multiple ciphertexts
+-> shared bootstrapping work
+-> unpack before digit removal/extraction
+
+所以 batch packing、shared middle、unpack-before-digit-extraction 都不能作为
 NEXT_ITERATION: Resume from the saved handoff prompt and choose the next cheapest decisive test.
 CURRENT_STATUS: SESSION_RESEARCH_COMPLETE
-SESSION_ID: cfc97cbe-702f-46c1-9e4d-12253ca057af
+SESSION_ID: 9f6a2d90-3b67-490f-b928-18e9ab49f700
 RESEARCH_TURN: 25 / 25
 
 ## Verdicts
 - Turn 1: PASS
 - Turn 2: FAIL
-- Turn 3: PASS
-- Turn 5: FAIL
-- Turn 6: FAIL
-- Turn 7: FAIL
+- Turn 3: FAIL
+- Turn 6: PASS
+- Turn 7: PASS
+- Turn 8: PASS
+- Turn 9: PASS
 - Turn 10: FAIL
 - Turn 11: FAIL
-- Turn 12: PASS
+- Turn 12: FAIL
 - Turn 13: FAIL
-- Turn 14: FAIL
-- Turn 15: UNCLEAR
+- Turn 14: PASS
+- Turn 15: PASS
 - Turn 16: PASS
 - Turn 17: PASS
 - Turn 18: PASS
 - Turn 19: PASS
 - Turn 20: PASS
-- Turn 21: FAIL
+- Turn 21: PASS
 - Turn 22: FAIL
-- Turn 23: FAIL
+- Turn 24: FAIL
 
 ## Main hypothesis
 See latest completed research answer and handoff prompt.
 
 ## Key findings
-- BOOT — Research Turn 25/25
+- Copy for Word
+Research Turn 25/25 — Session milestone consistency checkpoint
 
-主题：RMFE 融合时的 HElib 取整与 carry 交换律审计
+Verdict：`PASS_SESSION_MILESTONE_CONSISTENCY_CHECKPOINT`。
 
-Verdict：FAIL_NAIVE_ADDITIVE_PREPROCESSING
+我对 Turn 14–24 的全部 surviving claims、被 kill claims、参数、坐标布局、four-output correction、cost ledger、implementation contract、prior-art boundary 和 future-native decision matrix 做了 cross-turn consistency audit，并重新校验了当前 /mnt/data 中 21 个 Turn 14–24 artifacts 的 SHA256。没有发现新的 theorem-level contradiction。
 
-本轮通过 HElib 源码中的实际运算规则，构造了一个精确反例：即使 rawModSwitch 的输出能够直接相加，随后的 newMakeDivisible 与除法也不一定满足加法交换律。
+当前必须以以下最终版本为准：Turn 15 的初始 coordinate set 已被 Turn 16 的
 
-这说明，五分支共享 bootstrapping-key reconstruction 不能只证明线性代数等价，还必须证明整数取整及其 carry 被正确处理。
-
-1. 最小可证伪假设
-
-在 
-𝑝
+𝐽
 =
-5
-p=5、
-𝑞
-=
-5
-4
-+
-1
-=
-626
-q=5
-4
-+1=626、
-𝑒
-′
-=
-1
-e
-′
-=1 下，考虑预处理映射：
-
-𝐷
-(
-𝑧
-)
-=
-𝑧
-+
-𝑞
-𝑣
-(
-𝑧
-)
-5
-D(z)=
-5
-z+qv(z)
-	​
-
-
-其中 
-𝑣
-(
-𝑧
-)
-∈
 {
-−
-2
-,
-−
-1
-,
 0
 ,
-1
+1024
 ,
-2
+7168
+,
+2048
+,
+6144
 }
-v(z)∈{−2,−1,0,1,2} 满足：
-
-𝑧
-+
-𝑞
-𝑣
-(
-𝑧
-)
-≡
+=
+{
 0
+,
+±
+1024
+,
+±
+2048
+}
 (
 m
 o
 d
-5
+8192
 )
+J={0,1024,7168,2048,6144}={0,±1024,±2048}(mod8192)
+	​
+
+
+取代；Turn 18 的 
+𝐿
+0
+L
+0
+	​
+
+-only optimal labelling 已被 Turn 22 的四输出联合最优
+
+[
+2
+,
+0
+,
+3
+,
+1
+,
+4
+]
+[2,0,3,1,4]
+	​
+
+
+取代；Turn 21 的“
+𝑧
+→
+z→ Algorithm 4”简写也已经被 Turn 22 修正为必须先构造
+
+𝐿
+0
+,
+𝐿
+1
+,
+𝐿
+2
+,
+𝐿
+3
 .
-z+qv(z)≡0(mod5).
+L
+0
+	​
 
-这正对应 HElib recryption.cpp 中 newMakeDivisible 后除以 
-𝑝
-𝑒
-′
-p
-e
-′
- 的整数运算规则。
-GitHub
-
-假设 H25：若将多分支的整数输入先相加，再执行该映射，结果与逐分支执行后相加在模 5 下等价。
-
-反例：
-
-取 
-𝑧
-1
-=
-1
-,
-𝑧
-2
-=
-2
-z
+,L
 1
 	​
 
-=1,z
+,L
 2
 	​
 
-=2。
-
-𝐷
-(
-1
-)
-	
-=
-(
-1
-−
-626
-)
-/
-5
-=
-−
-125
-,
-
-
-𝐷
-(
-2
-)
-	
-=
-(
-2
-−
-1252
-)
-/
-5
-=
-−
-250
-,
-
-
-𝐷
-(
+,L
 3
-)
-	
-=
-(
-3
-+
-1252
-)
-/
-5
-=
-251.
-D(1)
-D(2)
-D(3)
 	​
 
-=(1−626)/5=−125,
-=(2−1252)/5=−250,
-=(3+1252)/5=251.
 	​
 
+.
 
-因此：
+另外，candidate inverse 必须保持 pure power-basis / normal_basis=false 语义，不能重新使用 stock firstMap(normal_basis=true) 后把结果解释成 power-basis coordinates。
 
-𝐷
-(
-3
-)
-−
-𝐷
-(
-1
-)
-−
-𝐷
-(
-2
-)
-=
-626
-≡
-1
-(
-m
-o
-d
-5
-)
-D(3)−D(1)−D(2)=62
 
 ## Killed ideas
 - None
@@ -1954,9 +1648,5 @@ D(3)−D(1)−D(2)=62
 - {"task_id":"BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01","origin_session_id":"1f28610c-0aa3-4cce-9ec9-158d114c5ae8","origin_session":"密码学 17.0","origin_turn":4,"original_hypothesis":"TASK_ID: BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01\nResearch Turn 4/25 — paired same-machine throughput gate\n\n结果：`PASS_PAIRED_SAME_MACHINE_NATIVE_GATE_CONTRACT`\n\n这一轮发现并修正了一个重要实验口径问题：下一步不能只在本地测 candidate recovery latency，再把这个秒数代入 Aung 论文的 2.909962 s middle-budget。 Aung 的绝对时间来自 Xeon 8368Q，而 R4/native result 来自另一执行环境；混用两套硬件的秒数不能形成严格 throughput verdict。\n\n因此下一次实验改成同机 paired comparison，三条路径全部使用：\n\n同一 HElib commit acdb264…\n同一 m=32768,p=5,r=1,bits=400\n单线程\n同一 BSGS+10 direct-RM10 keyset\n同一 warmup / measurement protocol\n\n比较对象固定为：\n\nvanilla HElib thin；\nsource-faithful Aung Corr./TnM；\n当前 post-raw fusion candidate。\n\n这里特意让 baseline 和 thin 也使用 BSGS+10，因此 candidate 没有 keyset 优势；实际上额外 direct matrix 还会帮助 baseline，比较是偏保守的。注意 HElib 的 BSGS key-switch strategy 与 Aung 的 Corr./BSGS workflow 是两个不同概念，prior comparator 仍然是 Corr./TnM。\n\n同机主指标改为：\n\n𝑅\np\nr\ni\no\nr\n=\n𝐶\nc\na\nn\nd\n𝑇\np\nr\ni\no\nr\n𝐶\np\nr\ni\no\nr\n𝑇\nc\na\nn\nd\n,\nR\nprior\n\t​\n\n=\nC\nprior\n\t​\n\nT\ncand\n\t​\n\nC\ncand\n\t​\n\nT\nprior\n\t​\n\n\t​\n\n,\n\n以及\n\n𝑅\nt\nh\ni\nn\n=\n5\n𝐶\nc\na\nn\nd\n𝑇\nt\nh\ni\nn\n𝐶\nt\nh\ni\nn\n𝑇\nc\na\nn\nd\n,\nR\nthin\n\t​\n\n=5\nC\nthin\n\t​\n\nT\ncand\n\t​\n\nC\ncand\n\t​\n\nT\nthin\n\t​\n\n\t​\n\n,\n\n其中 factor 5 来自 candidate 有 10 packed slots，而 thin 有 2 slots。\n\n判据已经固定：\n\n纯文本\nSTRONG_PASS:\n  lower95(R_prior) > 1\n  AND lower95(R_thin) > 1\n\nNO_PRIOR_WORK_GAIN:\n  upper95(R_prior) <= 1\n  => KILL current candidate on systems value\n\nPRIOR_ONLY_PASS_BUT_THIN_FAIL:\n  lower95(R_prior) > 1\n  AND upper95(R_thin) <= 1\n  => PARK / low publication value absent distinct novelty\n\nUNCLEAR:\n  CI straddles 1\nCopy for Word\n\n任何 candidate correctness mismatch 都先返回 FAIL_NATIVE_CORRECTNESS，不允许继续解释 performance；如果 RM10 不是 10 个 direct physical KS、joint recovery 不是 4 个 chained j=1 KS，则返回 FAIL_EXECUTION_CONTRACT，说明测错了实现而不是 scientific failure。\n\n下一次 native gate 还必须直接跑到 correction DigitExtract / final recode，记录 final capacity，因此一次实验同时关闭：\n\nlatency；\nfinal capacity；\nfinal correctness；\nthin-throughput comparison；\nphysical-hop audit；\nabsolute key bytes。\n\n正式任务已经建立：\n\nBOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01\n\n范围固定为 5 warmups + 20 measured runs / workflow，无 sweep、无 rescue、无 alternative candidate。\n\n详细 contract 已持久化并读回验证：\n\nfindings/boot-RMFE-paired-same-machine-throughput-native-gate-contract-2026-11-01.md\n\n当前 durable authority：\n\nBBBINGW/memory main@a55349a44cb83471e2c8e82a57fef5c52fb5e128\n\n这一步之后，继续做静态 latency operation-count 推断的信息增量已经明显低于执行这个 paired native gate。","working_directory":"/Users/bingwu/Developer/research-orchestrator","execution_backend":"Codex CLI / codex exec","model":"gpt-5.6-sol","reasoning":"medium","pid_or_remote_execution_identity":"54891","start_time":"2026-10-31T19:00:21.095Z","status":"COMPLETED","commit":"4326551c9825f719414e094935ec1db554f0c6fc","expected_artifacts":[],"artifacts":[{"path":"/Users/bingwu/Developer/research-orchestrator/data/backups/orchestrator-pre-handoff-reconcile-20261101T061800Z.db","sha256":"6f9e48c7b01a38e201872467ac8a293cdfca3d4613db2ea6052879a4b89cbe32","bytes":75997184},{"path":"/Users/bingwu/Developer/research-orchestrator/data/backups/orchestrator-pre-handoff-reconcile-20261101T061800Z.db-shm","sha256":"fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb","bytes":32768},{"path":"/Users/bingwu/Developer/research-orchestrator/data/backups/orchestrator-pre-handoff-reconcile-20261101T061800Z.db-wal","sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","bytes":0},{"path":"/Users/bingwu/Developer/research-orchestrator/data/backups/orchestrator-pre-model-policy-recount-20261101T0227Z.db","sha256":"7ef7f5f7b76c9943c9f62d1bf74667d6cf6c67655ec5b8a4f2d2b1246b7bdcf1","bytes":76750848},{"path":"/Users/bingwu/Developer/research-orchestrator/data/backups/orchestrator-pre-quota-recovery-20261101T0210Z.db","sha256":"443e9f535d733da557023ca4f5b7bf67e165f4452bc9037f6273356141a1ac7f","bytes":76107776},{"path":"/Users/bingwu/Developer/research-orchestrator/extension/content.js","sha256":"a65cc31908981430b10d5627aab5f31362db5583360b79b622ce509e1f909fda","bytes":36448},{"path":"/Users/bingwu/Developer/research-orchestrator/extension/ui-policy.js","sha256":"9033c059a07121eaea83186cac031eb8c462c93f913c97f3fe4aff1908e00645","bytes":2929},{"path":"/Users/bingwu/Developer/research-orchestrator/logs/orchestrator.out","sha256":"6a1fb3625fef427a9adc0a725e0f72fc01bc2a7fb557300aa7122e32ab83a165","bytes":655},{"path":"/Users/bingwu/Developer/research-orchestrator/src/dashboard.ts","sha256":"3308425f18ddd9a311fc59f94bf4a5a6f77c915588fab0c0da057fa0dead9904","bytes":19033},{"path":"/Users/bingwu/Developer/research-orchestrator/src/handoff.ts","sha256":"930c88cc1f8a0a59e426c9166a4bf7c83b8b29206c73050df6d7e1236fdc033b","bytes":22255},{"path":"/Users/bingwu/Developer/research-orchestrator/src/orchestrator.ts","sha256":"8801b93b9ed2893294a9aef3ad925972c44317bc0973a82b5adf79032a97224c","bytes":65779},{"path":"/Users/bingwu/Developer/research-orchestrator/src/research/browser-adapter.ts","sha256":"c297dc8518e620eab877bdc1667a88938c3f22681b4aa428fe053a4f2690f467","bytes":33253},{"path":"/Users/bingwu/Developer/research-orchestrator/src/research/model-availability.ts","sha256":"8f1941d12e1da82f8c966c176b905a1fb5da9b7cbb5e8a46cc751e6f410a17cf","bytes":2133},{"path":"/Users/bingwu/Developer/research-orchestrator/src/server.ts","sha256":"2af346ab092763527c71e0ffba87a5165beba53a3097c4136f6f754e80394249","bytes":28484},{"path":"/Users/bingwu/Developer/research-orchestrator/src/service.ts","sha256":"5b85e5d126d4637853b215ec9b1356a7b20c1a75a625e72cac7e4b3c78f96898","bytes":8846},{"path":"/Users/bingwu/Developer/research-orchestrator/tests/extension-gate.test.ts","sha256":"1851885b67fec4d1fd2c20b7cadc1333af466138d9811b2b54a4afc6dcf0ac23","bytes":5579},{"path":"/Users/bingwu/Developer/research-orchestrator/tests/handoff.test.ts","sha256":"b1181e20093337d5db5232d3b115d6b5b70b2fe3e275fe29c12dd213cc735a75","bytes":11654},{"path":"/Users/bingwu/Developer/research-orchestrator/tests/model-availability.test.ts","sha256":"b7c6aaf8620eda76a35177028772bc5f9e6af37e02a1ee88867fb165575648cb","bytes":2307},{"path":"/Users/bingwu/Developer/research-orchestrator/tests/pi-dashboard.test.ts","sha256":"f8dd305b825e5ca700f3a75a6a7551738258875fd5f1c4877d1cb6b460262068","bytes":17006},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/artifact/environment/secret-key-cache.bin","sha256":"5f0ca7e6cd095c69f277753464fd0f1b9a8bde5fc8901bb79d5c5596417fa1ff","bytes":777379567},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/artifact/logs/build-theta-fix.log","sha256":"334a0c8eabae1a19f4d9128aa43cadb15252ef5d21d58021fd4a68977103bcab","bytes":120},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/artifact/logs/build-theta-fix2.log","sha256":"334a0c8eabae1a19f4d9128aa43cadb15252ef5d21d58021fd4a68977103bcab","bytes":120},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/artifact/logs/build.log","sha256":"334a0c8eabae1a19f4d9128aa43cadb15252ef5d21d58021fd4a68977103bcab","bytes":120},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/artifact/logs/configure.log","sha256":"cda5e51ce25ebff1f0e490e818ce23f639a9f293e006c6331ad06bf5ff4079d3","bytes":480},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/artifact/logs/helib-build.log","sha256":"9f5ce1d8f078d5d78f0aab38500830e207c4c4c9240ca72be0de03a47a7b35fe","bytes":4729},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/artifact/logs/helib-configure.log","sha256":"4627113b03995c34d441f3dbf18aab7f4f0d9d5787afa34d251ca2072f9223c9","bytes":1281},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/artifact/logs/helib-install.log","sha256":"8295786b392e47e9455fcddc5ab1bd898e974ad9c8dca78ba51bc8b74db7c64f","bytes":10687},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/artifact/logs/preflight-progress.jsonl","sha256":"4120d333742666cc08b6a1baeb49cd1d71cf436dd28b57574b48eac47aa12498","bytes":243},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/artifact/logs/preflight-run.log","sha256":"1507dac9c847021eb4b9fd8a1b28cd42b1ab59d4c489752d12a1c4b9b523890e","bytes":272},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/artifact/logs/preflight2-progress.jsonl","sha256":"c1389f36318c5c17c12c29a2f7ef20cc88fdfde5a4765d643537d7d185c22470","bytes":1223},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/artifact/logs/preflight2-run.log","sha256":"3a661158cfee938cee1432d35d263157e8a6526c03612f2d5266230ee775d767","bytes":1291},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/artifact/logs/theta-selftest.log","sha256":"6000a412f4ac598337f267dc9ccca2ee46b41bfbcce52d7dc415897e2f9a13e9","bytes":29},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/artifact/logs/theta-selftest2.log","sha256":"8b1ad5b1594597fe8f00b9941ff74710a0a72a25cc2f57fac7da9d023b3618bc","bytes":35},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/artifact/logs/theta-selftest3.log","sha256":"8b1ad5b1594597fe8f00b9941ff74710a0a72a25cc2f57fac7da9d023b3618bc","bytes":35},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/build/.ninja_deps","sha256":"967118c843bc18eb1d89b3c3f501134ab7c762666468c53ce1cd1213fe4c5b19","bytes":127556},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/build/.ninja_log","sha256":"a66c7fc660889d1c67202c340b8815726aa412a30d26929c44f6c2cb45ce8123","bytes":796},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/build/CMakeCache.txt","sha256":"ae6fd6b9a100a089aa8dc2b7afc5d2d32d18c3a7b8b9960eb863015d89cf66ae","bytes":13912},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/build/CMakeFiles/4.0.1/CMakeCXXCompiler.cmake","sha256":"1e418d80f6754e94fcbde17635082a50777e1ab3886b389ac54327a8e62f4f5b","bytes":6176},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/build/CMakeFiles/4.0.1/CMakeDetermineCompilerABI_CXX.bin","sha256":"c21bb62312d47184b04f16d97ace1ec386b0ddf0de9fca1d02b2567d70b6cbc3","bytes":16984},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/build/CMakeFiles/4.0.1/CMakeSystem.cmake","sha256":"246638c71f2ac0a7a05e1b7dff0d43f574f3251307dad42dc2d1fcf7504a1202","bytes":360},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/build/CMakeFiles/4.0.1/CompilerIdCXX/CMakeCXXCompilerId.cpp","sha256":"21a3758926b3e82b820380f967c8e8fb87e21001b28cb4e7a9d47ff8f8435b17","bytes":28585},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/build/CMakeFiles/4.0.1/CompilerIdCXX/a.out","sha256":"dcab3118215cec4b5f6345ff4dddeb9304da3da74fb5e8f455acfb64020d11d5","bytes":33736},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/build/CMakeFiles/CMakeConfigureLog.yaml","sha256":"27c5fe345310d39702812a3cb70573aaac534260d878f060e18b7fd424288a3b","bytes":22857},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/build/CMakeFiles/InstallScripts.json","sha256":"e8e430d58d0c55a356c932f488a9a545b5054f055fa8cb94ea7081aef4ea6cf3","bytes":191},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/build/CMakeFiles/TargetDirectories.txt","sha256":"86545d66540b5aad2fb02da7324135f0110fd2022916655f31ef29fb047ee716","bytes":432},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/build/CMakeFiles/cmake.check_cache","sha256":"a26189e394421da57f45706a07713c5720acd200a41711b0c0c590c3c63371c4","bytes":85},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/build/CMakeFiles/paired_rmfe_gate.dir/benchmark.cpp.o","sha256":"ff7ce891324eba47ac0ee8cb6ad13ee2cc73bc2ede7dc960b58733c3f163f24b","bytes":267872},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/build/CMakeFiles/rules.ninja","sha256":"36620f03608aaa9983bc4bfbe3c943e006897046df273eb85b8f84b129a1ac9d","bytes":2237},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/build/build.ninja","sha256":"100022a6c6aa3968d30c30ed315a12164fba3784c93062d3fdec8f73b08161f5","bytes":20987},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/build/cmake_install.cmake","sha256":"476efde3d14ef81975ad805882525a1bfe7e2d4200db8d93725927216658fb3f","bytes":2213},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/build/paired_rmfe_gate","sha256":"b668cfaafd3cd55bf05642afd8d73cc1e863ac89e322a0fb25375dbdc5264f1f","bytes":2268304},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/.ninja_deps","sha256":"c0f4965d62c0e373889a1079bffacc4603fc582f34df48dc8766b04bf88947a2","bytes":290056},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/.ninja_log","sha256":"13dcd487604f7475b02439264136440e5fa57089a8d19b7f3dc989eb83d2fba4","bytes":4244},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/CMakeCache.txt","sha256":"b9e20cfbbc8f04599ebb8c636c29201e18a8410ddcac17471339a928e625cde8","bytes":20800},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/CMakeFiles/4.0.1/CMakeCCompiler.cmake","sha256":"4ca82dca54686669b77a522d6763068e52958e846dd793bf7110ea50b7775eac","bytes":2873},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/CMakeFiles/4.0.1/CMakeCXXCompiler.cmake","sha256":"1e418d80f6754e94fcbde17635082a50777e1ab3886b389ac54327a8e62f4f5b","bytes":6176},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/CMakeFiles/4.0.1/CMakeDetermineCompilerABI_C.bin","sha256":"489468d3e0e98381e54503c05d357135d96f604db6345dae7ed19a62a712ecdb","bytes":17000},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/CMakeFiles/4.0.1/CMakeDetermineCompilerABI_CXX.bin","sha256":"d65b355fe5c719211db86087e82e4e9ff0bc0549935bf0db3bde4a37b74749cf","bytes":16984},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/CMakeFiles/4.0.1/CMakeSystem.cmake","sha256":"246638c71f2ac0a7a05e1b7dff0d43f574f3251307dad42dc2d1fcf7504a1202","bytes":360},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/CMakeFiles/4.0.1/CompilerIdC/CMakeCCompilerId.c","sha256":"709e90e277a83dcc28011a7756b7fc7d3a1b0e002b7d8b79794fa82d0e1d187f","bytes":27748},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/CMakeFiles/4.0.1/CompilerIdC/a.out","sha256":"f040a86f1254c07aba5d97cfd3fd73c76194cb694c91728548977ec644da989b","bytes":33736},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/CMakeFiles/4.0.1/CompilerIdCXX/CMakeCXXCompilerId.cpp","sha256":"21a3758926b3e82b820380f967c8e8fb87e21001b28cb4e7a9d47ff8f8435b17","bytes":28585},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/CMakeFiles/4.0.1/CompilerIdCXX/a.out","sha256":"dcab3118215cec4b5f6345ff4dddeb9304da3da74fb5e8f455acfb64020d11d5","bytes":33736},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/CMakeFiles/CMakeConfigureLog.yaml","sha256":"fab299aa1e70b0734fef82605f1c4706c0ac7fa6d2bf35a7682815df2de662a4","bytes":46365},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/CMakeFiles/InstallScripts.json","sha256":"fb0840585f876fcd9b168c4032bca97f854220838615dbcb9227b60490332178","bytes":347},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/CMakeFiles/TargetDirectories.txt","sha256":"2e9a4efb3ffb0c2e33005937a7e56554168be28b69c7e7bd48df982cb8cca7ff","bytes":1972},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/CMakeFiles/cmake.check_cache","sha256":"a26189e394421da57f45706a07713c5720acd200a41711b0c0c590c3c63371c4","bytes":85},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/CMakeFiles/rules.ninja","sha256":"a4e02bc6af20429743f73f3f44ccae382e257f562b030919e46cc9d1eb42315d","bytes":2270},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/build.ninja","sha256":"7b022869f440bc01f696677b93287f0aa38977bafa73c78ff56a0c68747e5fb1","bytes":90346},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/cmake_install.cmake","sha256":"ea4c0f00a2caf4c309698060d673a1a32fe6173beeb81ed628f2874146446a58","bytes":2589},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/install_manifest.txt","sha256":"94495c26c7f0a12bcf47482c358e61cdb759c54df1e615b86453b56428014b10","bytes":9675},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/lib/libhelib.a","sha256":"d05e0523efc440e77aee2c779ccbc3f7e3a415a5342ac69b8bdfb16484539304","bytes":5826576},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/Export/ab2aafcc98cb43a5e26f9343848858d7/helibTargets-release.cmake","sha256":"138d5b814d135f85d78284df56590e2d4cef761d58aecf2e9cd534729836dc9f","bytes":796},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/Export/ab2aafcc98cb43a5e26f9343848858d7/helibTargets.cmake","sha256":"984d44234d5fabcd69eca745bd35a13c5330be3ebcc528d8be96d907aecae697","bytes":4825},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/BenesNetwork.cpp.o","sha256":"a9db25112060c2f511b5f62e2284ffa0be7d63f8c54a800cf6f0f388af8cc8ea","bytes":16944},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/CModulus.cpp.o","sha256":"41d9a8a97c3278dcfca6d161a99e992c5fefadb22cdd287c8e75c6e87424dd19","bytes":52896},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/Context.cpp.o","sha256":"0ef73ca1f7f69c52d2447bec9b932007af07f3b65d406f7e24343be52a96a088","bytes":286104},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/Ctxt.cpp.o","sha256":"f1f7add89b9f2455eab49f9e51f2a5207885b07049d45935b2e03ff40143c129","bytes":379504},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/DoubleCRT.cpp.o","sha256":"8eb4c31b0c3c90aad0075c3de2e4b2b3b089d9a229f6c787fef68495355949b7","bytes":263152},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/EaCx.cpp.o","sha256":"11e28dfabc29eaa5484a8f44cefea4e45210c1cf520d387997e5b14da7a93535","bytes":76728},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/EncryptedArray.cpp.o","sha256":"90e5c0a989c5430a1da0608c0d0aa50006246f5dd33f26b25077e4f0cc4e746e","bytes":500032},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/EvalMap.cpp.o","sha256":"23f2dbf6372f66e4c32dc8eb1862e6792d77c3f154970f74e308c073d6c7cb5a","bytes":144984},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/IndexSet.cpp.o","sha256":"6566bc082aa319951516b884620fcad17a9da759796d0214c85baa015fe03da5","bytes":135592},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/JsonWrapper.cpp.o","sha256":"938c4c19d25f05c0eb16c9325405ae6960924308dc7fda869d8885408553fdd3","bytes":53552},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/NumbTh.cpp.o","sha256":"cc7e41c024fc162a5a231b32fc662abfc55450baca288a545e079683f4f92c5b","bytes":142232},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/OptimizePermutations.cpp.o","sha256":"7970405bf88bdbad36e48707950bc25cbf3ed6447ed5bfa6fcb6ef5e082ae490","bytes":76880},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/PAlgebra.cpp.o","sha256":"a82392a75e61110248d15c0241714b60cc939552dfeb41fc6eb689a32a8fa2d8","bytes":219392},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/PGFFT.cpp.o","sha256":"aada151f7ee12877232b731780dabbddd058afce21739707e3c7541be54b9924","bytes":21968},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/PermNetwork.cpp.o","sha256":"ac08cf4f2224902856b6794b80588421b4fa2c64cf689a3e0e121104b3ecb94e","bytes":35776},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/PolyMod.cpp.o","sha256":"a6d7fce6e5cc41a6630103269199fdcb765f4a2d46f7fbadc5604a814863fda5","bytes":151728},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/PolyModRing.cpp.o","sha256":"a9d68dda6afa4a2771c35dc385126a562feeb9ce64b09b6394ebf71b4da40fc0","bytes":7880},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/Ptxt.cpp.o","sha256":"9804825e8d3e57126d0e1d19f202f39c0eaae5de8393c4a75cc9c041a440c201","bytes":320512},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/binaryArith.cpp.o","sha256":"95beec698ca719a366fdadba57d9a74f5136c28eb6114bf5432a3d5fa9cf937d","bytes":123760},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/binaryCompare.cpp.o","sha256":"a5f114056130271d24859325f843fb9192cb9aa9c7b9a2851d18eb9b3384ec77","bytes":49944},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/binio.cpp.o","sha256":"b9fbf88b097bb9bb7a5a0eaebc9c14fbfc75d42c09fe3957bfd59ed38a5e5e58","bytes":14536},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/bluestein.cpp.o","sha256":"fcc669f882e1da3993cea908e043500e52a59534d7fb8067b8a4766438b7ebce","bytes":8896},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/debugging.cpp.o","sha256":"56b81a5f710bf83545fc14110ac0303eba8093a5bd142b83eb19009f7154d932","bytes":65416},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/eqtesting.cpp.o","sha256":"a3e927445086f7baede13ac08495139f03cab2769aaab152da51ebbcb6d560e1","bytes":30648},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/extractDigits.cpp.o","sha256":"68fd5c18df6b056f61a2b27f8bcc3334d9b24b75b3233a0ead713b79da1ea40a","bytes":46280},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/fhe_stats.cpp.o","sha256":"1576106e93a081528ee27d55ee6bfeffea28da56b7205bdec82789dcab15c6ac","bytes":15016},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/hypercube.cpp.o","sha256":"f606a945ee1fd9ca17f2110dcf1039340bc3ef6ff2ab1ebfdb107c216240f566","bytes":64048},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/intelExt.cpp.o","sha256":"cfe6a6b5b07591d15924ca3895166cf3db81d79aab191719c776b74ac196b59b","bytes":336},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/intraSlot.cpp.o","sha256":"a917b13326d0c26e2a27c73ac75879a2db3d65d213d18af9eb41537ecfcf646c","bytes":73384},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/io.cpp.o","sha256":"24336341093d2363157196a9b7a059ffc896a2f33581d91d668a205d326cbe2d","bytes":54352},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/keySwitching.cpp.o","sha256":"0a6038c425f5f841661130f8f00d252cc2fb1c8d126b49a8cf03b8fb9d08880e","bytes":187344},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/keys.cpp.o","sha256":"39b19107ee52b738057c6cb4681466c6d48fdfe09132ca85e2f285dea1b7fe20","bytes":322728},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/log.cpp.o","sha256":"145cd44ef9d8c8949b83bae5c76c33ebc9f6f6f7b055af8e9efc53ab0bb70363","bytes":6896},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/matching.cpp.o","sha256":"21d5d2784055c309615aba1478adbdb4cf665fcf016db4e95d3bc4a16da5002f","bytes":37208},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/matmul.cpp.o","sha256":"dc400321a901342fe898823d27032df3547fe07face99b3734a8d9fa5f605979","bytes":341608},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/norms.cpp.o","sha256":"dcc890322c2bbf11d2ccea2da3be4d201694d7672d038e8e9a6a1442e345cc48","bytes":26608},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/permutations.cpp.o","sha256":"0336361bbea4d07e334397642ee88743738ac31371d03bda9328e9c94443d148","bytes":74568},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/polyEval.cpp.o","sha256":"8caf7d65cf0a1d9f1520209ba0a16ae9b8b2bb9382aa4c29da21e24cbb167dad","bytes":42680},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/powerful.cpp.o","sha256":"368c07d09ba606293edaf64ea424a22dcdfa93dad0979fca7ed11099f5bd5286","bytes":42112},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/primeChain.cpp.o","sha256":"04ecb629695390998998b34b4a383395f64ab52e840ca994abef90094dee3a40","bytes":180176},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/randomMatrices.cpp.o","sha256":"16255f64de7851145fccd7709838288bd7be535d3b153510104bdb21b4740190","bytes":97232},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/recryption.cpp.o","sha256":"efd22acf9a5486cb3a3498e67b8a200fd0a6c7d33189a867c08e0fa470e6a8d4","bytes":112480},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/replicate.cpp.o","sha256":"305e652dd16b896e2c10ac026cd99779f0af2750063cfe02999155ba44c61f2d","bytes":69560},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/sample.cpp.o","sha256":"d2ea435b8fdb9ee7ff2bf3505c325d5748772cf3e3dd489a0dfed87ff8f66a5e","bytes":32816},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/tableLookup.cpp.o","sha256":"4d69b02c9342d1c131562c8020eb187a7fd8c3f6642adbfd85a5d27a27f90578","bytes":49952},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/timing.cpp.o","sha256":"b6acffc30ff82d528333f42953315a99fc6deed87637f67359288ae301d98732","bytes":15656},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/version.cpp.o","sha256":"1b896280730ee1edf477846080bf73f36742393e506b2acc331bc549e22ec1d9","bytes":736},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/CMakeFiles/helib.dir/zzX.cpp.o","sha256":"2f75d7809d933750983c199015958f380d46c4d5ca9da97ce2c855ae68839c92","bytes":12888},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/cmake_install.cmake","sha256":"6159ccde0eece5a6a03148fefcd952ceb8d6058500a3f6e408136c9b55fa3fe8","bytes":13506},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/helib/version.h","sha256":"eccf4fd36569e91fc6b2f42030348f16cac180f73bdccf9a418552f6348379d5","bytes":2503},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/helibConfig.cmake","sha256":"23bf64576f01aee2a64e4a6ee2f81ed58e67788b37858fb9b50190f6c501409a","bytes":2276},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/helibConfigVersion.cmake","sha256":"7cbe6487d89d95923f668907ff9cee85745cac1feeb7254d87164fb46c225bbd","bytes":3249},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-build/src/version.cpp","sha256":"7b660d20a61a436b4d5cc6be262ae0264030fdb8140e50d34fedef14f8dd2867","bytes":220},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/ArgMap.h","sha256":"5dd2695963a82ce62c5cb2ff6039bd07b59a983323d5f0e1a67ea0079fd14b8b","bytes":25783},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/CModulus.h","sha256":"46f948a87573dc66c56aa13826649c139263f5efb53b0e9e69ca708a48e0931a","bytes":5111},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/ClonedPtr.h","sha256":"b232970785f76f37b9ec178d06826d9d66ca62df3f84f675fa6592569a4a8566","bytes":10252},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/Context.h","sha256":"fff3be233d0b821368006f297caf22bea35f6756ad3f78e8ab7b83e3d80ad80d","bytes":45063},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/CtPtrs.h","sha256":"66856e3d15babf84a6a1c50362d7132354370ae8e9e82e3d3b34aee683949b8f","bytes":3217},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/Ctxt.h","sha256":"77332aae402ab63a39b84af51ea4bb92b5f8c3a57ad593d94b876ed0cd4dee22","bytes":52062},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/DoubleCRT.h","sha256":"14ef984c1bbd89013ee3014aa64b3264d8e8055331c1eceab63fc57d46bd4ff5","bytes":16343},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/EncodedPtxt.h","sha256":"a9d733509dbf7bb923cefadd3a1f2d8d7b3937d151cd7136a1b6699ce040f915","bytes":9061},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/EncryptedArray.h","sha256":"97a44aab1a21c4f3852fd8cef4877d918f74bb80ce2363ebb9bd0907e39b92b3","bytes":88061},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/EvalMap.h","sha256":"41937e1ef637e8ed004adca75bc479ce10092aa584acd1ed9b6e784b604bee8b","bytes":3787},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/FHE.h","sha256":"ba7bd5ea7e8ba636e21ed7b954d30c1110aae9d82e5dab3967a91b7f78662bfd","bytes":895},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/IndexMap.h","sha256":"3369c4b087ed6a9e065e8d5a4d649597a0c254cff8374c5a6eeb65cb53c31564","bytes":4321},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/IndexSet.h","sha256":"4b80e8d0479049837532df66f239ebbfec368d6cfbd54958e9e7b9ad5580a1d6","bytes":6811},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/JsonWrapper.h","sha256":"44d12ec71fe1b5729a4c3abe57eb729c5040c91d2df469c902ab4b16de0614ef","bytes":670},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/Matrix.h","sha256":"5a34fbb88d99657c7454b9e77d0f88fdcaf938dbec0ab2b8089e990172c16826","bytes":19994},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/NumbTh.h","sha256":"96fd56ce58c005de09db0ef896436a04e4de8168f8ac75b5b372cea18a9fc6f5","bytes":30580},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/PAlgebra.h","sha256":"da0452c335515317466c48e9e70f5985623464e43ac1b41ab872f7f3ed638396","bytes":28604},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/PGFFT.h","sha256":"38b55daf2baaaa10bc10b23b1137381929ffe5eab66096029f3e547300d65daf","bytes":6094},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/PolyMod.h","sha256":"562ab8d2fce9f5cbaddb4d004fa03f845577b8751c72542a442c43bc895a9e5e","bytes":18456},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/PolyModRing.h","sha256":"c7536dc10079ba5743cfcf4e9bef7316c735eeb0f0658d5f35df5ebe3b19444c","bytes":3307},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/PtrMatrix.h","sha256":"1841197506c6160c7a5bf667075bddb2eb7987768198a67c16caa5affb4be4a8","bytes":7321},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/PtrVector.h","sha256":"da84e3d9206dc4fd12a3105364a9b61cb9bf506691fc0986f1f4dc966d064872","bytes":9614},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/Ptxt.h","sha256":"4bb3b01efff271bb01d03a6c30925a8faa65e0ca1b62c531ab8699641cc21a03","bytes":32280},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/SumRegister.h","sha256":"abcc1164e8f61c0f5b4419af8f83bfb21f91477f05cc678e4b209dbc7db44a64","bytes":5022},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/apiAttributes.h","sha256":"4a4236dba0cd0bc51652715298986344bc0d53046c6a2bc83fc0a02cb267f9a3","bytes":1075},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/assertions.h","sha256":"604dec85625c19b0295df513b5a7aab1e930b3418fdc53b99648233246c00990","bytes":7852},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/binaryArith.h","sha256":"7e8e4c6d6534037bde40b310ded6fe42b16842a9b4dd990955f5bdf38eb6e905","bytes":11444},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/binaryCompare.h","sha256":"6dad74fc248159f212787c1d23bbdccf4aaeb7bef76f069263fdf338854127ef","bytes":2840},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/bluestein.h","sha256":"b7632f08ba4c644d1093ba710f4a24a18e734ff06fadfb7fb1963792884e88ab","bytes":2200},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/debugging.h","sha256":"78bedb70f82945afc7eb7ba7b37e8055abeea91f7ab882cca0815483a5526864","bytes":3464},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/exceptions.h","sha256":"cb591d42e18b23e8b40ac73cd634ec5fd1f360db0ebc14577d53919907918387","bytes":4566},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/fhe_stats.h","sha256":"6a1a2de1889e2556d5ce22d9be646a92390ec52f203148979f750445d9830b9f","bytes":2217},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/helib.h","sha256":"eafef1846e6c2bec85217be5509e1e69c5d8976c4a2ca5b04e1948241b3016d0","bytes":991},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/hypercube.h","sha256":"82c67a87756fef759a66197c200d3425259065f7ea3cefc4be262f2f73b237ac","bytes":15618},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/intraSlot.h","sha256":"37f52e6a6a7f0df7cabe682a803b17d60eed01663cccf12fd3d11a143d25a46f","bytes":3042},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/keySwitching.h","sha256":"55c2f1da5d487cf8e5932f4f15bd19e0667200bb4ae1d60dcd8a6465db91387a","bytes":10478},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/keys.h","sha256":"ef8156b6187831907f771eb4c9cf2fad9ee51a39bd3b64b8e26dd9c983b0cfcf","bytes":18220},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/log.h","sha256":"53c8871d581b9fba24de9644fa3c583ffb2c9388d50b36c48ddc7f2dfc963012","bytes":3501},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/matching.h","sha256":"301ddab8056bc43e6556466059e567e991fe66637c6ab74c0574d09a838da721","bytes":3029},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/matmul.h","sha256":"e34ddf8cdb98004c4f7db7af8a039e18984035b945ac4134158bafb94be00a4a","bytes":16828},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/multicore.h","sha256":"ea141d7838d0142e5015596df8989b8f1d20dead0d0d6a3c8af0763e414fc315","bytes":1333},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/norms.h","sha256":"eb4a007745497bd0161db6788bfe315744e893ac1c8ee62e4e913e6ffc31efea","bytes":4266},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/partialMatch.h","sha256":"21a25026676ddd00993d76c72cac8a5c7e45c892770bf2b87cad55650a2740eb","bytes":11186},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/permutations.h","sha256":"744deef45f04e3d97ab26af14e2d10c39a379cf928bd271ab1cfa9bce6ed8723","bytes":22544},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/polyEval.h","sha256":"5eb144ac5dfdca95b466ffbc11f6e6dddffafbad8463fbe69e83ad980e204198","bytes":2960},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/powerful.h","sha256":"3c208c07895753878b609516e6d2931ca4e1fa10e578478061f8ef7833126426","bytes":15069},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/primeChain.h","sha256":"46a377bd81f4e58c0ae0a648cb8f28fa836e5b9870eaf8e574572f5422511928","bytes":2968},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/query.h","sha256":"9f3d615affeeb7be31e48e92b7668c94f43471d610b491c1de9e7600245d7d47","bytes":29165},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/randomMatrices.h","sha256":"a97cd15309ce39a690818ca7f377ab753dbabbb4e713d66350604542c0decf1e","bytes":8620},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/range.h","sha256":"63f64fd851fa2ac1319580d5e4d432950beca2258c73a33a0959c03d48c558b0","bytes":1622},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/recryption.h","sha256":"c2b979721b95c3177d96fd859f4351b31f3d54cbd1b3630e88cfdb1db6266241","bytes":3560},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/replicate.h","sha256":"4f06c0995e5542961fea814f05154379428cb120b9412cbd3186b8299ea3ebf3","bytes":7199},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/sample.h","sha256":"08d4426bdb95b5718f2ed3514746504763300cfb792e2f2fc439df56a6c65a0f","bytes":3910},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/scheme.h","sha256":"f1d3fec4b11df4083c7d6575fdbfc5ec24e0fc5d6513f87bcca7a211964cecdc","bytes":1603},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/set.h","sha256":"4c72e9fdfc7b70a8deb759dfba18fa4a88011cdbfc7a79083d12b1d0e397fe15","bytes":3325},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/tableLookup.h","sha256":"b6c1b67c06cb9915a77482378259fb742c8a9ae375c14c17a17b5b73327e3647","bytes":4255},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/timing.h","sha256":"2c1588f01eb604ccdde3f01194984a6860d3866f89c93f7c6d0b8241c6cfdcad","bytes":4114},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/version.h","sha256":"eccf4fd36569e91fc6b2f42030348f16cac180f73bdccf9a418552f6348379d5","bytes":2503},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/zeroValue.h","sha256":"b4c55a846e9d0b944cc49cdd33ecc1ef3e2987e242f7f54d434535afef3d6cf9","bytes":2190},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/include/helib/zzX.h","sha256":"1be42ac25d30e24252889644c93e3b7c48a7d22ff0da11d256114c236321f737","bytes":2540},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/lib/libhelib.a","sha256":"d05e0523efc440e77aee2c779ccbc3f7e3a415a5342ac69b8bdfb16484539304","bytes":5826576},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/share/cmake/helib/helibConfig.cmake","sha256":"23bf64576f01aee2a64e4a6ee2f81ed58e67788b37858fb9b50190f6c501409a","bytes":2276},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/share/cmake/helib/helibConfigVersion.cmake","sha256":"7cbe6487d89d95923f668907ff9cee85745cac1feeb7254d87164fb46c225bbd","bytes":3249},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/share/cmake/helib/helibTargets-release.cmake","sha256":"138d5b814d135f85d78284df56590e2d4cef761d58aecf2e9cd534729836dc9f","bytes":796},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib-install/share/cmake/helib/helibTargets.cmake","sha256":"984d44234d5fabcd69eca745bd35a13c5330be3ebcc528d8be96d907aecae697","bytes":4825},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/helib.log","sha256":"b2e8a110b20030631b3de298181d4119f73b04208d0ceac5b1553fd5cd5d3cbf","bytes":520},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/source/CMakeLists.txt","sha256":"0b0d96af16ad11b21d9b92e89f6ce56a3f0f76e63c701d90452992437c3de498","bytes":270},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/source/benchmark.cpp","sha256":"c04fc99c249c607f1dd7ac1b1afb948bc65a94c59204efa833b4c5d66fb363b4","bytes":32670},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/source/canary.cpp","sha256":"0f27d3ed7375fa7b9402cf3c0fd8ae7c4da242a2c552447edb9a2b2569beed95","bytes":65468},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/source/runtime-config.json","sha256":"e3b96ba398cc1cb5efe27627c18639f157f2a0a7c443f6f55babdc2d0d329443","bytes":1445161}],"evidence_status":"AVAILABLE","audit_status":"DELIVERED","result_delivered":true,"do_not_rerun":true,"result":"结果：`FAIL_NATIVE_CORRECTNESS`\n\n- Vanilla thin correctness passed。\n- Source-faithful Aung Corr./TnM 在首次 smoke run 中 correctness mismatch。\n- 按 contract 已立即停止；candidate 未执行，未产生或解释 performance、capacity、CI 或 throughput verdict。\n- RM10/joint physical-hop audit 尚未到达，因此不能将此结果解释为 candidate scientific failure。\n- 精确 keyset 已持久化为 741 MiB，可用于后续 comparator implementation audit，无需再次进行约 5.5 小时的 key generation。\n\n证据：\n\n- [native log](/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/artifact/logs/preflight2-run.log)\n- [structured progress](/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/artifact/logs/preflight2-progress.jsonl)\n- [benchmark source](/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/source/benchmark.cpp)\n\n正式的 5 warmups + 20 measured runs 未启动。"}
 
 ## PI decisions
-- # Orchestrator UI identity recovery — Research Turn 1
-
-The first three assistant responses in this physical conversation were produced after ChatGPT reset the new durable chat to GPT-6. They are preserved as infrastructure evidence but are INVALID and must not be counted as Research Turns.
-
-The UI is now visibly verified as ordinary Chat / GPT-5.6 Sol / Extra High. Resume the SAME BOOT logical research session from the handoff and durable local Git authority. Treat your response to this message as Research Turn 1/25. Do not restart, modify, or duplicate the still-running native task BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01. End with one valid ORCHESTRATOR_CONTROL block.
+- None recorded
 <!-- RESEARCH_ORCHESTRATOR_STATE_END -->

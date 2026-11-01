@@ -1197,435 +1197,351 @@ TRACK_ID=EAI; ACTIVE_SUBLINE=EAI-SYNTH. **LATEST_COMPLETED=SYNTH-C10; NEXT=SYNTH
 TRACK_ID: BOOT
 ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
 LATEST_COMPLETED: Copy for Word
-Research Turn 25/25 — Session milestone consistency checkpoint
+Research Turn 25/25 — BOOT frontier-completeness / placement theorem audit
 
-Verdict：`PASS_SESSION_MILESTONE_CONSISTENCY_CHECKPOINT`。
+TRACK_ID: BOOT
+ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
 
-我对 Turn 14–24 的全部 surviving claims、被 kill claims、参数、坐标布局、four-output correction、cost ledger、implementation contract、prior-art boundary 和 future-native decision matrix 做了 cross-turn consistency audit，并重新校验了当前 /mnt/data 中 21 个 Turn 14–24 artifacts 的 SHA256。没有发现新的 theorem-level contradiction。
+Pending Codex/native task remains UNKNOWN / untouched. No native execution was launched.
 
-当前必须以以下最终版本为准：Turn 15 的初始 coordinate set 已被 Turn 16 的
+Primary hypothesis
 
-𝐽
+After Turns 12–24, there may still be an overlooked placement of the first cross-branch sharing step inside Aung's MultKey pipeline that simultaneously:
+
+preserves exact 
+5
+5-adic correctness under stock HElib preprocessing, and
+has enough remaining cost to plausibly clear the preregistered VALUE/PARETO bar.
+
+Minimal decisive test: partition the pipeline at every nonlinear/linear boundary and classify every ordinary linear-sharing placement.
+
+1. One missing case closes: mixing after rawModSwitch but before newMakeDivisible
+
+Turn 22's balanced-lift rigidity applies a second time here.
+
+For 
+𝑒
+′
 =
-{
-0
-,
-1024
-,
-7168
-,
-2048
-,
-6144
-}
-=
-{
-0
-,
-±
-1024
-,
-±
-2048
-}
-(
-m
-o
-d
-8192
-)
-J={0,1024,7168,2048,6144}={0,±1024,±2048}(mod8192)
-	​
-
-
-取代；Turn 18 的 
-𝐿
-0
-L
-0
-	​
-
--only optimal labelling 已被 Turn 22 的四输出联合最优
-
-[
-2
-,
-0
-,
-3
-,
 1
-,
-4
-]
-[2,0,3,1,4]
-	​
+e
+′
+=1, HElib's coefficientwise make-divisible operation is
 
-
-取代；Turn 21 的“
+𝑀
+(
 𝑧
-→
-z→ Algorithm 4”简写也已经被 Turn 22 修正为必须先构造
-
-𝐿
-0
-,
-𝐿
-1
-,
-𝐿
-2
-,
-𝐿
-3
-.
-L
-0
-	​
-
-,L
-1
-	​
-
-,L
-2
-	​
-
-,L
-3
-	​
-
-	​
-
-.
-
-另外，candidate inverse 必须保持 pure power-basis / normal_basis=false 语义，不能重新使用 stock firstMap(normal_basis=true) 后把结果解释成 power-basis coordinates。
-
-旧 architecture 的状态没有任何变化：
-
-post-reconstruction aggregate-only delayed fusion remains KILLED
-.
-post-reconstruction aggregate-only delayed fusion remains KILLED.
-	​
-
-
-原因已经闭合：真实 HElib pre-C2S state 可以是 full extension-valued dirty state，而
-
-𝐹
-(
-𝐶
-0
-,
-…
-,
-𝐶
-4
 )
 =
-∑
-𝑖
-𝑌
-𝑖
-𝐶
-𝑖
-F(C
-0
+𝑧
++
+𝑞
+𝑣
+(
+𝑧
+)
+=
+𝑧
+−
+𝑞
+ 
+𝛽
+(
+𝑧
+ 
+mod
+ 
+𝑝
+)
+,
+M(z)=z+qv(z)=z−qβ(zmodp),
+
+where
+
+𝑞
+=
+𝑝
+𝑒
++
+1
+=
+626
+q=p
+e
++1=626
+
+and 
+𝛽
+β is the balanced representative modulo 
+𝑝
+=
+5
+p=5.
+
+Let 
+𝐴
+A be an invertible branch-mixing matrix with balanced integer lift 
+𝐴
+^
+A
+. Then
+
+𝑀
+(
+𝐴
+^
+𝑧
+)
+−
+𝐴
+^
+𝑀
+(
+𝑧
+)
+=
+𝑞
+(
+𝐴
+^
+𝛽
+(
+𝑧
+ˉ
+)
+−
+𝛽
+(
+𝐴
+𝑧
+ˉ
+)
+)
+.
+M(
+A
+z)−
+A
+M(z)=q(
+A
+β(
+z
+ˉ
+)−β(A
+z
+ˉ
+)).
+
+Therefore exact commutation for all branch states requires
+
+𝛽
+(
+𝐴
+𝑥
+)
+=
+𝐴
+^
+𝛽
+(
+𝑥
+)
+∀
+𝑥
+∈
+𝐹
+5
+𝑘
+.
+β(Ax)=
+A
+β(x)∀x∈F
+5
+k
 	​
 
-,…,C
-4
-	​
+.
 
-)=
-i
-∑
-	​
+By Turn 22's rigidity theorem, this happens only when 
+𝐴
+^
+A
+ is a signed permutation.
 
-Y
-i
-C
-i
-	​
+For any genuine mixing map the discrepancy is a nonzero multiple of 
+5
+𝑞
+5q; after /5 it becomes a nonzero multiple of
 
+𝑞
+≡
+1
+(
+𝑚
+𝑜
+𝑑
+625
+)
+,
+q≡1(mod625),
 
-在该 domain 丢失 branch identity；不存在 aggregate-only recovery 能普遍恢复 stock branchwise scalar semantics。新 candidate 没有 reopen 这个路线，而是在 nonlinear middle 之前保存 branch identity。
-
-当前 surviving candidate 的 canonical path 固定为：
-
-纯文本
-Aung SlotsToCtxts
--> five scalar branches
--> sparse coordinate packing on J
--> one rho-compensated shared forward transform
--> one source-identical HElib recryption middle
--> pure inverse (normal_basis=false semantics)
--> 17-call target-pruned binary unpack
--> five scalar Z_625 lifts
--> four RMFE recombinations L0,L1,L2,L3
--> Aung Algorithm 4
--> restore original intFactor at the stock final point
-
-在标准 HElib recryption correctness/noise bound 条件下，这条链现在可以称为 statically closed：selected leaves 是真正的 
+so it survives in the exact 
 𝑍
 625
 Z
 625
 	​
 
- scalars，其 mod-5 residues 对应原五个 branches；higher 
+ lift consumed by digit extraction.
+
+Thus:
+
+branchwise rawModSwitch
+→
+mix
+→
+shared newMakeDivisible
+branchwise rawModSwitch→mix→shared newMakeDivisible
+	​
+
+
+is also structurally invalid unless the "mixing" is merely a signed permutation.
+
+New verdict
+
+KILL_LINEAR_MIX_BETWEEN_RAWMODSWITCH_AND_MAKEDIVISIBLE
+
+This closes the last obvious placement immediately adjacent to the nonlinear preprocessing boundary.
+
+2. Complete placement classification
+
+The relevant stock path is schematically
+
+SlotsToCoeff
+→
+reLinearize
+→
+rawModSwitch
+→
+newMakeDivisible
+→
+/
 5
-5-adic digits 可以任意 dirty；四个 RMFE correction images 都严格由 scalar lifts 生成，所以进入 Algorithm 4 时重新落入正确的 
-im
-⁡
-𝜙
-imϕ domain。这里没有声称与 stock 五条 raw transcript 相等，也没有声称 native correctness 已验证。
-
-Transform-side 的最终 ledger 是：
-
-19
- candidate vs 
-75
- baseline
-19 candidate vs 75 baseline
-	​
-
-
-其中 candidate 是
-
-1
- forward
-+
-1
- pure inverse
-+
-17
- pruned Frobenius
+→
+recryptEkey reconstruction
+→
+CoeffToSlots
+→
+correction/DigitExtract
 .
-1 forward+1 pure inverse+17 pruned Frobenius.
+SlotsToCoeff→reLinearize→rawModSwitch→newMakeDivisible→/5→recryptEkey reconstruction→CoeffToSlots→correction/DigitExtract.
 
-Recovery-side physical KS 是 
-18
-18 vs stock 
-70
-70，但每个 selected output 的 KS depth 都仍为 
-14
-14。这个 19 只能描述 transform-side automorphism/KS schedule，绝不能称为“整个 MultKey 只有 19 个操作”或直接拿来预测 latency。candidate 仍然需要 shared recryption middle、21 次 unpack add/sub、四套五路 RMFE recombinations 和完整 DigitExtract。
+The classification is now:
 
-Public-cost 状态也一致：Turn 17 的 fixed-Q local public factor 为
-
-507904
-,
-log
-⁡
-2
-=
-18.954196
- bits
-,
-507904,log
-2
-	​
-
-=18.954196 bits,
-
-但它不是 final HElib capacity 的可直接相减预测。Sparse packing 的一次性 triangle tax 是
-
-log
-⁡
-2
+First cross-branch sharing point	Status	Reason
+before / inside SlotsToCoeff	KILLED/PARKED	genuine mixing eventually crosses rawModSwitch → rigidity; pure cross-ciphertext hoisting is unsupported by stock HElib and previously had only a small ceiling
+after SlotsToCoeff, before rawModSwitch	KILLED	Turn 17 + Turns 22–23: balanced-lift information loss on actual full 
+𝐹
 5
+5
+F
+5
+5
+	​
+
+ Aung workload
+after rawModSwitch, before newMakeDivisible	KILLED	Turn 25 make-divisible rigidity corollary above
+after newMakeDivisible, before /5	NO DISTINCT OPPORTUNITY	/5 is linear once divisibility holds, so sharing here is algebraically equivalent to post-divide sharing
+after /5, before recryptEkey reconstruction	CORRECT but PARKED for value	Turn 18 exact common-
+𝐸
+E factorization; Turns 19–21 show only narrow tail sharing, expected latency gain below threshold and no provable capacity Pareto
+after reconstruction, before CoeffToSlots	KILLED/PARKED	the five reconstructed states are full dirty extension-valued objects; aggregate packing loses branch identity, while ordinary cross-ciphertext hoisting does not share HElib decomposition
+after CoeffToSlots	TOO LATE	expensive branch-local preprocessing and transforms already paid; only tiny recombination stage remains
+before DigitExtract only	BASELINE TERRITORY	essentially Aung's CtxtsToSlots/correction path, not a MultKey-sharing solution
+
+Aung's own measured 
+𝑝
 =
-2.321928
- bits
-.
-log
-2
-	​
-
-5=2.321928 bits.
-
-而 Turn 22 对最终 [2,0,3,1,4] labelling 的四输出 audit 中，candidate 相对 stock 的 recombination delta 分别为
-
-(
-−
-0.213245
+5
 ,
-−
-0.332235
-,
-−
-0.157599
-,
-−
-0.405765
-)
- bits
-,
-(−0.213245,−0.332235,−0.157599,−0.405765) bits,
-
-因此补齐 
-𝐿
-0
-…
-𝐿
-3
-L
-0
-	​
-
-…L
-3
-	​
-
- 没有产生新的 positive recombination blocker。
-
-Implementation contract 也已经闭合到一个很小的 source patch：evaluation 不需要 secret key，不增加新的 cryptographic primitive/security assumption；FULL key resource 下也不需要新的 evaluation-key type。唯一核心 HElib patch 是把 stock recryption preprocessing body 抽成一个 source-shared internal PubKey hook，继续保持 recryptEkey / recryptKeyID private、`newMakeDivisible` file-local。纯 external public-API implementation 目前做不到，但这是 encapsulation 问题，不是密码学 obstruction。
-
-Novelty boundary 在 Turn 24 后必须严格收窄。Geelen–Vercauteren 2024/1587 已经直接覆盖：
-
-纯文本
-pack multiple ciphertexts
--> shared bootstrapping work
--> unpack before digit removal/extraction
-
-所以 batch packing、shared middle、unpack-before-digit-extraction 都不能作为
+𝑘
+=
+5
+p=5,k=5 Corr./TnM
 NEXT_ITERATION: Resume from the saved handoff prompt and choose the next cheapest decisive test.
 CURRENT_STATUS: SESSION_RESEARCH_COMPLETE
-SESSION_ID: 9f6a2d90-3b67-490f-b928-18e9ab49f700
+SESSION_ID: bac326fb-55e6-4cb1-96f8-fdf5b91c8e70
 RESEARCH_TURN: 25 / 25
 
 ## Verdicts
-- Turn 1: PASS
-- Turn 2: FAIL
-- Turn 3: FAIL
-- Turn 6: PASS
-- Turn 7: PASS
-- Turn 8: PASS
-- Turn 9: PASS
-- Turn 10: FAIL
-- Turn 11: FAIL
-- Turn 12: FAIL
-- Turn 13: FAIL
-- Turn 14: PASS
-- Turn 15: PASS
-- Turn 16: PASS
-- Turn 17: PASS
+- Turn 8: FAIL
+- Turn 15: FAIL
+- Turn 16: FAIL
 - Turn 18: PASS
 - Turn 19: PASS
-- Turn 20: PASS
-- Turn 21: PASS
-- Turn 22: FAIL
-- Turn 24: FAIL
 
 ## Main hypothesis
 See latest completed research answer and handoff prompt.
 
 ## Key findings
 - Copy for Word
-Research Turn 25/25 — Session milestone consistency checkpoint
+Research Turn 25/25 — BOOT frontier-completeness / placement theorem audit
 
-Verdict：`PASS_SESSION_MILESTONE_CONSISTENCY_CHECKPOINT`。
+TRACK_ID: BOOT
+ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
 
-我对 Turn 14–24 的全部 surviving claims、被 kill claims、参数、坐标布局、four-output correction、cost ledger、implementation contract、prior-art boundary 和 future-native decision matrix 做了 cross-turn consistency audit，并重新校验了当前 /mnt/data 中 21 个 Turn 14–24 artifacts 的 SHA256。没有发现新的 theorem-level contradiction。
+Pending Codex/native task remains UNKNOWN / untouched. No native execution was launched.
 
-当前必须以以下最终版本为准：Turn 15 的初始 coordinate set 已被 Turn 16 的
+Primary hypothesis
 
-𝐽
+After Turns 12–24, there may still be an overlooked placement of the first cross-branch sharing step inside Aung's MultKey pipeline that simultaneously:
+
+preserves exact 
+5
+5-adic correctness under stock HElib preprocessing, and
+has enough remaining cost to plausibly clear the preregistered VALUE/PARETO bar.
+
+Minimal decisive test: partition the pipeline at every nonlinear/linear boundary and classify every ordinary linear-sharing placement.
+
+1. One missing case closes: mixing after rawModSwitch but before newMakeDivisible
+
+Turn 22's balanced-lift rigidity applies a second time here.
+
+For 
+𝑒
+′
 =
-{
-0
-,
-1024
-,
-7168
-,
-2048
-,
-6144
-}
-=
-{
-0
-,
-±
-1024
-,
-±
-2048
-}
+1
+e
+′
+=1, HElib's coefficientwise make-divisible operation is
+
+𝑀
 (
-m
-o
-d
-8192
-)
-J={0,1024,7168,2048,6144}={0,±1024,±2048}(mod8192)
-	​
-
-
-取代；Turn 18 的 
-𝐿
-0
-L
-0
-	​
-
--only optimal labelling 已被 Turn 22 的四输出联合最优
-
-[
-2
-,
-0
-,
-3
-,
-1
-,
-4
-]
-[2,0,3,1,4]
-	​
-
-
-取代；Turn 21 的“
 𝑧
-→
-z→ Algorithm 4”简写也已经被 Turn 22 修正为必须先构造
-
-𝐿
-0
+)
+=
+𝑧
++
+𝑞
+𝑣
+(
+𝑧
+)
+=
+𝑧
+−
+𝑞
+ 
+𝛽
+(
+𝑧
+ 
+mod
+ 
+𝑝
+)
 ,
-𝐿
-1
-,
-𝐿
-2
-,
-𝐿
-3
-.
-L
-0
-	​
-
-,L
-1
-	​
-
-,L
-2
-	​
-
-,L
-3
-	​
-
-	​
-
-.
-
-另外，candidate inverse 必须保持 pure power-basis / normal_basis=false 语义，不能重新使用 stock firstMap(normal_basis=true) 后把结果解释成 power-basis coordinates。
-
 
 ## Killed ideas
 - None

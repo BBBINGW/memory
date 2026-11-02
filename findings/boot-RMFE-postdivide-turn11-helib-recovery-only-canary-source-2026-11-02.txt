@@ -10,6 +10,7 @@
 // - normalization 28 is applied BEFORE the split tree, matching Turn 10.
 
 #include <helib/helib.h>
+#include <helib/debugging.h>
 #include <NTL/ZZX.h>
 #include <NTL/ZZ.h>
 
@@ -279,6 +280,7 @@ int main()
     assert(sk.isReachable(k,0));
     const auto& W = sk.getNextKSWmatrix(k,0);
     assert(W.fromKey.getPowerOfX() == k); // direct first hop
+    assert(W.ptxtSpace == MOD);
   }
 
   // Distinct values in both physical CRT components.

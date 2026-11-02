@@ -253,352 +253,989 @@ The B174 finding and post-B174 handoff remain historical parent evidence. The un
 
 TRACK_ID: BOOT
 ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
-LATEST_COMPLETED: Copy for Word
-Research Turn 25/25 — BOOT frontier-completeness / placement theorem audit
+LATEST_COMPLETED: Research Turn 25/25 — BGV hidden-scaling / exact reconstruction-linearity gate
 
 TRACK_ID: BOOT
 ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
 
-Pending Codex/native task remains UNKNOWN / untouched. No native execution was launched.
+Verdict
+PASS_BGV_HIDDEN_SCALE_RECONSTRUCTION_LINEARITY
+PASS_BGV_HIDDEN_SCALE_RECONSTRUCTION_LINEARITY
+	​
 
-Primary hypothesis
+Copy for Word
+PASS_EXACT_CIPHERTEXT_PART_LATE_AGGREGATION_EQUIVALENCE
+PASS_EXACT_CIPHERTEXT_PART_LATE_AGGREGATION_EQUIVALENCE
+	​
 
-After Turns 12–24, there may still be an overlooked placement of the first cross-branch sharing step inside Aung's MultKey pipeline that simultaneously:
 
-preserves exact 
-5
-5-adic correctness under stock HElib preprocessing, and
-has enough remaining cost to plausibly clear the preregistered VALUE/PARETO bar.
+这是 Turn 18 late-aggregation candidate 最后一个明显的 cheap source-semantic blocker；没有发现新的 obstruction。
 
-Minimal decisive test: partition the pipeline at every nonlinear/linear boundary and classify every ordinary linear-sharing placement.
+HElib 确实存在隐藏 BGV scaling，但不会破坏线性
 
-1. One missing case closes: mixing after rawModSwitch but before newMakeDivisible
+Pinned HElib@acdb264 中，`addConstant(ZZX)` 并不是直接把 
+𝑧
+0
+z
+0
+	​
 
-Turn 22's balanced-lift rigidity applies a second time here.
+ 加入 ciphertext。对于 ptxtSpace=625，它会先乘
 
-For 
-𝑒
-′
+𝑓
+𝐸
 =
-1
-e
-′
-=1, HElib's coefficientwise make-divisible operation is
-
-𝑀
+bal
+⁡
+625
 (
-𝑧
-)
-=
-𝑧
-+
-𝑞
-𝑣
-(
-𝑧
-)
-=
-𝑧
-−
-𝑞
- 
-𝛽
-(
-𝑧
+intFactor
+𝐸
+⋅
+𝑄
+𝐸
  
 mod
  
-𝑝
-)
-,
-M(z)=z+qv(z)=z−qβ(zmodp),
-
-where
-
-𝑞
-=
-𝑝
-𝑒
-+
-1
-=
-626
-q=p
-e
-+1=626
-
-and 
-𝛽
-β is the balanced representative modulo 
-𝑝
-=
-5
-p=5.
-
-Let 
-𝐴
-A be an invertible branch-mixing matrix with balanced integer lift 
-𝐴
-^
-A
-. Then
-
-𝑀
-(
-𝐴
-^
-𝑧
-)
-−
-𝐴
-^
-𝑀
-(
-𝑧
-)
-=
-𝑞
-(
-𝐴
-^
-𝛽
-(
-𝑧
-ˉ
-)
-−
-𝛽
-(
-𝐴
-𝑧
-ˉ
-)
-)
-.
-M(
-A
-z)−
-A
-M(z)=q(
-A
-β(
-z
-ˉ
-)−β(A
-z
-ˉ
-)).
-
-Therefore exact commutation for all branch states requires
-
-𝛽
-(
-𝐴
-𝑥
-)
-=
-𝐴
-^
-𝛽
-(
-𝑥
-)
-∀
-𝑥
-∈
-𝐹
-5
-𝑘
-.
-β(Ax)=
-A
-β(x)∀x∈F
-5
-k
-	​
-
-.
-
-By Turn 22's rigidity theorem, this happens only when 
-𝐴
-^
-A
- is a signed permutation.
-
-For any genuine mixing map the discrepancy is a nonzero multiple of 
-5
-𝑞
-5q; after /5 it becomes a nonzero multiple of
-
-𝑞
-≡
-1
-(
-𝑚
-𝑜
-𝑑
 625
 )
 ,
-q≡1(mod625),
+f
+E
+	​
 
-so it survives in the exact 
-𝑍
+=bal
 625
-Z
-625
 	​
 
- lift consumed by digit extraction.
-
-Thus:
-
-branchwise rawModSwitch
-→
-mix
-→
-shared newMakeDivisible
-branchwise rawModSwitch→mix→shared newMakeDivisible
+(intFactor
+E
 	​
 
-
-is also structurally invalid unless the "mixing" is merely a signed permutation.
-
-New verdict
-
-KILL_LINEAR_MIX_BETWEEN_RAWMODSWITCH_AND_MAKEDIVISIBLE
-
-This closes the last obvious placement immediately adjacent to the nonlinear preprocessing boundary.
-
-2. Complete placement classification
-
-The relevant stock path is schematically
-
-SlotsToCoeff
-→
-reLinearize
-→
-rawModSwitch
-→
-newMakeDivisible
-→
-/
-5
-→
-recryptEkey reconstruction
-→
-CoeffToSlots
-→
-correction/DigitExtract
-.
-SlotsToCoeff→reLinearize→rawModSwitch→newMakeDivisible→/5→recryptEkey reconstruction→CoeffToSlots→correction/DigitExtract.
-
-The classification is now:
-
-First cross-branch sharing point	Status	Reason
-before / inside SlotsToCoeff	KILLED/PARKED	genuine mixing eventually crosses rawModSwitch → rigidity; pure cross-ciphertext hoisting is unsupported by stock HElib and previously had only a small ceiling
-after SlotsToCoeff, before rawModSwitch	KILLED	Turn 17 + Turns 22–23: balanced-lift information loss on actual full 
-𝐹
-5
-5
-F
-5
-5
+⋅Q
+E
 	​
 
- Aung workload
-after rawModSwitch, before newMakeDivisible	KILLED	Turn 25 make-divisible rigidity corollary above
-after newMakeDivisible, before /5	NO DISTINCT OPPORTUNITY	/5 is linear once divisibility holds, so sharing here is algebraically equivalent to post-divide sharing
-after /5, before recryptEkey reconstruction	CORRECT but PARKED for value	Turn 18 exact common-
+mod625),
+
+其中 
+𝑄
 𝐸
-E factorization; Turns 19–21 show only narrow tail sharing, expected latency gain below threshold and no provable capacity Pareto
-after reconstruction, before CoeffToSlots	KILLED/PARKED	the five reconstructed states are full dirty extension-valued objects; aggregate packing loses branch identity, while ordinary cross-ciphertext hoisting does not share HElib decomposition
-after CoeffToSlots	TOO LATE	expensive branch-local preprocessing and transforms already paid; only tiny recombination stage remains
-before DigitExtract only	BASELINE TERRITORY	essentially Aung's CtxtsToSlots/correction path, not a MultKey-sharing solution
+Q
+E
+	​
 
-Aung's own measured 
-𝑝
-=
-5
+ 是 recryptEkey 当前 prime set 的乘积。
+
+因此真正的 reconstruction 应写成
+
+𝑅
+𝐸
+(
+𝑧
+0
 ,
-𝑘
+𝑧
+1
+)
 =
+𝐷
+(
+𝑧
+1
+)
+𝐸
++
+𝑓
+𝐸
+𝐷
+(
+𝑧
+0
+)
+,
+R
+E
+	​
+
+(z
+0
+	​
+
+,z
+1
+	​
+
+)=D(z
+1
+	​
+
+)E+f
+E
+	​
+
+D(z
+0
+	​
+
+),
+
+而不是简写的 
+𝐸
+𝑧
+1
++
+𝑧
+0
+Ez
+1
+	​
+
++z
+0
+	​
+
+。
+
+关键是：`multByConstant(ZZX)` 不会改变
+
+ptxtSpace
+intFactor
+primeSet
+
+所以五个 hypothetical branch reconstruction 全都拥有同一个 
+𝑓
+𝐸
+f
+E
+	​
+
+。
+
+于是
+
+𝑅
+𝐸
+(
+∑
+𝑖
+𝑧
+0
+,
+𝑖
+,
+∑
+𝑖
+𝑧
+1
+,
+𝑖
+)
+	
+=
+𝐷
+(
+∑
+𝑖
+𝑧
+1
+,
+𝑖
+)
+𝐸
++
+𝑓
+𝐸
+𝐷
+(
+∑
+𝑖
+𝑧
+0
+,
+𝑖
+)
+
+
+	
+=
+∑
+𝑖
+(
+𝐷
+(
+𝑧
+1
+,
+𝑖
+)
+𝐸
++
+𝑓
+𝐸
+𝐷
+(
+𝑧
+0
+,
+𝑖
+)
+)
+
+
+	
+=
+∑
+𝑖
+𝑅
+𝐸
+(
+𝑧
+0
+,
+𝑖
+,
+𝑧
+1
+,
+𝑖
+)
+.
+R
+E
+	​
+
+(
+i
+∑
+	​
+
+z
+0,i
+	​
+
+,
+i
+∑
+	​
+
+z
+1,i
+	​
+
+)
+	​
+
+=D(
+i
+∑
+	​
+
+z
+1,i
+	​
+
+)E+f
+E
+	​
+
+D(
+i
+∑
+	​
+
+z
+0,i
+	​
+
+)
+=
+i
+∑
+	​
+
+(D(z
+1,i
+	​
+
+)E+f
+E
+	​
+
+D(z
+0,i
+	​
+
+))
+=
+i
+∑
+	​
+
+R
+E
+	​
+
+(z
+0,i
+	​
+
+,z
+1,i
+	​
+
+)
+	​
+
+.
+	​
+
+
+这是 ciphertext-part level exact equality，不是只在 plaintext modulo 625 上等价。
+
+Ctxt::addCtxt 也不会偷偷重新 harmonize
+
+所有 separate 
+𝑅
+𝑖
+R
+i
+	​
+
+ 都由同一个 recryptEkey copy 开始，因此具有相同：
+
+ptxtSpace
+=
+625
+,
+intFactor
+=
+𝐹
+𝐸
+,
+primeSet
+=
+𝑃
+𝐸
+.
+ptxtSpace=625,intFactor=F
+E
+	​
+
+,primeSet=P
+E
+	​
+
+.
+
+HElib 只有在两个 BGV ciphertext 的 intFactor 不同时才运行 factor harmonization。
+
+这里 factors 相同，所以
+
+𝑒
+1
+=
+𝑒
+2
+=
+1.
+e
+1
+	​
+
+=e
+2
+	​
+
+=1.
+
+因此 reference path 中把五个 reconstructed ciphertext 加起来，也是直接逐 part 求和，没有额外 hidden rescaling。
+
+一个有利的 noise refinement
+
+Turn 19 的 factor-5 penalty 是安全的 worst-case envelope，但现在可以明确：
+
+它不是结构上必然付出的五份独立 boot-key noise。
+
+五条 hypothetical reconstruction 都复用了同一个固定 recryptEkey ciphertext 
+𝐸
+E。
+
+若写成
+
+𝐸
+=
+Enc
+⁡
+(
+𝑠
+𝑅
+)
++
+𝜂
+𝐸
+,
+E=Enc(s
+R
+	​
+
+)+η
+E
+	​
+
+,
+
+那么
+
+∑
+𝑖
+𝑧
+1
+,
+𝑖
+𝐸
+=
+(
+∑
+𝑖
+𝑧
+1
+,
+𝑖
+)
+Enc
+⁡
+(
+𝑠
+𝑅
+)
++
+(
+∑
+𝑖
+𝑧
+1
+,
+𝑖
+)
+𝜂
+𝐸
+.
+i
+∑
+	​
+
+z
+1,i
+	​
+
+E=(
+i
+∑
+	​
+
+z
+1,i
+	​
+
+)Enc(s
+R
+	​
+
+)+(
+i
+∑
+	​
+
+z
+1,i
+	​
+
+)η
+E
+	​
+
+.
+
+不是
+
+𝜂
+𝐸
+,
+1
++
+⋯
++
+𝜂
+𝐸
+,
 5
-p=5,k=5 Corr./TnM
+η
+E,1
+	​
+
++⋯+η
+E,5
+	​
+
+
+这样的五份独立噪声。
+
+因此 fused reconstruction 的 actual boot-key-noise contribution 由
+
+∥
+∑
+𝑖
+𝑧
+1
+,
+𝑖
+∥
+	​
+
+i
+∑
+	​
+
+z
+1,i
+	​
+
+	​
+
+
+决定。
+
+当然仍有安全上界
+
+∥
+∑
+𝑖
+𝑧
+1
+,
+𝑖
+∥
+≤
+5
+max
+⁡
+𝑖
+∥
+𝑧
+1
+,
+𝑖
+∥
+,
+	​
+
+i
+∑
+	​
+
+z
+1,i
+	​
+
+	​
+
+≤5
+i
+max
+	​
+
+∥z
+1,i
+	​
+
+∥,
+
+所以 Turn 19 的
+
++
+log
+⁡
+2
+5
++log
+2
+	​
+
+5
+
+仍是合法 conservative bound；但 native 中完全可能明显更好。
+
+Future native correctness oracle 再加一条强检查
+
+在正式 timing 之前，应构造：
+
+Reference
+
+𝑅
+𝑖
+=
+𝐸
+;
+𝑅
+𝑖
+←
+𝑅
+𝑖
+𝑧
+1
+,
+𝑖
+;
+𝑅
+𝑖
+←
+𝑅
+𝑖
++
+𝑧
+0
+,
+𝑖
+,
+R
+i
+	​
+
+=E;R
+i
+	​
+
+←R
+i
+	​
+
+z
+1,i
+	​
+
+;R
+i
+	​
+
+←R
+i
+	​
+
++z
+0,i
+	​
+
+,
+
+然后
+
+𝑅
+r
+e
+f
+=
+∑
+𝑖
+𝑅
+𝑖
+.
+R
+ref
+	​
+
+=
+i
+∑
+	​
+
+R
+i
+	​
+
+.
+
+Candidate
+
+𝑍
+0
+=
+∑
+𝑖
+𝑧
+0
+,
+𝑖
+,
+𝑍
+1
+=
+∑
+𝑖
+𝑧
+1
+,
+𝑖
+,
+Z
+0
+	​
+
+=
+i
+∑
+	​
+
+z
+0,i
+	​
+
+,Z
+1
+	​
+
+=
+i
+∑
+	​
+
+z
+1,i
+	​
+
+,
+𝑅
+f
+u
+s
+e
+d
+=
+𝐸
+𝑍
+1
++
+𝑍
+0
+.
+R
+fused
+	​
+
+=EZ
+1
+	​
+
++Z
+0
+	​
+
+.
+
+必须验证：
+
+ptxtSpace 同为 625；
+intFactor 相同；
+primeSet 相同；
+part handles 相同；
+对应 DCRT ciphertext parts exact equal；
+decrypt 后 temporary plaintext modulo 625 exact equal。
+
+不要要求 noiseBound 或 generic auxiliary bookkeeping 数值相同，因为两条路径的 conservative bookkeeping 可以不同，而 ciphertext algebra 仍然完全一致。
+
+Session frontier
+
+Turns 18–25 现在已经静态覆盖：
+
+nonlinear placement；
+tagged ThinEvalMap typing；
+post-divide exact affine aggregation；
+实际 BGV intFactor/addConstant scaling；
+full-domain 17-call recovery；
+𝐿
+0
+,
+…
+,
+𝐿
+3
+L
+0
+	​
+
+,…,L
+3
+	​
+
+ 四输出接口；
+75
+→
+23
+75→23 transform ledger；
+conservative capacity；
+latency viability threshold；
+narrow prior-art boundary；
+private boot-key implementation contract；
+future native correctness/timing preregistra
 NEXT_ITERATION: Resume from the saved handoff prompt and choose the next cheapest decisive test.
 CURRENT_STATUS: SESSION_RESEARCH_COMPLETE
-SESSION_ID: bac326fb-55e6-4cb1-96f8-fdf5b91c8e70
+SESSION_ID: d3bf50a7-d808-41e6-a1d0-b56ad2f0d03c
 RESEARCH_TURN: 25 / 25
 
 ## Verdicts
-- Turn 8: FAIL
-- Turn 15: FAIL
-- Turn 16: FAIL
-- Turn 18: PASS
-- Turn 19: PASS
+- Turn 9: FAIL
+- Turn 22: PASS
+- Turn 24: PASS
 
 ## Main hypothesis
 See latest completed research answer and handoff prompt.
 
 ## Key findings
-- Copy for Word
-Research Turn 25/25 — BOOT frontier-completeness / placement theorem audit
+- Research Turn 25/25 — BGV hidden-scaling / exact reconstruction-linearity gate
 
 TRACK_ID: BOOT
 ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
 
-Pending Codex/native task remains UNKNOWN / untouched. No native execution was launched.
+Verdict
+PASS_BGV_HIDDEN_SCALE_RECONSTRUCTION_LINEARITY
+PASS_BGV_HIDDEN_SCALE_RECONSTRUCTION_LINEARITY
+	​
 
-Primary hypothesis
+Copy for Word
+PASS_EXACT_CIPHERTEXT_PART_LATE_AGGREGATION_EQUIVALENCE
+PASS_EXACT_CIPHERTEXT_PART_LATE_AGGREGATION_EQUIVALENCE
+	​
 
-After Turns 12–24, there may still be an overlooked placement of the first cross-branch sharing step inside Aung's MultKey pipeline that simultaneously:
 
-preserves exact 
-5
-5-adic correctness under stock HElib preprocessing, and
-has enough remaining cost to plausibly clear the preregistered VALUE/PARETO bar.
+这是 Turn 18 late-aggregation candidate 最后一个明显的 cheap source-semantic blocker；没有发现新的 obstruction。
 
-Minimal decisive test: partition the pipeline at every nonlinear/linear boundary and classify every ordinary linear-sharing placement.
+HElib 确实存在隐藏 BGV scaling，但不会破坏线性
 
-1. One missing case closes: mixing after rawModSwitch but before newMakeDivisible
+Pinned HElib@acdb264 中，`addConstant(ZZX)` 并不是直接把 
+𝑧
+0
+z
+0
+	​
 
-Turn 22's balanced-lift rigidity applies a second time here.
+ 加入 ciphertext。对于 ptxtSpace=625，它会先乘
 
-For 
-𝑒
-′
+𝑓
+𝐸
 =
-1
-e
-′
-=1, HElib's coefficientwise make-divisible operation is
-
-𝑀
+bal
+⁡
+625
 (
-𝑧
-)
-=
-𝑧
-+
-𝑞
-𝑣
-(
-𝑧
-)
-=
-𝑧
-−
-𝑞
- 
-𝛽
-(
-𝑧
+intFactor
+𝐸
+⋅
+𝑄
+𝐸
  
 mod
  
-𝑝
+625
 )
 ,
+f
+E
+	​
+
+=bal
+625
+	​
+
+(intFactor
+E
+	​
+
+⋅Q
+E
+	​
+
+mod625),
+
+其中 
+𝑄
+𝐸
+Q
+E
+	​
+
+ 是 recryptEkey 当前 prime set 的乘积。
+
+因此真正的 reconstruction 应写成
+
+𝑅
+𝐸
+(
+𝑧
+0
+,
+𝑧
+1
+)
+=
+𝐷
+(
+𝑧
+1
+)
+𝐸
++
+𝑓
+𝐸
+𝐷
+(
+𝑧
+0
+)
+,
+R
+E
+	​
+
+(z
+0
+	​
+
+,z
+1
+	​
+
+)=D(z
+1
+	​
+
+)E+f
+E
+	​
+
+D(z
+0
+	​
+
+),
+
+而不是简写的 
+𝐸
+𝑧
+1
++
+𝑧
+0
+Ez
+1
+	​
+
++z
+0
+	​
+
+。
+
+关键是：`multByConstant(ZZ
 
 ## Killed ideas
 - None

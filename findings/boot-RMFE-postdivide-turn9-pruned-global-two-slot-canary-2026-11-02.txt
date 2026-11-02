@@ -1,0 +1,1 @@
+Turn 9 exact pruned global two-slot checker source is embedded in the companion markdown finding; durable headline outputs: calls=17, parent_counts=[1,1,1,1,1,1,1,1,1,1,1,2,4], child_counts=[1,1,1,1,1,1,1,1,1,1,2,4,5], pruned_coord_order=[0,2048,6144,1024,7168], pruned_branch_order=[2,1,4,0,3], reorder_to_branch=[3,1,0,4,2], exact leaves PASS, exact L0..L3 PASS.

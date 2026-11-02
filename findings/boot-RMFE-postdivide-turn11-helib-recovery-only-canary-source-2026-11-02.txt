@@ -14,11 +14,15 @@
 #include <NTL/ZZ.h>
 
 #include <array>
-#include <cassert>
+#include <cassert>\n#include <cstdlib>
 #include <iostream>
 #include <map>
 #include <memory>
 #include <vector>
+
+#ifndef HELIB_DEBUG
+#error "BOOT Turn-11/12 canary requires HElib built with HELIB_DEBUG=ON so exact decrypt continues even if the known-unreliable isCorrect() estimate is false."
+#endif
 
 using Sparse = std::map<long, long>;
 
@@ -222,7 +226,13 @@ static void assertDecrypt(const helib::SecKey& sk,
 {
   assert(c.getPtxtSpace() == MOD);
   assert(c.getKeyID() == 0);
-  assert(c.isCorrect());
+
+  // Pinned HElib's own extract-digits tests explicitly disable isCorrect()
+  // as an acceptance criterion because it is not correctly defined there.
+  // In HELIB_DEBUG mode Decrypt warns rather than throws on a false estimate,
+  // so exact decryption equality below is the decisive oracle.
+  if (!c.isCorrect())
+    std::cerr << "diagnostic: isCorrect=false at " << stage << "\\n";
 
   NTL::ZZX got;
   sk.Decrypt(got, c); // exact semantic check also covers private intFactor
@@ -249,6 +259,7 @@ int main()
 
   helib::SecKey sk(context);
   sk.GenSecKey();
+  helib::setupDebugGlobals(&sk, context.shareEA());
 
   // Generate only the 13 direct matrices needed by this correctness canary.
   // Explicit ptxtSpace=625 avoids dependence on context bootstrappability.
@@ -330,6 +341,11 @@ int main()
       helib::Ctxt tmp = n.ctxt;
       tmp.frobeniusAutomorph(j);
       ++calls;
+
+      // Source-faithful HElib intraSlot unpack calls cleanUp() immediately
+      // after every Frobenius. smartAutomorph/reLinearize temporarily leaves
+      // special primes in the output primeSet; cleanUp drops them again.
+      tmp.cleanUp();
 
       assert(tmp.getPtxtSpace() == MOD);
       assert(tmp.getKeyID() == 0);
@@ -436,5 +452,6 @@ int main()
   std::cout << "branch_reorder_indices=3,1,0,4,2\n";
   std::cout << "selected_dirty_lifts=PASS\n";
   std::cout << "L0_L3_exact=PASS\n";
+  helib::cleanupDebugGlobals();
   return 0;
 }

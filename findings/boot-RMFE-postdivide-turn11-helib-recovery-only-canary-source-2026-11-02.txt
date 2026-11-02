@@ -7,7 +7,7 @@
 // - SecKey::Encrypt(..., 625) is intentionally used for TEST SETUP ONLY;
 // - 13 direct Frobenius matrices are generated explicitly at ptxtSpace=625;
 // - production candidate still uses the ordinary public/evaluation-key path;
-// - normalization 28 is applied BEFORE the split tree, matching Turn 10.
+// - production normalization uses HElib's BGV scalar-unit path: after the pure inverse and before the split tree, call multByConstant(28L).
 
 #include <helib/helib.h>
 #include <helib/debugging.h>
@@ -313,17 +313,29 @@ int main()
     }
   }
 
-  // Production placement: pre-normalize by 28 before the tree.
-  Sparse rootPlain = scale(crtPairPoly(A,B), 28);
+  // Production-faithful normalization boundary:
+  // the pure inverse output is unnormalized; apply the BGV scalar-unit 28
+  // immediately before the split tree. Since gcd(28,625)=1, pinned HElib
+  // changes intFactor by 28^{-1}=67 and does not increase noiseBound.
+  Sparse rootUnnormalized = crtPairPoly(A,B);
+  Sparse rootPlain = scale(rootUnnormalized, 28);
 
   helib::Ctxt root(sk, MOD);
   // Test setup deliberately uses SecKey encryption at ptxtSpace=625.
-  sk.Encrypt(root, toZZX(rootPlain), MOD);
+  sk.Encrypt(root, toZZX(rootUnnormalized), MOD);
   assert(root.getPtxtSpace() == MOD);
   assert(root.getKeyID() == 0);
 
   const helib::IndexSet basePrimeSet = root.getPrimeSet();
-  assertDecrypt(sk, root, rootPlain, "root");
+  assertDecrypt(sk, root, rootUnnormalized, "root-unnormalized");
+
+  const auto noiseBeforeNormalize = root.getNoiseBound();
+  root.multByConstant(28L);
+  assert(root.getNoiseBound() == noiseBeforeNormalize);
+  assert(root.getPtxtSpace() == MOD);
+  assert(root.getKeyID() == 0);
+  assert(root.getPrimeSet() == basePrimeSet);
+  assertDecrypt(sk, root, rootPlain, "root-normalized-unit28");
 
   std::vector<Node> nodes;
   nodes.emplace_back(0, root, rootPlain);
@@ -453,6 +465,7 @@ int main()
   std::cout << "pruned_coord_order=0,2048,6144,1024,7168\n";
   std::cout << "pruned_branch_order=2,1,4,0,3\n";
   std::cout << "branch_reorder_indices=3,1,0,4,2\n";
+  std::cout << "scalar_unit_28=PASS\n";
   std::cout << "selected_dirty_lifts=PASS\n";
   std::cout << "L0_L3_exact=PASS\n";
   helib::cleanupDebugGlobals();

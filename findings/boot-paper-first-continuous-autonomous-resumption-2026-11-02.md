@@ -49,3 +49,16 @@ At approximately 16:01–16:05 Asia/Hong_Kong, the PI reported that a newly open
 
 The attempted successor conversation `6ae843a2-1530-83ec-b2a7-1d342afc2f45` was not adopted as the Research conversation. The bridge's second stale receipt for PI message `24` was invalidated, the wrong-model partial generation was not accepted as scientific evidence, and no Turn 8 finalization or count was created. The logical session is `PAUSED` at Turn `7/25`. No downgrade, API fallback, duplicate scientific turn, or task rerun occurred. The continuous-autonomy authorization remains durable and should be retried idempotently only when the required `GPT-5.6 Sol / xhigh` model is genuinely selectable.
 
+## 2026-11-02 model availability re-verification
+
+The preceding account-wide quota conclusion is superseded by newer direct evidence. In the original Research Chat `6ae80a48-0728-83ec-bd80-9021e9ce8bd6` (`密码学 22.0`), the exact model row `GPT-5.6 Sol` was checked, the reasoning control was `Extra High` (the fourth of five strength positions), and disposable probe `BOOT-MODEL-PROBE-20261102-01` completed with the exact assistant response `MODEL_PROBE_OK`. The probe invoked no tools, emitted no orchestrator control, changed no paper state, and consumed no Research Turn. Bridge observation of the same completed message recorded `model=GPT-5.6 Sol` and `reasoningEffort=Extra High`. A stale menu string saying `已达到使用限额` therefore does not constitute a current generation blocker.
+
+The four distinct states are now:
+
+- configured policy: `gpt-5.6-sol / xhigh`;
+- visible UI selection: `GPT-5.6 Sol / Extra High`;
+- successful generated canary: `GPT-5.6 Sol / Extra High`, response `MODEL_PROBE_OK`;
+- scientific accounting: Turn `1–7` unchanged, Turn `8` still uncounted.
+
+The remaining pause is no longer a quota pause. A Bridge parser defect classified the historical response button `已停止思考` as the live `停止` generation button because the detector used substring matching. Consequently the completed canary was reported as `busy=true`. The runtime fix changes live stop-button detection to exact label matching and advances the Bridge version to `0.2.11`; it does not change scientific evidence or task provenance. The same Research Chat must load Bridge `0.2.11` before the pending logical Turn 8 is resumed exactly once. No second formal Research Session or completed Codex/native task is permitted.
+

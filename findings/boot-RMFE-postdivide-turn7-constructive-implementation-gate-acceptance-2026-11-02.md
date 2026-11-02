@@ -10,13 +10,9 @@ Track/subline: `BOOT / B158_CHECKPOINT_DECOUPLED_HALF_BASIS`
 
 The bounded Codex task and Research Turn 7 overlapped. The orchestrator sent the Turn-7 side-research prompt while the task was still treated as pending. The Research GPT response explicitly states that it did not use or infer the task result. Turn 7 was counted exactly once at 2026-11-02T07:22:18.852Z.
 
-The task completed without native execution or historical rerun and produced a negative construction result. It did not create executable recovery source or a canary. The Research GPT independently proved a new mathematical fact: in the actual local algebra
-[
-E=(mathbb Z/625mathbb Z)[X]/(X^{8192}+182),
-]
-the 13-level binary split recurrence has exact invariant (N_{13,j}=8192z_j), normalization by (28=8192^{-1}mod 625), and target pruning retains 17 parent automorphism calls. It also recorded the full transport (ho(f)(X)=f(X^{16383})) and the two legal places to absorb the rho permutation/unit correction.
+The task completed without native execution or historical rerun and produced a negative construction result. It did not create executable recovery source or a canary. The Research GPT independently proved a new mathematical fact: in the actual local algebra `E=(Z/625Z)[X]/(X^8192+182)`, the 13-level binary split recurrence has exact invariant `N_(13,j)=8192*z_j`, normalization by `28=8192^(-1) mod 625`, and target pruning retains 17 parent automorphism calls. It also recorded the full transport `rho(f)(X)=f(X^16383)` and the two legal places to absorb the rho permutation/unit correction.
 
-No Turn 8 was counted. A prematurely scheduled Turn-8 browser generation was stopped before scientific commitment; the durable session remains at turn_count=7 and PAUSED.
+No Turn 8 was counted. A prematurely scheduled Turn-8 browser generation was stopped before scientific commitment; the durable session remains at `turn_count=7` and `PAUSED`.
 
 ## Independent audit of the task result against Turn 7
 
@@ -48,7 +44,7 @@ PAPER_READINESS: NOT_READY
 
 ## What scientific uncertainty was reduced
 
-This turn did reduce one complete-paper uncertainty: the declared 17-call pruning is not merely a combinatorial ledger that secretly fails because (X^{8192}=443) in the local ring. The exact split theorem rules out hidden 182/443 factors inside the recurrence and shows that a faithful implementation should exist.
+This turn did reduce one complete-paper uncertainty: the declared 17-call pruning is not merely a combinatorial ledger that secretly fails because `X^8192=443` in the local ring. The exact split theorem rules out hidden 182/443 factors inside the recurrence and shows that a faithful implementation should exist.
 
 It did **not** reduce the implementation, end-to-end correctness, security-resource, or value uncertainty enough to pass their gates. Therefore this is genuine theorem progress, not a complete constructive implementation pass.
 

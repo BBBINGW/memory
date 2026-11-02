@@ -76,7 +76,7 @@ static Sparse mul(const Sparse& a, const Sparse& b)
       long t = ea + eb;
       long q = t / N;
       long r = t % N;
-      long sgn = (q & 1) ? -1 : 1;
+      long sgn = (q % 2 != 0) ? -1 : 1;
       put(out, r, (out.count(r) ? out[r] : 0) + sgn*ca*cb);
     }
   }
@@ -97,7 +97,7 @@ static Sparse mulX(const Sparse& a, long k)
       q = - ((-t + N - 1) / N);
       r = t - q*N;
     }
-    long sgn = (q & 1) ? -1 : 1;
+    long sgn = (q % 2 != 0) ? -1 : 1;
     put(out, r, (out.count(r) ? out[r] : 0) + sgn*c);
   }
   return out;
@@ -110,7 +110,7 @@ static Sparse automorph(const Sparse& a, long k)
     long t = e * k;
     long q = t / N;
     long r = t % N;
-    long sgn = (q & 1) ? -1 : 1;
+    long sgn = (q % 2 != 0) ? -1 : 1;
     put(out, r, (out.count(r) ? out[r] : 0) + sgn*c);
   }
   return out;
@@ -274,10 +274,18 @@ int main()
   const std::array<long,5> slot1 = {101,202,303,404,505};
 
   Sparse A, B;
+  std::array<long,5> lift0{}, lift1{};
   for (long pos=0; pos<5; ++pos) {
     long br = LABEL[pos];
-    put(A, J[pos], slot0[br]);
-    put(B, J[pos], slot1[br]);
+
+    // Also dirty the SELECTED lifts themselves by distinct multiples of 5.
+    // Their mod-5 messages are unchanged, but L0..L3 must use the exact lifts.
+    put(A, J[pos], slot0[br] + 5*(7 + 11*pos));
+    put(B, J[pos], slot1[br] + 5*(13 + 17*pos));
+    lift0[br] = A[J[pos]];
+    lift1[br] = B[J[pos]];
+    assert(mod625(lift0[br]) % 5 == mod625(slot0[br]) % 5);
+    assert(mod625(lift1[br]) % 5 == mod625(slot1[br]) % 5);
   }
 
   // Deterministic off-target 5-divisible dirty state.
@@ -411,7 +419,7 @@ int main()
       if (!L) L = std::make_unique<helib::Ctxt>(term);
       else *L += term;
 
-      ref = add(ref, mul(crtScalar(slot0[br],slot1[br]), K[br]));
+      ref = add(ref, mul(crtScalar(lift0[br],lift1[br]), K[br]));
     }
 
     assert(L);
@@ -426,6 +434,7 @@ int main()
   std::cout << "pruned_coord_order=0,2048,6144,1024,7168\n";
   std::cout << "pruned_branch_order=2,1,4,0,3\n";
   std::cout << "branch_reorder_indices=3,1,0,4,2\n";
+  std::cout << "selected_dirty_lifts=PASS\n";
   std::cout << "L0_L3_exact=PASS\n";
   return 0;
 }

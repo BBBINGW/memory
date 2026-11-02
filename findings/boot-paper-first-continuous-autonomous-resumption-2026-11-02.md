@@ -39,3 +39,9 @@ This is a bounded construction/value gate, not permission to repeat local counte
 - Minimal correctness canary precedes expensive native performance measurement.
 - Important evidence and candidate transitions must be persisted to GitHub Notes or verified local Git authority with provenance and hashes.
 
+## Runtime activation note
+
+At approximately 15:51 Asia/Hong_Kong, the orchestrator attempted to deliver the durable PI-resume message to the same ordinary Research Chat. The bridge returned the identifier of the pre-existing stopped Turn-8 retry rather than a new visible user message. Direct UI inspection confirmed that no new PI message had appeared and that the required selected model remained `GPT-5.6 Sol / Extra High` but displayed `已达到使用限额`.
+
+The false delivery receipt was explicitly invalidated without deleting history. PI message `22` remains `QUEUED`, the pending prompt was cleared, the session remains at counted Turn `7` with no counted Turn `8`, and the runtime is safely `PAUSED` until the required model becomes available. No downgrade, API fallback, duplicate scientific turn, or task rerun occurred. The continuous-autonomy authorization remains durable and should be retried idempotently when the required model quota recovers.
+

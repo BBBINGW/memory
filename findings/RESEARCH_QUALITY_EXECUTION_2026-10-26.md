@@ -2,6 +2,8 @@
 
 **Status:** PI-requested methodology upgrade. This document is normative for future research methodology but **does not authorize restarting paused tracks, Codex/remote runs, editing other tracks, or rewriting historical findings**. Complement `AGENT.md`, `RESEARCH_PHILOSOPHY.md`, and `START_RESEARCH_SESSION.md`. Existing contradictory older statements need explicit reconciliation; never silently reinterpret scientific outcomes.
 
+**2026-11-02 paper-first extension:** Apply the durable candidate, synchronized gate, value-review, native-ordering, and handoff rules in [`RESEARCH_CONTRIBUTION_PROTOCOL_2026-11-02.md`](RESEARCH_CONTRIBUTION_PROTOCOL_2026-11-02.md). This extension changes research scheduling and persistence, not historical scientific conclusions or existing task provenance. For sessions explicitly governed by `CONTINUOUS_AUTONOMOUS_RESEARCH=true`, it supersedes the older per-task PI-approval sentence in G5: cheapest-decisive execution inside the authorized objective does not require separate PI approval, while top-level direction, assumptions, heavy external-resource authorization, and final publication judgment remain PI-controlled.
+
 ## Preserve proven strengths
 
 - One smallest falsifiable **primary hypothesis** and one cheapest decisive test each iteration; proactively find counterexamples, not evidence confirming a favorite idea.

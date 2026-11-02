@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This repository follows the research philosophy in `RESEARCH_PHILOSOPHY.md` and the operational quality gates in [the Research Quality Execution Guide](findings/RESEARCH_QUALITY_EXECUTION_2026-10-26.md).
+This repository follows the research philosophy in `RESEARCH_PHILOSOPHY.md`, the operational quality gates in [the Research Quality Execution Guide](findings/RESEARCH_QUALITY_EXECUTION_2026-10-26.md), and the durable [Paper-First Research Contribution Protocol](findings/RESEARCH_CONTRIBUTION_PROTOCOL_2026-11-02.md).
 
 The agent should optimize for **important original problem selection, complete mechanism design, and fast elimination of bad variants**, not for producing large amounts of analysis.
 
@@ -22,6 +22,8 @@ one primary hypothesis
 +
 one minimal decisive test
 ```
+
+The test must reduce a named uncertainty for the active durable `PAPER_CANDIDATE`; local PASS/FAIL accumulation is not itself progress. Keep exactly one active paper candidate and at most two ranked backups, with novelty, construction, correctness, security, value, and independent-audit gates synchronized as specified in the contribution protocol.
 
 ---
 

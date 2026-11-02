@@ -1,5 +1,7 @@
 # FHE Research Philosophy
 
+> Operational paper-first state, contribution gates, bounded redesign, and handoff rules are defined in [`findings/RESEARCH_CONTRIBUTION_PROTOCOL_2026-11-02.md`](findings/RESEARCH_CONTRIBUTION_PROTOCOL_2026-11-02.md). The smallest falsifiable claim remains mandatory, but each test must reduce uncertainty for a complete publishable claim.
+
 ## 1. 总体研究哲学：填洞式科研
 
 我们的目标不是从零幻想一个全新的 primitive，而是从已有 FHE 文献、算法、证明和参数空间中系统寻找真实缺口，并尝试用尽可能小但有原则性的技术修改去填补。

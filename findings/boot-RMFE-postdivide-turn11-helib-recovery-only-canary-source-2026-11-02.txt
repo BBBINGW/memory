@@ -1,0 +1,431 @@
+// BOOT Turn 11 recovery-only HElib canary
+// Pinned target: homenc/HElib@acdb264e1a991eaee35fd8b3c31bebe9528c49a1
+// Evidence goal: small correctness canary only. No timing, no bootstrapping, no FULL-key resource claim.
+//
+// Important:
+// - application context remains r=1;
+// - SecKey::Encrypt(..., 625) is intentionally used for TEST SETUP ONLY;
+// - 13 direct Frobenius matrices are generated explicitly at ptxtSpace=625;
+// - production candidate still uses the ordinary public/evaluation-key path;
+// - normalization 28 is applied BEFORE the split tree, matching Turn 10.
+
+#include <helib/helib.h>
+#include <NTL/ZZX.h>
+#include <NTL/ZZ.h>
+
+#include <array>
+#include <cassert>
+#include <iostream>
+#include <map>
+#include <memory>
+#include <vector>
+
+using Sparse = std::map<long, long>;
+
+static constexpr long MOD = 625;
+static constexpr long M = 32768;
+static constexpr long N = 16384;
+static constexpr long P = 5;
+static constexpr long D = 8192;
+
+static const std::array<long,5> J = {0,1024,7168,2048,6144};
+static const std::array<long,5> LABEL = {2,0,3,1,4};
+
+static long mod625(long x)
+{
+  x %= MOD;
+  if (x < 0) x += MOD;
+  return x;
+}
+
+static long balanced625(long x)
+{
+  x = mod625(x);
+  return (x <= MOD/2) ? x : x - MOD;
+}
+
+static void put(Sparse& a, long e, long c)
+{
+  c = mod625(c);
+  if (c == 0) a.erase(e);
+  else a[e] = c;
+}
+
+static Sparse add(const Sparse& a, const Sparse& b, long sign=1)
+{
+  Sparse out = a;
+  for (const auto& [e,c] : b)
+    put(out, e, (out.count(e) ? out[e] : 0) + sign*c);
+  return out;
+}
+
+static Sparse scale(const Sparse& a, long s)
+{
+  Sparse out;
+  for (const auto& [e,c] : a)
+    put(out, e, c*s);
+  return out;
+}
+
+// Multiply in (Z/625Z)[X]/(X^16384+1).
+static Sparse mul(const Sparse& a, const Sparse& b)
+{
+  Sparse out;
+  for (const auto& [ea,ca] : a) {
+    for (const auto& [eb,cb] : b) {
+      long t = ea + eb;
+      long q = t / N;
+      long r = t % N;
+      long sgn = (q & 1) ? -1 : 1;
+      put(out, r, (out.count(r) ? out[r] : 0) + sgn*ca*cb);
+    }
+  }
+  return out;
+}
+
+static Sparse mulX(const Sparse& a, long k)
+{
+  Sparse out;
+  for (const auto& [e,c] : a) {
+    long t = e + k;
+    long q, r;
+    if (t >= 0) {
+      q = t / N;
+      r = t % N;
+    } else {
+      // floor division: t=qN+r with 0<=r<N
+      q = - ((-t + N - 1) / N);
+      r = t - q*N;
+    }
+    long sgn = (q & 1) ? -1 : 1;
+    put(out, r, (out.count(r) ? out[r] : 0) + sgn*c);
+  }
+  return out;
+}
+
+static Sparse automorph(const Sparse& a, long k)
+{
+  Sparse out;
+  for (const auto& [e,c] : a) {
+    long t = e * k;
+    long q = t / N;
+    long r = t % N;
+    long sgn = (q & 1) ? -1 : 1;
+    put(out, r, (out.count(r) ? out[r] : 0) + sgn*c);
+  }
+  return out;
+}
+
+static Sparse power(Sparse a, long e)
+{
+  Sparse out{{0,1}};
+  while (e > 0) {
+    if (e & 1) out = mul(out, a);
+    e >>= 1;
+    if (e) a = mul(a, a);
+  }
+  return out;
+}
+
+static NTL::ZZX toZZX(const Sparse& a)
+{
+  NTL::ZZX out;
+  for (const auto& [e,c] : a)
+    NTL::SetCoeff(out, e, balanced625(c));
+  return out;
+}
+
+static long zzMod625(const NTL::ZZ& z)
+{
+  long r = NTL::rem(z, MOD);
+  if (r < 0) r += MOD;
+  return r;
+}
+
+static bool eqMod625(const NTL::ZZX& got, const Sparse& want)
+{
+  for (long e = 0; e < N; ++e) {
+    long g = zzMod625(NTL::coeff(got,e));
+    auto it = want.find(e);
+    long w = (it == want.end()) ? 0 : mod625(it->second);
+    if (g != w) {
+      std::cerr << "mismatch e=" << e << " got=" << g << " want=" << w << "\n";
+      return false;
+    }
+  }
+  return true;
+}
+
+static Sparse e0()
+{
+  return Sparse{{0,313},{8192,91}};
+}
+
+static Sparse e1()
+{
+  return Sparse{{0,313},{8192,534}}; // -91 mod 625
+}
+
+static Sparse crtPairPoly(const Sparse& a, const Sparse& b)
+{
+  return add(mul(e0(),a), mul(e1(),b));
+}
+
+static Sparse crtScalar(long a, long b)
+{
+  return add(scale(e0(),a), scale(e1(),b));
+}
+
+static Sparse xiPoly(const std::array<long,5>& coeffs, bool inverse)
+{
+  Sparse out;
+  for (long k=0; k<5; ++k) {
+    long c = coeffs[k];
+    if (mod625(c)==0) continue;
+    if (!inverse || k==0)
+      put(out, 16*k, c);
+    else
+      put(out, N-16*k, -c); // X^{-16k} = -X^(N-16k)
+  }
+  return out;
+}
+
+static bool hasTarget(long residue, long mod)
+{
+  for (long j : J)
+    if ((j % mod) == residue) return true;
+  return false;
+}
+
+static long branchForCoordinate(long coord)
+{
+  for (long pos=0; pos<5; ++pos)
+    if (J[pos] == coord) return LABEL[pos];
+  assert(false);
+  return -1;
+}
+
+struct Node
+{
+  long residue;
+  helib::Ctxt ctxt;
+  Sparse oracle;
+
+  Node(long r, const helib::Ctxt& c, const Sparse& o)
+      : residue(r), ctxt(c), oracle(o) {}
+};
+
+static void assertDecrypt(const helib::SecKey& sk,
+                          const helib::Ctxt& c,
+                          const Sparse& want,
+                          const char* stage)
+{
+  assert(c.getPtxtSpace() == MOD);
+  assert(c.getKeyID() == 0);
+  assert(c.isCorrect());
+
+  NTL::ZZX got;
+  sk.Decrypt(got, c); // exact semantic check also covers private intFactor
+  if (!eqMod625(got, want)) {
+    std::cerr << "decrypt mismatch at " << stage << "\n";
+    std::abort();
+  }
+}
+
+int main()
+{
+  // Correctness-only modulus chain. NOT a benchmark parameter set.
+  helib::Context context = helib::ContextBuilder<helib::BGV>()
+      .m(M)
+      .p(P)
+      .r(1)
+      .bits(500)
+      .c(2)
+      .build();
+
+  assert(context.getM() == M);
+  assert(context.getP() == P);
+  assert(context.getOrdP() == D);
+
+  helib::SecKey sk(context);
+  sk.GenSecKey();
+
+  // Generate only the 13 direct matrices needed by this correctness canary.
+  // Explicit ptxtSpace=625 avoids dependence on context bootstrappability.
+  const std::array<long,13> frobExp =
+      {4096,2048,1024,512,256,128,64,32,16,8,4,2,1};
+
+  for (long j : frobExp) {
+    long k = NTL::PowerMod(P, j, M);
+    sk.GenKeySWmatrix(1, k, 0, 0, MOD);
+  }
+  sk.setKeySwitchMap(0);
+
+  for (long j : frobExp) {
+    long k = NTL::PowerMod(P, j, M);
+    assert(sk.haveKeySWmatrix(1,k,0,0));
+    assert(sk.isReachable(k,0));
+    const auto& W = sk.getNextKSWmatrix(k,0);
+    assert(W.fromKey.getPowerOfX() == k); // direct first hop
+  }
+
+  // Distinct values in both physical CRT components.
+  const std::array<long,5> slot0 = {11,22,33,44,55};
+  const std::array<long,5> slot1 = {101,202,303,404,505};
+
+  Sparse A, B;
+  for (long pos=0; pos<5; ++pos) {
+    long br = LABEL[pos];
+    put(A, J[pos], slot0[br]);
+    put(B, J[pos], slot1[br]);
+  }
+
+  // Deterministic off-target 5-divisible dirty state.
+  const std::array<long,13> dirty =
+      {1,3,17,511,1023,1025,1536,3072,4095,4096,5000,7000,8191};
+  for (long t=1; t<=13; ++t) {
+    long j = dirty[t-1];
+    if (!A.count(j)) {
+      put(A, j, 5*(17*t+3));
+      put(B, j, 5*(29*t+7));
+    }
+  }
+
+  // Production placement: pre-normalize by 28 before the tree.
+  Sparse rootPlain = scale(crtPairPoly(A,B), 28);
+
+  helib::Ctxt root(sk, MOD);
+  // Test setup deliberately uses SecKey encryption at ptxtSpace=625.
+  sk.Encrypt(root, toZZX(rootPlain), MOD);
+  assert(root.getPtxtSpace() == MOD);
+  assert(root.getKeyID() == 0);
+
+  const helib::IndexSet basePrimeSet = root.getPrimeSet();
+  assertDecrypt(sk, root, rootPlain, "root");
+
+  std::vector<Node> nodes;
+  nodes.emplace_back(0, root, rootPlain);
+
+  long calls = 0;
+  std::vector<long> parentCounts, childCounts;
+
+  for (long level=1; level<=13; ++level) {
+    long j = D / (1L<<level);     // frobeniusAutomorph exponent
+    long k = NTL::PowerMod(P,j,M);
+    long s = 1L<<(level-1);
+    long mod = 1L<<level;
+
+    std::vector<Node> next;
+    parentCounts.push_back(nodes.size());
+
+    for (const Node& n : nodes) {
+      helib::Ctxt tmp = n.ctxt;
+      tmp.frobeniusAutomorph(j);
+      ++calls;
+
+      assert(tmp.getPtxtSpace() == MOD);
+      assert(tmp.getKeyID() == 0);
+      assert(tmp.getPrimeSet() == basePrimeSet);
+      assert(sk.getNextKSWmatrix(k,0).fromKey.getPowerOfX() == k);
+
+      Sparse aAuto = automorph(n.oracle,k);
+      assertDecrypt(sk,tmp,aAuto,"frob");
+
+      long evenResidue = n.residue;
+      if (hasTarget(evenResidue,mod)) {
+        helib::Ctxt even = n.ctxt;
+        even += tmp;
+        Sparse o = add(n.oracle,aAuto);
+        assert(even.getPrimeSet() == basePrimeSet);
+        assertDecrypt(sk,even,o,"even");
+        next.emplace_back(evenResidue,even,o);
+      }
+
+      long oddResidue = n.residue + s;
+      if (hasTarget(oddResidue,mod)) {
+        helib::Ctxt odd = n.ctxt;
+        odd -= tmp;
+
+        NTL::ZZX mon;
+        NTL::SetCoeff(mon, N-s, -1); // X^{-s} = -X^(N-s)
+        odd.multByConstant(mon);
+
+        Sparse o = mulX(add(n.oracle,aAuto,-1),-s);
+        assert(odd.getPrimeSet() == basePrimeSet);
+        assertDecrypt(sk,odd,o,"odd");
+        next.emplace_back(oddResidue,odd,o);
+      }
+    }
+
+    childCounts.push_back(next.size());
+    nodes = std::move(next);
+  }
+
+  assert(calls == 17);
+  assert((parentCounts == std::vector<long>{1,1,1,1,1,1,1,1,1,1,1,2,4}));
+  assert((childCounts == std::vector<long>{1,1,1,1,1,1,1,1,1,1,2,4,5}));
+
+  const std::vector<long> expectedCoordOrder = {0,2048,6144,1024,7168};
+  assert(nodes.size() == 5);
+  for (long i=0;i<5;++i)
+    assert(nodes[i].residue == expectedCoordOrder[i]);
+
+  // Leaves must already be normalized and branch-aligned.
+  for (const Node& n : nodes) {
+    long coord = n.residue;
+    Sparse want = crtScalar(A[coord], B[coord]);
+    assertDecrypt(sk,n.ctxt,want,"leaf");
+  }
+
+  // Exact four-output RMFE correction check.
+  const std::array<std::array<long,5>,5> ells = {{
+      {{1,50,340,260,599}},
+      {{0,4,204,314,104}},
+      {{0,622,161,623,469}},
+      {{0,418,206,522,104}},
+      {{0,156,339,156,599}}
+  }};
+
+  std::array<Sparse,5> phi, phiInv;
+  for (long br=0;br<5;++br) {
+    phi[br] = xiPoly(ells[br],false);
+    phiInv[br] = xiPoly(ells[br],true);
+  }
+
+  for (long rr=0; rr<4; ++rr) {
+    long exp = 1;
+    for (long z=0; z<rr; ++z) exp *= 5;
+
+    std::array<Sparse,5> K;
+    for (long br=0;br<5;++br)
+      K[br] = crtPairPoly(power(phi[br],exp), power(phiInv[br],exp));
+
+    std::unique_ptr<helib::Ctxt> L;
+    Sparse ref;
+
+    for (const Node& n : nodes) {
+      long br = branchForCoordinate(n.residue);
+
+      helib::Ctxt term = n.ctxt;
+      term.multByConstant(toZZX(K[br]));
+      if (!L) L = std::make_unique<helib::Ctxt>(term);
+      else *L += term;
+
+      ref = add(ref, mul(crtScalar(slot0[br],slot1[br]), K[br]));
+    }
+
+    assert(L);
+    assert(L->getPtxtSpace() == MOD);
+    assert(L->getKeyID() == 0);
+    assert(L->getPrimeSet() == basePrimeSet);
+    assertDecrypt(sk,*L,ref,"Lr");
+  }
+
+  std::cout << "PASS_HELIB_RECOVERY_ONLY_EXACT_Z625_CANARY\n";
+  std::cout << "calls=17\n";
+  std::cout << "pruned_coord_order=0,2048,6144,1024,7168\n";
+  std::cout << "pruned_branch_order=2,1,4,0,3\n";
+  std::cout << "branch_reorder_indices=3,1,0,4,2\n";
+  std::cout << "L0_L3_exact=PASS\n";
+  return 0;
+}

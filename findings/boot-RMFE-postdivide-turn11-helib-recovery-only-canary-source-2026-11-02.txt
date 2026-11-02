@@ -233,7 +233,7 @@ static void assertDecrypt(const helib::SecKey& sk,
   // In HELIB_DEBUG mode Decrypt warns rather than throws on a false estimate,
   // so exact decryption equality below is the decisive oracle.
   if (!c.isCorrect())
-    std::cerr << "diagnostic: isCorrect=false at " << stage << "\\n";
+    std::cerr << "diagnostic: isCorrect=false at " << stage << "\n";
 
   NTL::ZZX got;
   sk.Decrypt(got, c); // exact semantic check also covers private intFactor

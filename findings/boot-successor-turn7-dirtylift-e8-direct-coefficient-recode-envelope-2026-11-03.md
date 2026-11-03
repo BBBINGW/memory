@@ -489,3 +489,85 @@ The decisive question is whether the at-most5x branch merge penalty still leaves
 If this gate fails and requires another structural redesign, PARK the candidate.
 
 No Native action is authorized by this finding.
+
+
+## Independent re-derivation verification — same logical Turn 7
+
+This block is a verification companion, NOT a new counted research turn.
+
+Authority used for the calculation: fixed snapshot
+`fdbf8ccf92b4751a4cc9678f5ef9c26ac64c48f4`.
+The already-present current-main Turn-7 body was treated only as a coordination artifact, not as the source of these calculations.
+
+Fixed prerequisite blobs from that snapshot:
+- `findings/boot-RMFE-r8-exact-plaintext-map-generator-2026-10-29.md` — `3b6ec1888d738add2f65dee239c1972db0be3fd4`;
+- `findings/boot-RMFE-rank5-shared-correction-exact-moore-norm-gate-2026-10-31.md` — `d7583ac052daefafc3fd1858bbecf67005c1fa10`;
+- `findings/boot-RMFE-postdivide-turn13-embedding-norm-certification-l1-rescue-gate-2026-11-03.md` — `91039eec2921b0c56d0b69042e40e1830ed1778d`;
+- `findings/boot-RMFE-postdivide-turn14-inverse-exit-cleanup-l1-envelope-gate-2026-11-03.md` — `c09d29185d9f3e0941d313fcc8af560eb488dfc6`;
+- `findings/boot-RMFE-postdivide-turn15-dirty-lift-algorithm4-dividebyP-gate-2026-11-02.md` — `f47a5008b1c810653b4f539ffd21c53ceb859230`;
+- `findings/boot-RMFE-postdivide-turn16-pure-evalmap-scalar28-normalization-gate-2026-11-02.md` — `8335dc0648a890d3fad697726cb899946c00c51c`.
+
+### Exact arithmetic checks
+
+Over `S=Z/625Z`:
+- `182^2 = 443^2 = -1 mod 625`;
+- `1024^{-1}=224 mod625`;
+- `8192^{-1}=28 mod625`;
+- `28^{-1}=67 mod625`.
+
+Frozen RMFE basis:
+`ell_0=[1,50,340,260,599]`,
+`ell_1=[0,4,204,314,104]`,
+`ell_2=[0,622,161,623,469]`,
+`ell_3=[0,418,206,522,104]`,
+`ell_4=[0,156,339,156,599]`.
+
+For
+`D_j=sum_{i=0}^4 phi_i * sigma^j(Y^{-i})`, `j=0,...,7`,
+independent sparse full-ring arithmetic modulo `X^16384+1` and 625 gives:
+- every `D_j`: 21 nonzero coefficients;
+- every `D_j`: centered coefficient infinity norm 311;
+- every `D_j`: exact coefficient-L1 norm 2811;
+- aggregate `sum_j ||D_j||_1 = 22488`.
+
+Canonical JSON encoding of all eight exact sparse `D_j` coefficient dictionaries has:
+`SHA256 = 7b0a2a5c004cd02c20d259dd444d0234e909ea93ba75d45ffd3e941392df3581`.
+
+Basis proof was independently recomputed for all `t=0,...,15`:
+`G(Y^t)=8 phi_t` for `0<=t<=4`;
+`G(Y^t)=8 phi_{t-8}Y^8` for `8<=t<=12`;
+and `G(Y^t)=0` for padding coordinates `t in {5,6,7,13,14,15}`.
+Result: `16/16 PASS`.
+
+### Independent absolute-L1 recomputation
+
+Using the fixed deterministic constants
+`N_E=271351808`,
+`S0=S1=16384*313=5128192`,
+`|f|<=312`,
+`K=401679183790909`,
+`R=83891200000`:
+
+`E_rec = N_E*S1 + 312*S0 = 1391545770967040`,
+`log2(E_rec)=50.30560978613817`.
+
+For unnormalized RM10:
+`E_RM10 = 1024*E_rec + 1023*K + 512*R
+          = 1835903626782748867`,
+`log2(E_RM10)=60.67119603643458`.
+
+For the fused 8-Frobenius recode followed by one cleanup:
+`E_preDE = 22488*E_RM10 + 7*2811*K + R
+          = 41293704600473801437489`,
+`log2(E_preDE)=75.12833994098358`.
+
+With `log2(Q)>=399.5`, the independent margin to the `0.48Q` sufficient correctness threshold is:
+`323.3127663699629 bits`.
+
+Applying the current worst public Algorithm-4-entry linear amplification
+`A3=653905` gives:
+`log2(A3*E_preDE)=94.44706147012812`,
+with remaining `0.48Q` margin:
+`303.99404484081833 bits`.
+
+These calculations verify the Turn-7 post-raw conclusion and do not close the remaining merged pre-raw rawModSwitch gate.

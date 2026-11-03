@@ -253,678 +253,719 @@ The B174 finding and post-B174 handoff remain historical parent evidence. The un
 
 TRACK_ID: BOOT
 ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
-LATEST_COMPLETED: Research Turn 25/25 — end-to-end static correctness closure audit
-
-TRACK_ID: BOOT
-ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
-PHASE: CORRECTNESS_GATE
-
-Primary hypothesis: 在 Turn 16–24 的所有修订都生效后，当前 candidate 是否已经形成一条没有未闭合 semantic/type edge 的端到端静态 correctness chain；如果答案为 PASS，则剩余 blocker 应只来自 native evidence order，而不是还缺一条数学/源码接口证明。
-
-Verdict：PASS at MATH/STATIC level。
-
-1. 最后一个缺口：两个 physical slots 不需要共享同一个 
-𝑍
-625
-Z
-625
-	​
-
- lift
-
-Turn 24 已经明确：reconstruction 后 higher 
-5
-5-adic digits 可以 arbitrary dirty，因此不能继续假设两个 SIMD slots 的 recovered lifts 仍精确满足某个 lifted 
-𝜌
-/
-182
-ρ/182 relation。
-
-这并不会破坏 Algorithm 4。BGV plaintext CRT 本身是 SIMD slots 的 direct product，ciphertext addition/multiplication component-wise；Aung Algorithm 4 对单个 slot algebra 元素
-
-𝑧
-=
-∑
-𝑖
-𝑎
-𝑖
-𝜙
-(
-𝑒
-𝑖
-)
-,
-𝑎
-𝑖
-∈
-𝑍
-𝑝
-𝑒
-z=
-i
-∑
-	​
-
-a
-i
-	​
-
-ϕ(e
-i
-	​
-
-),a
-i
-	​
-
-∈Z
-p
-e
-	​
-
-
-证明 correctness，没有要求另一个 SIMD slot 采用相同 higher-
-𝑝
-p-adic representatives。论文的 proof 也明确允许 arbitrary 
-𝑎
-𝑖
-∈
-𝑍
-𝑝
-𝑒
-a
-i
-	​
-
-∈Z
-p
-e
-	​
-
-。
-Cryptology ePrint Archive
-+1
-
-因此对两个 physical slots 可以分别拥有：
-
-(
-𝑎
+LATEST_COMPLETED: Research Turn 25/25 — Absolute 
+𝐿
 1
-(
-0
-)
-,
-…
-,
-𝑎
-5
-(
-0
-)
-)
-∈
-𝑍
-625
-5
-,
-(a
+L
 1
-(0)
 	​
 
-,…,a
-5
-(0)
-	​
+ envelope closure
 
-)∈Z
-625
-5
-	​
+Verdict: PASS_MATH for the first Algorithm-4 subtraction/divide boundary.
+Overall candidate remains CORRECTNESS_GATE=BLOCKED; no Native experiment was run.
 
-,
-(
-𝑎
+Turn 24 reduced the unresolved first-boundary question to one inequality:
+
+𝐵
 1
-(
+<
+𝐵
 1
-)
-,
-…
-,
-𝑎
-5
-(
-1
-)
-)
-∈
-𝑍
-625
-5
-,
-(a
-1
-(1)
-	​
-
-,…,a
-5
-(1)
-	​
-
-)∈Z
-625
-5
-	​
-
-,
-
-只要求各自 modulo 5 恢复自己的 source branch messages。Algorithm 4 在两个 SIMD slots 中独立成立。
-
-2. 现有 
-443
-443 correction 仍然正确，但理由要修正
-
-非零 selected coordinates 在第二 physical slot 的 tag transport modulo 5 带 unit：
-
-182
- 
-mod
- 
-5
-=
-2.
-182mod5=2.
-
-假设 recovery 后得到任意 lift
-
-𝑏
-~
-∈
-𝑍
-625
-,
-𝑏
-~
- 
-mod
- 
-5
-=
+⋆
+≈
 2
-𝑏
-.
-b
-~
-∈Z
-625
+388.3938491
+,
+B
+1
 	​
 
+<B
+1
+⋆
+	​
+
+≈2
+388.3938491
 ,
-b
-~
-mod5=2b.
 
-现有 public correction：
+where 
+𝐵
+1
+B
+1
+	​
 
-443
-=
-182
-−
+ is the absolute full-
+𝑄
+0
+Q
+0
+	​
+
+ independent envelope for 
+𝐿
 1
 (
-m
-o
-d
-625
+𝑧
 )
-443=182
-−1
-(mod625)
+L
+1
+	​
 
-仍然合法，因为：
+(z).
 
-443
- 
-mod
- 
-5
+The existing absolute ledger does reach 
+𝐿
+1
+L
+1
+	​
+
+ directly:
+
+𝐸
+s
+h
+a
+r
+e
+d
+→
+𝐸
+r
+o
+o
+t
+→
+𝐸
+l
+e
+a
+f
+→
+𝐸
+𝐿
+1
+.
+E
+shared
+	​
+
+→E
+root
+	​
+
+→E
+leaf
+	​
+
+→E
+L
+1
+	​
+
+	​
+
+.
+
+Using conservative upward rounding rather than the previously printed decimal approximations,
+
+𝐸
+^
+r
+o
+o
+t
 =
-3
+1,232,728,256,910,534,100,000,000,000
 ,
-3
+E
+root
+	​
+
+=1,232,728,256,910,534,100,000,000,000,
+𝐾
+^
+=
+401,679,183,790,909
+,
+𝑅
+^
+=
+83,891,200,000.
+K
+=401,679,183,790,909,
+R
+=83,891,200,000.
+
+The exact 13-level selected-leaf recurrence gives
+
+𝐸
+^
+l
+e
+a
+f
+=
+8192
+𝐸
+^
+r
+o
+o
+t
++
+8191
+(
+𝐾
+^
++
+𝑅
+^
+)
+=
+10,098,509,880,614,386,188,547,250,535,619.
+E
+leaf
+	​
+
+=8192
+E
+root
+	​
+
++8191(
+K
++
+R
+)=10,098,509,880,614,386,188,547,250,535,619.
+
+For the finalized rho/443 routing, the exact 
+𝐿
+1
+L
+1
+	​
+
+ coefficient-
+𝐿
+1
+L
+1
+	​
+
+ amplification is
+
+𝐴
+1
+=
+49,548.
+A
+1
+	​
+
+=49,548.
+
+Therefore
+
+𝐵
+^
+1
+=
+500,360,967,564,681,606,870,139,169,538,850,212
+B
+1
+	​
+
+=500,360,967,564,681,606,870,139,169,538,850,212
+	​
+
+
+and
+
+log
+⁡
+2
+𝐵
+^
+1
+≈
+118.5904525724.
+log
+2
+	​
+
+B
+1
+	​
+
+≈118.5904525724.
+
+Hence
+
+log
+⁡
+2
+(
+𝐵
+1
+⋆
+/
+𝐵
+^
+1
+)
+≈
+269.8034
+ 
+b
+i
+t
+s
+log
+2
+	​
+
+(B
+1
+⋆
+	​
+
+/
+B
+1
+	​
+
+)≈269.8034 bits
+	​
+
+
+of slack. This is an absolute envelope; no stock/candidate relative operator ratio is used.
+
+Combining it with Turn 24's explicit aligner 
+∣
+ℎ
+0
+∣
+≤
+311
+∣h
+0
+	​
+
+∣≤311,
+
+𝐸
+𝑁
+(
+𝑞
+)
+≤
+311
+(
+𝑞
+𝑄
+0
+𝐵
+1
++
+𝑅
+)
++
+𝐸
+^
+𝐹
+4
+.
+E
+N
+	​
+
+(q)≤311(
+Q
+0
+	​
+
+q
+	​
+
+B
+1
+	​
+
++R)+
+E
+F
+4
+	​
+
+	​
+
+.
+
+Over the complete Turn-23 guaranteed prefix window 
+183
+≤
+log
+⁡
+2
+𝑞
+<
+247
+183≤log
+2
+	​
+
+q<247, the worst normalized endpoint satisfies the strict integer certificate
+
+100
+ 
+𝐸
+^
+𝑁
+<
+48
 ⋅
 2
-=
-1
-(
-m
-o
-d
-5
-)
+183
 .
-443mod5=3,3⋅2=1(mod5).
-
-所以
-
-𝑏
-′
-=
-443
-𝑏
-~
-b
-′
-=443
-b
-~
-
-满足：
-
-𝑏
-′
- 
-mod
- 
-5
-=
-𝑏
-.
-b
-′
-mod5=b.
-
-𝑏
-′
-b
-′
- 只是另一个 arbitrary 
-𝑍
-625
-Z
-625
+100
+E
+N
 	​
 
- lift，而这恰好是 Algorithm 4 接受的输入。
+<48⋅2
+183
+.
 
-因此：
+Therefore, uniformly,
 
-纯文本
-443 correction remains valid
+𝐸
+𝑁
+(
+𝑞
+)
+<
+0.48
+𝑞
+E
+N
+	​
 
-但正确 rationale 应从：
+(q)<0.48q
+	​
 
-纯文本
-exactly undo an exact lifted 182 relation
 
-改成：
+and after divideByP,
 
-纯文本
-correct the known mod-5 residue unit,
-yielding a valid arbitrary Z625 lift
-3. Four-output 
-𝐿
-0
+𝐸
+𝑢
+1
 ,
-…
-,
+1
+(
+𝑞
+)
+<
+0.096
+𝑞
+.
+E
+u
+1,1
+	​
+
+	​
+
+(q)<0.096q
+	​
+
+.
+
+So the entire first Algorithm-4 boundary is now statically closed:
+
 𝐿
-3
+1
+(
+𝑧
+)
+−
+𝐹
+4
+(
+𝑧
+)
 L
-0
+1
 	​
 
-,…,L
-3
+(z)−F
+4
 	​
 
- 接口因此仍然 exact
+(z) exact 5-divisibility: PASS.
+Explicit BGV factor alignment without implicit harmonization: PASS.
+Same prime-set subtraction: PASS.
+ptxtSpace 625 → 125, unit factor preserved: PASS.
+Independent uniform noise envelope: PASS.
 
-routing/unit correction 完成后，对每个 physical slot 
-ℎ
-h 单独定义：
-
-𝐴
-(
-ℎ
-)
+This does not establish complete Algorithm 4 correctness. The next unresolved source-order boundary is 
+𝑗
 =
-(
-𝑎
 1
-(
-ℎ
-)
 ,
-…
-,
-𝑎
-5
-(
-ℎ
-)
-)
-.
-A
-(h)
-=(a
-1
-(h)
-	​
-
-,…,a
-5
-(h)
-	​
-
-).
-
-随后：
+𝑖
+=
+0
+j=1,i=0:
 
 𝐿
-𝑡
+2
 (
-ℎ
+𝑧
 )
-=
-∑
-𝑖
-𝑎
-𝑖
-(
-ℎ
-)
-𝜙
-(
+−
+𝐹
 𝑒
+(
+𝐹
+𝑒
+(
+𝑧
+)
+)
+5
+,
+5
+L
+2
+	​
+
+(z)−F
+e
+	​
+
+(F
+e
+	​
+
+(z))
+	​
+
+,
+
+again initially at plaintext space 625. Its factor recurrence and independent envelope must be derived separately; the later 
+𝑗
+=
+1
+,
 𝑖
-)
-5
-𝑡
-,
-𝑡
 =
-0
-,
 1
-,
-2
-,
-3.
-L
-t
-(h)
-	​
+j=1,i=1 boundary at plaintext space 125 remains distinct.
 
-=
-i
-∑
-	​
+Detailed evidence was persisted to:
 
-a
-i
-(h)
-	​
+findings/boot-RMFE-postdivide-turn25-L1-absolute-envelope-closure-gate-2026-11-03.md
 
-ϕ(e
-i
-	​
+Persistence receipt:
 
-)
-5
-t
-,t=0,1,2,3.
+blob: 7b771044128b4896401305500a25c52a2743d43d
+commit: 05679ff78c8e39fcf2cc892c59b2e42c63e58076
 
-所以每个 slot 都有：
+The file was fetched back with matching blob/content and the commit contains only that finding. This persistence receipt does not supersede the PI-supplied verified-local authority state.
 
-𝐿
-0
-(
-ℎ
-)
-=
-𝜙
-(
-𝐴
-(
-ℎ
-)
-)
-∈
-im
-⁡
-𝜙
-L
-0
-(h)
-	​
-
-=ϕ(A
-(h)
-)∈imϕ
-
-并且 
-𝐿
-1
-,
-𝐿
-2
-,
-𝐿
-3
-L
-1
-	​
-
-,L
-2
-	​
-
-,L
-3
-	​
-
- 是同一个 local lift vector 对应的 correction maps。
-
-Aung correction workflow 本来就是通过 constant multiplications 和 ciphertext additions 产生这些 correction images。
-Cryptology ePrint Archive
-
-不需要：
-
-𝐴
-(
-0
-)
-=
-𝐴
-(
-1
-)
-A
-(0)
-=A
-(1)
-
-或者任何跨-slot higher-adic coherence。
-
-4. 当前 end-to-end typed chain 已无已知静态断点
-
-审计后的 canonical chain 是：
-
-纯文本
-Aung SlotsToCtxts
-  ptxtSpace=5
-  scalar physical slots
-  common f_in
-→ five global monomial tags
-→ five tagged ThinEvalMap forwards
-  exact over Z5
-→ five branch-local helper-A paths
-  rawModSwitch
-  newMakeDivisible
-  exact /5
-→ exact ZZX pair aggregation
-→ one shared recryptEkey reconstruction
-  ptxtSpace=625
-  factor=1
-  exact ciphertext-part equality to sum of five reconstructions
-  mod5 = aggregate tagged-forward state
-→ normal_basis=false Z625 inverse
-  reduction commutes with inverse
-→ scalar-unit 28
-  factor 1 → 67
-→ 17-call full-domain pruned recovery
-→ five arbitrary Z625 branch lifts
-  correct residues mod5
-→ per-slot routing / 443 residue correction
-→ exact per-slot L0,L1,L2,L3
-→ Algorithm 4
-  arbitrary lifts allowed
-  six divideByP boundaries
-  factor remains 5-adic unit
-→ final Recode at ptxtSpace=5
-→ restore f_in
-
-在 fixed construction 上，当前没有发现新的 static semantic edge 需要额外 theorem。
-
-5. 本轮冻结的 supersessions
-
-以下旧表述以后不得继续使用：
-
-纯文本
-actual tagged forward exact over Z625
-Algorithm4 initial intFactor = 1
-reconstructed second slot exactly preserves lifted rho/182 relation
-one shared forward / one full preprocessing helper
-transform-side count 
+<PAPER_CANDIDATE_UPDATE>
+{"CANDIDATE_ID":"legacy-484479fe4613","RANK":1,"STATUS":"ACTIVE","PHASE":"CORRECTNESS_GATE","PAPER_THESIS":"Hypothesis: reduce repeated Aung Corr./TnM MultKey cost via branch-local pre-divide processing, exact post-divide aggregation, one shared Z625 reconstruction and subsequent slotwise RMFE/Algorithm4 recovery, preserving baseline correctness and security.","IMPORTANT_PROBLEM":"Aung-style p=5,m=32768,w=512,k=5 bootstrapping repeatedly incurs expensive MultKey work across five bra
 NEXT_ITERATION: Resume from the saved handoff prompt and choose the next cheapest decisive test.
 CURRENT_STATUS: SESSION_RESEARCH_COMPLETE
-SESSION_ID: de72fdd0-c665-4611-9d0a-2e3575957355
+SESSION_ID: 6fdfbccb-f240-4a04-8912-c3fd3ac73540
 RESEARCH_TURN: 25 / 25
 
 ## Verdicts
-- Turn 1: PASS
+- Turn 1: UNCLEAR
 - Turn 2: PASS
 - Turn 3: PASS
 - Turn 4: PASS
-- Turn 5: UNCLEAR
-- Turn 6: UNCLEAR
+- Turn 5: PASS
+- Turn 6: PASS
 - Turn 7: PASS
 - Turn 8: PASS
 - Turn 9: PASS
 - Turn 10: PASS
-- Turn 11: UNCLEAR
-- Turn 12: FAIL
+- Turn 11: PASS
+- Turn 12: PASS
 - Turn 13: PASS
 - Turn 14: PASS
 - Turn 15: PASS
 - Turn 16: PASS
-- Turn 17: PASS
-- Turn 18: PASS
+- Turn 17: UNCLEAR
+- Turn 18: UNCLEAR
 - Turn 19: PASS
 - Turn 20: PASS
 - Turn 21: PASS
 - Turn 22: PASS
 - Turn 23: PASS
-- Turn 24: PASS
+- Turn 24: UNCLEAR
 - Turn 25: PASS
 
 ## Main hypothesis
 See latest completed research answer and handoff prompt.
 
 ## Key findings
-- Research Turn 25/25 — end-to-end static correctness closure audit
-
-TRACK_ID: BOOT
-ACTIVE_SUBLINE: B158_CHECKPOINT_DECOUPLED_HALF_BASIS
-PHASE: CORRECTNESS_GATE
-
-Primary hypothesis: 在 Turn 16–24 的所有修订都生效后，当前 candidate 是否已经形成一条没有未闭合 semantic/type edge 的端到端静态 correctness chain；如果答案为 PASS，则剩余 blocker 应只来自 native evidence order，而不是还缺一条数学/源码接口证明。
-
-Verdict：PASS at MATH/STATIC level。
-
-1. 最后一个缺口：两个 physical slots 不需要共享同一个 
-𝑍
-625
-Z
-625
+- Research Turn 25/25 — Absolute 
+𝐿
+1
+L
+1
 	​
 
- lift
+ envelope closure
 
-Turn 24 已经明确：reconstruction 后 higher 
-5
-5-adic digits 可以 arbitrary dirty，因此不能继续假设两个 SIMD slots 的 recovered lifts 仍精确满足某个 lifted 
-𝜌
-/
-182
-ρ/182 relation。
+Verdict: PASS_MATH for the first Algorithm-4 subtraction/divide boundary.
+Overall candidate remains CORRECTNESS_GATE=BLOCKED; no Native experiment was run.
 
-这并不会破坏 Algorithm 4。BGV plaintext CRT 本身是 SIMD slots 的 direct product，ciphertext addition/multiplication component-wise；Aung Algorithm 4 对单个 slot algebra 元素
+Turn 24 reduced the unresolved first-boundary question to one inequality:
 
-𝑧
-=
-∑
-𝑖
-𝑎
-𝑖
-𝜙
-(
-𝑒
-𝑖
-)
+𝐵
+1
+<
+𝐵
+1
+⋆
+≈
+2
+388.3938491
 ,
-𝑎
-𝑖
-∈
-𝑍
-𝑝
-𝑒
-z=
-i
-∑
+B
+1
 	​
 
+<B
+1
+⋆
+	​
+
+≈2
+388.3938491
+,
+
+where 
+𝐵
+1
+B
+1
+	​
+
+ is the absolute full-
+𝑄
+0
+Q
+0
+	​
+
+ independent envelope for 
+𝐿
+1
+(
+𝑧
+)
+L
+1
+	​
+
+(z).
+
+The existing absolute ledger does reach 
+𝐿
+1
+L
+1
+	​
+
+ directly:
+
+𝐸
+s
+h
 a
-i
-	​
-
-ϕ(e
-i
-	​
-
-),a
-i
-	​
-
-∈Z
-p
+r
 e
-	​
-
-
-证明 correctness，没有要求另一个 SIMD slot 采用相同 higher-
-𝑝
-p-adic representatives。论文的 proof 也明确允许 arbitrary 
-𝑎
-𝑖
-∈
-𝑍
-𝑝
-𝑒
+d
+→
+𝐸
+r
+o
+o
+t
+→
+𝐸
+l
+e
 a
-i
+f
+→
+𝐸
+𝐿
+1
+.
+E
+shared
 	​
 
-∈Z
-p
-e
+→E
+root
 	​
 
-。
-Cryptology 
+→E
+leaf
+	​
+
+→E
+L
+1
+	​
+
+	​
+
+.
+
+Using conservative upward rounding rather than the previously printed decimal approximations,
+
+𝐸
+^
+r
+o
+o
+t
+=
+1,232,728,256,910,534,100,000,000,000
+,
+E
+root
+	​
+
+=1,232,728,256,910,534,100,000,000,000,
+𝐾
+^
+=
+401,679,183,790,909
+,
+𝑅
+^
+=
+83,891,200,000.
+K
+=401,679,183,790,909,
+R
+=83,891,200,000.
+
+The exact 13-level selected-leaf recurrence gives
+
+𝐸
+^
 
 ## Killed ideas
 - None
@@ -939,34 +980,34 @@ Cryptology
   "rank": 1,
   "status": "ACTIVE",
   "phase": "CORRECTNESS_GATE",
-  "paper_thesis": "Hypothesis under validation: reduce Aung et al.'s repeated MultKey bottleneck by starting from source-guaranteed scalar Z5 SlotsToCtxts branches, applying five globally tagged branch-local ThinEvalMap forwards exact modulo5, independently crossing the nonlinear recryption preprocessing boundary, aggregating only exact post-divide pairs, performing one ciphertext-state-exact recryptEkey reconstruction into an arbitrary Z625 lift, applying one stock-resource normal_basis=false Z625 inverse and scalar-unit normalization to factor67, recovering five branch-aligned arbitrary Z625 lifts with correct source residues, independently correcting/routing each physical SIMD slot, forming exact slotwise L0,L1,L2,L3, executing Algorithm4, final mod5 Recode, and only then restoring the saved application factor.",
-  "important_problem": "Inherited important problem remains Aung et al.'s repeated per-branch MultKey cost in canonical p=5,m=32768,w=512,k=5 Corr./TnM. Turn25 does not reassess problem importance.",
-  "baseline": "Primary baseline remains source-faithful Aung Corr./TnM at p=5,m=32768,w=512,k=5; secondary frontier remains matched vanilla HElib thin bootstrapping. The current candidate is statically typed end-to-end against the source semantics, but matched native baseline correctness is still pending.",
-  "closest_prior_art": "The construction remains directly adjacent to Aung's correction-style RMFE bootstrapping and pinned HElib thin recryption. Turn25 adds no novelty claim; it closes the current static dependency graph and proves that independent arbitrary Z625 lifts across the two physical SIMD slots are sufficient because Aung Algorithm4 is slot-local and accepts arbitrary Z_{p^e} coefficients. NOVELTY_STATUS remains PREFLIGHT.",
-  "new_mechanism": "Hypothesis under validation: five source scalar/common-factor branches are globally tagged and forwarded separately over Z5, each executes source-identical nonlinear preprocessing through exact /5, their two post-divide ZZX components are summed exactly, one stored recryptEkey reconstructs the aggregate at ptxtSpace625, a pure Z625 inverse and scalar-unit28 normalization feed the 17-call full-domain recovery, per-slot routing and public443 residue correction yield independently valid arbitrary Z625 branch lifts, four exact correction outputs are formed per slot, and Algorithm4 plus final Recode/f_in restoration completes bootstrapping.",
+  "paper_thesis": "Hypothesis: reduce repeated Aung Corr./TnM MultKey cost via branch-local pre-divide processing, exact post-divide aggregation, one shared Z625 reconstruction and subsequent slotwise RMFE/Algorithm4 recovery, preserving baseline correctness and security.",
+  "important_problem": "Aung-style p=5,m=32768,w=512,k=5 bootstrapping repeatedly incurs expensive MultKey work across five branches.",
+  "baseline": "Source-faithful Aung Corr./TnM, with matched vanilla HElib thin bootstrapping as secondary comparator; matched baseline correctness and performance remain unverified.",
+  "closest_prior_art": "Aung correction-style RMFE Algorithm4 and pinned HElib BGV recryption/evaluation remain the closest mechanisms. This turn adds no novelty claim; it closes one candidate-specific absolute correctness ledger. NOVELTY_STATUS remains PREFLIGHT.",
+  "new_mechanism": "Five branch-local nonlinear preprocessing paths followed by exact post-divide aggregation and one shared reconstruction; a fixed ordered ctxt-prime prefix and explicit unit-factor alignment make the first F4 evaluation and first Algorithm4 subtraction independent of stock noise-estimator-driven harmonization.",
   "contribution_type": "ALGORITHM",
-  "full_construction": "Fixed parameters are p=5,m=32768,w=512,k=5,r=1,e=4,e'=1,q=626, temporary ptxtSpace625, local degree8192, eta125, J=[0,1024,7168,2048,6144], branch labels [2,0,3,1,4]. Five SlotsToCtxts outputs have scalar Z5 physical slots and common f_in. Each branch receives a global monomial tag, stock pre-forward level preparation, tagged ThinEvalMap forward over Z5, then branch-local canonicalization/modDown/reLinearize/rawModSwitch/newMakeDivisible/exact divide-by5. The five exact ZZX pairs are summed and reconstructed once with recryptEkey at factor1. A normal_basis=false Z625 inverse whose reduction equals the mod5 inverse is followed by scalar-unit28 normalization to factor67 and the 17-call full-domain target-pruned recovery. Each physical slot independently yields arbitrary Z625 lifts of its source residues; known rho permutation and public443 correct the second-slot residue ordering/unit without requiring higher-adic cross-slot coherence. Exact local L0..L3 feed Algorithm4; its six divideByP boundaries preserve 5-adic unit factors; final Recode occurs at ptxtSpace5; f_in is restored afterward.",
-  "correctness": "Turn25 completes the current static typed dependency audit. Aung SIMD semantics are component-wise and Algorithm4 quantifies over arbitrary coefficients a_i in Z_{p^e}; therefore the two physical SIMD slots may independently use different arbitrary Z625 lift vectors. For nonzero second-slot target coordinates, recovered values need only have residue 2*b modulo5; multiplying by public443, whose residue is3, produces an arbitrary lift with residue b. Thus the existing routing/correction constants remain correct without assuming an exact lifted rho/182 relation. Each slot then forms exact L0..L3 from one internally consistent arbitrary lift vector and independently satisfies Algorithm4. Combined with Turns16-24 and the historical full-domain recovery/four-output theorems, no unidentified static semantic edge remains in the fixed construction. This is conditional static closure, not native candidate correctness.",
-  "security": "PENDING. The static closure introduces no new key, secret exposure, or cryptographic assumption. Complete security and evaluation-key/resource audit remains required before a paper-level security gate can pass.",
-  "noise_precision_dfr": "PENDING. Branch-local source checks, exact shared-reconstruction norm envelope, factor-unit closure and structural recovery bounds are known, but actual native noiseBound/capacity trajectory, floating estimator behavior, Algorithm4 harmonization cost, DFR and final precision/correctness margins remain unverified.",
-  "value": "PENDING. Structural operation/key-reuse facts exist, including current transform-side count23 rather than stale19, but no performance verdict is authorized before baseline and complete candidate correctness under matched native conditions.",
-  "critical_blocker": "The mandatory evidence order remains blocked at the revised recovery-only native canary. Static semantic correctness for the fixed candidate is now closed conditionally, but no recovery canary, exact parameter/interface execution, matched baseline correctness or complete candidate native correctness has been obtained.",
-  "next_decisive_test": "In the successor session execute the frozen revised recovery-only canary against homenc/HElib@acdb264e1a991eaee35fd8b3c31bebe9528c49a1 with HELIB_DEBUG=ON. After PASS, run the current exact interface oracle: assert SlotsToCtxts scalar/common-factor state; tagged forward at ptxtSpace5 against FullForward5; five helper-A paths; shared-vs-separate reconstruction ciphertext/metadata equality; reconstruction mod5-to-Z625 lift consistency; real normal_basis=false inverse; factor1 then scalar28 to factor67; exact 17-call routing/recovery; independent per-slot residue/rho correction and exact L0..L3; six Algorithm4 divide boundaries with unit-factor instrumentation; final Recode at ptxtSpace5; and final f_in restoration. Do not benchmark before these correctness checks pass.",
+  "full_construction": "Keep the PRE-TAG + POST-DIVIDE construction: five source scalar branches cross nonlinear preprocessing independently, exact post-divide pairs are aggregated, one recryptEkey reconstruction is performed, repaired pure power-basis inverse plus explicit cleanup and scalar normalization feed target-pruned recovery, five arbitrary Z625 branch lifts are routed and recombined into L0,L1,L2,L3, Algorithm4 performs correction digit extraction, final Recode reaches application space, and f_in is restored only afterward. For the first Algorithm4 boundary, F4=x^5-5x^3+5x has factor d=a^5q^4, L1 is explicitly aligned using h0=a^4q^4 mod625, subtraction occurs on identical P/ptxtSpace/factor, and divideByP produces u_1,1 at ptxtSpace125.",
+  "correctness": "PASS_MATH for the complete first Algorithm4 subtraction/divide boundary. The absolute chain shared reconstruction -> repaired pure inverse -> 13-level selected recovery -> exact L1 recombination gives B1<=500360967564681606870139169538850212<2^119. This is approximately269.8034 bits below the Turn24 sufficient threshold. Combined with exact 5-divisibility, explicit unit-factor alignment and divideByP semantics, the first post-F4 boundary is statically closed. Complete Algorithm4 and native candidate correctness remain unverified.",
+  "security": "PENDING. No new secret, evaluation-key type, or cryptographic assumption is introduced by this correctness closure, but complete security/resource analysis has not passed.",
+  "noise_precision_dfr": "The first post-F4 boundary now has an estimator-independent uniform certificate: for every Turn23 prefix with 183<=log2(q)<247, E_N(q)<0.48q and after divideByP E_u11(q)<0.096q. The absolute full-Q0 L1 bound is below its sufficient threshold by approximately269.8034 bits. Later Algorithm4 nonlinear nodes, final noise trajectory and DFR remain PENDING.",
+  "value": "PENDING. No matched baseline/candidate correctness benchmark or performance verdict is authorized.",
+  "critical_blocker": "The first Algorithm4 subtraction/divide boundary is no longer a blocker. The next mathematical blocker is the subsequent source-order j=1,i=0 boundary L2(z)-F_e(F_e(z)) at ptxtSpace625, followed by later ptxtSpace125/25 boundaries. Mandatory recovery-only native canary, exact parameter/interface verification and matched baseline/candidate correctness also remain pending.",
+  "next_decisive_test": "Successor-session Paper-First correctness unit, no Native: construct the j=1,i=0 numerator L2(z)-F_e(F_e(z)) on the same fixed-prefix framework, derive exact BGV factor alignment and a provenance-complete independent coefficient-L1 envelope, and prove or falsify the second 625->125 divide boundary. Reuse the existing F4 and first-divide results; do not regenerate them.",
   "novelty_status": "PREFLIGHT",
   "paper_readiness": "NOT_READY",
-  "reopen_condition": "Reopen the static theorem only if native execution falsifies one of the frozen interfaces, if an authenticated Aung artifact differs materially from the audited source contracts, if second-slot routing fails residue correction despite the current rho map, or if Algorithm4/native implementation requires cross-slot higher-adic lift coherence not present in the source theorem. Do not reopen merely because the two slots choose different arbitrary Z625 representatives.",
-  "constructive_design_spec": "The construction explicitly separates application-mod5 and temporary-mod625 domains, preserves five branches through every nonlinear preprocessing step, aggregates only exact post-divide integer pairs, reconstructs once, uses the stock-resource power-basis inverse, unit-scalar normalization and full-domain pruned recovery, permits independent arbitrary Z625 lift vectors in the two SIMD slots, corrects only the required mod5 rho residue/permutation before exact four-output RMFE recombination, and keeps Algorithm4/final-Recode/intFactor restoration in their source-valid order. Stale one-forward, exact-lifted-rho, factor1 and transform-count19 descriptions are forbidden.",
+  "reopen_condition": "Reopen the first-boundary result only if an upstream absolute-envelope premise is falsified, the finalized L1 public-constant table changes, the fixed-prefix/mod-down assumptions change, or native execution contradicts the frozen interface. Do not reopen merely because later Algorithm4 boundaries fail.",
+  "constructive_design_spec": "The first-boundary absolute ledger is E_shared -> repaired pure-inverse E_root -> selected-leaf recurrence E_leaf<=8192E_root+8191*(K+R) -> L1 amplification A1=49548. Integer-upward bounds give E_leaf<=10098509880614386188547250535619 and B1<=500360967564681606870139169538850212. With Q0>=2^399.5, |h0|<=311, R<=83891200000 and Turn23 EFhat, E_N(q)<=311((q/Q0)*B1+R)+EFhat<0.48q throughout 183<=log2(q)<247; divideByP then gives a ptxtSpace125 state with envelope below0.096q.",
   "correctness_gate": "BLOCKED",
   "security_gate": "PENDING",
   "value_gate": "PENDING",
   "audit_gate": "PENDING",
   "baseline_correctness": "PENDING",
   "gate_justifications": {
-    "CORRECTNESS_GATE": "The fixed candidate now has no identified static semantic/type gap, but mandatory native canary, exact interface execution, complete baseline correctness and full candidate correctness remain absent; static closure cannot substitute for those prerequisites.",
-    "SECURITY_GATE": "No new security assumption is introduced by the static closure, but a complete security/resource audit has not been performed.",
-    "VALUE_GATE": "Current structural counts and static bounds are not matched benchmark evidence; performance remains blocked on correctness.",
-    "AUDIT_GATE": "The current work is an internal dependency audit, not the required independent raw paper-level audit.",
-    "BASELINE_CORRECTNESS": "Source semantics are audited, but the matched source-faithful Aung baseline has not been executed and verified end-to-end."
+    "CORRECTNESS_GATE": "The complete first Algorithm4 divide boundary now passes at MATH grade, but subsequent Algorithm4 boundaries, mandatory native canary, exact interface execution and complete candidate correctness remain unresolved.",
+    "SECURITY_GATE": "No new security assumption is introduced by this turn, but complete cryptographic security and evaluation-key/resource analysis has not been performed.",
+    "VALUE_GATE": "Static operation/noise results cannot establish performance; matched correctness and benchmark evidence are absent.",
+    "AUDIT_GATE": "This is an internal mathematical/provenance closure, not the required independent raw paper-level audit.",
+    "BASELINE_CORRECTNESS": "Source-faithful matched baseline execution and end-to-end correctness are still pending."
   },
   "consecutive_low_value_turns": 0,
   "value_review_state": "NONE",
@@ -993,61 +1034,5 @@ Cryptology
 - {"task_id":"BOOT-T7-RECOVERY-WITNESS-20261102","origin_session_id":"de72fdd0-c665-4611-9d0a-2e3575957355","origin_session":"密码学 22.0","origin_turn":6,"original_hypothesis":"\nPI-authorized bounded constructive implementation task for BOOT / B158, supporting the future Research Turn 7/25 independent audit.\n\nRead first:\n- data/memory/findings/boot-RMFE-postdivide-turn5-exact-four-output-interface-2026-11-02.md\n- data/memory/findings/boot-RMFE-postdivide-turn6-recovery-source-audit-2026-11-02.md\n- data/memory/findings/orchestrator-HANDOFF-crypto-d3bf50a7-d808-41e6-a1d0-b56ad2f0d03c.md\n- the narrowest existing BOOT notes needed for prior-art/value comparison. Do not repeat completed literature audits.\n\nScope and safety:\n- Work only under work/BOOT-RMFE-POSTDIVIDE-T7-RECOVERY-WITNESS-20261102/ plus a final report in that directory.\n- Do not modify orchestrator source, data/orchestrator.db, data/memory, historical work directories, or existing binaries.\n- ZERO_API_BILLING. No web/API fallback.\n- No HElib KeyGen, no HElib/native performance benchmark, no expensive native experiment, and no rerun of any prior task.\n- This task is pure bounded deterministic implementation/correctness work.\n- Preserve the mechanism firewall: current PRE-TAG + POST-DIVIDE candidate only; historical POST-RAW carry-corrected evidence is comparator context, never correctness evidence.\n\nStep 0 — bounded novelty/value preflight:\nUse already-durable evidence to compare the current candidate with historical POST-RAW carry-corrected fusion, Aung et al. PKC 2025, and the nearest already-audited packed/restricted linear-transform techniques. State what is genuinely new. Assess whether the 17-call recovery is itself merely a natural specialization and whether the full mechanism still has a credible optimistic value window. If fully covered or already below the declared paper-value frontier, stop, write an evidence-backed PARK report, and do not implement.\n\nIf and only if preflight remains viable, construct a real executable witness:\n- Build a deterministic full-ring Z/625Z model at declared degree 8192. Do not substitute a five-coordinate toy model.\n- Implement the actual target-pruned recovery circuit as executable transformations of full ring states.\n- Enumerate every Frobenius/automorphism call, exactly 17 total, with its exponent/key identity.\n- Give executable even/odd masks at every visited node, public monomial multipliers, pruning decisions, leaf routing, and the exact placement of 8192^{-1}=28 mod 625 normalization.\n- Implement both physical slots with the required rho-conjugated projector targets: first-slot J=[0,1024,7168,2048,6144]; second-slot actions coeff_0, 443*coeff_7168, 443*coeff_1024, 443*coeff_6144, 443*coeff_2048.\n- Invert labels [2,0,3,1,4] to [C1,C3,C0,C2,C4].\n- Assemble exact Z_625 L0,L1,L2,L3 with the declared public constants.\n- A script that merely counts operations or directly indexes the five target coordinates is not an implementation witness.\n- Do not invent ring/automorphism semantics. If the durable specification is insufficient to define an executable 17-call circuit, stop and report the minimal missing mathematical object; classify whether this is construction error, resource-limit obstruction, or algorithmic no-go.\n\nCanary:\n- Use deterministic full-ring inputs with nonzero 5-adic dirty lifts.\n- Test all five selected leaves, both physical slots, rho swaps, 443 scaling, 28 normalization, branch inversion, and all L0-L3 outputs exactly mod 625.\n- Implement an independently written oracle that does not share the recovery extraction path.\n- Include at least one negative control proving a naive same-coordinate projector is detected.\n- Never compare only mod 5.\n- Assert the actual automorphism-call count is exactly 17; do not silently add calls or alter key assumptions.\n- Execute the tests. Save source, deterministic input manifest, machine-readable output, stdout/stderr transcript, and SHA256SUMS.\n- Prefer Python standard library only. A full 8192-element ring vector is expected and affordable.\n\nRequired final report fields:\nCONSTRUCTION_IMPLEMENTED: YES/NO\nEXACT_17_CALLS_VERIFIED: PASS/FAIL/UNCLEAR\nTWO_SLOT_PROJECTORS: PASS/FAIL/UNCLEAR\nEXACT_Z625_L0_L3: PASS/FAIL/UNCLEAR\nNOVELTY_STATUS: evidence-based status\nSECURITY_GATE: evidence-based status\nVALUE_GATE: evidence-based status\nPAPER_READINESS: evidence-based status\n\nAlso list files changed, commands actually executed, exact outputs/hashes, the preflight decision, any minimum blocker, and the single credible next action. Be conservative: never turn a simulated oracle or operation ledger into a complete algorithm PASS.\n","working_directory":"/Users/bingwu/Developer/research-orchestrator","execution_backend":"Codex CLI / codex exec","model":"gpt-5.6-sol","reasoning":"medium","pid_or_remote_execution_identity":"3817","start_time":"2026-11-02T07:12:27.950Z","status":"COMPLETED","commit":"356a8374f400efaf6224338db38c2c6bed4b22c6","expected_artifacts":[],"artifacts":[{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-POSTDIVIDE-T7-RECOVERY-WITNESS-20261102/EVIDENCE_SHA256SUMS","sha256":"e92726a501b53ffa150146301003fd223527f96fee1f87705511f236e8c14514","bytes":1235},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-POSTDIVIDE-T7-RECOVERY-WITNESS-20261102/FINAL_REPORT.md","sha256":"12983b3467c9a4728ed0add15655a2b26ae0871bc1e0976b1296a3e3321a3305","bytes":12762},{"path":"/Users/bingwu/Developer/research-orchestrator/work/BOOT-RMFE-POSTDIVIDE-T7-RECOVERY-WITNESS-20261102/SHA256SUMS","sha256":"2f6d2efcbf04e1bfa5037d2192bc4a41ed2c25f60263acaaabbbe50efeff5c33","bytes":278}],"evidence_status":"AVAILABLE","audit_status":"AUDITED","result_delivered":true,"do_not_rerun":true,"result":"Stopped conservatively: the durable specification is insufficient to implement a genuine global two-slot 17-call circuit without inventing ring/automorphism semantics.\n\nKey verdicts:\n\n```text\nCONSTRUCTION_IMPLEMENTED: NO\nEXACT_17_CALLS_VERIFIED: UNCLEAR\nTWO_SLOT_PROJECTORS: UNCLEAR\nEXACT_Z625_L0_L3: UNCLEAR\nNOVELTY_STATUS: NARROW / CONDITIONAL\nSECURITY_GATE: PENDING / UNCLEAR\nVALUE_GATE: PENDING\nPAPER_READINESS: NOT_READY\n```\n\nThe minimum missing object is the complete degree-8192 two-slot operator specification: local quotient rings/bases, full rho action, and exact paired actions for every Frobenius key and \\(X^{-2^i}\\) multiplier. Five selected rho identities only define the desired oracle; they do not define the intermediate global circuit.\n\nThe 17-call recovery is a natural specialization of prior packed/restricted linear-transform machinery. The remaining optimistic novelty window is the full obstruction-aware post-divide aggregation mechanism, conditional on a ≥10% end-to-end la"}
 
 ## PI decisions
-- 执行科研方法 V2 的一次受控真实运行验收。保持 TRACK_ID=BOOT、ACTIVE_SUBLINE=B158_CHECKPOINT_DECOUPLED_HALF_BASIS、同一 Research Session 和当前 Turn 4/25；本回复必须且只能作为正常 substantive Research Turn 5/25，不得重置历史、不得启动或建议重跑任何已完成 native/Codex 任务，也不得启动 Turn 6。当前 ACTIVE PAPER_CANDIDATE 的 PAPER_THESIS 与 NEW_MECHANISM 是待验证的论文假设；NOVELTY_STATUS 已校正为 PREFLIGHT。除非本轮完成了独立、可审计的 prior-art novelty verification，否则不得写 CLEAR/PASS，必须保持 PREFLIGHT。仅执行当前 next decisive test：独立推导并核对五个 selected Z_625 lifts 到 L0,L1,L2,L3 的精确代数、[2,0,3,1,4] branch ordering 与第二 physical slot rho transport；明确区分证明、静态证据和仍未验证的 native 事实。重点判断本轮是否减少完整论文贡献的不确定性，而不是仅增加局部 PASS/FAIL。不得发起 EXECUTE；控制块必须 action: CONTINUE。正文末尾必须按既有 Paper-First schema 输出 exactly one 完整 strict-JSON <PAPER_CANDIDATE_UPDATE>，如实更新 phase、novelty、correctness、security、value、critical blocker、next decisive test；ASSESSMENT.INDEPENDENT_AUDIT_PASSED 仅在完整独立论文审计真正通过时才可为 true。
-- PI-authorized controlled Research Turn 6/25 only.
-
-TRACK_ID=BOOT
-ACTIVE_SUBLINE=B158_CHECKPOINT_DECOUPLED_HALF_BASIS
-Logical session must remain de72fdd0-c665-4611-9d0a-2e3575957355 (密码学 22.0).
-Current durable count is exactly Turn 5/25. Complete exactly one substantive Research Turn 6/25, then stop at the already-armed pause-after-current boundary. Do not start or prepare Turn 7.
-
-Turn 5 evidence authority is now closed without regeneration:
-- GitHub Notes/local verified Git path: findings/boot-RMFE-postdivide-turn5-exact-four-output-interface-2026-11-02.md
-- authority commit: 450f37001746344582a670f652c136ac43a2bcc2
-- DB research_turn id 341, message assistant@69ce46b9, verdict UNCLEAR
-- the note's verbatim scientific body was re-read and matched the DB body exactly.
-
-This turn's one paper-first question is the current PAPER_CANDIDATE CORRECTNESS_GATE:
-source-level audit the actual 17-call target-pruned unpack, not merely the abstract mapping.
-
-Required audit targets:
-1. Locate and identify the concrete implementation bytes/schedule that claim the 17 physical calls. Audit the actual recursion, masks, normalization/scaling, selected-leaf routing, and output assembly. The inherited descriptive schedule alone (Frobenius exponents 4096...1, active-node counts [1,1,1,1,1,1,1,1,1,1,1,2,4]) is not source implementation evidence.
-2. Verify all five two-physical-slot rho-conjugated projector identities for J=[0,1024,7168,2048,6144]:
-   first-slot actions: coeff_0, coeff_1024, coeff_7168, coeff_2048, coeff_6144;
-   second-slot actions: coeff_0, 443*coeff_7168, 443*coeff_1024, 443*coeff_6144, 443*coeff_2048;
-   and explicitly recheck 443=182^{-1} mod 625 plus every required factor in Z_625.
-3. Verify J-order labels [2,0,3,1,4] are inverted into branch order [C1,C3,C0,C2,C4] at the actual output boundary.
-4. Verify the final complete semantic interface, not only local projectors:
-   L_r = C1*phi(e0)^(5^r) + C3*phi(e1)^(5^r) + C0*phi(e2)^(5^r) + C2*phi(e3)^(5^r) + C4*phi(e4)^(5^r), r=0,1,2,3,
-   with L0 used as z and L1,L2,L3 as Aung Algorithm-4 correction images, including both physical slots and Z_625 semantics.
-5. Give exactly one overall verdict: PASS, FAIL, or UNCLEAR. Local mapping correctness is not complete-algorithm correctness. PASS is allowed only if concrete implementation/source evidence closes the entire requested interface. If the actual implementation cannot be located or is only a prose schedule, verdict must be UNCLEAR with SOURCE_BLOCKED/IMPLEMENTATION_ABSENT attribution.
-6. If FAIL, distinguish implementation error from algorithmic obstruction. At most propose one bounded, high-value structural redesign. Do not begin an unbounded family of local variants.
-7. Maintain a strict mechanism firewall:
-   CURRENT candidate = pre-tag + branch-local nonlinear preprocessing + POST-DIVIDE pair aggregation + one reconstruction + target-pruned recovery.
-   HISTORICAL source in work/BOOT-RMFE-CURRENT-PAIRED-THROUGHPUT-NATIVE-20261101-R4-01/source/{benchmark.cpp,canary.cpp} = POST-RAW carry-corrected fusion and is not the current candidate. Do not mix its novelty, correctness, timing, capacity, or cost evidence into the current mechanism. It may be cited only to establish non-applicability.
-8. No new Native experiment. No Codex/EXECUTE delegation. Do not rerun, modify, or duplicate completed do_not_rerun tasks or binaries.
-9. Preserve Novelty=PREFLIGHT and Security/Value=PENDING unless this turn produces genuinely status-changing evidence. No new prior-art claim and no performance claim are authorized.
-10. Explicitly state which uncertainty about a complete paper contribution this turn reduced, rather than listing only local PASS/FAIL facts, and name the next single decisive experiment.
-
-Known authority inventory that must be checked, not silently assumed:
-- Current candidate definition and Turn-5 exact interface are in the GitHub Notes file above and the active PAPER_CANDIDATE.
-- Relevant historical handoff notes include findings/orchestrator-HANDOFF-crypto-9f6a2d90-3b67-490f-b928-18e9ab49f700.md and findings/orchestrator-HANDOFF-crypto-d3bf50a7-d808-41e6-a1d0-b56ad2f0d03c.md.
-- A local/authority search before this turn found descriptive 17-call schedule evidence but no concrete current-candidate target-pruned implementation source. Treat this as a falsifiable source-inventory observation: independently confirm or refute it. Do not convert absence into PASS.
-
-Output requirements:
-- A self-contained Research Turn 6/25 scientific report with evidence labels and explicit overall PASS/FAIL/UNCLEAR.
-- Before/after implications for phase, novelty, correctness, security, value, critical blocker, and next decisive test.
-- A strict PAPER_CANDIDATE_UPDATE JSON block compatible with paper-first-runtime-v2. Do not mark any gate PASS without adequate complete evidence.
-- <ORCHESTRATOR_CONTROL> with action CONTINUE, milestone only if scientifically warranted, requires_pi false, independent_research_available true. The durable pause-after-current latch, not the control action, will stop the session after Turn 6.
-- ZERO_API_BILLING, ordinary Chat / gpt-5.6-sol / xhigh. Do not use Work, API, paid fallback, Ultra/Pro/Max, or change model provenance.
-- PI DIRECTIVE — Resume Continuous Autonomous Paper-First Research. Keep TRACK_ID=BOOT, ACTIVE_SUBLINE=B158_CHECKPOINT_DECOUPLED_HALF_BASIS, this same logical Research Session, and counted Turns 1–7. Begin the next legal substantive Research Turn 8/25 and continue autonomously afterward without per-turn PI pauses; retain the 25+1 handoff lifecycle. Verified authority is Git commit 113655fee04b661f1e217b39646caceb93b072e4 and findings/boot-paper-first-continuous-autonomous-resumption-2026-11-02.md. BOOT-T7-RECOVERY-WITNESS-20261102 is already COMPLETED/AUDITED/do_not_rerun and produced no executable circuit; do not re-audit or rerun it. The active candidate remains CORRECTNESS_GATE with Novelty=PREFLIGHT, Security/Value=PENDING, Paper=NOT_READY. Its corrected NEXT_DECISIVE_TEST is one bounded constructive implementation and deterministic exact-Z625 canary: build one well-typed global two-physical-slot full-ring circuit from the Turn-7 recurrence, enumerate exactly 17 Frobenius calls, masks, odd-child monomial multipliers, pruning/routing, normalization by 28, rho transport, branch inversion [C1,C3,C0,C2,C4], and exact L0–L3; test dirty lifts, both slots, five leaves, all outputs, an independent oracle, and a naive same-coordinate negative control; preserve code/inputs/outputs/hashes. First recheck novelty and optimistic paper value. If construction or value fails, classify the obstruction and apply only bounded redesign or PARK/KILL, then autonomously reprioritize within BOOT. Do not use two independent single-slot oracles as a global circuit. Preserve ZERO_API_BILLING, ordinary Chat gpt-5.6-sol/xhigh, Codex/background gpt-5.6-sol/medium, exactly-once, do_not_rerun, and correctness-canary-before-expensive-native. Only genuine top-level blockers or human publication decisions require PI.
-- Queue-delivery trigger only; superseded by the earlier durable continuous-research PI directive.
-- PI DIRECTIVE — Resume Continuous Autonomous Paper-First Research. Keep TRACK_ID=BOOT, ACTIVE_SUBLINE=B158_CHECKPOINT_DECOUPLED_HALF_BASIS, this same logical Research Session, and counted Turns 1–7. Begin the next legal substantive Research Turn 8/25 and continue autonomously afterward without per-turn PI pauses; retain the 25+1 handoff lifecycle. Verified authority is Git commit f655dfefb72f8b7ebe7fb09b1acdea0670e35489 and findings/boot-paper-first-continuous-autonomous-resumption-2026-11-02.md. BOOT-T7-RECOVERY-WITNESS-20261102 is already COMPLETED/AUDITED/do_not_rerun and produced no executable circuit; do not re-audit or rerun it. The active candidate remains CORRECTNESS_GATE with Novelty=PREFLIGHT, Security/Value=PENDING, Paper=NOT_READY. Its corrected NEXT_DECISIVE_TEST is one bounded constructive implementation and deterministic exact-Z625 canary: build one well-typed global two-physical-slot full-ring circuit from the Turn-7 recurrence, enumerate exactly 17 Frobenius calls, masks, odd-child monomial multipliers, pruning/routing, normalization by 28, rho transport, branch inversion [C1,C3,C0,C2,C4], and exact L0–L3; test dirty lifts, both slots, five leaves, all outputs, an independent oracle, and a naive same-coordinate negative control; preserve code/inputs/outputs/hashes. First recheck novelty and optimistic paper value. If construction or value fails, classify the obstruction and apply only bounded redesign or PARK/KILL, then autonomously reprioritize within BOOT. Do not use two independent single-slot oracles as a global circuit. Preserve ZERO_API_BILLING, ordinary Chat gpt-5.6-sol/xhigh, Codex/background gpt-5.6-sol/medium, exactly-once, do_not_rerun, and correctness-canary-before-expensive-native. Only genuine top-level blockers or human publication decisions require PI.
-- Operational resume after verified Bridge/model recovery. This is the SAME logical BOOT/B158 Research Turn 8/25, not a new turn or session.
-
-The disposable message `BOOT-MODEL-PROBE-20261102-01` and response `MODEL_PROBE_OK` are infrastructure evidence only; ignore them scientifically. Turns 1–7 remain unchanged. The earlier incomplete Turn-8 fragments are uncounted and must not be treated as established evidence. Do not rerun `BOOT-T7-RECOVERY-WITNESS-20261102` or any completed Codex/native task.
-
-Continue the Paper-First objective from the verified Git authority and active candidate. First determine, constructively and with actual global two-slot typing, whether Geelen/HElib odd-child global monomial semantics already transport the second physical slot by rho, and whether inherited `rho_pos=[0,2,1,4,3]` plus the 443 table is necessary compensation or accidental double compensation. Then take the highest-information bounded step toward the executable deterministic global two-slot exact-Z625 canary. Do not substitute two independent single-slot oracles; do not start expensive native performance work before correctness. Preserve Novelty=PREFLIGHT and Security/Value=PENDING unless real evidence changes them.
-
-End with exactly one strict-JSON `<PAPER_CANDIDATE_UPDATE>` and one `<ORCHESTRATOR_CONTROL>` block. Use action CONTINUE unless a genuine policy-defined blocker exists. Continuous autonomous Paper-First research remains authorized after this turn.
+- None recorded
 <!-- RESEARCH_ORCHESTRATOR_STATE_END -->

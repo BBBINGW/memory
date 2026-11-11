@@ -1,25 +1,168 @@
-# BOOT / B158_OVERALL — Turn 14/25 — Single-limb gateway source-interface gate
+# BOOT / B158_OVERALL — Research Turn 14/25
+## Single-limb sparse gateway: exact source-feasibility / bounded-repair gate
 
-Date: 2026-11-11. Candidate: boot-b158-single-limb-sparse-gateway-composite-v1. Phase: CORRECTNESS_GATE. This is a SOURCE-INTERFACE audit, NOT a native correctness result. This finding is supplementary and does NOT supersede the verified local Git authority at 3ed0c0ab5907b7c8d4e5fa1501064428ce7d462f, which was not mounted in this runtime.
+Date: 2026-11-11 (Asia/Singapore)
+Candidate: boot-b158-single-limb-sparse-gateway-composite-v1
+Phase: CORRECTNESS_GATE
+Status entering turn: ACTIVE
+This version is the valid logical Research Turn 14/25 and supersedes the prior infrastructure-invalid draft at this same path.
 
 ## Pre-registration
-QUESTION: Does unmodified OpenFHE source support the proposed q0-only h32 sparse switch and post-lift raise switch, or must candidate-native interfaces be explicitly implemented and validated before a full-LUT correctness claim?
-CURRENT_BELIEF: The public baseline sparse switch uses the full composite bottom basis and is not directly a q0-only gateway.
-CHEAPEST_DECISIVE_TEST: inspect public source's modulus-raise and sparse-key-switch entry points and assert the concrete bottom-basis sizing and key edges. No native build available here.
-IF_PASS: if q0-only keys/params and post-lift switch are fully implemented, advance to native full-packed candidate canary with q0/q1/tower/scale instrumentation.
-IF_FAIL: if a candidate implementation simply calls the baseline two-limb sparse switch at q0, mark SOURCE_INTERFACE_FAIL and park unless one bounded explicit source-interface repair exists.
-IF_UNCLEAR: keep candidate ACTIVE, CORRECTNESS_PENDING, without claiming compilation or success; require exact-tree source and binary access before interpreting a full-LUT test.
-WHICH_PAPER_GATE_CHANGES: source feasibility prerequisite of CORRECTNESS_GATE.
-WHY_THIS_RESULT_CHANGES_THE_NEXT_DECISION: removes any justification to treat baseline UnitTestSparseKS as validation of the candidate gateway's Ql={q0} key edge; requires explicit one-limb params/key and raise switch validation.
 
-## Evidence and finding
-Public OpenFHE 1.6.0 ckksrns-fhe.cpp program listing (https://openfhe-development.readthedocs.io/en/latest/api/program_listing_file_pke_lib_scheme_ckksrns_ckksrns-fhe.cpp.html), lines 4236-4267: baseline ModRaiseInPlace calls KeySwitchSparse before raising and uses exact composite basis extension for degree>1; then calls KeySwitchInPlace after raising. Lines 4275-4303: ExtendSparseKSToP switches single-limb via SwitchModulus only when sizeQl==1; otherwise uses exact multi-limb SwitchCRTBasis. Lines 4352-4389: sparse key generated on params Ql*P' with sizeQl=GetSparseKSParamsQ size. Lines 4392-4450: KeySwitchSparse clones precisely sizeQl bottom towers and switches QlP' -> Ql. Thus, a degree-2 baseline parameter context cannot be presumed to have a dedicated Ql={q0} q0-only sparse switching key merely because the same source has a one-limb branch. The candidate needs a distinct source-backed parameter/key edge in the degree-2 context and a separate raised-key edge; baseline UnitTestSparseKS validates only its own supplied parameters.
+QUESTION:
+Can the degree-2 q0-only sparse-security gateway be realized by a single bounded source-interface repair on PR #1381, reusing the existing one-limb sparse key switch and single-digit KeySwitchRaise arithmetic, or does the stock source reveal a mechanism-level incompatibility that requires parking the candidate?
 
-Public COMPOSITE_SCALING.md / CKKS_FUNCTIONAL_BOOTSTRAPING.md explicitly describe baseline >60-bit first-modulus using h=64,K=28 vs <=60-bit using h=32,K=16. This verifies the target regime but NOT its attainability under the proposed gateway.
+CURRENT_BELIEF:
+The arithmetic needed by the candidate already exists, but stock parameter precomputation binds both the low sparse switch and the single-digit raise switch to compositeDegree-derived conditions. If those bindings are only provenance/interface guards, a candidate-local parameter descriptor should be sufficient; if the underlying algorithms consume q1-dependent residues, the candidate must be parked.
 
-OpenFHE candidate source/binary, configured server and exact PR #1381 test artifacts were not accessible in this runtime. A filesystem inspection found no mounted candidate OpenFHE tree or verified local BBBINGW/memory clone. The user-supplied verified local HEAD is an authority excerpt, not a current runtime Git verification. No native correctness or noise measurements were performed; epsilon_L/H, q1-restored period, ApproxModDown/R normalization, final 8-bit LUT errors, full construction and security remain UNKNOWN/PENDING.
+CHEAPEST_DECISIVE_TEST:
+Source-audit every use of the sparse-switch Q/P parameters, sparse Hamming-weight selection, and PR #1381 single-digit raise path. Determine whether the one-limb branches are algebraically parameterized by the actual input basis or structurally depend on compositeDegree=1.
+
+IF_PASS:
+Retain ACTIVE and allow exactly one bounded candidate source repair: a q0-provenance sparse-gateway descriptor that supplies Qg={q0}, Pg, h=32/K=16 and authorizes the existing exact-q0-lift single-digit KeySwitchRaise path. Next test is a candidate-native canary with explicit interface/tower assertions plus whole-output FBT correctness.
+
+IF_FAIL:
+PARK the candidate. In particular, if KeySwitchRaise or its evaluation key requires the missing q1 residue before q1 restoration, or the low key switch cannot be parameterized to Qg={q0} without a new key-switch construction, this is mechanism-level failure.
+
+IF_UNCLEAR:
+Keep CORRECTNESS_GATE=PENDING but do not launch the full FBT benchmark; first obtain the exact missing source interface.
+
+WHICH_PAPER_GATE_CHANGES:
+Killer gate (2), stock/source feasibility, and the source-feasibility prerequisite of CORRECTNESS_GATE.
+
+WHY_THIS_RESULT_CHANGES_THE_NEXT_DECISION:
+The durable candidate previously treated the existing one-limb h32 regression and PR #1381 single-digit raise implementation as calibration. This audit decides whether those implementations are actually reusable in a degree-2 context, which determines whether a native canary is meaningful or whether the candidate must be parked before execution.
+
+## Closest source/prior-art boundary and exact delta
+
+OpenFHE PR #1286 explicitly defines SPARSE_ENCAPSULATED over the whole bottom basis Ql={q0,...,q_{d-1}}, d=compositeDegree. Its auxiliary P' is sized against that whole bottom modulus; for a >60-bit composite bottom modulus it uses the larger sparse-key regime.
+
+OpenFHE PR #1318 makes the Hamming weight / overflow bound depend on the first-modulus size: h=32,K=16 at <=60 bits and h=64,K=28 above 60 bits.
+
+OpenFHE PR #1381 introduces the raised-basis switch-back before R normalization. In its cryptoparameter patch, the fast single-digit case is enabled only when:
+  compositeDegree == 1 && q0 <= 16*P'
+and creates a single digit spanning the raised basis. KeySwitchRaise then reconstructs that digit by taking cv[1]'s bottom limb and exactly lifting it into Q'*P.
+
+The candidate's exact delta is therefore NOT a new key-switch formula. It changes the provenance boundary:
+  logical bottom period remains B=q0*q1,
+  but the temporary sparse-secret ciphertext is first physically reduced to q0,
+  so its low sparse switch and later raised switch may use the same one-limb/exact-q0-lift arithmetic that stock code only authorizes for degree 1.
+q1 is restored only after the sparse-to-dense switch and before R normalization.
+
+## Source evidence
+
+### A. Stock low sparse switch is hard-bound to the whole composite bottom basis
+
+Current OpenFHE source (the sparse-encapsulation code introduced by #1286/#1318) precomputes:
+  sizeQl = compositeDegree;
+  modulusQl = product(q_i, i < sizeQl);
+and derives firstModSize from the sum of all bottom-limb bit lengths. The same value selects m_sparseKSHammingWeight and hence h=64 above 60 bits. The auxiliary sparse modulus is then ~127 bits in that regime.
+
+KeySwitchGenSparse and KeySwitchSparse obtain GetSparseKSParamsQ/P/QP from the crypto parameters; they therefore use the whole Ql in a degree-2 context. Stock degree-2 code cannot become q0-only merely because the ciphertext has physically lost q1.
+
+This is a real source-interface blocker for an unmodified candidate.
+
+### B. The low key-switch arithmetic itself already supports Q={q0}
+
+ExtendSparseKSToP branches on the actual number of Ql limbs:
+  if sizeQl == 1:
+      use centered SwitchModulus from q0 to each P' prime;
+  else:
+      use exact HPS SwitchCRTBasis.
+
+KeySwitchSparse subsequently performs the same GHS-style switch and exact balanced P' -> Ql reduction using whatever Ql parameter set it is given.
+
+A repository-wide search found GetSparseKSParamsQ/P usage localized to this sparse-key-switch implementation plus the parameter getters/tests. Therefore a candidate-local Qg={q0}, Pg table bundle does not require changing generic DCRT arithmetic.
+
+### C. PR #1381 single-digit KeySwitchRaise is also provenance-driven, not intrinsically degree-1
+
+PR #1381 precomputation currently sets m_modRaiseKSSingleDigit only when compositeDegree==1 and q0 <= digitBound. This is the stock source reason the degree-2 candidate cannot simply call the fast path.
+
+But KeySwitchRaise's single-digit branch does not consult compositeDegree. It:
+  1. reads cv[1].GetElementAtIndex(0);
+  2. converts that q0 limb to coefficient form;
+  3. constructs DCRTPoly d(x0, paramsExt), i.e. the exact centered lift to Q'*P;
+  4. evaluates the one-row raise key over Q'*P;
+  5. ApproxModDowns by P'=P/R back to the raised Q'*R basis.
+
+KeySwitchGenRaise likewise constructs the key over Q*P from the old sparse and new dense secrets. Its one-row gadget is determined by GetModRaiseKSDigits; it does not mathematically require compositeDegree==1.
+
+Therefore compositeDegree==1 is serving as a sufficient source-level proof that the switched element is an exact lift of a q0 value. The candidate establishes the same invariant by construction after the physical q1 rescale.
+
+### D. One bounded repair is sufficient at the source-interface level
+
+The allowed bounded repair is one candidate-local 'sparse gateway descriptor' (name illustrative, not an API claim) threaded through the existing code paths:
+
+1. Low switch descriptor:
+   Qg={q0}; Pg chosen with the same one-limb h32 sparse-KS rule (~66 total bits in the 64-bit build); Qg*Pg and exact ModDown tables generated by the existing sizeQl==1 formulas.
+
+2. Sparse secret / FBT approximation:
+   draw the temporary sparse secret with h=32 for this gateway; select K=16 from that actual gateway Hamming weight. Do not globally rewrite ordinary degree-2 SPARSE_ENCAPSULATED behavior.
+
+3. Raise provenance flag:
+   explicitly assert that cv[1] entering KeySwitchRaise is the exact lift of a value modulo q0. Under that assertion, instantiate the existing single digit [0,sizeRaised] even though the ambient context has compositeDegree=2.
+
+4. Raise implementation:
+   reuse the existing PR #1381 one-limb exact-lift branch and KeySwitchGenRaise/KeySwitchRaise/ApproxModDown arithmetic. No new digit decomposition, external product, or RNS basis-switch primitive is required.
+
+5. Candidate ordering invariant:
+   physical q1 rescale -> q0-only sparse switch -> exact q0 lift -> single-digit sparse-to-dense switch -> q1 restoration -> R normalization.
+   q1 restoration algebra/noise was already discharged in the preceding durable turn and is not re-proved here.
+
+This repair is bounded because it changes parameter provenance and dispatch only; it does not alter the generic key-switch equations or ApproxModDown implementation. It is nevertheless mandatory: the unmodified degree-2 source is NOT a valid implementation of the candidate.
 
 ## Decision
-Verdict: SOURCE_INTERFACE_DEPENDENCY_CONFIRMED / CANDIDATE_NATIVE_CORRECTNESS_UNCLEAR. Keep only this candidate ACTIVE/PENDING. NEXT: obtain exact PR #1381 candidate source + runnable binary, first verify degree-2 context contains explicit q0-only Ql/P' tables, low key edge and post-lift raise key edge, then run pre-registered full-packed canary with tower/metadata/epsilon logging. If these edges absent, a single bounded repair is allowed by protocol; no repeated local patches. No performance claim, no novelty CLEAR.
 
-ELIMINATED_UNCERTAINTY: whether stock degree-2 sparse encapsulation's one-limb code path alone establishes the candidate low switch: NO. DECISION_CHANGED: YES — baseline one-limb regression is calibration only; candidate-native source/interface checks are mandatory before consuming any full-LUT result.
+SOURCE_FEASIBILITY_BOUNDED_REPAIR_PASS.
+
+This is not candidate correctness PASS and not native evidence. The candidate remains ACTIVE because the source obstruction is interface/provenance-only and the exact arithmetic paths needed by the candidate already exist.
+
+The prior belief that baseline UnitTestSparseKS alone calibrates the candidate is narrowed:
+  - baseline one-limb sparse KS validates the arithmetic family;
+  - it does NOT validate the degree-2 candidate's q0-only parameter/key edge;
+  - PR #1381's single-digit raise validates the arithmetic family;
+  - it does NOT validate enabling that path under a degree-2 context.
+
+## Next decisive test
+
+One candidate-native canary on the exact PR #1381 tree, with the bounded repair above and no further mechanism changes.
+
+Mandatory pre-output assertions:
+- ambient compositeDegree == 2;
+- gateway Q size == 1 and gateway modulus == q0;
+- gateway sparse Hamming weight == 32;
+- FBT overflow table selected is K == 16;
+- raise switch reports exactly one digit;
+- the digit is the exact q0-lift path, not ApproxSwitchCRTBasis decomposition;
+- same temporary sparse secret is used by low switch and switch-back key;
+- tower order before switch-back is the intended Q'*R / Q'*P order;
+- q1 restoration occurs before R normalization.
+
+Decisive semantic assertions:
+- low switch added-noise over >=7 trials, compared only as calibration with the existing one-limb h32 regression;
+- epsilon_L and epsilon_H measured in temporary q0 units;
+- q1*epsilon_L/B == epsilon_L/q0 and q1*epsilon_H/B == epsilon_H/q0 numerically modulo aliases;
+- post-switch q1 restoration preserves the full B-period decomposition;
+- R normalization leaves correct tower count, level, scaling factor and noise-scale metadata;
+- full-packed 8-bit zero LUT has zero modular output error on the test vector(s).
+
+IF the bounded source repair cannot compile or requires a second independent representation/key-switch redesign, park the candidate rather than patching again.
+
+## Eliminated uncertainty
+
+Eliminated: whether the degree-2 source binding itself constitutes a mechanism-level impossibility.
+Result: NO. Stock source is incompatible as written, but both required arithmetic subpaths are already present and can be reached by one explicit q0-provenance parameter/dispatch repair.
+
+Still unknown:
+native correctness, epsilon_H tails/DFR, security estimator, matched value, independent novelty audit.
+
+## Evidence references
+
+- OpenFHE PR #1286: composite SPARSE_ENCAPSULATED defines sparse switch over full bottom Ql and larger P'/h for large bottom modulus.
+- OpenFHE PR #1318: h/K selection by first-modulus size, h32/K16 <=60 bits and h64/K28 >60 bits.
+- OpenFHE PR #1381 patch:
+  src/pke/lib/scheme/ckksrns/ckksrns-cryptoparameters.cpp — single-digit raise precompute requires compositeDegree==1 and q0<=digitBound.
+  src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp — KeySwitchGenRaise and KeySwitchRaise single-digit exact-q0-lift implementation.
+- OpenFHE current sparse source:
+  src/pke/lib/scheme/ckksrns/ckksrns-cryptoparameters.cpp — sizeQl=compositeDegree, whole-bottom firstModSize, sparse parameter generation.
+  src/pke/lib/scheme/ckksrns/ckksrns-fhe.cpp — ExtendSparseKSToP one-limb branch, KeySwitchGenSparse, KeySwitchSparse.
